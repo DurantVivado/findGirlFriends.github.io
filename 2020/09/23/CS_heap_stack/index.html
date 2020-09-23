@@ -5,19 +5,22 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="弄懂内存中堆和栈的区别 知识的传送门  栈区($stack$)：由编译器自动分配释放，存放函数的参数值，以及局部变量的值，其操作方式类似数据结构的栈。 堆区($heap$)：一般由程序员分配释放，若程序不释放，会被操作系统回收。其操作方式类似于数据结构的链表。 全局区($static$)：全局变量和静态变量的存储在一起，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2020/09/23/hello-world/index.html">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2020/09/23/CS_heap_stack/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="弄懂内存中堆和栈的区别 知识的传送门  栈区($stack$)：由编译器自动分配释放，存放函数的参数值，以及局部变量的值，其操作方式类似数据结构的栈。 堆区($heap$)：一般由程序员分配释放，若程序不释放，会被操作系统回收。其操作方式类似于数据结构的链表。 全局区($static$)：全局变量和静态变量的存储在一起，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-09-23T09:35:13.854Z">
-<meta property="article:modified_time" content="2020-09-23T09:35:13.854Z">
+<meta property="og:image" content="c:/Users/xiODUZI/AppData/Roaming/Typora/typora-user-images/image-20200918200847502.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/1308093/201803/1308093-20180328153049383-817765669.png">
+<meta property="article:published_time" content="2020-09-23T10:16:45.096Z">
+<meta property="article:modified_time" content="2020-09-18T12:09:22.582Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/xiODUZI/AppData/Roaming/Typora/typora-user-images/image-20200918200847502.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -66,46 +69,35 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-CS_heap_stack" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/09/23/hello-world/" class="article-date">
-  <time datetime="2020-09-23T09:35:13.854Z" itemprop="datePublished">2020-09-23</time>
+    <a href="/2020/09/23/CS_heap_stack/" class="article-date">
+  <time datetime="2020-09-23T10:16:45.096Z" itemprop="datePublished">2020-09-23</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Hello World
-    </h1>
-  
-
-      </header>
-    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+        <h1 id="弄懂内存中堆和栈的区别"><a href="#弄懂内存中堆和栈的区别" class="headerlink" title="弄懂内存中堆和栈的区别"></a>弄懂内存中堆和栈的区别</h1><blockquote>
+<p>知识的<a target="_blank" rel="noopener" href="https://blog.csdn.net/myqq1418/article/details/81584761">传送门</a></p>
+</blockquote>
+<p><strong>栈区</strong>($stack$)：由编译器自动分配释放，存放函数的参数值，以及局部变量的值，其操作方式类似数据结构的栈。</p>
+<p><strong>堆区</strong>($heap$)：一般由程序员分配释放，若程序不释放，会被操作系统回收。其操作方式类似于数据结构的链表。</p>
+<p><strong>全局区</strong>($static$)：全局变量和静态变量的存储在一起，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。程序结束后由系统释放。</p>
+<p><strong>文字常量区</strong>：常量和字符串等。</p>
+<p><strong>程序代码区</strong>：程序的二进制代码。</p>
+<h2 id="图表"><a href="#图表" class="headerlink" title="图表"></a>图表</h2><p><img src="C:\Users\xiODUZI\AppData\Roaming\Typora\typora-user-images\image-20200918200847502.png" alt="image-20200918200847502"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1308093/201803/1308093-20180328153049383-817765669.png" alt="img"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区</span></span><br><span class="line"><span class="keyword">char</span> *p1; <span class="comment">//全局未初始化区</span></span><br><span class="line">main() &#123;</span><br><span class="line">    <span class="keyword">int</span> b; <span class="comment">//栈</span></span><br><span class="line">    <span class="keyword">char</span> s[] = <span class="string">&quot;abc&quot;</span>; <span class="comment">//栈</span></span><br><span class="line">    <span class="keyword">char</span> *p2; <span class="comment">//栈</span></span><br><span class="line">    <span class="keyword">char</span> *p3 = <span class="string">&quot;123456&quot;</span>; <span class="comment">//123456\0在常量区，p3在栈上。</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c = <span class="number">0</span>; <span class="comment">//全局（静态）初始化区</span></span><br><span class="line">    p1 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">//堆区，程序员自己申请，new也是的</span></span><br><span class="line">    p2 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">20</span>);</span><br><span class="line">    <span class="comment">//分配得来得10和20字节的区域就在堆区。</span></span><br><span class="line">    <span class="built_in">strcpy</span>(p1, <span class="string">&quot;123456&quot;</span>); <span class="comment">//123456\0放在常量区，编译器可能会将它与p3所指向的&quot;123456&quot;优化成一个地方。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/hello-world/" data-id="ckff8gnz40019wgscglmc4skh" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/09/23/CS_heap_stack/" data-id="ckff8gnz10013wgsc9d4oa5kr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -114,7 +106,7 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/09/23/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95I%20%E5%86%B3%E7%AD%96%E6%A0%91/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/09/23/Curriculum%20Selection/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
@@ -124,9 +116,9 @@
     </a>
   
   
-    <a href="/2020/08/14/2020-8-17-recognition-monostack/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/09/23/2020-8-26-lotus/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">初认识-单调栈</div>
+      <div class="article-nav-title"></div>
     </a>
   
 </nav>

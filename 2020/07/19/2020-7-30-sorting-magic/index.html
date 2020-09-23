@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>排序算法 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="面试基础之排序算法![Sorting comparation](E:\Github pages\saasproj.github.io_posts\img\Sorting comparation.png) 题目   前k个高频元素    1. 快速排序 面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)  快">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法">
+<meta property="og:url" content="http://example.com/2020/07/19/2020-7-30-sorting-magic/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="面试基础之排序算法![Sorting comparation](E:\Github pages\saasproj.github.io_posts\img\Sorting comparation.png) 题目   前k个高频元素    1. 快速排序 面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)  快">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-07-19T07:56:27.000Z">
+<meta property="article:modified_time" content="2020-08-28T04:15:17.383Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="面试基础">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-7-30-sorting-magic" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/19/2020-7-30-sorting-magic/" class="article-date">
+  <time datetime="2020-07-19T07:56:27.000Z" itemprop="datePublished">2020-07-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      排序算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="面试基础之排序算法"><a href="#面试基础之排序算法" class="headerlink" title="面试基础之排序算法"></a>面试基础之排序算法</h1><p>![Sorting comparation](E:\Github pages\saasproj.github.io_posts\img\Sorting comparation.png)</p>
+<p>题目</p>
+<ul>
+<li><ol start="347">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/top-k-frequent-elements/">前k个高频元素</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="1-快速排序"><a href="#1-快速排序" class="headerlink" title="1. 快速排序"></a>1. 快速排序</h2><blockquote>
+<p>面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)</p>
+</blockquote>
+<p>快速排序非常神奇但是很容易忘记，因此需要经常记忆。</p>
+<p>快速排序$a[l…r]$是一个典型的分治算法，参考《算法导论》第七章P95。</p>
+<ul>
+<li><strong>分解</strong>，将数组$a[l…r]$以$q$为分阶段划分为两个数组。使得一个数组元素完全小于另一个，即$a[l…q-1]\le a[q]\le a[q+1…r]$</li>
+<li><strong>解决，</strong>通过递归调用快速排序，对子数组进行排序</li>
+<li><strong>合并</strong>，因为子数组是按原址排序的，所以不需要合并操作。</li>
+</ul>
+<p>由此可以发现每次经过「划分」操作后，我们一定可以确定一个元素的最终位置，即 $x$最终位置为 $q$，并且保证 $a[l⋯q−1] $中的每个元素小于等于 $a[q]$，且 $a[q]$ 小于等于 $a[q+1⋯r]$ 中的每个元素。所以只要某次划分的 $q$为倒数第 $k$ 个下标的时候，我们就已经找到了答案。 我们只关心这一点，至于 $a[l⋯q−1] $和 $a[q+1⋯r]$ 是否是有序的，我们不关心。</p>
+<p>因此我们可以改进快速排序算法来解决这个问题：在分解的过程当中，我们会对子数组进行划分，如果划分得到的 $q$ 正好就是我们需要的下标，就直接返回 $a[q]$；否则，如果 $q$ 比目标下标小，就递归右子区间，否则递归左子区间。这样就可以把原来递归两个区间变成只递归一个区间，提高了时间效率。这就是「快速选择」算法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">public:</span><br><span class="line">    int quickSelect(vector&lt;int&gt;&amp; a, int l, int r, int index) &#123;</span><br><span class="line">        int q &#x3D; randomPartition(a, l, r);</span><br><span class="line">        if (q &#x3D;&#x3D; index) &#123;</span><br><span class="line">            return a[q];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return q &lt; index ? quickSelect(a, q + 1, r, index) : quickSelect(a, l, q - 1, index);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    inline int randomPartition(vector&lt;int&gt;&amp; a, int l, int r) &#123;</span><br><span class="line">        int i &#x3D; rand() % (r - l + 1) + l;</span><br><span class="line">        swap(a[i], a[r]);</span><br><span class="line">        return partition(a, l, r);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    inline int partition(vector&lt;int&gt;&amp; a, int l, int r) &#123;</span><br><span class="line">        int x &#x3D; a[r], i &#x3D; l - 1;</span><br><span class="line">        for (int j &#x3D; l; j &lt; r; ++j) &#123;</span><br><span class="line">            if (a[j] &lt;&#x3D; x) &#123;</span><br><span class="line">                swap(a[++i], a[j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        swap(a[i + 1], a[r]);</span><br><span class="line">        return i + 1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    void findKthLargest(vector&lt;int&gt;&amp; nums, int k) &#123;</span><br><span class="line">        srand(time(0));</span><br><span class="line">        return quickSelect(nums, 0, nums.size() - 1, nums.size() - k);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>​        </p>
+<h2 id="2-堆排序"><a href="#2-堆排序" class="headerlink" title="2. 堆排序"></a>2. 堆排序</h2><h2 id="3-归并排序"><a href="#3-归并排序" class="headerlink" title="3. 归并排序"></a>3. 归并排序</h2><h2 id="x-拓扑排序"><a href="#x-拓扑排序" class="headerlink" title="x.拓扑排序"></a>x.拓扑排序</h2><p>LC 课程表问题系列：207 210</p>
+<blockquote>
+<p>核心特性，对于图G中任何一条有向边$(u,v)$，$u$在排列中都出现在$v$的前面，这样的排列称为「拓扑排序」。</p>
+</blockquote>
+<p>对一个有向无环图(Directed Acyclic Graph简称DAG)G进行拓扑排序，是将G中所有顶点排成一个线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在线性序列中出现在v之前。通常，这样的线性序列称为满足拓扑次序(Topological Order)的序列，简称拓扑序列。简单的说，由某个集合上的一个偏序得到该集合上的一个全序，这个操作称之为拓扑排序。</p>
+<p>在图论中，由一个有向无环图的顶点组成的序列，当且仅当满足下列条件时，称为该图的一个拓扑排序（英语：Topological sorting）：</p>
+<ul>
+<li>每个顶点出现且只出现一次；</li>
+<li>若A在序列中排在B的前面，则在图中不存在从B到A的路径。</li>
+<li>若图中存在环，则不存在拓扑排序</li>
+</ul>
+<p><strong><em>重点</em></strong>：如何判断有无环：如果某个节点的相邻节点处于探索状态（在visited中），但还未加入拓扑序列，则说明有环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">graph</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,num</span>):</span></span><br><span class="line">        self.graph = defaultdict(list)</span><br><span class="line">        self.visited = &#123;&#125; </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addEdge</span>(<span class="params">self,u,v</span>):</span></span><br><span class="line">        self.graph[u].append(v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">canFinish</span>(<span class="params">self, numCourses: int, prerequisites: [[int]]</span>) -&gt; bool:</span></span><br><span class="line">        g = graph(numCourses+<span class="number">1</span>)   </span><br><span class="line">        topo_sort = []</span><br><span class="line">        <span class="keyword">for</span> lists <span class="keyword">in</span> prerequisites:</span><br><span class="line">            g.visited[lists[<span class="number">0</span>]] = <span class="literal">False</span></span><br><span class="line">            <span class="keyword">for</span> i,it <span class="keyword">in</span> zip(range(<span class="number">1</span>,len(lists)), lists):</span><br><span class="line">                g.graph[lists[i]].append(lists[<span class="number">0</span>])</span><br><span class="line">                g.visited[lists[i]] = <span class="literal">False</span></span><br><span class="line">                </span><br><span class="line">        isLoop = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> prerequisites <span class="keyword">or</span> <span class="keyword">not</span> prerequisites[<span class="number">0</span>]: <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="comment">#只要存在一种拓扑排序，返回true</span></span><br><span class="line">        <span class="comment">#定义三种状态，未探索，探索中以及已经探索</span></span><br><span class="line">        <span class="comment">#A-&gt;B: 表示A是B的先修课</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">vertex</span>):</span></span><br><span class="line">            <span class="keyword">nonlocal</span> isLoop</span><br><span class="line">            <span class="keyword">if</span> isLoop: <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> vertex <span class="keyword">in</span> g.graph.keys():</span><br><span class="line">                g.visited[vertex] = <span class="literal">True</span> <span class="comment">#标记为已经访问</span></span><br><span class="line">                topo_sort.append(vertex)</span><br><span class="line">                <span class="keyword">return</span> <span class="comment">#如果已经访问则跳过</span></span><br><span class="line">            g.visited[vertex] = <span class="literal">True</span> <span class="comment">#标记为已经访问</span></span><br><span class="line">            <span class="keyword">for</span> neigbor <span class="keyword">in</span> g.graph[vertex]:<span class="comment">#遍历邻接顶点</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> g.visited[neigbor] :</span><br><span class="line">                    dfs(neigbor)</span><br><span class="line">                <span class="keyword">elif</span> <span class="keyword">not</span> neigbor <span class="keyword">in</span> topo_sort:<span class="comment">#如果某个节点的相邻节点处于探索状态（在visited中），但还未加入拓扑序列，则说明有环</span></span><br><span class="line">                    isLoop = <span class="literal">True</span></span><br><span class="line">                    <span class="keyword">return</span> </span><br><span class="line">            topo_sort.append(vertex)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> g.graph.keys():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> isLoop <span class="keyword">and</span> <span class="keyword">not</span> g.visited[v]:</span><br><span class="line">                dfs(v)</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">not</span> isLoop</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>复杂度分析</p>
+</blockquote>
+<p>时间复杂度: $O(n+m)$，其中 $n$ 为课程数，$m$ 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。</p>
+<p>空间复杂度: $O(n+m)$。题目中是以列表形式给出的先修课程关系，为了对图进行深度优先搜索，我们需要存储成邻接表的形式，空间复杂度为 $O(n+m)$。在深度优先搜索的过程中，我们需要最多 $O(n)$ 的栈空间（递归）进行深度优先搜索，并且还需要若干个 $O(n)$ 的空间存储节点状态、最终答案等。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/07/19/2020-7-30-sorting-magic/" data-id="ckff8gnyn000kwgsc578rc69n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/19/2020-7-30-pointers/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          多指针问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/16/2020-07-25-how-Unordered_map-support-pair-as-key/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何让Unordered_map支持pair作为键值</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

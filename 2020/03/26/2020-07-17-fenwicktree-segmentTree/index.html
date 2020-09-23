@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>线段树和树状数组 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="“树状数组和线段树都是用于维护数列信息的数据结构，支持单点&#x2F;区间修改，单点&#x2F;区间询问信息。以增加权值与询问区间权值和为例，其余的信息需要维护也都类似。时间复杂度均为$O(logn)$。 ”   详细的数学证明   练习题目  计算右侧小于当前元素的个数    最大子序和      I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到这样一个问题: 有一个数组$S$从$0 -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线段树和树状数组">
+<meta property="og:url" content="http://example.com/2020/03/26/2020-07-17-fenwicktree-segmentTree/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="“树状数组和线段树都是用于维护数列信息的数据结构，支持单点&#x2F;区间修改，单点&#x2F;区间询问信息。以增加权值与询问区间权值和为例，其余的信息需要维护也都类似。时间复杂度均为$O(logn)$。 ”   详细的数学证明   练习题目  计算右侧小于当前元素的个数    最大子序和      I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到这样一个问题: 有一个数组$S$从$0 -">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMuY25ibG9ncy5jb20vY25ibG9nc19jb20vQUtNZXIvMTIyODU5OS9vX1RyZWVBcnJheS5qcGc?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvYmQzZWIxMzUzM2ZhODI4YmNiNWZlODVmZmUxZjQxMzQ5NzBhNWEwOQ?x-oss-process=image/format,png">
+<meta property="article:published_time" content="2020-03-26T07:56:27.000Z">
+<meta property="article:modified_time" content="2020-09-03T06:01:29.235Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="高级数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMuY25ibG9ncy5jb20vY25ibG9nc19jb20vQUtNZXIvMTIyODU5OS9vX1RyZWVBcnJheS5qcGc?x-oss-process=image/format,png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-07-17-fenwicktree-segmentTree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/26/2020-07-17-fenwicktree-segmentTree/" class="article-date">
+  <time datetime="2020-03-26T07:56:27.000Z" itemprop="datePublished">2020-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      线段树和树状数组
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>“树状数组和线段树都是用于维护数列信息的数据结构，支持单点/区间修改，单点/区间询问信息。以增加权值与询问区间权值和为例，其余的信息需要维护也都类似。时间复杂度均为$O(logn)$。 ”</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/191524460">详细的数学证明</a></p>
+</blockquote>
+<ul>
+<li>练习题目<ul>
+<li><ol start="315">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/">计算右侧小于当前元素的个数</a></li>
+</ol>
+</li>
+<li><ol start="53">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/">最大子序和</a></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="I-树状数组"><a href="#I-树状数组" class="headerlink" title="I. 树状数组"></a>I. 树状数组</h1><h2 id="Fenwick-Tree"><a href="#Fenwick-Tree" class="headerlink" title="Fenwick Tree"></a>Fenwick Tree</h2><p>地中海的程序猿们研究数组，时候遇到这样一个问题: 有一个数组$S$从$0 - n-1$，现在要在$O(logn)$ 的时间复杂度内，搜索一个确定的值（或修改）$w$并且对区间 $[a,b]$ 求和。空间复杂度必须严格限制在$O(n)$.</p>
+<p>他们想到了二叉搜索树(BST)，对于平衡二叉树其插入和删除的时间复杂度都是$O(logn)$，因为树是类似于嵌套列表的思想，进而可以想到二叉堆，这是一种非嵌套列表，也可以实现$O(logn)$。于是有了下面这张图：</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMuY25ibG9ncy5jb20vY25ibG9nc19jb20vQUtNZXIvMTIyODU5OS9vX1RyZWVBcnJheS5qcGc?x-oss-process=image/format,png" alt="FenwickTree"></p>
+<blockquote>
+<p>解释一下，编号为$x$的节点上统计着$[x-lowbit(x)+1,x]$这一段区间的信息，$x$的父亲就是$x+lowbit(x)$,我们要维护数组$C$上的信息，存储在数组$A$中。</p>
+</blockquote>
+<p>按照Peter M. Fenwick的说法，正如所有的整数都可以表示成2的幂和，我们也可以把一串序列表示成一系列子序列的和。采用这个想法，我们可将一个前缀和划分成多个子序列的和，而划分的方法与数的2的幂和具有极其相似的方式。一方面，子序列的个数是其二进制表示中1的个数，另一方面，子序列代表的$f[i]$的个数也是2的幂。</p>
+<h2 id="1-Lowbit函数"><a href="#1-Lowbit函数" class="headerlink" title="1. Lowbit函数"></a>1. Lowbit函数</h2><blockquote>
+<p>返回参数转换为二进制后，最后一个1的位置所代表的数值。</p>
+</blockquote>
+<p>比如34转换为二进制就是0010 0010, Lowbit(34)返回2. 程序上 我们可以用<code>((Not I)+1) AND I</code>, 比如NOT(0010 0010) = 1101 1101, 加1之后为 1101 1110，再与上I,为0000 0010(2)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x&amp;(-x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-新建数组"><a href="#2-新建数组" class="headerlink" title="2. 新建数组"></a>2. 新建数组</h2><p>我们定义一个数组BIT，用以维护A的前缀和，</p>
+<p>$$<br>BIT_i = \sum\limits_{j=i-lowbit(i)+1}^{i} A_{j}<br>$$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= MAX_N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        BIT[i] = A[i - <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">2</span>; j &gt;= i - lowbit(i); j--)</span><br><span class="line">            BIT[i] += A[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-修改"><a href="#3-修改" class="headerlink" title="3. 修改"></a>3. 修改</h2><p>假设现在要在$A[i]$的值增加$\delta$, 那么需要将$BIT$在所有含$A[i]$的区间都加上一个数，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">int</span> w)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">// 在下标k、加上w</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = k; j&lt; tr.size();j+=low_bit(j)) tr[j]+=w;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-区间求和"><a href="#4-区间求和" class="headerlink" title="4. 区间求和"></a>4. 区间求和</h2><p>假设我们需要计算$\sum\limits_{i=1}^kA_i$的值。</p>
+<ol>
+<li>首先，将$ans$初始化为$k$</li>
+<li>将$ans$的值加上$BIT[i]$</li>
+<li>将$i$的值减去$Lowbit(i)$</li>
+<li>重复2 . 3 步骤直到$i$的值变为0.</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span> <span class="params">(<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = k; i &gt; <span class="number">0</span>; i -= lowbit(i))</span><br><span class="line">        ans += BIT[i];</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应用：求<a target="_blank" rel="noopener" href="https://blog.csdn.net/cattycat/article/details/5640838">逆序数</a></p>
+<blockquote>
+<p>练习 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-of-smaller-numbers-after-self/">LC315. 计算右侧小于当前元素的个数</a></p>
+</blockquote>
+<h1 id="II-线段树"><a href="#II-线段树" class="headerlink" title="II. 线段树"></a>II. 线段树</h1><h2 id="Segment-Tree"><a href="#Segment-Tree" class="headerlink" title="Segment Tree"></a>Segment Tree</h2><blockquote>
+<p>使用线段树可以快速查找某一个节点在若干线段中出现的次数，时间复杂度为$O(logN)$，而未优化的空间复杂度为$2N$，一般要开$4N$的数组防止越界。</p>
+</blockquote>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvYmQzZWIxMzUzM2ZhODI4YmNiNWZlODVmZmUxZjQxMzQ5NzBhNWEwOQ?x-oss-process=image/format,png" alt="线段树"></p>
+<p>除了叶子节点外，对于$[a,b]$线段节点，其有两个子节点, 左子节点$[a,(a+b)/2]$和右子节点$[(a+b)/2+1,b]$。由于线段树在程序竞赛中被广泛应用，这种结构被$ACMer$和$OIer$戏谑为必须掌握的数据结构。一般地，我们先定义一个线段树节点结构体:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SegmentNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> start;<span class="comment">//线段左节点</span></span><br><span class="line">    <span class="keyword">int</span> end;<span class="comment">//线段右节点</span></span><br><span class="line">    <span class="keyword">int</span> sum;<span class="comment">//线段对应的和</span></span><br><span class="line">    <span class="keyword">int</span> lazytag;<span class="comment">//懒标记</span></span><br><span class="line">    SegmentNode *left;</span><br><span class="line">    SegmentNode *right;</span><br><span class="line">    SegmentNode():start(<span class="number">0</span>),end(<span class="number">0</span>),sum(<span class="number">0</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>请务必熟悉理解<code>上述</code>结构！</p>
+<h2 id="1-建立树"><a href="#1-建立树" class="headerlink" title="1. 建立树"></a>1. 建立树</h2><p>我们对区间$[l,r]$建立线段树，是一个自上而下过程。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">build</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l&gt;r) <span class="keyword">return</span>;</span><br><span class="line">        self-&gt;start = l;self-&gt;end = r;</span><br><span class="line">        <span class="keyword">if</span>(l==r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> mid = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        self-&gt;left = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;left,l,mid);</span><br><span class="line">        self-&gt;right = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;right,mid+<span class="number">1</span>,r);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-单点修改"><a href="#2-单点修改" class="headerlink" title="2. 单点修改"></a>2. 单点修改</h2><p>从根节点开始,以递归的方式不断更新sum值，直到叶子节点即<code>区间长度为1</code>，每个区间的sum值等于左子区间的sum值，加上右子区间的sum值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> pos, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos&lt;self-&gt;start||pos&gt;self-&gt;end) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;start == self-&gt;end)</span><br><span class="line">    &#123;</span><br><span class="line">        self-&gt;sum += k;</span><br><span class="line">        <span class="keyword">return</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;right-&gt;start&gt;pos) add(self-&gt;left,pos,k);</span><br><span class="line">    <span class="keyword">else</span> add(self-&gt;right,pos,k);</span><br><span class="line">    self-&gt;sum = self-&gt;left-&gt;sum + self-&gt;right-&gt;sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-区间查询"><a href="#3-区间查询" class="headerlink" title="3. 区间查询"></a>3. 区间查询</h2><ul>
+<li>第一种情况是当前的区间范围完全在$[l,r]$内，这个时候把当前区间的$sum$值返回即可，</li>
+<li>第二张情况是当前节点的<code>左子节点</code>的<code>右端点</code>和$[l,r]$有交集。这个时候就搜索左子节点。</li>
+<li>第三张情况是当前节点的<code>右子节点</code>的<code>左端点</code>和$[l,r]$有交集。这个时候就搜索右子节点。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//这里的i,j分别代表要搜索的区间</span></span><br><span class="line">    <span class="keyword">if</span>(i&gt;j) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;=self-&gt;start &amp;&amp; self-&gt;end&lt;=j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> self-&gt;sum; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;left-&gt;end&gt;=i) s+=search(self-&gt;left,i,j);</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;right-&gt;start&lt;=j) s+=search(self-&gt;right,i,j);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-延迟标记"><a href="#4-延迟标记" class="headerlink" title="4. 延迟标记"></a>4. 延迟标记</h2></li>
+</ul>
+<p>对于区间修改，这里会遇到一个问题：为了使所有sum值都保持正确，每一次插入操作可能要更新$O(N)$个sum值，从而使时间复杂度退化为$O(N)$。所以就有了Lazytag，如果一个节点有延迟标记，那么表明这个节点已经被修改过了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_tag</span><span class="params">(SegmentNode *self,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    self-&gt;sum += (r-l+<span class="number">1</span>)*v;self-&gt;lazytag+=v;<span class="comment">//标记只对儿子有影响，自己在打标记的同时一起把统计信息更改了。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_down</span><span class="params">(SegmentNode *self,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">    add_tag(self-&gt;left,l,mid,self-&gt;lazytag);</span><br><span class="line">    add_tag(self-&gt;right,mid+<span class="number">1</span>,r,self-&gt;lazytag);</span><br><span class="line">    self-&gt;lazytag = <span class="number">0</span>;<span class="comment">//把当前标记分别传给两个儿子然后清空</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> l, <span class="keyword">int</span> r,<span class="keyword">int</span> v)</span> </span>&#123;<span class="comment">//[l,r]为当前区间,[L,R]为要修改的区间</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;=self-&gt;start &amp;&amp; self-&gt;end&lt;=r) &#123;</span><br><span class="line">        add_tag(self,l,r,v);<span class="comment">//打标记</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">    push_down(self,l,r);<span class="comment">//下传标记</span></span><br><span class="line">    <span class="keyword">if</span>(self-&gt;left-&gt;end&gt;=i) s+=search(self-&gt;left,i,j,v);</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;right-&gt;start&lt;=j) s+=search(self-&gt;right,i,j,v);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="III-树状数组和线段树比较"><a href="#III-树状数组和线段树比较" class="headerlink" title="III. 树状数组和线段树比较"></a>III. 树状数组和线段树比较</h1><table>
+<thead>
+<tr>
+<th align="center">数据结构</th>
+<th align="center">时间复杂度</th>
+<th align="center">空间复杂度</th>
+<th align="center">适用特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">线段树</td>
+<td align="center">$O(logN)$</td>
+<td align="center">O(N)</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">树状数组</td>
+<td align="center">$O(logN)$</td>
+<td align="center">O(N)</td>
+<td align="center">空间复杂度略低，容易扩展到多维，适用范围较线段树小</td>
+</tr>
+</tbody></table>
+<p>下面看一些经典题目吧</p>
+<h1 id="53-最大子序和"><a href="#53-最大子序和" class="headerlink" title="53. 最大子序和"></a>53. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/">最大子序和</a></h1><p>其实这题除了用动态规划，还可以用线段树做。</p>
+<p><strong>这个分治方法类似于「线段树求解 LCIS 问题」的 pushUp 操作</strong>。 当然，如果读者有兴趣的话，推荐看一看线段树区间合并法解决 <code>多次询问</code> 的「区间最长连续上升序列问题」和「区间最大子段和问题」，还是非常有趣的。</p>
+<p>我们定义一个操作<code>get(a,l,r)</code>表示查询a序列$[l,r]区$间内的最大字段和。对于一个区间，我们取$m = [\frac{l+r}{2}]$,然后<code>逐层递归</code>。最关键的问题是：</p>
+<ul>
+<li><p>我们要维护区间什么信息？</p>
+</li>
+<li><p>我们如何合并这些信息？</p>
+</li>
+</ul>
+<p>  对于一个区间$[l,r]$，<code>lSum</code>表示$[l,r]$以$l$为左端点的最大子段和；<code>rSum</code>表示$[l,r]$以$r$为右端点的最大子段和，<code>mSum</code>表示$[l,r]$</p>
+<p>  内的最大子段和。<code>iSum</code>表示$[l,r]$的区间和。</p>
+<ul>
+<li><code>iSum</code>是左右区间的子段和的和。</li>
+<li>对于 $[l, r]$ 的 <code>lSum</code>，存在两种可能，它要么等于「左子区间」的 <code>lSum</code>，要么等于「左子区间」的 <code>iSum</code> 加上「右子区间」的 <code>lSum</code>，二者取大。</li>
+<li>对于 $[l, r]$ 的 <code>rSum</code>，存在两种可能，它要么等于「右子区间」的 <code>rSum</code>，要么等于「右子区间」的 <code>iSum</code> 加上「左子区间」的 <code>rSum</code>，二者取大。</li>
+<li>对于<code>mSum</code>，存在三种可能，要么完全在左区间，要么完全在中间，要么两边都有，我想你已经猜到了，就是左区间的<code>rSum</code>加上右区间的<code>lSum</code>。</li>
+</ul>
+<p>好的已经可以开始写代码了</p>
+<hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Status</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="keyword">int</span> lSum, rSum, mSum, iSum;</span><br><span class="line">        <span class="comment">// 分别表示，以l为左端点的最大子序和，以r为右端点的最大子序和，</span></span><br><span class="line">        <span class="comment">// mSum表示区间[l,r]最大子序和</span></span><br><span class="line">        <span class="comment">//iSum表示区间和</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function">Status <span class="title">get</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums,<span class="keyword">int</span>  l,<span class="keyword">int</span>  r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l==r) <span class="keyword">return</span> (Status)&#123;nums[l],nums[l],nums[l],nums[l]&#125;;</span><br><span class="line">        <span class="keyword">int</span> m = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        Status lpus = get(nums,l,m);</span><br><span class="line">        Status rpus = get(nums,m+<span class="number">1</span>,r);</span><br><span class="line">        <span class="keyword">int</span> lSum = max(lpus.lSum, lpus.iSum + rpus.lSum);</span><br><span class="line">        <span class="keyword">int</span> rSum = max(rpus.rSum, rpus.iSum + lpus.rSum);</span><br><span class="line">        <span class="keyword">int</span> iSum = lpus.iSum + rpus.iSum;</span><br><span class="line">        <span class="keyword">int</span> mSum = max(lpus.rSum+ rpus.lSum,max(lpus.mSum, rpus.mSum));</span><br><span class="line">        <span class="keyword">return</span> (Status)&#123;lSum,rSum,mSum,iSum&#125;; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> get(nums, <span class="number">0</span> , nums.size()<span class="number">-1</span>).mSum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后我们分析一下时间和空间复杂度。</p>
+<p>时间复杂度：$O(n)$，我们把递归过程看成二叉树的先序遍历，那么这颗二叉树时间复杂度：假设我们把递归的过程看作是一颗二叉树的先序遍历，那么这颗二叉树的深度的渐进上界为 $O(\log n)$，这里的总时间相当于遍历这颗二叉树的所有节点，故总时间的渐进上界是 $O(\sum_{i = 1}^{\log n} 2^{i - 1}) = O(n)$，故渐进时间复杂度为 $O(n)$。<br>空间复杂度：递归会使用 O(\log n)O(logn) 的栈空间，故渐进空间复杂度为 $O(logn)$。 </p>
+<hr>
+<h1 id="315-计算右侧小于当前元素的个数"><a href="#315-计算右侧小于当前元素的个数" class="headerlink" title="315. 计算右侧小于当前元素的个数"></a>315. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-of-smaller-numbers-after-self/">计算右侧小于当前元素的个数</a></h1><p>给定一个整数数组 nums，按要求返回一个新数组 counts。数组 counts 有该性质： counts[i] 的值是  nums[i] 右侧小于 nums[i] 的元素的数量。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：[5,2,6,1]</span><br><span class="line">输出：[2,1,1,0] </span><br><span class="line">解释：</span><br><span class="line">5 的右侧有 2 个更小的元素 (2 和 1)</span><br><span class="line">2 的右侧仅有 1 个更小的元素 (1)</span><br><span class="line">6 的右侧有 1 个更小的元素 (1)</span><br><span class="line">1 的右侧有 0 个更小的元素</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SegmentNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> start;</span><br><span class="line">    <span class="keyword">int</span> end;</span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">    SegmentNode *left;</span><br><span class="line">    SegmentNode *right;</span><br><span class="line">    SegmentNode():start(<span class="number">0</span>),end(<span class="number">0</span>),sum(<span class="number">0</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line"><span class="comment">//---------------------------Segment tree solution----------------------------</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">build</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l&gt;r) <span class="keyword">return</span>;</span><br><span class="line">        self-&gt;start = l;self-&gt;end = r;</span><br><span class="line">        <span class="keyword">if</span>(l==r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// self-&gt;sum = l;</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> mid = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        self-&gt;left = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;left,l,mid);</span><br><span class="line">        self-&gt;right = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;right,mid+<span class="number">1</span>,r);</span><br><span class="line">        <span class="comment">// self-&gt;sum = self-&gt;left-&gt;sum + self-&gt;right-&gt;sum;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> pos, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(pos&lt;self-&gt;start||pos&gt;self-&gt;end) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;start == self-&gt;end)</span><br><span class="line">        &#123;</span><br><span class="line">            self-&gt;sum += k;</span><br><span class="line">            <span class="keyword">return</span>; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;right-&gt;start&gt;pos) add(self-&gt;left,pos,k);</span><br><span class="line">        <span class="keyword">else</span> add(self-&gt;right,pos,k);</span><br><span class="line">        self-&gt;sum = self-&gt;left-&gt;sum + self-&gt;right-&gt;sum;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;j) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;=self-&gt;start &amp;&amp; self-&gt;end&lt;=j)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> self-&gt;sum; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;left-&gt;end&gt;=i) s+=search(self-&gt;left,i,j);</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;right-&gt;start&lt;=j) s+=search(self-&gt;right,i,j);</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">countSmaller_SegmentTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> nums;</span><br><span class="line">        SegmentNode *root = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        <span class="comment">//find the min and max val in nums</span></span><br><span class="line">        <span class="keyword">int</span> min_val = INT_MAX, max_val = INT_MIN;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:nums)&#123;min_val=min(min_val,c);max_val = max(max_val,c);&#125;</span><br><span class="line">        build(root,min_val,max_val);</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">res</span><span class="params">(nums.size())</span></span>;</span><br><span class="line">        <span class="comment">// for(auto &amp;c:nums) </span></span><br><span class="line">        <span class="comment">//     add(root,c,1);//All sub interval adds 1</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = nums.size()<span class="number">-1</span>; i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">        &#123;</span><br><span class="line">            add(root,nums[i],<span class="number">1</span>);</span><br><span class="line">            res[i] = search(root,min_val,nums[i]<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//------------------------------Fenwick Tree Solution----------------------------------</span></span><br><span class="line"><span class="comment">//Due to the uncertainty of scale of data, we discretize the array</span></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tr;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">low_bit</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">//pow(2,x)</span></span><br><span class="line">        <span class="keyword">return</span> (x&amp;(-x));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = k; j&gt;<span class="number">0</span>; j-=low_bit(j)) res+=tr[j];</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">int</span> w)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">// add k to node w</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = k; j&lt; tr.size();j+=low_bit(j)) tr[j]+=w;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">countSmaller_Fenwick</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">res</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="comment">//First, we discretize the vector and delete the repeated nums</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp = nums;</span><br><span class="line">        sort(tmp.begin(),tmp.end());</span><br><span class="line">        <span class="keyword">auto</span> c = unique(tmp.begin(),tmp.end());</span><br><span class="line">        tmp.erase(c,tmp.end());</span><br><span class="line">        <span class="keyword">int</span> new_len = c - tmp.begin();</span><br><span class="line">        <span class="comment">// we define a unordered-map to count the number of tmp</span></span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; ump;</span><br><span class="line">        tr = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(new_len + <span class="number">1</span>);<span class="comment">//redefine the tr to (new_len+1) default value</span></span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;new_len;i++)</span><br><span class="line">            ump[tmp[i]] = count++;<span class="comment">//redefine the discretized values into serialized values using hashmap</span></span><br><span class="line">        <span class="comment">//we build the Fenwick tree and do summation and addition</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k = nums.size()<span class="number">-1</span>;k&gt;=<span class="number">0</span>;k--)</span><br><span class="line">        &#123;</span><br><span class="line">            count = ump[nums[k]];<span class="comment">// count of number</span></span><br><span class="line">            res[k] = sum(count<span class="number">-1</span>);</span><br><span class="line">            add(count,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>感谢！有任何问题请在评论区提出，笔者看到会及时回答！</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/03/26/2020-07-17-fenwicktree-segmentTree/" data-id="ckff8gnyb0003wgscc4su2qxg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/10/2020-05-10-red-black-tree/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          全手写实现红黑树
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

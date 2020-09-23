@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>专题:DFS&amp;BFS | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最小生成树的两种方法（Kruskal算法和Prim算法）   连接所有点最小费用     最小生成树（$Minimal \ Spanning \ Tree,MST$）：有 n 个结点的连通图的生成树是原图的极小连通子图，且包含原图中的所有 n 个结点，并且有保持图连通的最少的边。比较常用的有两种算法：$Kruskal$算法和$Prim$算法。  Kruskal 算法被称为“加边法”，初始最小生成树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="专题:DFS&amp;BFS">
+<meta property="og:url" content="http://example.com/2020/08/10/2020-9-12-minimal-Spanning-tree/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="最小生成树的两种方法（Kruskal算法和Prim算法）   连接所有点最小费用     最小生成树（$Minimal \ Spanning \ Tree,MST$）：有 n 个结点的连通图的生成树是原图的极小连通子图，且包含原图中的所有 n 个结点，并且有保持图连通的最少的边。比较常用的有两种算法：$Kruskal$算法和$Prim$算法。  Kruskal 算法被称为“加边法”，初始最小生成树">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic.leetcode-cn.com/1599997366-bsvjKQ-file_1599997368379">
+<meta property="og:image" content="https://pic.leetcode-cn.com/1599997366-aPWWkJ-file_1599997368384">
+<meta property="article:published_time" content="2020-08-10T05:23:45.000Z">
+<meta property="article:modified_time" content="2020-09-16T12:59:35.126Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="MST">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.leetcode-cn.com/1599997366-bsvjKQ-file_1599997368379">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-9-12-minimal-Spanning-tree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/10/2020-9-12-minimal-Spanning-tree/" class="article-date">
+  <time datetime="2020-08-10T05:23:45.000Z" itemprop="datePublished">2020-08-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      专题:DFS&amp;BFS
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="最小生成树的两种方法（Kruskal算法和Prim算法）"><a href="#最小生成树的两种方法（Kruskal算法和Prim算法）" class="headerlink" title="最小生成树的两种方法（Kruskal算法和Prim算法）"></a>最小生成树的两种方法（Kruskal算法和Prim算法）</h1><hr>
+<ul>
+<li><ol start="1584">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/min-cost-to-connect-all-points/">连接所有点最小费用</a></li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>最小生成树（$Minimal \ Spanning \ Tree,MST$）：有 n 个结点的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9E%E9%80%9A%E5%9B%BE/6460995">连通图</a>的生成树是原图的极小连通子图，且包含原图中的所有 n 个结点，并且有保持图连通的最少的边。比较常用的有两种算法：$Kruskal$算法和$Prim$算法。</p>
+</blockquote>
+<h2 id="Kruskal-算法"><a href="#Kruskal-算法" class="headerlink" title="Kruskal 算法"></a>Kruskal 算法</h2><p>被称为“加边法”，初始最小生成树的边数是0，每迭代一次就寻找满足条件的最小代价边，加入到最小生成树集合中去。</p>
+<ol>
+<li>把图中所有边按照<strong>从小到大</strong>的顺序排序。</li>
+<li>把图中$n$个顶点看成独立的$n$棵树组成的森林。</li>
+<li>按权值从小到大选择边，所选的边连接的两个顶点$u_i,v_i$应该属于两个不同的树（否则会形成环），则称为最小生成树的一条边，并将这两棵树作为一棵树。</li>
+<li>重复<code>3.</code>。直到所有的顶点都在一棵树内，或者有$n-1$条边为止。</li>
+</ol>
+<p><img src="https://pic.leetcode-cn.com/1599997366-bsvjKQ-file_1599997368379" alt="MST示意图"></p>
+<p>和并查集的概念非常相似。Kruskal算法可以看成是基于并查集的贪心算法。    </p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> res,n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; fa;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">edge</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="keyword">int</span> e1, e2;<span class="comment">//两个端点的编号</span></span><br><span class="line">        <span class="keyword">int</span> Mahattan_dis;<span class="comment">//曼哈顿距离</span></span><br><span class="line">        edge(<span class="keyword">int</span> e1,<span class="keyword">int</span> e2, <span class="keyword">int</span> m):e1(e1),e2(e2),Mahattan_dis(m)&#123;&#125;</span><br><span class="line">        <span class="keyword">bool</span> <span class="keyword">operator</span>&lt; (<span class="keyword">const</span> edge&amp; other) <span class="keyword">const</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> Mahattan_dis &lt; other.Mahattan_dis;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Mahattan</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">abs</span>(points[i][<span class="number">0</span>]-points[j][<span class="number">0</span>]) + <span class="built_in">abs</span>(points[i][<span class="number">1</span>]-points[j][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minCostConnectPoints</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = points.size();</span><br><span class="line">    init(n);</span><br><span class="line">    <span class="built_in">vector</span>&lt;edge&gt; edges;</span><br><span class="line">    res  = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n;j++)</span><br><span class="line">    &#123;</span><br><span class="line">        edges.emplace_back(i,j,Mahattan(points,i,j)); </span><br><span class="line">    &#125;   </span><br><span class="line">    sort(edges.begin(),edges.end());<span class="comment">//按从小到大排序</span></span><br><span class="line">    <span class="keyword">int</span> num = n;<span class="comment">//独立的子树的个数</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;e:edges)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(merge(e.e1,e.e2))</span><br><span class="line">        &#123;</span><br><span class="line">            res += e.Mahattan_dis;</span><br><span class="line">            num--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(num == <span class="number">1</span>) <span class="keyword">return</span> res;<span class="comment">//最后只有一个连通图则返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt;= n;i++) </span><br><span class="line">            fa.emplace_back(i); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(fa[x] == x) </span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        fa[x] = find(fa[x]); </span><br><span class="line">        <span class="keyword">return</span> fa[x];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">//合并的两条边必须是不同子树</span></span><br><span class="line">        <span class="keyword">int</span> x = find(i),y = find(j);</span><br><span class="line">        <span class="keyword">if</span>(x==y) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        fa[x] = y;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>细节：为了使得自定义结构体edge能够进行排序操作，我们不能把数组edges写成<code>vector&lt;edge*&gt; edges</code>这样的话是对指针指向的地址进行排序，而不是对曼哈顿距离排序。</p>
+</blockquote>
+<p>时间复杂度：$O(V^2)$,$V$为边的个数，等于$N-1$。</p>
+<p>空间复杂度：$O(N)$, 包括并查集用的父数组和自定义数据结构edge。</p>
+<hr>
+<h2 id="Prim算法"><a href="#Prim算法" class="headerlink" title="Prim算法"></a>Prim算法</h2><p>此算法又被称为“加点法”，每次迭代选择代价最小的边对应的点，加入到最小生成树之中，算法从某一个顶点开始，逐渐扩散覆盖整个网络。比较适合<strong>稠密网络</strong>。</p>
+<ol>
+<li>图的所有顶点集合为V；初始令集合$u=s,v=V-u$.</li>
+<li>在两个集合$u,v$所构成的边中，选择一条代价最小的边。</li>
+<li>重复上述步骤，直到最小生成树有$n-1$条边，或者只有一棵树为止。</li>
+</ol>
+<p><img src="https://pic.leetcode-cn.com/1599997366-aPWWkJ-file_1599997368384" alt="这里写图片描述"></p>
+<p>我们注意到我们每次添加的都是最小边，因此可以用小顶堆来存储。 Prim算法更像是Dijkstra算法。</p>
+<h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> res,n;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Mahattan</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">abs</span>(points[i][<span class="number">0</span>]-points[j][<span class="number">0</span>]) + <span class="built_in">abs</span>(points[i][<span class="number">1</span>]-points[j][<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">typedef</span> <span class="built_in">pair</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; data;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">cmp</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T <span class="keyword">const</span> &amp;left, T <span class="keyword">const</span> &amp;right)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">        <span class="comment">// 以y比较。输出结果为y较大的在前y相同时，先进入队列的元素在前。</span></span><br><span class="line">            <span class="keyword">return</span> (left.second &gt; right.second); <span class="comment">// left.first在后面，顶部元素first最大</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minCostConnectPoints</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; points)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//Prim 算法又被称为加点法</span></span><br><span class="line">    <span class="keyword">int</span> n = points.size();</span><br><span class="line">    res = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">vis</span><span class="params">(n+<span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="comment">//任选一个点作为起始点，没有必要构建边，</span></span><br><span class="line">    <span class="comment">//遍历小顶堆，每次从中取出代价最小的边，（需判断点是否已经取过，需要标记列表）</span></span><br><span class="line">    <span class="comment">//若最后只有一个树，或者 小顶堆为空，说明已构建完MST</span></span><br><span class="line">    <span class="built_in">priority_queue</span>&lt;data,<span class="built_in">vector</span>&lt;data&gt;,cmp&lt;data&gt;&gt; lheap;<span class="comment">//p1:点序号，p2:Mahattan距离，</span></span><br><span class="line">    <span class="keyword">int</span> start = <span class="number">0</span>, edge = <span class="number">0</span>;</span><br><span class="line">    lheap.push(data(<span class="number">0</span>,<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">while</span>(!lheap.empty() )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> next = lheap.top().first;</span><br><span class="line">        <span class="keyword">if</span>(vis[next]) &#123;lheap.pop();<span class="keyword">continue</span>;&#125;<span class="comment">//如果访问过则直接跳过</span></span><br><span class="line">        vis[next] = <span class="literal">true</span>; edge+=<span class="number">1</span>;</span><br><span class="line">        res += lheap.top().second;</span><br><span class="line">        lheap.pop();</span><br><span class="line">        <span class="keyword">if</span>(edge == n) <span class="keyword">break</span>; <span class="comment">//如果边的数量达到n则break</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">        <span class="keyword">if</span>(!vis[i])</span><br><span class="line">        &#123;</span><br><span class="line">            lheap.push(data(i,Mahattan(points,i,next)));</span><br><span class="line">        &#125;  </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;  </span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：$O(N^2)$, N为点的个数。</p>
+<p>空间复杂度：$O(N)$,需要一个优先队列来存储所有的可能边。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/08/10/2020-9-12-minimal-Spanning-tree/" data-id="ckff8gnyx000ywgsccnuecwp8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MST/" rel="tag">MST</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/10/2020-8-12-dfs-bfs/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          专题:DFS&amp;BFS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/01/2020-8-1-sliding-windows/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">滑动窗口法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

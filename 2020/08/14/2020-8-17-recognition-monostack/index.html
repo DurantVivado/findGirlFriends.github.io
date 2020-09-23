@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>初认识-单调栈 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="初认识-单调栈  柱状图中最大矩形（Hard）   85.求最大矩形(Hard) 739.每日温度(Medium) 多重背包问题III【详见背包九讲】  给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。 求在该柱状图中，能够勾勒出来的矩形的最大面积。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初认识-单调栈">
+<meta property="og:url" content="http://example.com/2020/08/14/2020-8-17-recognition-monostack/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="初认识-单调栈  柱状图中最大矩形（Hard）   85.求最大矩形(Hard) 739.每日温度(Medium) 多重背包问题III【详见背包九讲】  给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。 求在该柱状图中，能够勾勒出来的矩形的最大面积。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram_area.png">
+<meta property="article:published_time" content="2020-08-14T02:23:45.000Z">
+<meta property="article:modified_time" content="2020-09-11T07:27:32.261Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="栈">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram_area.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-8-17-recognition-monostack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/14/2020-8-17-recognition-monostack/" class="article-date">
+  <time datetime="2020-08-14T02:23:45.000Z" itemprop="datePublished">2020-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      初认识-单调栈
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="初认识-单调栈"><a href="#初认识-单调栈" class="headerlink" title="初认识-单调栈"></a>初认识-单调栈</h1><ul>
+<li><ol start="84">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/">柱状图中最大矩形（Hard）</a></li>
+</ol>
+</li>
+<li>85.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximal-rectangle/">求最大矩形(Hard)</a></li>
+<li>739.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/daily-temperatures/">每日温度(Medium)</a></li>
+<li>多重背包问题III【详见背包九讲】</li>
+</ul>
+<p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
+<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
+<pre><code>                                                                                   ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram.png)</code></pre>
+<p>以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram_area.png" alt="img"></p>
+<p>图中阴影部分为所能勾勒出的最大矩形面积，其面积为 10 个单位。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,1,5,6,2,3]</span><br><span class="line">输出: 10</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>这道题无论是暴力还是枚举均会超时（时间复杂度$O(N^2)$），最初的想法是用一个哈希表存<code>heights</code>中每一个高度「最长的横向距离」，最大面积等于<code>max(maxArea,heights[i]×len)</code>后来发现过于麻烦。但是直觉告诉我这是可行的，题解采用单调栈也验证了我的想法。</p>
+<p>有一个<em>事实</em>需要注意：</p>
+<ul>
+<li>若后一个高度小于前一个高度，那么前一个高度将不会对后续的求最大面积操作产生影响。</li>
+</ul>
+<p>我们需要对$i$左右进行扩展，我们需要找到<strong>左右两侧最近且高度小于$h$的柱子，这和接雨水那一题非常相似</strong>。以</p>
+<p>$[6,7,5,2,4,5,9,3]$为例，</p>
+<ol>
+<li>将6入栈，6左侧为哨兵，位置-1；</li>
+<li>将7入栈，由于7&gt;6，故7不会被移除；</li>
+<li>将5入栈，由于7&gt;5且6&gt;5，故6，7会被移除。此时栈为空，5左侧为哨兵，位置-1.</li>
+<li>将2入栈，由于2&lt;5，5会被移除，2左侧为哨兵-1.</li>
+<li>将4入栈</li>
+<li>将5入栈</li>
+<li>将9入栈</li>
+<li>不断出栈直到遇到2&lt;3</li>
+</ol>
+<p>$$<br>\begin{array}\<br>1.[6(0)]\<br>2.[6(0),7(1)]\<br>3.[5(2)]\<br>4.[2(3)]\<br>5.[2(3),4(4)]\<br>6.[2(3),4(4),5(5)]\<br>7.[2(3),4(4),5(5),9(6)]\<br>8.[2(3),3(7)]<br>\end{array}<br>$$</p>
+<p>这样以来我们得到左侧柱子的编号为$[-1,0,-1,-1,3,4,5,3]$，同样地，我们可以得到右侧柱子的编号$[2,2,3,8,7,7,7,8]$。  因而根据$(l_height-r_height-1)*height[i]$得到最大面积。</p>
+<p>代码如下：</p>
+<p>​     </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span>(!heights.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> n = heights.size();</span><br><span class="line">     <span class="keyword">int</span> maxArea = INT32_MIN;</span><br><span class="line">    <span class="comment">//采用单调栈的思想，分别找到i左右两侧最近且高度小于h的柱子</span></span><br><span class="line">    vector&lt;int&gt; lbound(n,0),rbound(n,0);</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">pair</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; lstack,rstack;<span class="comment">//存放高度位置和下标</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(lstack.empty()) lbound[i] = <span class="number">-1</span>;<span class="comment">//哨兵 </span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(heights[i] &gt; lstack.back().first) </span><br><span class="line">        &#123;</span><br><span class="line">            lbound[i] = lstack.back().second;</span><br><span class="line">        &#125;<span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(!lstack.empty()&amp;&amp;heights[i]&lt;=lstack.back().first)lstack.pop_back();</span><br><span class="line">            <span class="keyword">if</span>(lstack.empty()) lbound[i] = <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">else</span> lbound[i] = lstack.back().second;</span><br><span class="line">        &#125;</span><br><span class="line">        lstack.push_back(&#123;heights[i],i&#125;);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = n<span class="number">-1</span>; j &gt;= <span class="number">0</span>;j--)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(rstack.empty()) rbound[j] = n;<span class="comment">//哨兵 </span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(heights[j] &gt; rstack.back().first) </span><br><span class="line">        &#123;</span><br><span class="line">            rbound[j] = rstack.back().second;</span><br><span class="line">        &#125;<span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span>(!rstack.empty()&amp;&amp;heights[j]&lt;=rstack.back().first) rstack.pop_back();</span><br><span class="line">            <span class="keyword">if</span>(rstack.empty()) rbound[j] = n;</span><br><span class="line">            <span class="keyword">else</span> rbound[j] = rstack.back().second;</span><br><span class="line">        &#125;</span><br><span class="line">        rstack.push_back(&#123;heights[j],j&#125;);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// for(auto &amp;c:lbound)</span></span><br><span class="line">    <span class="comment">// printf(&quot;%d,&quot;,c);</span></span><br><span class="line">    <span class="comment">// printf(&quot;\n&quot;);</span></span><br><span class="line">    <span class="comment">// for(auto &amp;c:rbound)</span></span><br><span class="line">    <span class="comment">// printf(&quot;%d,&quot;,c);</span></span><br><span class="line">    <span class="comment">// printf(&quot;\n&quot;);</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> c = <span class="number">0</span>; c &lt; n;c++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(lbound[c]==<span class="number">-1</span>) maxArea = max(maxArea,rbound[c]*heights[c]);</span><br><span class="line">        <span class="keyword">else</span> maxArea = max(maxArea,(rbound[c]-lbound[c]<span class="number">-1</span>)*heights[c]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxArea&lt;<span class="number">0</span>?<span class="number">0</span>:maxArea;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：$O(2N)$</p>
+<p>空间复杂度: $O(4N)$，左右边界以及栈</p>
+<p>但是此代码可以简化，把寻找左边界和寻找右边界放在一次迭代中完成。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">           <span class="comment">//84求柱状图的最大矩形，O(N)</span></span><br><span class="line">           <span class="keyword">int</span> n = heights.size();</span><br><span class="line">           vector&lt;int&gt; left(n), right(n, n);</span><br><span class="line">           <span class="comment">//左右边界数组，维护每个矩形的最大左右宽度</span></span><br><span class="line">           <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; mono_stack;<span class="comment">//单调栈</span></span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">while</span> (!mono_stack.empty() &amp;&amp; heights[mono_stack.top()] &gt;= heights[i]) &#123;</span><br><span class="line">                   right[mono_stack.top()] = i;</span><br><span class="line">                   mono_stack.pop();</span><br><span class="line">               &#125;</span><br><span class="line">               left[i] = (mono_stack.empty() ? <span class="number">-1</span> : mono_stack.top());</span><br><span class="line">               mono_stack.push(i);</span><br><span class="line">           &#125;</span><br><span class="line">           </span><br><span class="line">           <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">               ans = max(ans, (right[i] - left[i] - <span class="number">1</span>) * heights[i]);<span class="comment">//计算最大面积</span></span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> ans;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可能看代码有些复杂，我们制作一个动画方便理解：</p>
+<p>[动画正在制作之中。。。]</p>
+<hr>
+<h2 id="739-每日温度"><a href="#739-每日温度" class="headerlink" title="739.每日温度"></a>739.每日温度</h2><p>请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替。</p>
+<p>例如，给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]。</p>
+<p>提示：气温 列表长度的范围是 [1, 30000]。每个气温的值的均为华氏度，都是在 [30, 100] 范围内的整数。</p>
+<hr>
+<p>可以维护一个存储下标的单调栈，从栈底到栈顶的下标对应的温度列表中的温度依次递减。如果一个下标在单调栈里，则表示尚未找到下一次温度更高的下标。</p>
+<p>正向遍历温度列表。对于温度列表中的每个元素 T[i]，如果栈为空，则直接将 i 进栈，如果栈不为空，则比较栈顶元素 prevIndex 对应的温度 T[prevIndex] 和当前温度 T[i]，如果 T[i] &gt; T[prevIndex]，则将 prevIndex 移除，并将 prevIndex 对应的等待天数赋为 i - prevIndex，重复上述操作直到栈为空或者栈顶元素对应的温度小于等于当前温度，然后将 i 进栈。</p>
+<p>为什么可以在弹栈的时候更新 ans[prevIndex] 呢？因为在这种情况下，即将进栈的 i 对应的 T[i] 一定是 T[prevIndex] 右边第一个比它大的元素，试想如果 prevIndex 和 i 有比它大的元素，假设下标为 j，那么 prevIndex 一定会在下标 j 的那一轮被弹掉。</p>
+<p>由于单调栈满足从栈底到栈顶元素对应的温度递减，因此每次有元素进栈时，会将温度更低的元素全部移除，并更新出栈元素对应的等待天数，这样可以确保等待天数一定是最小的。</p>
+<ul>
+<li><p><strong>时间复杂度</strong>：$O(n)$，其中 n是温度列表的长度。正向遍历温度列表一遍，对于温度列表中的每个下标，最多有一次进栈和出栈的操作。</p>
+</li>
+<li><p><strong>空间复杂度</strong>：$O(n)$，其中 n 是温度列表的长度。需要维护一个单调栈存储温度列表中的下标。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/08/14/2020-8-17-recognition-monostack/" data-id="ckff8gnyr000qwgsc8g2mbm57" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/23/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/14/2020-8-14-what-is-UnionSet/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">什么是并查集</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

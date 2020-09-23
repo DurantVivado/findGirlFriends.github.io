@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是确定有限状态自动机（Deterministic State Automata）？确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：  有一个特殊的状态，被称作「初始状态」。 还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。  起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2020/09/23/2020-9-2-fsm/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是确定有限状态自动机（Deterministic State Automata）？确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：  有一个特殊的状态，被称作「初始状态」。 还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。  起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-23T10:16:45.126Z">
+<meta property="article:modified_time" content="2020-09-02T09:21:55.988Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-9-2-fsm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/23/2020-9-2-fsm/" class="article-date">
+  <time datetime="2020-09-23T10:16:45.126Z" itemprop="datePublished">2020-09-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="什么是确定有限状态自动机（Deterministic-State-Automata）？"><a href="#什么是确定有限状态自动机（Deterministic-State-Automata）？" class="headerlink" title="什么是确定有限状态自动机（Deterministic State Automata）？"></a>什么是确定有限状态自动机（Deterministic State Automata）？</h1><p>确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：</p>
+<ul>
+<li>有一个特殊的状态，被称作「初始状态」。</li>
+<li>还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。</li>
+</ul>
+<p>起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一个字符，并根据当前状态和读入的字符，按照某个事先约定好的「转移规则」，从当前状态转移到下一个状态；当状态转移完成后，它就读取下一个字符。当字符串全部读取完毕后，如果自动机处于某个「接受状态」，则判定该字符串「被接受」；否则，判定该字符串「被拒绝」。</p>
+<p>一个自动机，总能够回答某种形式的「对于给定的输入字符串 S，判断其是否满足条件 P」的问题。在本题中，条件 P 即为「构成合法的表示数值的字符串」。</p>
+<p>自动机驱动的编程，可以被看做一种暴力枚举方法的延伸：它穷尽了在任何一种情况下，对应任何的输入，需要做的事情。</p>
+<p>自动机在计算机科学领域有着广泛的应用。在算法领域，它与大名鼎鼎的字符串查找算法「KMP」算法有着密切的关联；在工程领域，它是实现「正则表达式」的基础。</p>
+<hr>
+<p><strong>例题：</strong></p>
+<ul>
+<li><ol start="65">
+<li><a href="">有效的数字</a>(Hard)</li>
+</ol>
+</li>
+<li>剑指Offer 20. <a href="">表示数值的字符串</a>(Medium)</li>
+</ul>
+<hr>
+<p>以 剑指Offer 20. <a href="">表示数值的字符串</a>(Medium) 为例。</p>
+<blockquote>
+<p> 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”、”5e2”、”-123”、”3.1416”、”-1E-16”、”0123”都表示数值，但”12e”、”1a3.14”、”1.2.3”、”+-5”及”12e+5.4”都不是。</p>
+</blockquote>
+<hr>
+<p><strong>思路与算法</strong></p>
+<p>根据上面的描述，现在可以定义自动机的「状态集合」了。那么怎么挖掘出所有可能的状态呢？一个常用的技巧是，用「当前处理到字符串的哪个部分」当作状态的表述。根据这一技巧，不难挖掘出所有状态：</p>
+<ol>
+<li>起始的空格</li>
+<li>符号位</li>
+<li>整数部分</li>
+<li>左侧有整数的小数点</li>
+<li>左侧无整数的小数点</li>
+<li>小数部分</li>
+<li>字符$E$</li>
+<li>指数部分的符号位</li>
+<li>指数的整数部分</li>
+<li>结束的空格</li>
+</ol>
+<p>下一步是找出「初始状态」和「接受状态」的集合。根据题意，「初始状态」应当为状态 1，而「接受状态」的集合则为状态 3、状态 4、状态 6、状态 9 以及状态 10。换言之，字符串的末尾要么是空格，要么是数字，要么是小数点，但前提是小数点的前面有数字。</p>
+<p>最后，需要定义「转移规则」。结合数值字符串应当具备的格式，将自动机转移的过程以图解的方式表示出来：</p>
+<p>![image-20200902111512582](E:\Github pages\saasproj.github.io_posts\img\image-fsa.png)</p>
+<p>在实际代码中，我们需要处理转移失败的情况。例如当位于状态 1（起始空格）时，没有对应字符 \text{e}e 的状态。为了处理这种情况，我们可以创建一个特殊的拒绝状态。如果当前状态下没有对应读入字符的「转移规则」，我们就转移到这个特殊的拒绝状态。一旦自动机转移到这个特殊状态，我们就可以立即判定该字符串不「被接受」。</p>
+<hr>
+<p><strong>代码</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">enum</span> state</span><br><span class="line">    &#123;</span><br><span class="line">        STATE_INIT,</span><br><span class="line">        <span class="comment">// STATE_SPACE,</span></span><br><span class="line">        STATE_SIGN,</span><br><span class="line">        STATE_INTEGER,</span><br><span class="line">        STATE_POINT_INT,</span><br><span class="line">        STATE_POINT_NOT_INT,</span><br><span class="line">        STATE_DECIMAL,</span><br><span class="line">        STATE_EXP,</span><br><span class="line">        STATE_EXP_SIGN,</span><br><span class="line">        STATE_EXP_INT,</span><br><span class="line">        STATE_END,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">enum</span> charType</span><br><span class="line">    &#123;</span><br><span class="line">        CHAR_NUM,</span><br><span class="line">        CHAR_SPACE,</span><br><span class="line">        CHAR_POINT,</span><br><span class="line">        CHAR_EXP,</span><br><span class="line">        CHAR_SIGN,</span><br><span class="line">        CHAR_INVALID,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function">charType <span class="title">getCharType</span><span class="params">(<span class="keyword">char</span> ch)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(ch&gt;=<span class="string">&#x27;0&#x27;</span>&amp;&amp;ch&lt;=<span class="string">&#x27;9&#x27;</span>) <span class="keyword">return</span> CHAR_NUM;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (ch == <span class="string">&#x27; &#x27;</span>) <span class="keyword">return</span> CHAR_SPACE;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(ch == <span class="string">&#x27;.&#x27;</span>) <span class="keyword">return</span> CHAR_POINT;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(ch == <span class="string">&#x27;E&#x27;</span>||ch == <span class="string">&#x27;e&#x27;</span>) <span class="keyword">return</span> CHAR_EXP;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (ch==<span class="string">&#x27;+&#x27;</span>||ch==<span class="string">&#x27;-&#x27;</span>) <span class="keyword">return</span> CHAR_SIGN;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> CHAR_INVALID;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isNumber</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!s.size()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        state sta = STATE_INIT;</span><br><span class="line">        <span class="comment">//用哈希表存储状态转移方程</span></span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;state,<span class="built_in">unordered_map</span>&lt;charType,state&gt;&gt; transfer&#123;</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_INIT, &#123;&#123;CHAR_SPACE,STATE_INIT&#125;,</span><br><span class="line">                            &#123;CHAR_SIGN, STATE_SIGN&#125;,</span><br><span class="line">                            &#123;CHAR_NUM, STATE_INTEGER&#125;,</span><br><span class="line">                            &#123;CHAR_POINT,STATE_POINT_NOT_INT&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_SIGN,&#123;&#123;CHAR_NUM, STATE_INTEGER&#125;,</span><br><span class="line">                           &#123;CHAR_POINT, STATE_POINT_NOT_INT&#125;,</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_DECIMAL,  &#123;&#123;CHAR_NUM, STATE_DECIMAL&#125;,</span><br><span class="line">                                &#123;CHAR_EXP, STATE_EXP&#125;,</span><br><span class="line">                                &#123;CHAR_SPACE, STATE_END&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_INTEGER,  &#123;&#123;CHAR_NUM, STATE_INTEGER&#125;,</span><br><span class="line">                                &#123;CHAR_EXP,STATE_EXP&#125;,</span><br><span class="line">                                &#123;CHAR_POINT,STATE_POINT_INT&#125;,</span><br><span class="line">                                &#123;CHAR_SPACE,STATE_END&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_POINT_NOT_INT,&#123;&#123;CHAR_NUM, STATE_DECIMAL&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_POINT_INT,&#123;&#123;CHAR_SPACE,STATE_END&#125;,</span><br><span class="line">                                &#123;CHAR_NUM,STATE_DECIMAL&#125;,</span><br><span class="line">                                &#123;CHAR_EXP,STATE_EXP&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_EXP,  &#123;&#123;CHAR_SIGN, STATE_EXP_SIGN&#125;,</span><br><span class="line">                            &#123;CHAR_NUM, STATE_EXP_INT&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_EXP_SIGN,&#123;&#123;CHAR_NUM, STATE_EXP_INT&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_EXP_INT,&#123;&#123;CHAR_NUM,STATE_EXP_INT&#125;,</span><br><span class="line">                                &#123;CHAR_SPACE,STATE_END&#125;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_END,&#123;&#123;CHAR_SPACE,STATE_END&#125;,&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            charType ct = getCharType(s[i]);</span><br><span class="line">            <span class="comment">//如果是非法状态，直接返回false</span></span><br><span class="line">        </span><br><span class="line">            <span class="keyword">if</span>(!transfer[sta].count(ct)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            sta = transfer[sta][ct];</span><br><span class="line">            </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> sta == STATE_END || sta == STATE_INTEGER || sta == STATE_POINT_INT || sta == STATE_DECIMAL|| sta == STATE_EXP_INT;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/23/2020-9-2-fsm/" data-id="ckff8gnyz000zwgscdlives3z" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/23/2020-8-30-prefix_sum/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/23/Curriculum%20Selection/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

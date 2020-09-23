@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>什么是前缀树 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="&lt;面试热点&gt;什么是前缀树Trie和前缀和？如何实现？ 前缀树又名Tries树、字典树、单词查找树等，常用于快速检索，大量字符串的排序和统计等。 LC208.实现前缀树 - 制作板子 LC336.回文对 - 结合回文 LC212.单词搜索 II - 类似 Boggle 的游戏。  三个基本性质  根节点不包含字符，除根节点外每个节点只包含一个字符 从根节点到某个节点，路径上所有的字符连在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是前缀树">
+<meta property="og:url" content="http://example.com/2020/08/14/2020-8-20-what-is-Trie/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="&lt;面试热点&gt;什么是前缀树Trie和前缀和？如何实现？ 前缀树又名Tries树、字典树、单词查找树等，常用于快速检索，大量字符串的排序和统计等。 LC208.实现前缀树 - 制作板子 LC336.回文对 - 结合回文 LC212.单词搜索 II - 类似 Boggle 的游戏。  三个基本性质  根节点不包含字符，除根节点外每个节点只包含一个字符 从根节点到某个节点，路径上所有的字符连在">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1038472-736d2bc3ddd4b1cc.png?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="https://pic.leetcode-cn.com/963cd3fc83e9618aba9cb78365c8a5bf6b7cef8967da0d204dede7844f6738f2-file_1562596867150">
+<meta property="og:image" content="https://pic.leetcode-cn.com/4d18efbdd4d51ae3935b42cd59b11d66fb62f1586b9638f9499d2a18fa8919d0-image.png">
+<meta property="og:image" content="https://pic.leetcode-cn.com/e3f22b3ab2df82e6c0a7880996749b5e62707e9ef925876e583d666343644526-file_1562596867150">
+<meta property="article:published_time" content="2020-08-14T02:23:45.000Z">
+<meta property="article:modified_time" content="2020-09-13T03:58:40.354Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="经典数据结构">
+<meta property="article:tag" content="前缀树">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/1038472-736d2bc3ddd4b1cc.png?imageMogr2/auto-orient/strip">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-8-20-what-is-Trie" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/14/2020-8-20-what-is-Trie/" class="article-date">
+  <time datetime="2020-08-14T02:23:45.000Z" itemprop="datePublished">2020-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      什么是前缀树
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="lt-面试热点-gt-什么是前缀树Trie和前缀和？如何实现？"><a href="#lt-面试热点-gt-什么是前缀树Trie和前缀和？如何实现？" class="headerlink" title="&lt;面试热点&gt;什么是前缀树Trie和前缀和？如何实现？"></a>&lt;面试热点&gt;什么是前缀树Trie和前缀和？如何实现？</h1><blockquote>
+<p>前缀树又名<strong>Tries树</strong>、<strong>字典</strong>树、单词查找树等，常用于快速检索，大量字符串的排序和统计等。</p>
+<p>LC208.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-trie-prefix-tree/">实现前缀树</a> - 制作板子</p>
+<p>LC336.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/palindrome-pairs/">回文对</a> - 结合回文</p>
+<p>LC212.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-search-ii/">单词搜索 II </a>- 类似 Boggle 的游戏。</p>
+</blockquote>
+<p><strong>三个基本性质</strong></p>
+<ol>
+<li>根节点不包含字符，除根节点外每个节点只包含一个字符</li>
+<li>从根节点到某个节点，路径上所有的字符连在一起，就是这个节点所对应的字符串</li>
+<li>每个节点的子节点所包含的字符都不同</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/1038472-736d2bc3ddd4b1cc.png?imageMogr2/auto-orient/strip" alt="Trie"></p>
+<p><strong>应用场景</strong>：</p>
+<p>1.自动补全</p>
+<p><img src="https://pic.leetcode-cn.com/963cd3fc83e9618aba9cb78365c8a5bf6b7cef8967da0d204dede7844f6738f2-file_1562596867150" alt="自动补全"></p>
+<p align="center" style="font:italic;color:gray"><i>图1. 谷歌的搜索建议</i></p>
+
+<ol start="2">
+<li>拼写检查</li>
+</ol>
+<p><img src="https://pic.leetcode-cn.com/4d18efbdd4d51ae3935b42cd59b11d66fb62f1586b9638f9499d2a18fa8919d0-image.png" alt="image.png"></p>
+<p align="center" style="font:italic;color:gray"><i>图2. 拼写检查</i></p>
+
+<p>3.IP路由（最长前缀匹配）</p>
+<p><img src="https://pic.leetcode-cn.com/e3f22b3ab2df82e6c0a7880996749b5e62707e9ef925876e583d666343644526-file_1562596867150" alt="无效的图片地址"></p>
+<p align="center"><i>图 3. 使用Trie树的最长前缀匹配算法，Internet 协议（IP）路由中利用转发表选择路径。</i></p>
+
+<ol start="4">
+<li>T9打字预测</li>
+<li>Boggle单词游戏</li>
+</ol>
+<p>还有现成的高效结构如哈希表和平衡树，但为什么我们还要用前缀树呢，因为它有如下优势：</p>
+<ul>
+<li>找到具有同一前缀的全部键值</li>
+<li>按词典枚举字符串的数据集</li>
+</ul>
+<p>Trie相比于哈希表的另一个优势是，随着哈希表长度增加，会出现大量冲突，时间复杂度可能会增加到$O(N)$. trie树子存储多个具有相同前缀的键时所用空间较少。因此前缀树只需要$O(m)$的空间，m为键长度。而在平衡树中需要$O(m\log n)$。</p>
+<h2 id="设计Trie树"><a href="#设计Trie树" class="headerlink" title="设计Trie树"></a><strong>设计Trie树</strong></h2><p><strong>初始化</strong></p>
+<p>我们设计一个Trie节点<code>node</code>具有如下属性：</p>
+<ul>
+<li>子树数组：因为字母表长度为26，所以数组长度为26；</li>
+<li>结束标记，bool型表示，比如”apple”和”app”,后者是前者一个前缀，所以需要结束标记。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Trie</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="keyword">bool</span> isEnd;</span><br><span class="line">    Trie* next[<span class="number">26</span>];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Trie()</span><br><span class="line">    &#123;</span><br><span class="line">		isEnd = <span class="literal">false</span>;</span><br><span class="line">        <span class="built_in">memset</span>(next,<span class="number">0</span>,<span class="keyword">sizeof</span>(next));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>插入键值</strong></p>
+<p>我们从字符串头开始，如果字符<code>s[i]</code>存在于当前节点的子树数组中，那么我们直接递归进入该节点，否则我们创造新节点，再进入。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="built_in">string</span> word)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Trie *node = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">char</span> &amp;c:word)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(node-&gt;next[c-<span class="string">&#x27;a&#x27;</span>]==<span class="literal">NULL</span>)</span><br><span class="line">        node-&gt;next[c-<span class="string">&#x27;a&#x27;</span>] = <span class="keyword">new</span> Trie(c);</span><br><span class="line">        node = node-&gt;next[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这里我们把this作为根节点。所以每次new一个node都会产生一个根节点。  </p>
+<ul>
+<li>时间复杂度：$O(m)$，其中 $m$ 为键长。在算法的每次迭代中，我们要么检查要么创建一个节点，直到到达键尾。只需要 $m$ 次操作。</li>
+</ul>
+<ul>
+<li>空间复杂度：$O(m)$。最坏的情况下，新插入的键和 Trie 树中已有的键没有公共前缀。此时需要添加 $m$ 个结点，使用 $O(m)$ 空间。</li>
+</ul>
+<p><strong>查找键值</strong></p>
+<p>每个键在 trie 中表示为从根到内部节点或叶的路径。我们用第一个键字符从根开始。检查当前节点中与键字符对应的链接。有两种情况：</p>
+<p>存在链接。我们移动到该链接后面路径中的下一个节点，并继续搜索下一个键字符。<br>不存在链接。若已无键字符，且当前结点标记为 End，则返回 true。否则有两种可能，均返回 false :<br>还有键字符剩余，但无法跟随 Trie 树的键路径，找不到键。<br>没有键字符剩余，但当前结点没有标记为 End。也就是说，待查找键只是Trie树中另一个键的前缀。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">search</span><span class="params">(<span class="built_in">string</span> word)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">this</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	Trie* node = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">char</span> &amp;c:word)</span><br><span class="line">    &#123;</span><br><span class="line">        node = node-&gt;next[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        <span class="keyword">if</span>(node==<span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> node-&gt;isEnd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度 : $O(m)$。算法的每一步均搜索下一个键字符。最坏的情况下需要 $m$ 次操作。</li>
+<li>空间复杂度 : $O(1)$。</li>
+</ul>
+<p><strong>查找 Trie 树中的键前缀</strong><br>该方法与在 Trie 树中搜索键时使用的方法非常相似。我们从根遍历 Trie 树，直到键前缀中没有字符，或者无法用当前的键字符继续 Trie 中的路径。与上面提到的“搜索键”算法唯一的区别是，到达键前缀的末尾时，总是返回 true。我们不需要考虑当前 Trie 节点是否用 “End” 标记，因为我们搜索的是键的前缀，而不是整个键。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> startWith&#123;</span><br><span class="line">   <span class="keyword">if</span>(!<span class="keyword">this</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">   Trie* node = <span class="keyword">this</span>;</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">char</span> &amp;c:word)</span><br><span class="line">   &#123;</span><br><span class="line">   node = node-&gt;next[c-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">   <span class="keyword">if</span>(node==<span class="literal">NULL</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度 : $O(m)$。算法的每一步均搜索下一个键字符。最坏的情况下需要 $m$ 次操作。</li>
+<li>空间复杂度 : $O(1)$。</li>
+</ul>
+<hr>
+<h2 id="336-回文对"><a href="#336-回文对" class="headerlink" title="336. 回文对"></a>336. 回文对</h2><p>给定一组 互不相同 的单词， 找出所有不同 的索引对(i, j)，使得列表中的两个单词， words[i] + words[j] ，可拼接成回文串。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：[&quot;abcd&quot;,&quot;dcba&quot;,&quot;lls&quot;,&quot;s&quot;,&quot;sssll&quot;]</span><br><span class="line">输出：[[0,1],[1,0],[3,2],[2,4]] </span><br><span class="line">解释：可拼接成的回文串为 [&quot;dcbaabcd&quot;,&quot;abcddcba&quot;,&quot;slls&quot;,&quot;llssssll&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：[&quot;bat&quot;,&quot;tab&quot;,&quot;cat&quot;]</span><br><span class="line">输出：[[0,1],[1,0]] </span><br><span class="line">解释：可拼接成的回文串为 [&quot;battab&quot;,&quot;tabbat&quot;]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>假设存在两个字符串$s1和s2$, $s1+s2$是一个回文串，记它们的长度分别为$len1和len2$.分情况进行讨论：</p>
+<ol>
+<li>$len1==len2$，此时$s1$是$s2$的翻转。</li>
+<li>$len1&gt;len2$，此时仍然可以在$s1$找到一个前缀$s1’==s2$.</li>
+<li>$len2&lt;len1$，同上。</li>
+</ol>
+<p><strong>注意</strong>：空串也是回文串。比如$s1=”aa”,s2=””$.</p>
+<p>要实现这些操作，我们只需要设计一种能够在一系列字符串中查询「某个字符串的子串的翻转」是否存在的数据结构，有两种实现方法：</p>
+<ol>
+<li>我们可以使用字典树存储所有的字符串。在进行查询时，我们将待查询的子串<strong>逆序</strong>地在字典树上进行遍历，即可判断其是否存在。</li>
+<li>我们可以使用哈希表存储所有字符串的翻转。在进行查询时，我们判断查询串是否在哈希表中出现，就可以判断其翻转子串是否存在。</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Trie</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Trie*&gt; child;</span><br><span class="line">    <span class="keyword">bool</span> end;<span class="comment">//结束的标志，表示在该节点结束</span></span><br><span class="line">    <span class="keyword">int</span> index;<span class="comment">//该字符的下标，与end对应，默认-1，表示不存在</span></span><br><span class="line">    <span class="keyword">char</span> val; </span><br><span class="line">    Trie() &#123;</span><br><span class="line">        val = <span class="string">&#x27; &#x27;</span>;</span><br><span class="line">        end = <span class="literal">false</span>;</span><br><span class="line">        index = <span class="number">-1</span>;</span><br><span class="line">        child.resize(<span class="number">26</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    Trie(<span class="keyword">char</span> c) &#123;</span><br><span class="line">        val = c;</span><br><span class="line">        end = <span class="literal">false</span>;</span><br><span class="line">        index = <span class="number">-1</span>;</span><br><span class="line">        child.resize(<span class="number">26</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> _insert(Trie* node, <span class="built_in">string</span> word, <span class="keyword">int</span> i, <span class="keyword">int</span> index)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;=word.size()) </span><br><span class="line">        &#123;</span><br><span class="line">            node-&gt;end = <span class="literal">true</span>;</span><br><span class="line">            node-&gt;index = index;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="keyword">auto</span> &amp;n = node-&gt;child[(<span class="keyword">int</span>)(word[i]-<span class="string">&#x27;a&#x27;</span>)];</span><br><span class="line">         n = (n == <span class="literal">nullptr</span>)?<span class="keyword">new</span> Trie(word[i]):n;</span><br><span class="line">        _insert(n,word,i+<span class="number">1</span>,index);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/** Inserts a word into the trie. */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="built_in">string</span> word, <span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//root does not save char</span></span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">this</span>) <span class="keyword">return</span>;</span><br><span class="line">        _insert(<span class="keyword">this</span>,word,<span class="number">0</span>,index);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/** Returns if the word is in the trie. */</span></span><br><span class="line">    <span class="keyword">void</span> _search(<span class="built_in">string</span> mode, Trie *node, <span class="built_in">string</span> s, <span class="keyword">int</span> i,<span class="keyword">bool</span> &amp;isExist,<span class="keyword">int</span> &amp;index)</span><br><span class="line">    &#123;<span class="comment">//递归搜索，s为字符串，i为编号</span></span><br><span class="line">      <span class="comment">// 上一个字符搜索到了才进行下一次搜索</span></span><br><span class="line">       <span class="keyword">if</span>(i&lt;s.size()&amp;&amp;node-&gt;child[(<span class="keyword">int</span>)(s[i]-<span class="string">&#x27;a&#x27;</span>)] &amp;&amp;node-&gt;child[(<span class="keyword">int</span>)(s[i]-<span class="string">&#x27;a&#x27;</span>)]-&gt;val==s[i]&amp;&amp;!isExist) </span><br><span class="line">        _search(mode,node-&gt;child[(<span class="keyword">int</span>)(s[i]-<span class="string">&#x27;a&#x27;</span>)],s,i+<span class="number">1</span>,isExist,index);</span><br><span class="line">        <span class="keyword">if</span>(!isExist)</span><br><span class="line">        <span class="keyword">if</span>(mode == <span class="string">&quot;search&quot;</span>) isExist = (i==s.size()&amp;&amp;node-&gt;end);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(mode == <span class="string">&quot;prefix&quot;</span>) isExist = (i==s.size());</span><br><span class="line">        <span class="keyword">if</span>(isExist&amp;&amp;index==<span class="number">-1</span>) </span><br><span class="line">        index = node-&gt;index;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="built_in">string</span> word)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">this</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">bool</span> isExist = <span class="literal">false</span>; <span class="keyword">int</span> i = <span class="number">-1</span>;</span><br><span class="line">        _search(<span class="string">&quot;search&quot;</span>,<span class="keyword">this</span>,word,<span class="number">0</span>,isExist,i);</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">startsWith</span><span class="params">(<span class="built_in">string</span> prefix)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">this</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">bool</span> isExist = <span class="literal">false</span>;<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        _search(<span class="string">&quot;prefix&quot;</span>,<span class="keyword">this</span>,prefix,<span class="number">0</span>,isExist,i);</span><br><span class="line">        <span class="keyword">return</span> isExist;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span></span></span><br><span class="line"><span class="class">&#123;</span><span class="comment">//字典树版本</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(<span class="built_in">string</span> &amp;a,<span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = right - left + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; n/<span class="number">2</span>;i++)</span><br><span class="line">        <span class="keyword">if</span>(a[i+left]!=a[right-i]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">palindromePairs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; words)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!words.size()) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        Trie  tr;</span><br><span class="line">        <span class="comment">//将所有单词加入前缀树中</span></span><br><span class="line">        <span class="keyword">int</span> n = words.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)</span><br><span class="line">         tr.insert(words[i],i);</span><br><span class="line">        <span class="comment">//遍历任意两个字符串</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> m = words[i].size();</span><br><span class="line">            <span class="built_in">string</span> sub = words[i];</span><br><span class="line">            reverse(sub.begin(),sub.end());</span><br><span class="line">            <span class="keyword">int</span> index = tr.search(sub);</span><br><span class="line">            <span class="keyword">if</span>(index!=<span class="number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;i,index&#125;);</span><br><span class="line">            <span class="keyword">if</span>(isPalindrome(words[i],<span class="number">0</span>,m<span class="number">-1</span>)) </span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> index = tr.search(<span class="string">&quot;&quot;</span>);</span><br><span class="line">                <span class="keyword">if</span>(index!=<span class="number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;index,i&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; m;j++)</span><br><span class="line">            &#123;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span>(j&amp;&amp;isPalindrome(words[i],<span class="number">0</span>,j<span class="number">-1</span>))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">string</span> sub = words[i].substr(j,m-j);</span><br><span class="line">                    reverse(sub.begin(),sub.end());</span><br><span class="line">                    <span class="keyword">int</span> index = tr.search(sub);</span><br><span class="line">                    <span class="keyword">if</span>(index!=<span class="number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;index,i&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(isPalindrome(words[i],j,m<span class="number">-1</span>))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="built_in">string</span> sub = words[i].substr(<span class="number">0</span>,j);</span><br><span class="line">                    reverse(sub.begin(),sub.end());</span><br><span class="line">                    <span class="keyword">int</span> index = tr.search(sub);</span><br><span class="line">                    <span class="keyword">if</span>(index!=<span class="number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;i,index&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度: $O(N*M^2)$, $N$为字符数组总长度，$M$为字符串平均长度。</p>
+<p>空间复杂度: $O(N*M)$。实际上由于字符前缀重合，用不到这么多空间。</p>
+<hr>
+<h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><ul>
+<li><ol start="560">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">和为k的子数组</a>(Medium)</li>
+</ol>
+</li>
+<li><ol start="1371">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">每个元音包含最长的子字符串</a>(Medium)</li>
+</ol>
+</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/">1248. 统计「优美子数组」</a></li>
+</ul>
+<hr>
+<h2 id="560-和为k的子数组-Medium"><a href="#560-和为k的子数组-Medium" class="headerlink" title="560.和为k的子数组(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">560.和为k的子数组</a>(Medium)</strong></h2><p>给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。</p>
+<p>示例 1 :</p>
+<p>输入:nums = [1,1,1], k = 2<br>输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。<br>说明 :</p>
+<p>数组的长度为 [1, 20,000]。<br>数组中元素的范围是 [-1000, 1000] ，且整数 k 的范围是 [-1e7, 1e7]。</p>
+<hr>
+<p>定义$pre[i]$表示$[0…i]$所有数之和,那么范围$[j-i]$可以表示为: $pre[i]-pre[j-1]$,  且$pre[i] = pre[i-1] + nums[i]$ , 问题转化为,</p>
+<p>找到有多少个区间,满足$pre[i]-pre[j-1]==k$. 所以我们考虑以 $i$ 结尾的和为 $k$ 的连续子数组个数时只要统计有多少个前缀和为 $\textit{pre}[i]-k$的 $\textit{pre}[j]$ 即可。我们建立哈希表 $\textit{mp}$，以和为键，出现次数为对应的值，记录 $\textit{pre}[i]$ 出现的次数，从左往右边更新 $\textit{mp}$边计算答案，那么以 $i$ 结尾的答案 $\textit{mp}[\textit{pre}[i]-k]$ 即可在 $O(1)$ 时间内得到。最后的答案即为所有下标结尾的和为 $k$ 的子数组个数之和。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> res;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">subarraySum</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//数组长度和k都非常大，因此要尽量在线性时间复杂度解决</span></span><br><span class="line">        <span class="comment">//我们尝试动态规划解决,</span></span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">1</span>) <span class="keyword">return</span> nums[<span class="number">0</span>]==k;</span><br><span class="line">        res = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; memo;<span class="comment">//记录和的个数</span></span><br><span class="line">        <span class="keyword">int</span> pre = <span class="number">0</span>;</span><br><span class="line">        memo[<span class="number">0</span>]++;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// cout&lt;&lt;i&lt;&lt;&quot;,&quot;&lt;&lt;pre&lt;&lt;endl;</span></span><br><span class="line">            pre = pre + nums[i];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(memo.count(pre-k))</span><br><span class="line">            res += memo[pre-k];</span><br><span class="line">            memo[pre]++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1371-每个元音包含最长的子字符串-Medium"><a href="#1371-每个元音包含最长的子字符串-Medium" class="headerlink" title="1371,每个元音包含最长的子字符串(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">1371,每个元音包含最长的子字符串</a>(Medium)</h2><p>给你一个字符串 s ，请你返回满足以下条件的最长子字符串的长度：每个元音字母，即 ‘a’，’e’，’i’，’o’，’u’ ，在子字符串中都恰好出现了偶数次。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;eleetminicoworoep&quot;</span><br><span class="line">输出：13</span><br><span class="line">解释：最长子字符串是 &quot;leetminicowor&quot; ，它包含 e，i，o 各 2 个，以及 0 个 a，u 。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;leetcodeisgreat&quot;</span><br><span class="line">输出：5</span><br><span class="line">解释：最长子字符串是 &quot;leetc&quot; ，其中包含 2 个 e 。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>示例 3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;bcbcbc&quot;</span><br><span class="line">输出：6</span><br><span class="line">解释：这个示例中，字符串 &quot;bcbcbc&quot; 本身就是最长的，因为所有的元音 a，e，i，o，u 都出现了 0 次。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<p><code>1 &lt;= s.length &lt;= 5 x 10^5 s 只包含小写英文字母。</code></p>
+<p>定义$pre[i][k]$表示前$i$个字母，第$k$个元音字母总出现的次数。那么在$[i-1,j-1]$区间内，元音字母出现次数为$pre[j][k]-pre[i][k]$，在$O(1)$时间内得到第$k$个元音字母出现的次数。</p>
+<p>同时我们要考虑避免枚举所有的$i$，计算以它结尾的满足条件的最长子字符串长度，我们要找到最小$i$使得$pre[j][k]-pre[i][k]$均为偶数。 我们需要利用【所有元音出现偶数次】这个条件，对于满足条件的子串而言，$pre[i][k]$和$pre[j][k]$的奇偶性一定相同，因为偶数一定是奇数+奇数，或者偶数+偶数组成。所以我们可以把$pre[i][k]$改为表示$[0,i-1]$的<strong>元音奇偶性</strong>。</p>
+<p>此外我们还需要进行「状态压缩」：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  a: cnta, &#x2F;&#x2F; a 出现次数的奇偶性</span><br><span class="line">  e: cnte, &#x2F;&#x2F; e 出现次数的奇偶性</span><br><span class="line">  i: cnti, &#x2F;&#x2F; i 出现次数的奇偶性</span><br><span class="line">  o: cnto, &#x2F;&#x2F; o 出现次数的奇偶性</span><br><span class="line">  u: cntu  &#x2F;&#x2F; u 出现次数的奇偶性</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们可以用二进制表示这些奇偶。</p>
+<p>举一个例子，假如到第 $i $个位置，<code>u o i e a </code>出现的奇偶性分别为 <code>1 1 0 0 1</code>，那么我们就可以将其压成一个二进制数 $(11001)<em>2=(25)</em>{10}$ 作为它的状态。</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findTheLongestSubstring</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!s.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = s.size(), res = <span class="number">0</span>, status = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; vowel&#123;</span><br><span class="line">            &#123;<span class="string">&#x27;a&#x27;</span>,<span class="number">1</span>&#125;,&#123;<span class="string">&#x27;e&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">1</span>&#125;,&#123;<span class="string">&#x27;i&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">2</span>&#125;,&#123;<span class="string">&#x27;o&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">3</span>&#125;,&#123;<span class="string">&#x27;u&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">4</span>&#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 我们用pre[status]表示status状态对应的位置i，不断更新</span></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">pre</span><span class="params">(<span class="number">1</span>&lt;&lt;<span class="number">5</span>,<span class="number">-1</span>)</span></span>;<span class="comment">//初始均为偶</span></span><br><span class="line">        pre[<span class="number">0</span>] = <span class="number">0</span>;<span class="comment">//初始状态，所有元音为偶数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(vowel.count(s[i<span class="number">-1</span>]))</span><br><span class="line">            status ^= vowel[s[i<span class="number">-1</span>]];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(~pre[status]) res = max(res,i - pre[status]); <span class="comment">//pre[status]!=-1</span></span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                pre[status] = i ;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 18行的 ~pre[status]表示<strong>按位取反</strong>，包含了符号位，所以只有pre[status]不为-1，才为True。</p>
+<p>$ \text{~} 0 = -1$， </p>
+</blockquote>
+<p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
+<p>空间复杂度: $O(1)$.</p>
+<h2 id="扩展：删除元素"><a href="#扩展：删除元素" class="headerlink" title="扩展：删除元素"></a>扩展：删除元素</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA">https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/08/14/2020-8-20-what-is-Trie/" data-id="ckff8go03001vwgscgpx5074q" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/14/2020-8-14-what-is-UnionSet/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          什么是并查集
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/10/2020-8-12-dfs-bfs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">专题:DFS&amp;BFS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

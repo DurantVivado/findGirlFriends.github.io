@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>多指针问题 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="多指针问题  75.颜色分类 1574.删除最短的子数组使剩余数组有序  压缩字符串  环形链表II（快慢指针）    很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。 比如求链表到数第N个节点，以及判断链表中是否有环。 今天我们看LeetCode 75.颜色分类，原型是荷兰国旗问题。 Floyd判圈法想法 当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多指针问题">
+<meta property="og:url" content="http://example.com/2020/07/19/2020-7-30-pointers/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="多指针问题  75.颜色分类 1574.删除最短的子数组使剩余数组有序  压缩字符串  环形链表II（快慢指针）    很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。 比如求链表到数第N个节点，以及判断链表中是否有环。 今天我们看LeetCode 75.颜色分类，原型是荷兰国旗问题。 Floyd判圈法想法 当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic.leetcode-cn.com/ea37804a3d86a51a1bf827b9068e1f515ffddf840a0563ea0d1174c58ac64352-image.png">
+<meta property="og:image" content="https://pic.leetcode-cn.com/99987d4e679fdfbcfd206a4429d9b076b46ad09bd2670f886703fb35ef130635-image.png">
+<meta property="og:image" content="https://pic.leetcode-cn.com/5b3d372e0bfb293ca3aac12e90421d7612c9e75b78b579f954c42ebfe74705d4-image.png">
+<meta property="article:published_time" content="2020-07-19T07:56:27.000Z">
+<meta property="article:modified_time" content="2020-09-21T14:43:43.458Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="多指针">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic.leetcode-cn.com/ea37804a3d86a51a1bf827b9068e1f515ffddf840a0563ea0d1174c58ac64352-image.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-7-30-pointers" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/19/2020-7-30-pointers/" class="article-date">
+  <time datetime="2020-07-19T07:56:27.000Z" itemprop="datePublished">2020-07-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多指针问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="多指针问题"><a href="#多指针问题" class="headerlink" title="多指针问题"></a>多指针问题</h1><hr>
+<blockquote>
+<p>75.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a></p>
+<p>1574.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></p>
+<ol start="443">
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-compression/">压缩字符串</a></p>
+</li>
+<li><p>环形链表II（快慢指针）</p>
+</li>
+</ol>
+</blockquote>
+<p>很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。</p>
+<p>比如求链表到数第N个节点，以及判断链表中是否有环。</p>
+<p>今天我们看LeetCode 75.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a>，原型是荷兰国旗问题。</p>
+<h2 id="Floyd判圈法"><a href="#Floyd判圈法" class="headerlink" title="Floyd判圈法"></a>Floyd判圈法</h2><p><strong>想法</strong></p>
+<p>当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生什么？在某一个时刻，跑得快的人一定会从后面赶上跑得慢的人。</p>
+<p><strong>算法</strong></p>
+<p>Floyd 的算法被划分成两个不同的 阶段 。在第一阶段，找出列表中是否有环，如果没有环，可以直接返回 null 并退出。否则，用 相遇节点 来找到环的入口。</p>
+<p>阶段 1</p>
+<p>这里我们初始化两个指针 - 快指针和慢指针。我们每次移动慢指针一步、快指针两步，直到快指针无法继续往前移动。如果在某次移动后，快慢指针指向了同一个节点，我们就返回它。否则，我们继续，直到 while 循环终止且没有返回任何节点，这种情况说明没有成环，我们返回 null 。</p>
+<p>下图说明了这个算法的工作方式：</p>
+<img src="https://pic.leetcode-cn.com/ea37804a3d86a51a1bf827b9068e1f515ffddf840a0563ea0d1174c58ac64352-image.png" alt="image.png" style="zoom:50%;" />
+
+<p>环中的节点从 0 到 C-1C−1 编号，其中 CC 是环的长度。非环节点从 -F−F 到 -1−1 编号，其中 FF 是环以外节点的数目。 FF 次迭代以后，慢指针指向了 0 且快指针指向某个节点 hh ，其中 F \equiv h \pmod CF≡h(modC) 。这是因为快指针在 FF 次迭代中遍历了 2F2F 个节点，且恰好有 FF 个在环中。继续迭代 C-hC−h 次，慢指针显然指向第 C-hC−h 号节点，而快指针也会指向相同的节点。原因在于，快指针从 hh 号节点出发遍历了 2(C-h)2(C−h) 个节点。</p>
+<p>\begin{aligned} h + 2(C-h) &amp;= 2C - h \ &amp;\equiv C-h \pmod C \end{aligned}<br>h+2(C−h)</p>
+<p>=2C−h<br>≡C−h(modC)</p>
+<p>因此，如果列表是有环的，快指针和慢指针最后会同时指向同一个节点，因此被称为 相遇 。</p>
+<p>阶段 2</p>
+<p>给定阶段 1 找到的相遇点，阶段 2 将找到环的入口。首先我们初始化额外的两个指针： ptr1 ，指向链表的头， ptr2 指向相遇点。然后，我们每次将它们往前移动一步，直到它们相遇，它们相遇的点就是环的入口，返回这个节点。</p>
+<p>下面的图将更好的帮助理解和证明这个方法的正确性。</p>
+<img src="https://pic.leetcode-cn.com/99987d4e679fdfbcfd206a4429d9b076b46ad09bd2670f886703fb35ef130635-image.png" alt="image.png" style="zoom:50%;" />
+
+<p>我们利用已知的条件：慢指针移动 1 步，快指针移动 2 步，来说明它们相遇在环的入口处。（下面证明中的 tortoise 表示慢指针，hare 表示快指针）</p>
+<p>\begin{aligned} 2 \cdot distance(tortoise) &amp;= distance(hare) \ 2(F+a) &amp;= F+a+b+a \ 2F+2a &amp;= F+2a+b \ F &amp;= b \ \end{aligned}<br>2⋅distance(tortoise)<br>2(F+a)<br>2F+2a<br>F</p>
+<p>=distance(hare)<br>=F+a+b+a<br>=F+2a+b<br>=b</p>
+<p>因为 F=bF=b ，指针从 hh 点出发和从链表的头出发，最后会遍历相同数目的节点后在环的入口处相遇。</p>
+<hr>
+<h2 id="75-颜色分类"><a href="#75-颜色分类" class="headerlink" title="75.颜色分类"></a>75.颜色分类</h2><p>给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
+<p>此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
+<p>注意:<br>不能使用代码库中的排序函数来解决这道题。</p>
+<p>示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,0,2,1,1,0]</span><br><span class="line">输出: [0,0,1,1,2,2]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>我们用三个指针（p0, p2 和curr）来分别追踪0的最右边界，2的最左边界和当前考虑的元素。</p>
+<p><img src="https://pic.leetcode-cn.com/5b3d372e0bfb293ca3aac12e90421d7612c9e75b78b579f954c42ebfe74705d4-image.png" alt="image.png"></p>
+<p>此题思路很直观，本解法的思路是沿着数组移动 curr 指针，若nums[curr] = 0，则将其与 nums[p0]互换；若 nums[curr] = 2 ，则与 nums[p2]互换。</p>
+<p>但是细节很需要注意，细节往往能致人于死地。</p>
+<ol>
+<li>中间指针curr起始位置为0，不是1，为什么？</li>
+<li>若nums[curr]==0，则与nums[p0]互换时curr++，而nums[curr]==1，curr不需要–，为什么？</li>
+</ol>
+<p>这两个问题实质是相同的，我们需要让curr在p0前面，去接近p1，相当于给你一个方向，你去前进。这样理解会不会好些。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sortColors</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">int</span> begin = <span class="number">0</span>, mid =<span class="number">0</span>, end = nums.size()<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(begin&lt;=mid &amp;&amp; mid&lt;=end)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// mid = begin;</span></span><br><span class="line">            <span class="keyword">if</span>(nums[mid]==<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                swap(nums[mid],nums[begin]);</span><br><span class="line">                begin++;</span><br><span class="line">                mid ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(nums[mid]==<span class="number">2</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                swap(nums[mid],nums[end]);</span><br><span class="line">                end--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> mid ++;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1574-删除最短的子数组使剩余数组有序"><a href="#1574-删除最短的子数组使剩余数组有序" class="headerlink" title="1574.删除最短的子数组使剩余数组有序"></a>1574.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></h2><p>给你一个整数数组 arr ，请你删除一个子数组（可以为空），使得 arr 中剩下的元素是 非递减 的。</p>
+<p>一个子数组指的是原数组中连续的一个子序列。</p>
+<p>请你返回满足题目要求的最短子数组的长度。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [1,2,3,10,4,2,3,5]</span><br><span class="line">输出：3</span><br><span class="line">解释：我们需要删除的最短子数组是 [10,4,2] ，长度为 3 。剩余元素形成非递减数组 [1,2,3,3,5] 。</span><br></pre></td></tr></table></figure>
+
+<p>另一个正确的解为删除子数组 [3,10,4] 。<br>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [5,4,3,2,1]</span><br><span class="line">输出：4</span><br><span class="line">解释：由于数组是严格递减的，我们只能保留一个元素。所以我们需要删除长度为 4 的子数组，要么删除 [5,4,3,2]，要么删除 [4,3,2,1]。</span><br></pre></td></tr></table></figure>
+
+<p>示例 3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [1,2,3]</span><br><span class="line">输出：0</span><br><span class="line">解释：数组已经是非递减的了，我们不需要删除任何元素。</span><br></pre></td></tr></table></figure>
+
+<p>示例 4：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：arr &#x3D; [1]</span><br><span class="line">输出：0</span><br></pre></td></tr></table></figure>
+
+<p>提示：</p>
+<p><code>1 &lt;= arr.length &lt;= 10^5</code><br><code>0 &lt;= arr[i] &lt;= 10^9</code></p>
+<hr>
+<p>双指针，先找出最大有序前缀pre和最大有序后缀suf, 若pre==n则表示全部有序，若pre == suf &amp;&amp; suf == 0则表示全部逆序</p>
+<p>  前缀指针i和后缀指针j，i从0开始，j从后缀起点开始, </p>
+<ul>
+<li><p>如果arr[i] &lt;= arr[j]，则表示[0:i]和[j:-1]可以形成升序，计算值并和min比较</p>
+<p>然后前缀指针右移，选择更大的值进行比较</p>
+</li>
+<li><p>如果arr[i] &gt; arr[j]，则表示后缀值过小，后缀向后移直到能形成升序</p>
+</li>
+</ul>
+<p>「左指针是用来缩小距离，右指针是用来组成非降序」！</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findLengthOfShortestSubarray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.size()==<span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//双指针，先找出最大有序前缀pre和最大有序后缀suf</span></span><br><span class="line">    <span class="comment">//若pre==n则表示全部有序，若pre == suf &amp;&amp; suf == 0则表示全部逆序</span></span><br><span class="line">    <span class="comment">// 前缀指针i和后缀指针j，i从0开始，j从后缀起点开始</span></span><br><span class="line">    <span class="comment">// 如果arr[i] &lt;= arr[j]，则表示[0:i]和[j:-1]可以形成升序，计算值并和min比较</span></span><br><span class="line">    <span class="comment">//然后前缀指针右移，选择更大的值进行比较</span></span><br><span class="line">    <span class="comment">// 如果arr[i] &gt; arr[j]，则表示后缀值过小，后缀向后移直到能形成升序</span></span><br><span class="line">    <span class="comment">//前缀指针的作用是缩小距离，后缀指针作用是形成升序</span></span><br><span class="line">    <span class="keyword">int</span> n = arr.size();</span><br><span class="line">    <span class="keyword">int</span> pre = <span class="number">0</span>, suf = n<span class="number">-1</span>;<span class="comment">//分别记录最长前缀的下标和最长后缀的下标</span></span><br><span class="line">    <span class="keyword">while</span>(pre+<span class="number">1</span>&lt;n &amp;&amp; arr[pre] &lt;= arr[pre+<span class="number">1</span>]) pre++;</span><br><span class="line">    <span class="keyword">while</span>(suf&gt;<span class="number">0</span> &amp;&amp; arr[suf<span class="number">-1</span>] &lt;= arr[suf]) suf--;</span><br><span class="line">    <span class="keyword">if</span>(pre+<span class="number">1</span> == n) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//全部升序</span></span><br><span class="line">    <span class="keyword">if</span>(suf == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">1</span>;<span class="comment">//全部逆序</span></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = suf;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//只选择前缀或后缀需要删除的最小数量</span></span><br><span class="line">    <span class="keyword">int</span> res = min(n-pre<span class="number">-1</span>, suf);</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=pre &amp;&amp; j&lt;n  &amp;&amp; i &lt;= j)</span><br><span class="line">    <span class="keyword">if</span>(arr[i] &lt;= arr[j]) </span><br><span class="line">            res = min(res,j-(++i));</span><br><span class="line">    <span class="keyword">else</span> j++;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度: $O(N)$, </p>
+<p>空间复杂度：$O(1)$</p>
+<hr>
+<h2 id="443-压缩字符串"><a href="#443-压缩字符串" class="headerlink" title="443. 压缩字符串"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-compression/">443. 压缩字符串</a></h2><p>给定一组字符，使用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95">原地算法</a>将其压缩。</p>
+<p>压缩后的长度必须始终小于或等于原数组长度。</p>
+<p>数组的每个元素应该是长度为1 的<strong>字符</strong>（不是 int 整数类型）。</p>
+<p>在完成<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95">原地</a><strong>修改输入数组</strong>后，返回数组的新长度。</p>
+<p><strong>进阶：</strong><br>你能否仅使用O(1) 空间解决问题？</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;,&quot;c&quot;,&quot;c&quot;]</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">返回 6 ，输入数组的前 6 个字符应该是：[&quot;a&quot;,&quot;2&quot;,&quot;b&quot;,&quot;2&quot;,&quot;c&quot;,&quot;3&quot;]</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">&quot;aa&quot; 被 &quot;a2&quot; 替代。&quot;bb&quot; 被 &quot;b2&quot; 替代。&quot;ccc&quot; 被 &quot;c3&quot; 替代。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">返回 1 ，输入数组的前 1 个字符应该是：[&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">没有任何字符串被替代。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;]</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">返回 4 ，输入数组的前4个字符应该是：[&quot;a&quot;,&quot;b&quot;,&quot;1&quot;,&quot;2&quot;]。</span><br><span class="line"></span><br><span class="line">解释：</span><br><span class="line">由于字符 &quot;a&quot; 不重复，所以不会被压缩。&quot;bbbbbbbbbbbb&quot; 被 “b12” 替代。</span><br><span class="line">注意每个数字在数组中都有它自己的位置。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>提示：</strong></p>
+<ul>
+<li>所有字符都有一个ASCII值在<code>[35, 126]</code>区间内。</li>
+<li><code>1 &lt;= len(chars) &lt;= 1000</code>。</li>
+</ul>
+<hr>
+<p>使用双指针，将产生立竿见影的效果。</p>
+<p>用一个指针p1作为锚点，指示一个特定字符，而p2则在p1基础上进行滑动，计算后面有多少个与锚点相同的字符。p4用于指示下一个锚点，是所有指针中最快的，res用于记录原地替换的长度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compress</span><span class="params">(<span class="keyword">char</span>[] chars)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//使用双指针,注意原地替换只考虑被替换部分的值</span></span><br><span class="line">        <span class="keyword">int</span> p1 = <span class="number">0</span>, p2 = <span class="number">0</span>,p4 = <span class="number">0</span>,res=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = chars.length;</span><br><span class="line">        <span class="keyword">while</span>(p1 &lt; n)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">char</span> c = chars[p1];</span><br><span class="line">            p2 = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(p4 &lt; n &amp;&amp; chars[p4] == c) &#123;p2++;p4++;&#125;</span><br><span class="line">            chars[res++] = c;</span><br><span class="line">            <span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">            <span class="comment">//将p2按位分解进行替换</span></span><br><span class="line">            p1 = p4;</span><br><span class="line">            <span class="keyword">if</span>(p2&gt;<span class="number">1</span>)<span class="comment">//如果只有一个字符则不进行替换</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">char</span> it: (<span class="string">&quot;&quot;</span> + p2).toCharArray())</span><br><span class="line">            &#123;</span><br><span class="line">                chars[res++] = it;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里使用了技巧</p>
+<p><code>(&quot;&quot; + p2).toCharArray()</code>将整型数直接转换为字符数组进行操作。</p>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(N)$，其中 $N$ 是 <code>chars</code> 的长度。</li>
+<li>空间复杂度：$O(1)$，三个指针的占用空间。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/07/19/2020-7-30-pointers/" data-id="ckff8gnym000hwgsc3jxb3f59" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/07/19/2020-08-1-representation_of_graph/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          图的几种表示方法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/19/2020-7-30-sorting-magic/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">排序算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

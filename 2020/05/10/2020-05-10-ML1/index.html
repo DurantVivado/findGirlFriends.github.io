@@ -5,18 +5,19 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>机器学习I 基本概念 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="学完算法，还想更深入一步，那么接触一下机器学习，是很有必要的，你需要知道当下为什么ML这么火，包括自动驾驶，人脸识别等都与之相关。有些甚至基本算法理论无法解释。   参考周志华《机器学习》  任务： 分类（classification）: 预测离散值。 回归（regression）:预测连续值。 一般地，我们对训练集${(x_1,y_1),···,(x_m,y_m)}$进行学习，建立一个从输入空">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2020/09/23/hello-world/index.html">
+<meta property="og:title" content="机器学习I 基本概念">
+<meta property="og:url" content="http://example.com/2020/05/10/2020-05-10-ML1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="学完算法，还想更深入一步，那么接触一下机器学习，是很有必要的，你需要知道当下为什么ML这么火，包括自动驾驶，人脸识别等都与之相关。有些甚至基本算法理论无法解释。   参考周志华《机器学习》  任务： 分类（classification）: 预测离散值。 回归（regression）:预测连续值。 一般地，我们对训练集${(x_1,y_1),···,(x_m,y_m)}$进行学习，建立一个从输入空">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-09-23T09:35:13.854Z">
-<meta property="article:modified_time" content="2020-09-23T09:35:13.854Z">
+<meta property="article:published_time" content="2020-05-10T05:23:45.000Z">
+<meta property="article:modified_time" content="2020-08-04T15:13:59.126Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -66,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-2020-05-10-ML1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/09/23/hello-world/" class="article-date">
-  <time datetime="2020-09-23T09:35:13.854Z" itemprop="datePublished">2020-09-23</time>
+    <a href="/2020/05/10/2020-05-10-ML1/" class="article-date">
+  <time datetime="2020-05-10T05:23:45.000Z" itemprop="datePublished">2020-05-10</time>
 </a>
     
   </div>
@@ -80,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      机器学习I 基本概念
     </h1>
   
 
@@ -88,45 +89,65 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <blockquote>
+<p>学完算法，还想更深入一步，那么接触一下机器学习，是很有必要的，你需要知道当下为什么ML这么火，包括自动驾驶，人脸识别等都与之相关。有些甚至基本算法理论无法解释。</p>
+</blockquote>
+<blockquote>
+<p>参考周志华《机器学习》</p>
+</blockquote>
+<p><strong>任务：</strong></p>
+<p><strong>分类</strong>（classification）: 预测离散值。</p>
+<p><strong>回归</strong>（regression）:预测连续值。</p>
+<p>一般地，我们对训练集${(x_1,y_1),···,(x_m,y_m)}$进行学习，建立一个从输入空间$\chi$到输出空间$\Upsilon$的映射，对于二分类任务，通常$\Upsilon={-1,+1}或{0,1}$；对于多分类任务，$|\Upsilon|&gt;2$,对于回归任务，$\Upsilon=\R,\R$为实数集。</p>
+<p>学习完之后需要进行预测（testing）。</p>
+<p>我们还可以进行<strong>聚类</strong>（clustering）操作，将训练集中数据分成若干组，每组称为一个<strong>簇</strong>（cluster），这些自动形成的簇可能对应一些潜在的概念划分。</p>
+<p>根据训练数据是否有标记，学习任务可以大致分为两类：“<strong>监督学习</strong>”（supervised learning）和 “<strong>无监督学习</strong>”（unsupervised learning），分类和回归属于前者，而聚类属于后者。</p>
+<p><strong>泛化</strong>（generalization），指模型适应新样本的能力。我们可以把学习过程看作是在<code>所有假设</code>（hypothesis）组成的空间中进行搜索的过程，搜索目标是找到与训练集“匹配”的假设。</p>
+<p>书中介绍了NFL定理，即“天下没有免费午餐的定理”。不同的学习算法期望相同。</p>
+<p>最后让我们一睹顶会的风采。</p>
+<p>$ICML$：国际机器学习会议；</p>
+<p>$NIPS$：国际神经信息处理系统会议；</p>
+<p>$COLT$：国际学习理论会议；</p>
+<p>$ECML$：欧洲机器学习会议；</p>
+<p>$ACML$：亚洲机器学习会议；</p>
+<p>然后是<em>顶级</em>期刊：</p>
+<p>$JMLR$: Journal of Machine Learning Research;</p>
+<p>$ML$: Machine Learning;</p>
+<p>$IJCAI$:International Joint Conference on Artificial Intelligence</p>
+<p>$AAAI$：（就是这么AI） Association for the Advance of Artificial Intelligence</p>
+<p>$AI$，$JAIR$,$KDD$,$ICDM$,$CVPR$,以及IEEE一些期刊。</p>
+<blockquote>
+<p>如果能投给一篇，cs人生也算圆满了</p>
+</blockquote>
+<p>第二章：模型评估与选择。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/hello-world/" data-id="ckff8gnz40019wgscglmc4skh" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/05/10/2020-05-10-ML1/" data-id="ckff8gnxv0000wgscg4xxcdbs" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2020/09/23/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95I%20%E5%86%B3%E7%AD%96%E6%A0%91/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/06/25/2020-06-25-C++memory_management/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          (no title)
+          C++内存管理
         
       </div>
     </a>
   
   
-    <a href="/2020/08/14/2020-8-17-recognition-monostack/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/05/10/2020-07-23-C++IO%20Interface/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">初认识-单调栈</div>
+      <div class="article-nav-title">C++ IO库</div>
     </a>
   
 </nav>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>专题:DFS&amp;BFS | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="专题:DFS&amp;BFS  DFS:深度优先搜索，BFS：广度优先搜索，是最频繁被考察的算法知识点之一。我们来找一些例题专门研究一下。  二叉树里面的三种遍历既可以用DFS（递归写法），也可以用BFS（迭代+栈），而层序遍历对应的就是BFS。 在图论中，DFS是万金油算法，其衍生的如Dijisktra(优先队列)，SPFA算法是最短路的主流算法。 下面介绍一类二维矩阵中典型的「岛屿问题」，来加">
+<meta property="og:type" content="article">
+<meta property="og:title" content="专题:DFS&amp;BFS">
+<meta property="og:url" content="http://example.com/2020/08/10/2020-8-12-dfs-bfs/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="专题:DFS&amp;BFS  DFS:深度优先搜索，BFS：广度优先搜索，是最频繁被考察的算法知识点之一。我们来找一些例题专门研究一下。  二叉树里面的三种遍历既可以用DFS（递归写法），也可以用BFS（迭代+栈），而层序遍历对应的就是BFS。 在图论中，DFS是万金油算法，其衍生的如Dijisktra(优先队列)，SPFA算法是最短路的主流算法。 下面介绍一类二维矩阵中典型的「岛屿问题」，来加">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-10T05:23:45.000Z">
+<meta property="article:modified_time" content="2020-08-14T03:55:34.516Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="DFS&amp;BFS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-8-12-dfs-bfs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/10/2020-8-12-dfs-bfs/" class="article-date">
+  <time datetime="2020-08-10T05:23:45.000Z" itemprop="datePublished">2020-08-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      专题:DFS&amp;BFS
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="专题-DFS-amp-BFS"><a href="#专题-DFS-amp-BFS" class="headerlink" title="专题:DFS&amp;BFS"></a>专题:DFS&amp;BFS</h1><blockquote>
+<p> DFS:深度优先搜索，BFS：广度优先搜索，是最频繁被考察的算法知识点之一。我们来找一些例题专门研究一下。</p>
+</blockquote>
+<p>二叉树里面的三种遍历既可以用DFS（递归写法），也可以用BFS（迭代+栈），而层序遍历对应的就是BFS。</p>
+<p>在图论中，DFS是万金油算法，其衍生的如Dijisktra(优先队列)，SPFA算法是<strong>最短路</strong>的主流算法。</p>
+<p>下面介绍一类二维矩阵中典型的「岛屿问题」，来加深理解，在整体DFS框架中又隐藏一些彩蛋，加以利用的话可以极大的优化算法。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-islands/">L200. 岛屿数量</a> （Easy）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/surrounded-regions/">L130.被围绕的区域 (Medium)</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/island-perimeter/">463. 岛屿的周长</a> （Easy）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/max-area-of-island/">695. 岛屿的最大面积</a> （Medium）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/making-a-large-island/">827. 最大人工岛</a> （Hard）</li>
+</ul>
+<hr>
+<h2 id="1-被围绕的区域"><a href="#1-被围绕的区域" class="headerlink" title="1.被围绕的区域"></a>1.被围绕的区域</h2><p>给定一个二维的矩阵，包含 ‘X’ 和 ‘O’（字母 O）。</p>
+<p>找到所有被 ‘X’ 围绕的区域，并将这些区域里所有的 ‘O’ 用 ‘X’ 填充。</p>
+<p>示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X X X X</span><br><span class="line">X O O X</span><br><span class="line">X X O X</span><br><span class="line">X O X X</span><br></pre></td></tr></table></figure>
+
+<p>运行你的函数后，矩阵变为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X X X X</span><br><span class="line">X X X X</span><br><span class="line">X X X X</span><br><span class="line">X O X X</span><br></pre></td></tr></table></figure>
+
+<p><strong>解释:</strong></p>
+<p>被围绕的区间不会存在于边界上，换句话说，任何边界上的 ‘O’ 都不会被填充为 ‘X’。 任何不在边界上，或不与边界上的 ‘O’ 相连的 ‘O’ 最终都会被填充为 ‘X’。如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。</p>
+<hr>
+<p><strong>思路</strong>：常规的想法是在矩阵中找到所有湖然后判断其是否与边界0相连，显然，这不是一个很好的注意，有可能一开碰到边界，也有可能最后找到边界，也有可能中间碰到边界。</p>
+<p>所以此时需要换一种思路，我们找到一个「DFS触发条件」，以减少任务量，一种思路是从四个边界出发，如果为<code>&#39;O&#39;</code>，则进入DFS，将所有的<code>&#39;O&#39;</code>改为<code>&#39;A&#39;</code>，之后遍历完之后，将所有剩余的<code>&#39;O&#39;</code>改为<code>&#39;X&#39;</code>即可。</p>
+<h2 id="2-岛屿的数量"><a href="#2-岛屿的数量" class="headerlink" title="2. 岛屿的数量"></a>2. 岛屿的数量</h2><p>给你一个由 ‘1’（陆地）和 ‘0’（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
+<p>岛屿总是被水包围，并且每座岛屿只能由水平方向或竖直方向上相邻的陆地连接形成。</p>
+<p>此外，你可以假设该网格的四条边均被水包围。</p>
+<p>示例 1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">[&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;1&#39;,&#39;0&#39;],</span><br><span class="line">[&#39;1&#39;,&#39;1&#39;,&#39;0&#39;,&#39;1&#39;,&#39;0&#39;],</span><br><span class="line">[&#39;1&#39;,&#39;1&#39;,&#39;0&#39;,&#39;0&#39;,&#39;0&#39;],</span><br><span class="line">[&#39;0&#39;,&#39;0&#39;,&#39;0&#39;,&#39;0&#39;,&#39;0&#39;]</span><br><span class="line">]</span><br><span class="line">输出: 1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>示例 2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">[</span><br><span class="line">[&#39;1&#39;,&#39;1&#39;,&#39;0&#39;,&#39;0&#39;,&#39;0&#39;],</span><br><span class="line">[&#39;1&#39;,&#39;1&#39;,&#39;0&#39;,&#39;0&#39;,&#39;0&#39;],</span><br><span class="line">[&#39;0&#39;,&#39;0&#39;,&#39;1&#39;,&#39;0&#39;,&#39;0&#39;],</span><br><span class="line">[&#39;0&#39;,&#39;0&#39;,&#39;0&#39;,&#39;1&#39;,&#39;1&#39;]</span><br><span class="line">]</span><br><span class="line">输出: 3</span><br></pre></td></tr></table></figure>
+
+<p>解释: 每座岛屿只能由水平和/或竖直方向上相邻的陆地连接而成。</p>
+<hr>
+<p><strong>思路：</strong>同样地，我们判断一个岛屿与哪些1相连是很困难的，因此需要转换思路，我们把「DFS触发条件」设定为<code>grid[x][y]==&#39;1&#39;</code>，此时岛屿数量加1，把遍历过的点改为0.即可。</p>
+<p><strong>时间复杂度：</strong>$O(N×M)$，$N,M$分别为矩阵的大小。</p>
+<p><strong>空间复杂度：</strong>$O(N×M)$，$N,M$分别为矩阵的大小。在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到 $M×N$。</p>
+<h2 id="3-最大人工岛（Hard）"><a href="#3-最大人工岛（Hard）" class="headerlink" title="3. 最大人工岛（Hard）"></a>3. 最大人工岛（Hard）</h2><p>在二维地图上， 0代表海洋， 1代表陆地，我们最多只能将一格 0 海洋变成 1变成陆地。</p>
+<p>进行填海之后，地图上最大的岛屿面积是多少？（上、下、左、右四个方向相连的 1 可形成岛屿）</p>
+<p>示例 1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1, 0], [0, 1]]</span><br><span class="line">输出: 3</span><br><span class="line">解释: 将一格0变成1，最终连通两个小岛得到面积为 3 的岛屿。</span><br></pre></td></tr></table></figure>
+
+<p>示例 2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1, 1], [1, 0]]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 将一格0变成1，岛屿的面积扩大为 4。</span><br></pre></td></tr></table></figure>
+
+<p>示例 3:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1, 1], [1, 1]]</span><br><span class="line">输出: 4</span><br><span class="line">解释: 没有0可以让我们变成1，面积依然为 4。</span><br></pre></td></tr></table></figure>
+
+<p>说明:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 &lt;&#x3D; grid.length &#x3D; grid[0].length &lt;&#x3D; 50</span><br><span class="line">0 &lt;&#x3D; grid[i][j] &lt;&#x3D; 1</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>在解这道题之前，我们需要想到一些边界情况;</p>
+<ol>
+<li>全为陆地，则无法填海，<code>maxArea = m*n</code>,m,n分别为地图横纵尺寸。</li>
+<li>全为海洋，则仍可以填岛，<code>maxArea = 1</code>.</li>
+<li>只有一座连通岛，那么此时填充的作用仅仅是扩大面积而不是连通相邻的岛，<code>maxArea = maxArea+1</code>.</li>
+</ol>
+<p>那么如何填充使得面积最大，这个通过题目的简单例子是无法感受到的，比如下面这种情况<br>$$<br>[[0,0,1,0,0,0,0,1,0,0,0,0,0],\<br> [0,0,0,0,0,0,0,1,1,1,0,0,0],\<br> [0,1,1,0,1,0,0,0,0,0,0,0,0],\<br> [0,1,0,0,1,1,0,0,1,0,1,0,0],\<br> [0,1,0,0,1,1,0,0,1,1,1,0,0],\<br> [0,0,0,0,0,0,0,0,0,@,*,0,0],\<br> [0,0,0,0,0,0,0,1,1,1,0,0,0],\<br> [0,0,0,0,0,0,0,1,1,0,0,0,0]]\<br>$$<br>（1）<code>@=0,*=0</code>,此时可以把@变为1，最大面积为<code>5+5+1=11</code>。</p>
+<p>（2）<code>@=0,*=1</code>,此时可以把@变为1或者*下方的0变为1，最大面积为<code>6+5+1=12</code>。</p>
+<p><strong>思路</strong>：把连通岛编号<code>index(&gt;=2)</code>。统计每个人工岛的最大面积（通过dfs）。然后再遍历地图，把所有为<code>0</code>的地方，<u>研究其是否连接<em>至少</em>两个岛，即上下左右方向链接不同<code>index</code>的岛屿。</u></p>
+<p>这样的话，我们就能兼顾所有情况。C++代码如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> m,n,maxArea,index;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; base_area;<span class="comment">//基础面积哈希表</span></span><br><span class="line">        </span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; d = &#123;&#123;<span class="number">0</span>,<span class="number">1</span>&#125;,&#123;<span class="number">0</span>,<span class="number">-1</span>&#125;,&#123;<span class="number">1</span>,<span class="number">0</span>&#125;,&#123;<span class="number">-1</span>,<span class="number">0</span>&#125;&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">outRange</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (x&gt;=m||y&gt;=n||x&lt;<span class="number">0</span>||y&lt;<span class="number">0</span>) ;<span class="comment">//越界检查</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> &amp;area)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">//找到至少两个index不相等的岛屿，并统计它们的面积</span></span><br><span class="line">        <span class="keyword">int</span> base_index = <span class="number">0</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">temp</span><span class="params">(<span class="number">4</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(!outRange(x+d[i][<span class="number">0</span>],y+d[i][<span class="number">1</span>])&amp;&amp;grid[x+d[i][<span class="number">0</span>]][y+d[i][<span class="number">1</span>]]) </span><br><span class="line">            &#123;</span><br><span class="line">                base_index = grid[x+d[i][<span class="number">0</span>]][y+d[i][<span class="number">1</span>]];</span><br><span class="line">                <span class="keyword">if</span>(!count(temp.begin(),temp.end(),base_index))area += base_area[base_index];</span><br><span class="line">                temp[i] = base_index;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;                        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid, <span class="keyword">int</span> &amp;area)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// cout&lt;&lt;&quot;x:&quot;&lt;&lt;x&lt;&lt;&quot;,y:&quot;&lt;&lt;y&lt;&lt;endl;</span></span><br><span class="line">        <span class="keyword">if</span>(outRange(x,y)|| grid[x][y]!=<span class="number">1</span>) <span class="keyword">return</span>;</span><br><span class="line">        grid[x][y] = index;<span class="comment">//已经走过的陆地标记为index</span></span><br><span class="line">        area+=<span class="number">1</span>;</span><br><span class="line">        dfs(x+<span class="number">1</span>,y,grid,area); </span><br><span class="line">        dfs(x<span class="number">-1</span>,y,grid,area); </span><br><span class="line">        dfs(x,y+<span class="number">1</span>,grid,area); </span><br><span class="line">        dfs(x,y<span class="number">-1</span>,grid,area); </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestIsland</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!grid.size()||!grid[<span class="number">0</span>].size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        m = grid.size();</span><br><span class="line">        n = grid[<span class="number">0</span>].size();</span><br><span class="line">        maxArea = <span class="number">0</span>;</span><br><span class="line">        index = <span class="number">2</span>;</span><br><span class="line">        <span class="comment">//1.研究基础未填岛情况，把各个岛屿的面积保存再哈希表中</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; m;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)</span><br><span class="line">        <span class="keyword">if</span>(grid[i][j]==<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> area = <span class="number">0</span>;</span><br><span class="line">            dfs(i,j,grid,area);</span><br><span class="line">            base_area[index] = area;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;index&lt;&lt;<span class="string">&quot;,&quot;</span>&lt;&lt;i&lt;&lt;<span class="string">&quot;,&quot;</span>&lt;&lt;j&lt;&lt;<span class="string">&quot;,area:&quot;</span>&lt;&lt;base_area[index]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            index++;   </span><br><span class="line">            maxArea = max(maxArea,area);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//2.研究填岛情况，遍历所有的0</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; m;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)</span><br><span class="line">        <span class="keyword">if</span>(grid[i][j]==<span class="number">0</span>)</span><br><span class="line">        &#123;<span class="comment">//如果&lt;u&gt;研究其是否连接*至少*两个岛，即上下左右方向链接不同`index`的岛屿</span></span><br><span class="line">            <span class="keyword">int</span> area = <span class="number">0</span>;</span><br><span class="line">            connect(i,j,grid,area);</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;i&lt;&lt;<span class="string">&quot;,&quot;</span>&lt;&lt;j&lt;&lt;<span class="string">&quot;,area:&quot;</span>&lt;&lt;area&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">            maxArea = max(area,maxArea);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//研究几种需要填岛的特殊情况</span></span><br><span class="line">        <span class="comment">//1.没有陆地 maxArea==0</span></span><br><span class="line">        <span class="comment">//2.最大面积岛屿旁边没有相邻岛maxArea!=0, max_fillArea==0</span></span><br><span class="line">        <span class="keyword">if</span>(maxArea==(m*n)) <span class="keyword">return</span> m*n;</span><br><span class="line">        <span class="keyword">return</span> maxArea+<span class="number">1</span>;<span class="comment">//没有海洋或没有岛</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>时间和空间可以根据代码进行分析。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/08/10/2020-8-12-dfs-bfs/" data-id="ckff8gnyq000owgsce6c7fl0m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/14/2020-8-20-what-is-Trie/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          什么是前缀树
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/10/2020-9-12-minimal-Spanning-tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">专题:DFS&amp;BFS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

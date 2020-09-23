@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2020-04-30-avl-tree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/10/2020-04-30-avl-tree/" class="article-date">
+  <time datetime="2020-05-10T05:23:45.000Z" itemprop="datePublished">2020-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/10/2020-04-30-avl-tree/">全手写实现AVL树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="全手写实现AVL树"><a href="#全手写实现AVL树" class="headerlink" title="全手写实现AVL树"></a>全手写实现AVL树</h1><blockquote>
+<p>本文阅读大概需要45分钟，<strong>独立</strong>编程需要两天，建议预留充足的时间和咖啡。</p>
+</blockquote>
+<p>（友情提示，笔者基本未参考网络资料，边思考边写代码，100%干货，学AVL看这一篇就够了）</p>
+<p>学树的顺序，一般来说是：二叉树-&gt;二叉查找树-&gt;AVL树-&gt;2-3-4树-&gt;红黑树。它们的难度依次递增。不得不说的是，树是计算机科学最重要研究课题之一。在算法类面试当中，树的考察也是不可或缺的。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200425225354848.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>先简单回顾一下二叉查找树：</p>
+<p>一棵空树，或者是具有下列性质的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a>：</p>
+<p>（1）若左子树不空，则左子树上所有结点的值均小于它的根结点的值；</p>
+<p>（2）若右子树不空，则右子树上所有结点的值均大于它的根结点的值；</p>
+<p>（3）左、右子树也分别为二叉排序树；</p>
+<p>（4）没有键值相等的结点。</p>
+<p>让我们介绍一种全新的*<strong>自平衡二叉树（斜体加粗表示这玩意很酷炫）*</strong>。相信在你学完并且理解之后。会觉得之前学的树都太low了。</p>
+<p>你可能觉得AVL是某些niubilious（自造词，牛批的意思）的英文缩写。事实是，AVL树的名字来源于它的发明作者G.M. <strong>A</strong>delson-<strong>V</strong>elsky 和 E.M. <strong>L</strong>andis。AVL树是最先发明的自平衡二叉查找树（Self-Balancing Binary Search Tree,简称平衡二叉树）。</p>
+<p>它的特点是：<strong>左右子树高度差（平衡因子）的绝对值小于等于1.</strong> （红色加粗的字体表明你应该记住这句话）</p>
+<p>下面邀请插画师turtle配合演示，事实上，整个AVL树的插入和删除操作我们都会作图演示，保证你能看懂：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200425231356816.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<blockquote>
+<p>感谢turtle先生，你今天的粉色画笔非常好看！</p>
+</blockquote>
+<p> 数字代表val，字母代表payload。你可以借助字典中的key和value来理解。最下面的数字，我们称为<strong>平衡因子（balance factor,bf）</strong>。只有一棵树所有节点平衡因子在1,0,-1之间，这棵树才是平衡的。 所谓的树的高度，就是垂直方向，从当前节点到根节点的最大深度。<strong>平衡因子等于左右子树高度差，叶子节点平衡因子一定为0。</strong></p>
+<p><em>为什么要满足这个条件呢？（斜体表示你问了一个问题）</em>因为我们希望一棵树尽量对称均匀，看起来漂亮（删除线表示这是错误的理解）我们先区分两个概念</p>
+<ol>
+<li><strong>满二叉树：</strong>除最后一层无任何子节点外，每一层上的所有结点都有两个子结点的二叉树为<em>满二叉树（国内定义）</em>。</li>
+<li><strong>完全二叉树：</strong>若设二叉树的深度为k，除第 k 层外，其它各层 (1～k-1) 的结点数都达到最大个数，第k 层所有的结点都<strong>连续集中在最左边</strong>，这就是完全二叉树。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20200425233454747.png" alt="img"></p>
+<p>​                                                                                                        <strong>满二叉树</strong></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvZjlkY2QxMDBiYWExY2QxMTcxZmFmMWJkYjUxMmM4ZmNjMmNlMmRkYQ?x-oss-process=image/format,png" alt="img" style="zoom:50%;" />
+
+<p>​                                                                                                <strong>完全二叉树</strong></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>AVL树是一种完全二叉树，因为这个特性，我们发现它的插入，删除操作最好最坏的情况都是log(n)。</p>
+<p><em>这是怎么得来的？</em> 你如果只是死记而不理解的话，这会很糟糕，你可能会记混淆。一棵完全二叉树的深度设为k ， 那么前k-1层一共有2^(k-1)-1个节点，最后一层节点数最少为0，最多为2^(k-1)。设节点总数为N。那么2^(k-1)-1&lt;=N&lt;=2^(k-1)-1+2^(k-1)=2^k-1。解得： k-1&lt;Log2(N+1)&lt;k，按照层数递归的思想，我们的时间复杂度就是O(logN)量级的。</p>
+<p>由于之前的博客已经讲解了<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32439305/article/details/105741842">二叉查找树</a>。下面让我们思考，在插入过程如何保持二叉树动态平衡。</p>
+<p>希望你能保持足够的耐心，关闭音乐，集中注意力，只要不是咖啡撒到键盘上就行。</p>
+<p>下面是插入操作的实现.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span> (<span class="params">self, val, payload</span>):</span></span><br><span class="line">    <span class="keyword">if</span> self.root:</span><br><span class="line">        self._put(val, payload,self.root)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.root = BSTNode(val,payload)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_put</span>(<span class="params">self,val,payload,currentNode</span>):</span></span><br><span class="line">    <span class="keyword">if</span> val &lt;= currentNode.val:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> currentNode.left_child:</span><br><span class="line">            left_new = BSTNode(val,payload,parent=currentNode)</span><br><span class="line">            currentNode.left_child = left_new</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._put(val,payload,currentNode.left_child)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> currentNode.right_child:</span><br><span class="line">            right_new = BSTNode(val,payload,parent=currentNode)</span><br><span class="line">            currentNode.right_child = right_new</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._put(val,payload,currentNode.right_child)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这是BST插入的相关代码。下面介绍添加节点时的平衡操作：</p>
+<h1 id="Put方法实现"><a href="#Put方法实现" class="headerlink" title="Put方法实现"></a>Put方法实现</h1><ul>
+<li>我们先考虑当前节点bf的变化，如果当前节点的bf大于1或小于-1，说明我们需要进行<strong>旋转</strong>操作，下面我会详细介绍；否则在当前节点为左子节点时，我们将其父节点的bf加 1，当前节点为右子节点，其父节点减1. <strong>这里其实是一个递归操作，</strong>每当子节点改变，其上层的所有父节点需要改变，除非某个父节点的平衡因子为0.</li>
+<li>我们先介绍几种平衡方法：**<em>左旋(L_Rot)，右旋(R_Rot)，LR双旋(LR_doubRot)，RL双旋(RL_doubRot)**</em>。它们是你前所未见的炫操作。</li>
+</ul>
+<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p><strong>1.左旋（感谢<a target="_blank" rel="noopener" href="https://blog.csdn.net/sun_tttt">Sun_TTTT博客</a>精彩配图）</strong></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvMTMzNTQ4MC8yMDE4MDIvMTMzNTQ4MC0yMDE4MDIyMjIzNTQzMDIwNi0xOTk0NjkwMzQwLmdpZg" alt="左旋"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>简而言之就是某个节点的父节点变成了其左子节点，对于原来的左子节点，变成原来父节点的右节点。</p>
+<p><strong>2.右旋</strong></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvMTMzNTQ4MC8yMDE4MDIvMTMzNTQ4MC0yMDE4MDIyMjIzNTUwMzEyNC0xNDE1MDk5MzcuZ2lm" alt="右旋"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>简而言之就是某个节点的父节点变成了其右子节点，对于原来的右子节点，变成原来父节点的左节点。</p>
+<p><strong>3.LR双旋</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200426232346142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>它是左旋和右旋的结合版。</p>
+<p><strong>4.RL双旋</strong></p>
+<p>LR双旋的相反版本。</p>
+<p>至于AVL是如何设计出这样的结构，这不是人类考虑的问题了。但是笔者理解是，为了保持节点平衡，尽可能降低树的高度，在红黑树中也有类似的操作。</p>
+<p>好了，介绍了这几种旋转方法，我猜你已经晕头转向了。但是好戏刚刚开始。</p>
+<ul>
+<li><p>关于旋转：什么时候进行什么样的旋转？<em>我们需要一点想象力(Ignite your Imagination)。</em></p>
+</li>
+<li><p>对于直线型结构和回旋镖型结构，如下图所示。在当前节点的平衡因子小于-1且左子节点不存在并且当前节点的右子节点的左子节点存在，那么表示我们需要进行RL双旋，否则进行左旋；在当前节点的平衡因子大于1且右子节点不存在并且当前节点的左子节点的右子节点存在，那么表示我们需要进行LR双旋，否则进行右旋。</p>
+ <img src="https://img-blog.csdnimg.cn/20200429130542284.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img" style="zoom: 80%;" />
+
+</li>
+</ul>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429130844114.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img" style="zoom:80%;" /><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>代码如下，供参考：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">renew_balance_factor</span>(<span class="params">self,currNode:AVLNode</span>):</span></span><br><span class="line">     <span class="keyword">if</span> currNode.balance_factor&gt;<span class="number">1</span> <span class="keyword">or</span> currNode.balance_factor&lt;<span class="number">-1</span>:</span><br><span class="line">         <span class="keyword">if</span> self.isrebalance: self.rebalance(currNode)</span><br><span class="line">         <span class="keyword">return</span> </span><br><span class="line">     <span class="keyword">if</span> currNode.isLeftChild(): </span><br><span class="line">         currNode.parent.balance_factor+=<span class="number">1</span></span><br><span class="line">     <span class="keyword">elif</span> currNode.isRightChild():</span><br><span class="line">         currNode.parent.balance_factor-=<span class="number">1</span></span><br><span class="line">     <span class="keyword">if</span> currNode.parent!=<span class="literal">None</span> <span class="keyword">and</span> currNode.parent.balance_factor != <span class="number">0</span> :         </span><br><span class="line">         self.renew_balance_factor(currNode.parent)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rebalance</span>(<span class="params">self,currNode:AVLNode</span>):</span></span><br><span class="line">     <span class="keyword">if</span> currNode.balance_factor&gt;<span class="number">1</span>:<span class="comment"># left-heavy sub tree</span></span><br><span class="line">         <span class="keyword">if</span> <span class="keyword">not</span> currNode.right_child <span class="keyword">and</span> currNode.left_child.right_child:</span><br><span class="line">             self.LR_doubRot(currNode)</span><br><span class="line">             <span class="keyword">return</span> </span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">             self.R_Rot(currNode)</span><br><span class="line">     <span class="keyword">elif</span> currNode.balance_factor&lt;<span class="number">-1</span>:<span class="comment"># right-heavy sub tree</span></span><br><span class="line">         <span class="keyword">if</span> <span class="keyword">not</span> currNode.left_child <span class="keyword">and</span> currNode.right_child.left_child:</span><br><span class="line">             self.RL_doubRot(currNode)</span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">             self.L_Rot(currNode)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>旋转后平衡因子如何更新</li>
+</ul>
+<p>我们在BST中插入节点，如果发现某个节点的平很因子大于1或小于-1。就表示我们该进行自平衡操作了。进行R单旋的情况是直线型结构：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200426233308794.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>我们只需要将当前节点16绕7旋转至其右节点即可。其他节点不作改变。我们旋转的同时也<em>必须考虑平衡因子的变化</em>，这里会涉及</p>
+<p>到比较复杂的数学推导，不过没必要紧张，你完全可以画图理解。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200426234231887.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>我们只需要更新A和B的平衡因子即可。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200428192052711.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>上面的new old 分别表示新老节点，h(·)表示节点高度。你看到这可能已经跃跃欲试了，数学可是我的强项呀！ L单旋同理。</p>
+<p>很不幸的是，对于大部分人，包括笔者，数学都不是我们的强项！<strong>所以我们需要调动程序员思维。</strong>正所谓“车到山前必有路”。</p>
+<p>思考替代方案中。。。</p>
+<hr>
+<p>很棒，你已经有了思路，我可以直接获取节点的高度啊！只需要编写一个get_node_bf（）函数就行了。需要注意的是，我们需要得到的是该节点左右子树中高度的<em>最大值。</em>所以我们必须进行递归左右子树，左右子树的“路径”，个数我们不知道：按照h(Node) = 1 + max(h(left_child),h(right_child)). 因此我们需要用两个列表path_level_l 和 path_level_r 来分别存储左右子树各个路径的高度。最后套用公式就是该节点的高度。</p>
+<p>我们稍微整理一下思路写出代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_level</span>(<span class="params">node,depth,path_level</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> node.isLeaf(): path_level.append(depth);<span class="keyword">return</span>  </span><br><span class="line">            depth+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> node.left_child:</span><br><span class="line">                get_level(node.left_child,depth,path_level)</span><br><span class="line">            <span class="keyword">if</span> node.right_child:</span><br><span class="line">                get_level(node.right_child,depth,path_level)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>如果是叶子节点其高度为1，bf为0，我们再写一个求节点bf的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_node_bf</span>(<span class="params">self,currNode:AVLNode</span>)-&gt;int:</span></span><br><span class="line">        <span class="comment"># obtain current node&#x27;s bf</span></span><br><span class="line">        max_l = max_r =<span class="number">0</span></span><br><span class="line">        path_level_l = []</span><br><span class="line">        path_level_r = []</span><br><span class="line">        <span class="keyword">if</span> currNode.isLeaf():</span><br><span class="line">            <span class="keyword">return</span> (max_l-max_r)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            get_level(currNode.left_child,<span class="number">1</span>,path_level_l)</span><br><span class="line">            get_level(currNode.right_child,<span class="number">1</span>,path_level_r)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> path_level_l: max_l = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:max_l = max(path_level_l)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> path_level_r: max_r = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>: max_r = max(path_level_r)</span><br><span class="line">            <span class="keyword">return</span> (max_l - max_r)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>进行LR单旋的是“回旋镖型结构”：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200426233513572.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>我们同样进行平衡因子的动态更新，不过这次只用调用get_node_bf函数即可。注意C先变为B的父节点，B为C左子节点，A再变为C的右子节点，C的父节点改为A的父节点。A的父节点改为C是不是非常简单呢？</p>
+<ul>
+<li>下面我们将上述过程可视化：</li>
+</ul>
+<p>以下面数据为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data &#x3D; &#123;16:&#39;A&#39;,3:&#39;B&#39;,7:&#39;C&#39;,11:&#39;D&#39;,9:&#39;E&#39;,26:&#39;F&#39;,18:&#39;G&#39;,14:&#39;H&#39;,15:&#39;I&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200429131256439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200429131329106.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"> 大家可以自行验证另一个完全相反的过程，检查自己的代码有无纰漏。</p>
+<p>好了，非常高兴你能坚持看到这，如果你觉得困的话，可以明天再看删除操作：</p>
+<h1 id="Del-方法实现"><a href="#Del-方法实现" class="headerlink" title="Del 方法实现"></a>Del 方法实现</h1><p>你已经喝完了咖啡，是否还感觉困呢？咖啡不要放太多糖。</p>
+<p>Del 方法比put方法稍微复杂一点，但是我们有了put的相关方法，因而不会太麻烦。我们构建了上述二叉树，现在尝试依次删除150，130，160，140，155，120，157。</p>
+<p>删除有三种情况：</p>
+<ol>
+<li>删除叶子节点；</li>
+<li>删除节点只有一个子节点；</li>
+<li>删除节点有两个子节点。</li>
+</ol>
+<p>如果你认真看了我关于二叉查找树的博客的话，会发现万变不离其宗。我们只需要在每次删除节点后更新bf即可。为此我们设计函数update_del_bf（）。如果我们发现当前节点不平衡，就将其通过旋转的方式平衡，继续更新它的父节点；如果节点平衡，我们依次更新父节点，直到父节点为None止。</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_del_bf</span>(<span class="params">self,currNode:AVLNode</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> currNode:<span class="keyword">return</span></span><br><span class="line">    currNode.balance_factor = self.get_node_bf(currNode)</span><br><span class="line">    <span class="keyword">if</span> currNode.balance_factor&gt;<span class="number">1</span> <span class="keyword">or</span> currNode.balance_factor&lt;<span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">if</span> self.isrebalance: self.rebalance(currNode)</span><br><span class="line">        self.update_del_bf(currNode.parent)</span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> currNode.parent:<span class="comment">#update all parent bf         </span></span><br><span class="line">        self.update_del_bf(currNode.parent)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>好了删除操作我们也完成了，下面以图片的形式展示整个删除过程。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200429142633426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429142942653.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429143050100.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429143153960.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">上面就是，整个插入和删除的过程，相信你一定会有许多收获或者疑问，欢迎留言或者email .</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/durantSaaS/data_structure_source_plan/blob/master/Advanced/AVL_tree.py">源代码在这里！</a></p>
+<p>下一期介绍红黑树*</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/05/10/2020-04-30-avl-tree/" data-id="ckff8gnzr001owgsc4tk37nh8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2020-05-10-red-black-tree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/10/2020-05-10-red-black-tree/" class="article-date">
+  <time datetime="2020-05-10T05:23:45.000Z" itemprop="datePublished">2020-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/10/2020-05-10-red-black-tree/">全手写实现红黑树</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一提到红黑树，你应该是这样想的。。。</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9zczIuYmRzdGF0aWMuY29tLzcwY0Z2blNoX1ExWW54R2twb1dLMUhGNmhoeS9pdC91PTM5MzcwMTEwODUsMzIyNzA1Mjk5NSZmbT0yNiZncD0wLmpwZw?x-oss-process=image/format,png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>上一期我们详细分析了<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32439305/article/details/105758962">AVL树</a>，相信你已经对二叉平衡树有了非常棒的理解。这一期我们开始介绍红黑树，红黑树在网上有很多资源，但是讲的不严谨，也不全面。笔者初学时也浪费了许多时间，因此我将非常细致的讲解，将自己踩过的坑晒出来，保证你能看懂。</p>
+<p>红黑树和AVL树的区别是：<strong>AVL树是严格平衡的二叉树，红黑树是弱平衡的二叉树。和红黑树相比，AVL树是严格的平衡二叉树，平衡条件必须满足（所有节点的左右子树高度差不超过1）。通过对任何一条从根到叶子的路径上各个节点着色的方式的限制，红黑树确保没有一条路径会比其它路径长出两倍，因此相同节点数的前提下，AVL树的高度往往低于红黑树。</strong>AVL树根据节点的平衡因子进行调整，而红黑树是根据颜色进行调整。大致地说，红黑树理解上较容易，而实现起来，需要注意的细节要更多（比如说考虑叔叔节点）。推荐大佬<a target="_blank" rel="noopener" href="https://blog.csdn.net/Gosick_Geass_Gate/article/details/88556840">博客</a>：比较两者不同。</p>
+<p><em>为什么要学二叉树呢？（斜体表示你问了一个很棒的问题）：</em></p>
+<ul>
+<li><strong>红黑树的结点增删改查效率非常优良，都为log(n) ,</strong> 应用方面：1. Linux内核进程调度由红黑树管理进程控制块。 2. Epoll用红黑树管理事件块。 3. nginx服务器用红黑树管理定时器。 4. C++ STL中的map和set的底层实现为红黑树。 5. Java中的TreeMap和TreeSet由红黑树实现。 6. Java8开始，HashMap中，当一个桶的链表长度超过8，则会改用红黑树。</li>
+</ul>
+<p>下面我们看一下红黑树的性质：</p>
+<p><strong>1. 每个节点要么是黑色，要么是红色</strong> </p>
+<p><strong>2. 根节点一定为黑色</strong> </p>
+<p><strong>3. 每一个空节点(null / NIL)都是黑色（注意空节点不等于根节点）</strong></p>
+<p><strong>4.一旦一个节点为黑色，它的孩子一定为黑色，也就是说，不可能有父子节点同时为红色。</strong></p>
+<p><strong>5. 对每个节点而言，从每个黑色节点到叶子节点的节点数量相同。</strong></p>
+<p>因此我们需要对树可视化函数稍作修改，对每个节点上色。对turtle，使用 t.fillcolor来设置填充颜色，t.begin_fill和t.end_fill来实现开始填充和结束填充，非常方便。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505232447788.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>笔者得到的树如上图所示，是不是很美观呢？但是光美观是不够的，我们还得实现背后的逻辑，而这也是最酷炫的部分。我保证，如果你能亲手成就一个红黑树，能让你“快乐”很长时间。</p>
+<p>和AVL树类似，红黑树只需要在节点类加入颜色属性即可。为了后期代码方便，我们实现两个函数，一个是获取当前节点的叔叔节点get_uncle，另一个是获取兄弟节点get_brother</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_uncle</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.parent <span class="keyword">or</span> <span class="keyword">not</span> self.parent.parent: <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> self.parent.parent.hasBothChildren():</span><br><span class="line">        <span class="keyword">if</span> self.parent.isLeftChild():</span><br><span class="line">            <span class="keyword">return</span> self.parent.parent.right_child</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.parent.parent.left_child</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_brother</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> self.parent : <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> self.parent.hasBothChildren():</span><br><span class="line">        <span class="keyword">if</span> self.isLeftChild():</span><br><span class="line">            <span class="keyword">return</span> self.parent.right_child</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.parent.left_child</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> 好了，我们依旧从插入和删除来讨论算法</p>
+<h2 id="1-Put方法实现"><a href="#1-Put方法实现" class="headerlink" title="1. Put方法实现"></a>1. Put方法实现</h2><p>我们和AVL树类比，其实就是将平衡因子改变的过程变为更新颜色的过程而已，为此我们需要实现一个函数renew_color。需要注意的是每当创建一个新的叶子节点时候，它都应该是红色的。理由很简单，红色在父结点（如果存在）为黑色结点时，红黑树的黑色平衡没被破坏，不需要做自平衡操作。但如果插入结点是黑色，那么插入位置所在的子树黑色结点总是多1，必须做自平衡。</p>
+<p>旋转过程在我上篇的AVL树博客中已经介绍（需要的读者自行食用），红黑树中的旋转也完全相同。</p>
+<p>我们来作一些简单的设定。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200505232447788.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>在这幅图中，当前节点为B，那么其兄弟节点为E，其父节点为D，它的叔节点为A，祖父节点为C。</p>
+<p>我们由浅入深 循序渐进来化解这个问题：</p>
+<p>（1）若树为空树，那么直接添加一个节点作为根节点，且为黑色（事实上，根节点一定为黑色）。</p>
+<p>（2）插入节点的key已经存在，那么我们只需要将节点的val更新成新的val即可。</p>
+<p>（3）插入节点的父节点为黑节点，那么插入新节点不会影响树的平衡，直接插入即可。</p>
+<p>（4）插入节点 的父节点为红色节点，插入节点也为红色，明显不平衡。且父节点肯定不是根节点，我们需要详细的讨论这种情况：</p>
+<p><strong>1. 叔叔节点存在，并且叔叔节点为红色：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514132939126.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>当前节点为B，此时父节点的左子树和右子树肯定是不平衡的。给你10s请你想一想，如何满足性质5？</p>
+<p>一种直观的想法是将父节点D\C全部变为黑色，然后将当前节点B和其兄弟节点I</p>
+<p>变为红色。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514133333470.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>然后我们需要考虑当前节点的祖父节点的颜色F。如果它不是根节点，我们需要将其颜色变为红色，然后将祖父节点变为当前节点继续向上平衡。注意，只有所有子树都平衡的情况下，整个树才是平衡的。简言之，红黑树平衡是至下而上的，而AVL树是自上而下的。</p>
+<p><strong>2. 插入节点的父节点是左子节点</strong></p>
+<p>这时候我们看当前节点是左子节点还是右子节点：</p>
+<p><strong>右子节点：我们对祖父节点A进行LR双旋，祖父节点变为红色，父节点变为黑色 。</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/2020051413435664.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><strong>左子节点：对祖父节点A进行R单旋，同时将父节点颜色设为黑色，叔叔节点设为红色</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514135453274.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><strong>3. 插入节点的父节点是右子节点</strong></p>
+<p>与左子节点情况刚好相反，故不再演示，但是调试时候注意考虑这种情况。</p>
+<p><em>OK，上面便是插入操作，我们来测试一下，数据为data = {12:’A’,1:’B’,9:’C’,2:’D’,3:’E’,2.5:’F’,11:’G’,10:’H’,2.4:’I’,6:’J’}</em><img src="https://img-blog.csdnimg.cn/20200514135937654.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200514140103721.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<hr>
+<h2 id="2-Del方法实现"><a href="#2-Del方法实现" class="headerlink" title="2. Del方法实现"></a>2. Del方法实现</h2><p>现在我们考虑更复杂的删除情况。你需要一杯咖啡，因为接下来内容会比较多和干燥。但是我保证你看完之后会很有启发。</p>
+<p>现在我们写一个def __delitem__函数，这样我们就能使用del 关键字删除特定key了。我们先简单回顾一下，</p>
+<p>（1）如果待删除的结点是叶子结点，则直接删除即可。</p>
+<p>（2）如果待删除的结点只有一个孩子，则设定currNode.parent.left_child = currNode.left_child或者currNode.parent.right_child = currNode.right_child，替换节点为其独子。　　</p>
+<p>（3）如果待删除的结点有两个孩子，则可以找它的<strong>后继</strong>，将值覆盖过来，之后情况转变成删除前驱或者后继结点，回到（1）和     （2）。</p>
+<p>删除的<strong>含义</strong>在于，删的不是节点本身，而是它的“替身”。（你可以想象成JOJO里的替身使者:-&gt;）</p>
+<p>下面是 <strong>正片</strong> 即在<strong>删除之前</strong>，我们必须更新颜色和进行旋转，这些在函数update_del_color()中体现：</p>
+<p>先考虑几个边值条件：</p>
+<p><strong>1. 树为空，直接返回None即可；</strong></p>
+<p><strong>2. 利用get_node函数找到需要删除的节点，如果没找到，直接返回None。</strong></p>
+<p><strong>3. 如果替换节点是红色的，将其改为黑色，因为删除红色节点不会影响平衡</strong></p>
+<p>所谓的再平衡无异乎是找兄弟或者父母去“借”，是不是很形象呢{坏笑}：<br>我们可以将<strong>当前节点分为左子节点和右子节点</strong>两种情况，它们是完全对称的，</p>
+<ul>
+<li>先考虑左子节点情况：</li>
+</ul>
+<p>​    假设实际被删除节点为C，</p>
+<p><strong>（a）父节点为红色，且兄弟节点没有子节点</strong></p>
+<p>我们将父节点变为黑色，同时将兄弟节点变为红色（兄弟节点一定没有子节点）。下面这个图可以直观展现这点：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514201702553.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><strong>（b）父节点为黑色，且兄弟节点没有子节点</strong></p>
+<p>我们将兄弟节点颜色改为红色，之后再对父节点执行update_del_color进行递归。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514191528935.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> <strong>（c）兄弟节点左子节点存在，且为红色节点，右节点随意</strong></p>
+<p> 那么这个时候我们需要考虑父节点B的颜色，因为兄弟左子节点D为红色，我们可以把它借出去，涂成父节点的颜色，再将父节点颜色设为黑色。之后对父节点B进行RL双旋，但是不要改变节点颜色，只有在插入时才改变节点颜色。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514193714675.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这里白色表示颜色不确定。</p>
+<p><strong>（d）兄弟节点右子节点存在，且为红色节点，左子节点为黑色</strong></p>
+<p>兄弟变为父节点颜色，同时父节点变为黑色，而且右侄子变为黑色。再对父节点进行左旋。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514194840326.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p> <strong>（e）兄弟节点有两个儿子，且兄弟为红色节点</strong></p>
+<p>我们直接对父节点左旋，这就变成上面兄弟为黑色情况，再调用update_del_color对父节点进行递归：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200514201513136.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>当前节点为右子节点，刚好相反，故不再赘述</li>
+</ul>
+<p>下面我们将完整的过程展现出来，根据July的博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/v_july_v/article/details/6284050%E3%80%82">https://blog.csdn.net/v_july_v/article/details/6284050。</a></p>
+<p>依次删除12 1 9 2 0 11 7 19 4 15 18 5 14 13 10 16 6 3 8 17。 大家可以作一个对比，如果你有任何问题，请立刻在下方留言！笔者不胜感激。</p>
+<ul>
+<li>完整的红黑树</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200514202205266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514202813225.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514202921413.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514203019653.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514203205400.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"> <img src="https://img-blog.csdnimg.cn/20200514203706923.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/2020051420352144.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514203800625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514203823648.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514203914829.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514203951941.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204138852.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204152841.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204239757.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204302184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204326749.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204346475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204356989.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204427970.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200514204443441.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>希望本文对你有帮助，</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/durantSaaS/data_structure_source_plan/blob/master/Advanced/RedBlackTree.py">源代码</a>在这里！</p>
+<p>码字不易，希望大家多多转发，多点赞！邮箱<a href="mailto:&#x64;&#x75;&#x72;&#97;&#110;&#x74;&#50;&#48;&#x31;&#57;&#x40;&#115;&#105;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;">&#x64;&#x75;&#x72;&#97;&#110;&#x74;&#50;&#48;&#x31;&#57;&#x40;&#115;&#105;&#x6e;&#x61;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/05/10/2020-05-10-red-black-tree/" data-id="ckff8gnzt001pwgsc27cl68xc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2020-07-17-fenwicktree-segmentTree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/26/2020-07-17-fenwicktree-segmentTree/" class="article-date">
+  <time datetime="2020-03-26T07:56:27.000Z" itemprop="datePublished">2020-03-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/26/2020-07-17-fenwicktree-segmentTree/">线段树和树状数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>“树状数组和线段树都是用于维护数列信息的数据结构，支持单点/区间修改，单点/区间询问信息。以增加权值与询问区间权值和为例，其余的信息需要维护也都类似。时间复杂度均为$O(logn)$。 ”</p>
+</blockquote>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/191524460">详细的数学证明</a></p>
+</blockquote>
+<ul>
+<li>练习题目<ul>
+<li><ol start="315">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/">计算右侧小于当前元素的个数</a></li>
+</ol>
+</li>
+<li><ol start="53">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/">最大子序和</a></li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="I-树状数组"><a href="#I-树状数组" class="headerlink" title="I. 树状数组"></a>I. 树状数组</h1><h2 id="Fenwick-Tree"><a href="#Fenwick-Tree" class="headerlink" title="Fenwick Tree"></a>Fenwick Tree</h2><p>地中海的程序猿们研究数组，时候遇到这样一个问题: 有一个数组$S$从$0 - n-1$，现在要在$O(logn)$ 的时间复杂度内，搜索一个确定的值（或修改）$w$并且对区间 $[a,b]$ 求和。空间复杂度必须严格限制在$O(n)$.</p>
+<p>他们想到了二叉搜索树(BST)，对于平衡二叉树其插入和删除的时间复杂度都是$O(logn)$，因为树是类似于嵌套列表的思想，进而可以想到二叉堆，这是一种非嵌套列表，也可以实现$O(logn)$。于是有了下面这张图：</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMuY25ibG9ncy5jb20vY25ibG9nc19jb20vQUtNZXIvMTIyODU5OS9vX1RyZWVBcnJheS5qcGc?x-oss-process=image/format,png" alt="FenwickTree"></p>
+<blockquote>
+<p>解释一下，编号为$x$的节点上统计着$[x-lowbit(x)+1,x]$这一段区间的信息，$x$的父亲就是$x+lowbit(x)$,我们要维护数组$C$上的信息，存储在数组$A$中。</p>
+</blockquote>
+<p>按照Peter M. Fenwick的说法，正如所有的整数都可以表示成2的幂和，我们也可以把一串序列表示成一系列子序列的和。采用这个想法，我们可将一个前缀和划分成多个子序列的和，而划分的方法与数的2的幂和具有极其相似的方式。一方面，子序列的个数是其二进制表示中1的个数，另一方面，子序列代表的$f[i]$的个数也是2的幂。</p>
+<h2 id="1-Lowbit函数"><a href="#1-Lowbit函数" class="headerlink" title="1. Lowbit函数"></a>1. Lowbit函数</h2><blockquote>
+<p>返回参数转换为二进制后，最后一个1的位置所代表的数值。</p>
+</blockquote>
+<p>比如34转换为二进制就是0010 0010, Lowbit(34)返回2. 程序上 我们可以用<code>((Not I)+1) AND I</code>, 比如NOT(0010 0010) = 1101 1101, 加1之后为 1101 1110，再与上I,为0000 0010(2)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x&amp;(-x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-新建数组"><a href="#2-新建数组" class="headerlink" title="2. 新建数组"></a>2. 新建数组</h2><p>我们定义一个数组BIT，用以维护A的前缀和，</p>
+<p>$$<br>BIT_i = \sum\limits_{j=i-lowbit(i)+1}^{i} A_{j}<br>$$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= MAX_N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        BIT[i] = A[i - <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i - <span class="number">2</span>; j &gt;= i - lowbit(i); j--)</span><br><span class="line">            BIT[i] += A[j];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-修改"><a href="#3-修改" class="headerlink" title="3. 修改"></a>3. 修改</h2><p>假设现在要在$A[i]$的值增加$\delta$, 那么需要将$BIT$在所有含$A[i]$的区间都加上一个数，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">int</span> w)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">// 在下标k、加上w</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = k; j&lt; tr.size();j+=low_bit(j)) tr[j]+=w;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-区间求和"><a href="#4-区间求和" class="headerlink" title="4. 区间求和"></a>4. 区间求和</h2><p>假设我们需要计算$\sum\limits_{i=1}^kA_i$的值。</p>
+<ol>
+<li>首先，将$ans$初始化为$k$</li>
+<li>将$ans$的值加上$BIT[i]$</li>
+<li>将$i$的值减去$Lowbit(i)$</li>
+<li>重复2 . 3 步骤直到$i$的值变为0.</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span> <span class="params">(<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = k; i &gt; <span class="number">0</span>; i -= lowbit(i))</span><br><span class="line">        ans += BIT[i];</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应用：求<a target="_blank" rel="noopener" href="https://blog.csdn.net/cattycat/article/details/5640838">逆序数</a></p>
+<blockquote>
+<p>练习 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-of-smaller-numbers-after-self/">LC315. 计算右侧小于当前元素的个数</a></p>
+</blockquote>
+<h1 id="II-线段树"><a href="#II-线段树" class="headerlink" title="II. 线段树"></a>II. 线段树</h1><h2 id="Segment-Tree"><a href="#Segment-Tree" class="headerlink" title="Segment Tree"></a>Segment Tree</h2><blockquote>
+<p>使用线段树可以快速查找某一个节点在若干线段中出现的次数，时间复杂度为$O(logN)$，而未优化的空间复杂度为$2N$，一般要开$4N$的数组防止越界。</p>
+</blockquote>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvYmQzZWIxMzUzM2ZhODI4YmNiNWZlODVmZmUxZjQxMzQ5NzBhNWEwOQ?x-oss-process=image/format,png" alt="线段树"></p>
+<p>除了叶子节点外，对于$[a,b]$线段节点，其有两个子节点, 左子节点$[a,(a+b)/2]$和右子节点$[(a+b)/2+1,b]$。由于线段树在程序竞赛中被广泛应用，这种结构被$ACMer$和$OIer$戏谑为必须掌握的数据结构。一般地，我们先定义一个线段树节点结构体:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SegmentNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> start;<span class="comment">//线段左节点</span></span><br><span class="line">    <span class="keyword">int</span> end;<span class="comment">//线段右节点</span></span><br><span class="line">    <span class="keyword">int</span> sum;<span class="comment">//线段对应的和</span></span><br><span class="line">    <span class="keyword">int</span> lazytag;<span class="comment">//懒标记</span></span><br><span class="line">    SegmentNode *left;</span><br><span class="line">    SegmentNode *right;</span><br><span class="line">    SegmentNode():start(<span class="number">0</span>),end(<span class="number">0</span>),sum(<span class="number">0</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>请务必熟悉理解<code>上述</code>结构！</p>
+<h2 id="1-建立树"><a href="#1-建立树" class="headerlink" title="1. 建立树"></a>1. 建立树</h2><p>我们对区间$[l,r]$建立线段树，是一个自上而下过程。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">build</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l&gt;r) <span class="keyword">return</span>;</span><br><span class="line">        self-&gt;start = l;self-&gt;end = r;</span><br><span class="line">        <span class="keyword">if</span>(l==r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> mid = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        self-&gt;left = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;left,l,mid);</span><br><span class="line">        self-&gt;right = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;right,mid+<span class="number">1</span>,r);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-单点修改"><a href="#2-单点修改" class="headerlink" title="2. 单点修改"></a>2. 单点修改</h2><p>从根节点开始,以递归的方式不断更新sum值，直到叶子节点即<code>区间长度为1</code>，每个区间的sum值等于左子区间的sum值，加上右子区间的sum值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> pos, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos&lt;self-&gt;start||pos&gt;self-&gt;end) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;start == self-&gt;end)</span><br><span class="line">    &#123;</span><br><span class="line">        self-&gt;sum += k;</span><br><span class="line">        <span class="keyword">return</span>; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;right-&gt;start&gt;pos) add(self-&gt;left,pos,k);</span><br><span class="line">    <span class="keyword">else</span> add(self-&gt;right,pos,k);</span><br><span class="line">    self-&gt;sum = self-&gt;left-&gt;sum + self-&gt;right-&gt;sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-区间查询"><a href="#3-区间查询" class="headerlink" title="3. 区间查询"></a>3. 区间查询</h2><ul>
+<li>第一种情况是当前的区间范围完全在$[l,r]$内，这个时候把当前区间的$sum$值返回即可，</li>
+<li>第二张情况是当前节点的<code>左子节点</code>的<code>右端点</code>和$[l,r]$有交集。这个时候就搜索左子节点。</li>
+<li>第三张情况是当前节点的<code>右子节点</code>的<code>左端点</code>和$[l,r]$有交集。这个时候就搜索右子节点。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//这里的i,j分别代表要搜索的区间</span></span><br><span class="line">    <span class="keyword">if</span>(i&gt;j) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;=self-&gt;start &amp;&amp; self-&gt;end&lt;=j)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> self-&gt;sum; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;left-&gt;end&gt;=i) s+=search(self-&gt;left,i,j);</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;right-&gt;start&lt;=j) s+=search(self-&gt;right,i,j);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-延迟标记"><a href="#4-延迟标记" class="headerlink" title="4. 延迟标记"></a>4. 延迟标记</h2></li>
+</ul>
+<p>对于区间修改，这里会遇到一个问题：为了使所有sum值都保持正确，每一次插入操作可能要更新$O(N)$个sum值，从而使时间复杂度退化为$O(N)$。所以就有了Lazytag，如果一个节点有延迟标记，那么表明这个节点已经被修改过了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_tag</span><span class="params">(SegmentNode *self,<span class="keyword">int</span> l,<span class="keyword">int</span> r,<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">    self-&gt;sum += (r-l+<span class="number">1</span>)*v;self-&gt;lazytag+=v;<span class="comment">//标记只对儿子有影响，自己在打标记的同时一起把统计信息更改了。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_down</span><span class="params">(SegmentNode *self,<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">    add_tag(self-&gt;left,l,mid,self-&gt;lazytag);</span><br><span class="line">    add_tag(self-&gt;right,mid+<span class="number">1</span>,r,self-&gt;lazytag);</span><br><span class="line">    self-&gt;lazytag = <span class="number">0</span>;<span class="comment">//把当前标记分别传给两个儿子然后清空</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> l, <span class="keyword">int</span> r,<span class="keyword">int</span> v)</span> </span>&#123;<span class="comment">//[l,r]为当前区间,[L,R]为要修改的区间</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;=self-&gt;start &amp;&amp; self-&gt;end&lt;=r) &#123;</span><br><span class="line">        add_tag(self,l,r,v);<span class="comment">//打标记</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">    push_down(self,l,r);<span class="comment">//下传标记</span></span><br><span class="line">    <span class="keyword">if</span>(self-&gt;left-&gt;end&gt;=i) s+=search(self-&gt;left,i,j,v);</span><br><span class="line">    <span class="keyword">if</span>(self-&gt;right-&gt;start&lt;=j) s+=search(self-&gt;right,i,j,v);</span><br><span class="line">    <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="III-树状数组和线段树比较"><a href="#III-树状数组和线段树比较" class="headerlink" title="III. 树状数组和线段树比较"></a>III. 树状数组和线段树比较</h1><table>
+<thead>
+<tr>
+<th align="center">数据结构</th>
+<th align="center">时间复杂度</th>
+<th align="center">空间复杂度</th>
+<th align="center">适用特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">线段树</td>
+<td align="center">$O(logN)$</td>
+<td align="center">O(N)</td>
+<td align="center">-</td>
+</tr>
+<tr>
+<td align="center">树状数组</td>
+<td align="center">$O(logN)$</td>
+<td align="center">O(N)</td>
+<td align="center">空间复杂度略低，容易扩展到多维，适用范围较线段树小</td>
+</tr>
+</tbody></table>
+<p>下面看一些经典题目吧</p>
+<h1 id="53-最大子序和"><a href="#53-最大子序和" class="headerlink" title="53. 最大子序和"></a>53. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/">最大子序和</a></h1><p>其实这题除了用动态规划，还可以用线段树做。</p>
+<p><strong>这个分治方法类似于「线段树求解 LCIS 问题」的 pushUp 操作</strong>。 当然，如果读者有兴趣的话，推荐看一看线段树区间合并法解决 <code>多次询问</code> 的「区间最长连续上升序列问题」和「区间最大子段和问题」，还是非常有趣的。</p>
+<p>我们定义一个操作<code>get(a,l,r)</code>表示查询a序列$[l,r]区$间内的最大字段和。对于一个区间，我们取$m = [\frac{l+r}{2}]$,然后<code>逐层递归</code>。最关键的问题是：</p>
+<ul>
+<li><p>我们要维护区间什么信息？</p>
+</li>
+<li><p>我们如何合并这些信息？</p>
+</li>
+</ul>
+<p>  对于一个区间$[l,r]$，<code>lSum</code>表示$[l,r]$以$l$为左端点的最大子段和；<code>rSum</code>表示$[l,r]$以$r$为右端点的最大子段和，<code>mSum</code>表示$[l,r]$</p>
+<p>  内的最大子段和。<code>iSum</code>表示$[l,r]$的区间和。</p>
+<ul>
+<li><code>iSum</code>是左右区间的子段和的和。</li>
+<li>对于 $[l, r]$ 的 <code>lSum</code>，存在两种可能，它要么等于「左子区间」的 <code>lSum</code>，要么等于「左子区间」的 <code>iSum</code> 加上「右子区间」的 <code>lSum</code>，二者取大。</li>
+<li>对于 $[l, r]$ 的 <code>rSum</code>，存在两种可能，它要么等于「右子区间」的 <code>rSum</code>，要么等于「右子区间」的 <code>iSum</code> 加上「左子区间」的 <code>rSum</code>，二者取大。</li>
+<li>对于<code>mSum</code>，存在三种可能，要么完全在左区间，要么完全在中间，要么两边都有，我想你已经猜到了，就是左区间的<code>rSum</code>加上右区间的<code>lSum</code>。</li>
+</ul>
+<p>好的已经可以开始写代码了</p>
+<hr>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Status</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        <span class="keyword">int</span> lSum, rSum, mSum, iSum;</span><br><span class="line">        <span class="comment">// 分别表示，以l为左端点的最大子序和，以r为右端点的最大子序和，</span></span><br><span class="line">        <span class="comment">// mSum表示区间[l,r]最大子序和</span></span><br><span class="line">        <span class="comment">//iSum表示区间和</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function">Status <span class="title">get</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums,<span class="keyword">int</span>  l,<span class="keyword">int</span>  r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l==r) <span class="keyword">return</span> (Status)&#123;nums[l],nums[l],nums[l],nums[l]&#125;;</span><br><span class="line">        <span class="keyword">int</span> m = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        Status lpus = get(nums,l,m);</span><br><span class="line">        Status rpus = get(nums,m+<span class="number">1</span>,r);</span><br><span class="line">        <span class="keyword">int</span> lSum = max(lpus.lSum, lpus.iSum + rpus.lSum);</span><br><span class="line">        <span class="keyword">int</span> rSum = max(rpus.rSum, rpus.iSum + lpus.rSum);</span><br><span class="line">        <span class="keyword">int</span> iSum = lpus.iSum + rpus.iSum;</span><br><span class="line">        <span class="keyword">int</span> mSum = max(lpus.rSum+ rpus.lSum,max(lpus.mSum, rpus.mSum));</span><br><span class="line">        <span class="keyword">return</span> (Status)&#123;lSum,rSum,mSum,iSum&#125;; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxSubArray</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> get(nums, <span class="number">0</span> , nums.size()<span class="number">-1</span>).mSum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>然后我们分析一下时间和空间复杂度。</p>
+<p>时间复杂度：$O(n)$，我们把递归过程看成二叉树的先序遍历，那么这颗二叉树时间复杂度：假设我们把递归的过程看作是一颗二叉树的先序遍历，那么这颗二叉树的深度的渐进上界为 $O(\log n)$，这里的总时间相当于遍历这颗二叉树的所有节点，故总时间的渐进上界是 $O(\sum_{i = 1}^{\log n} 2^{i - 1}) = O(n)$，故渐进时间复杂度为 $O(n)$。<br>空间复杂度：递归会使用 O(\log n)O(logn) 的栈空间，故渐进空间复杂度为 $O(logn)$。 </p>
+<hr>
+<h1 id="315-计算右侧小于当前元素的个数"><a href="#315-计算右侧小于当前元素的个数" class="headerlink" title="315. 计算右侧小于当前元素的个数"></a>315. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-of-smaller-numbers-after-self/">计算右侧小于当前元素的个数</a></h1><p>给定一个整数数组 nums，按要求返回一个新数组 counts。数组 counts 有该性质： counts[i] 的值是  nums[i] 右侧小于 nums[i] 的元素的数量。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：[5,2,6,1]</span><br><span class="line">输出：[2,1,1,0] </span><br><span class="line">解释：</span><br><span class="line">5 的右侧有 2 个更小的元素 (2 和 1)</span><br><span class="line">2 的右侧仅有 1 个更小的元素 (1)</span><br><span class="line">6 的右侧有 1 个更小的元素 (1)</span><br><span class="line">1 的右侧有 0 个更小的元素</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SegmentNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> start;</span><br><span class="line">    <span class="keyword">int</span> end;</span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">    SegmentNode *left;</span><br><span class="line">    SegmentNode *right;</span><br><span class="line">    SegmentNode():start(<span class="number">0</span>),end(<span class="number">0</span>),sum(<span class="number">0</span>)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line"><span class="comment">//---------------------------Segment tree solution----------------------------</span></span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">build</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(l&gt;r) <span class="keyword">return</span>;</span><br><span class="line">        self-&gt;start = l;self-&gt;end = r;</span><br><span class="line">        <span class="keyword">if</span>(l==r)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// self-&gt;sum = l;</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> mid = (l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        self-&gt;left = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;left,l,mid);</span><br><span class="line">        self-&gt;right = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        build(self-&gt;right,mid+<span class="number">1</span>,r);</span><br><span class="line">        <span class="comment">// self-&gt;sum = self-&gt;left-&gt;sum + self-&gt;right-&gt;sum;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> pos, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(pos&lt;self-&gt;start||pos&gt;self-&gt;end) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;start == self-&gt;end)</span><br><span class="line">        &#123;</span><br><span class="line">            self-&gt;sum += k;</span><br><span class="line">            <span class="keyword">return</span>; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;right-&gt;start&gt;pos) add(self-&gt;left,pos,k);</span><br><span class="line">        <span class="keyword">else</span> add(self-&gt;right,pos,k);</span><br><span class="line">        self-&gt;sum = self-&gt;left-&gt;sum + self-&gt;right-&gt;sum;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">search</span><span class="params">(SegmentNode *self, <span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(i&gt;j) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;=self-&gt;start &amp;&amp; self-&gt;end&lt;=j)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> self-&gt;sum; </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> s = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;left-&gt;end&gt;=i) s+=search(self-&gt;left,i,j);</span><br><span class="line">        <span class="keyword">if</span>(self-&gt;right-&gt;start&lt;=j) s+=search(self-&gt;right,i,j);</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">countSmaller_SegmentTree</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> nums;</span><br><span class="line">        SegmentNode *root = <span class="keyword">new</span> SegmentNode();</span><br><span class="line">        <span class="comment">//find the min and max val in nums</span></span><br><span class="line">        <span class="keyword">int</span> min_val = INT_MAX, max_val = INT_MIN;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:nums)&#123;min_val=min(min_val,c);max_val = max(max_val,c);&#125;</span><br><span class="line">        build(root,min_val,max_val);</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">res</span><span class="params">(nums.size())</span></span>;</span><br><span class="line">        <span class="comment">// for(auto &amp;c:nums) </span></span><br><span class="line">        <span class="comment">//     add(root,c,1);//All sub interval adds 1</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = nums.size()<span class="number">-1</span>; i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">        &#123;</span><br><span class="line">            add(root,nums[i],<span class="number">1</span>);</span><br><span class="line">            res[i] = search(root,min_val,nums[i]<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//------------------------------Fenwick Tree Solution----------------------------------</span></span><br><span class="line"><span class="comment">//Due to the uncertainty of scale of data, we discretize the array</span></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tr;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">low_bit</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">//pow(2,x)</span></span><br><span class="line">        <span class="keyword">return</span> (x&amp;(-x));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = k; j&gt;<span class="number">0</span>; j-=low_bit(j)) res+=tr[j];</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">int</span> w)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">// add k to node w</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = k; j&lt; tr.size();j+=low_bit(j)) tr[j]+=w;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">countSmaller_Fenwick</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp;nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">res</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="comment">//First, we discretize the vector and delete the repeated nums</span></span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp = nums;</span><br><span class="line">        sort(tmp.begin(),tmp.end());</span><br><span class="line">        <span class="keyword">auto</span> c = unique(tmp.begin(),tmp.end());</span><br><span class="line">        tmp.erase(c,tmp.end());</span><br><span class="line">        <span class="keyword">int</span> new_len = c - tmp.begin();</span><br><span class="line">        <span class="comment">// we define a unordered-map to count the number of tmp</span></span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; ump;</span><br><span class="line">        tr = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(new_len + <span class="number">1</span>);<span class="comment">//redefine the tr to (new_len+1) default value</span></span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i&lt;new_len;i++)</span><br><span class="line">            ump[tmp[i]] = count++;<span class="comment">//redefine the discretized values into serialized values using hashmap</span></span><br><span class="line">        <span class="comment">//we build the Fenwick tree and do summation and addition</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k = nums.size()<span class="number">-1</span>;k&gt;=<span class="number">0</span>;k--)</span><br><span class="line">        &#123;</span><br><span class="line">            count = ump[nums[k]];<span class="comment">// count of number</span></span><br><span class="line">            res[k] = sum(count<span class="number">-1</span>);</span><br><span class="line">            add(count,<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>感谢！有任何问题请在评论区提出，笔者看到会及时回答！</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/03/26/2020-07-17-fenwicktree-segmentTree/" data-id="ckff8gnyb0003wgscc4su2qxg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

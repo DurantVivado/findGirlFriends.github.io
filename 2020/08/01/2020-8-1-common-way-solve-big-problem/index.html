@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>解空间极大问题通用策略 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="解空间极大问题通用策略   子集    第k个排列    每个元音包含偶数次的最长子字符串    全排列    全排列2    子集2    递增子序列    删除无效括号    组合    组合总和II   216.组合总和III   通常来说这类问题的解规模较大，很容易漏掉解，为此笔者提出一种解决问题的思路。  比如全排列问题，组合问题等。让我们以78.子集为例引入到情景中。  全排列  $N">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解空间极大问题通用策略">
+<meta property="og:url" content="http://example.com/2020/08/01/2020-8-1-common-way-solve-big-problem/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="解空间极大问题通用策略   子集    第k个排列    每个元音包含偶数次的最长子字符串    全排列    全排列2    子集2    递增子序列    删除无效括号    组合    组合总和II   216.组合总和III   通常来说这类问题的解规模较大，很容易漏掉解，为此笔者提出一种解决问题的思路。  比如全排列问题，组合问题等。让我们以78.子集为例引入到情景中。  全排列  $N">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvcmVjdXJzaW9uLnBuZw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvY29tYmluYXRpb25zLnBuZw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvYmFja3RyYWNraW5nLnBuZw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvYml0bWFzazQucG5n?x-oss-process=image/format,png">
+<meta property="article:published_time" content="2020-07-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-13T04:00:11.074Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="通用策略">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvcmVjdXJzaW9uLnBuZw?x-oss-process=image/format,png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-8-1-common-way-solve-big-problem" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/01/2020-8-1-common-way-solve-big-problem/" class="article-date">
+  <time datetime="2020-07-31T16:00:00.000Z" itemprop="datePublished">2020-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解空间极大问题通用策略
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="解空间极大问题通用策略"><a href="#解空间极大问题通用策略" class="headerlink" title="解空间极大问题通用策略"></a>解空间极大问题通用策略</h1><hr>
+<ul>
+<li><ol start="78">
+<li>子集</li>
+</ol>
+</li>
+<li><ol start="60">
+<li>第k个排列</li>
+</ol>
+</li>
+<li><ol start="1371">
+<li>每个元音包含偶数次的最长子字符串</li>
+</ol>
+</li>
+<li><ol start="46">
+<li>全排列</li>
+</ol>
+</li>
+<li><ol start="47">
+<li>全排列2</li>
+</ol>
+</li>
+<li><ol start="90">
+<li>子集2</li>
+</ol>
+</li>
+<li><ol start="491">
+<li>递增子序列</li>
+</ol>
+</li>
+<li><ol start="301">
+<li>删除无效括号</li>
+</ol>
+</li>
+<li><ol start="77">
+<li>组合</li>
+</ol>
+</li>
+<li><ol start="40">
+<li>组合总和II</li>
+</ol>
+</li>
+<li>216.组合总和III</li>
+</ul>
+<blockquote>
+<p>通常来说这类问题的解规模较大，很容易漏掉解，为此笔者提出一种解决问题的思路。</p>
+</blockquote>
+<p>比如全排列问题，组合问题等。让我们以78.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subsets/">子集</a>为例引入到情景中。</p>
+<ul>
+<li>全排列  $N!$</li>
+<li>组合 $N!$</li>
+<li>子集 $2^N$，每个元素可能存在或者不存在</li>
+</ul>
+<p>要确保结果<strong>完整</strong>且不<strong>重复</strong>，有多种策略：</p>
+<ol>
+<li><strong>递归</strong></li>
+<li><strong>回溯</strong></li>
+<li><strong>字典</strong></li>
+<li><strong>数学</strong></li>
+<li><strong>状态压缩</strong></li>
+<li><strong>【补充】剪枝技巧</strong></li>
+</ol>
+<h2 id="I-递归"><a href="#I-递归" class="headerlink" title="I. 递归"></a>I. 递归</h2><p>递归不一定是递归函数，而是逐层次的把nums下一个数与前面的数融合起来。</p>
+<p>比如：</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvcmVjdXJzaW9uLnBuZw?x-oss-process=image/format,png" alt="img"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">subsets</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> &#123;&#123;&#125;&#125;;</span><br><span class="line">    res.push_back(&#123;&#125;);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> _res = res;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;k :_res)</span><br><span class="line">        &#123;</span><br><span class="line">            k.push_back(c);</span><br><span class="line">            res.push_back(k);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>剪枝及技巧</strong></p>
+<p>很多时候dfs会经历不需要的中间状态，因此需要设计代码，避免不必要的递归。</p>
+<p>时间复杂度：$\mathcal{O}(N \times 2^N)$，生成所有子集，并复制到输出结果中。</p>
+<p>空间复杂度：$\mathcal{O}(N \times 2^N)$，这是子集的数量。</p>
+<p>对于给定的任意元素，它在子集中有两种情况，存在或者不存在（对应二进制中的 0 和 1）。因此，N个数字共有 $2^N$ 个子集。</p>
+<h2 id="II-回溯"><a href="#II-回溯" class="headerlink" title="II. 回溯"></a>II. 回溯</h2><blockquote>
+<p>注意：在大规模问题上，回溯法<strong>极容易</strong>超时。</p>
+<p>正例：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-invalid-parentheses/">301.删除无效括号</a>(Hard)</p>
+<p>反例：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-equal-subset-sum/">416. 分割等和子集</a>(Medium)(正确的解法是动态规划，而不是回溯)</p>
+</blockquote>
+<blockquote>
+<p>回溯法（探索与回溯法）是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。但当探索到某一步时，发现原先选择并不优或达不到目标，就退回一步重新选择，这种走不通就退回再走的技术为回溯法，而满足回溯<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9D%A1%E4%BB%B6/1783021">条件</a>的某个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%8A%B6%E6%80%81/33204">状态</a>的点称为“回溯点”。</p>
+</blockquote>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvY29tYmluYXRpb25zLnBuZw?x-oss-process=image/format,png" alt="img"></p>
+<p>以该题为例，比如我们要在<code>[1,2,3]</code>中找到所有子集，思路是这样的：</p>
+<p>定义一个回溯方法 backtrack(first, curr)，第一个参数为索引 first，第二个参数为当前子集 curr。</p>
+<ul>
+<li><p>如果当前子集构造完成，将它添加到输出集合中。</p>
+</li>
+<li><p>否则，从 first 到 n 遍历索引 i。</p>
+<ul>
+<li>将整数 nums[i] 添加到当前子集 curr。</li>
+<li>继续向子集中添加整数：backtrack(i + 1, curr)。</li>
+<li>从 curr 中删除 nums[i] 进行回溯。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvYmFja3RyYWNraW5nLnBuZw?x-oss-process=image/format,png" alt="img"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="keyword">int</span> first, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;curr)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(first&gt;=n) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = first; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            curr.push_back(nums[i]);</span><br><span class="line">            res.push_back(curr);</span><br><span class="line">            backtrack(i+<span class="number">1</span>, curr);</span><br><span class="line">            curr.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">subsets</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">//回溯法</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> &#123;&#123;&#125;&#125;;</span><br><span class="line">        <span class="keyword">this</span>-&gt;n = nums.size();</span><br><span class="line">        <span class="keyword">this</span>-&gt;nums = nums;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; curr;</span><br><span class="line">            </span><br><span class="line">        backtrack(<span class="number">0</span>, curr);</span><br><span class="line">        res.push_back(&#123;&#125;);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，这里的第六行<code>for (int i = first; i &lt; n; i++)</code>非常关键，它保证各个子集是单调增的，避免了重复。</p>
+</blockquote>
+<p>时间复杂度：$\mathcal{O}(N \times 2^N)$，生成所有子集，并复制到输出结果中。</p>
+<p>空间复杂度：$\mathcal{O}(N \times 2^N)$，这是子集的数量。</p>
+<p>对于给定的任意元素，它在子集中有两种情况，存在或者不存在（对应二进制中的 0 和 1）。因此，N个数字共有 $2^N$ 个子集。</p>
+<h2 id="III-字典"><a href="#III-字典" class="headerlink" title="III. 字典"></a>III. 字典</h2><blockquote>
+<p>该方法思路来自于Donald E. Knuth</p>
+</blockquote>
+<p>将每个子集映射到长度为n的掩码中，其中第i位掩码<code>nums[i]</code>为<code>1</code>，表示第i个元素在子集中， 如果第i位掩码<code>nums[i]</code>位<code>0</code>，表明第i位元素不在子集中。</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9waWMubGVldGNvZGUtY24uY29tL0ZpZ3VyZXMvNzgvYml0bWFzazQucG5n?x-oss-process=image/format,png" alt="img"></p>
+<p>乍看起来生成二进制数很简单，但如何处理左边填充 0 是一个问题。因为必须生成固定长度的位掩码：例如 <code>001</code>，而不是 <code>1</code>。因此可以使用一些位操作技巧：<br>$python$:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nth_bit = <span class="number">1</span> &lt;&lt; n</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>**n):</span><br><span class="line">    <span class="comment"># generate bitmask, from 0..00 to 1..11</span></span><br><span class="line">    bitmask = bin(i | nth_bit)[<span class="number">3</span>:]</span><br></pre></td></tr></table></figure>
+<p>$C++$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">subsets</span>(<span class="params">self, nums: List[int]</span>) -&gt; List[List[int]]:</span></span><br><span class="line">        n = len(nums)</span><br><span class="line">        output = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>**n, <span class="number">2</span>**(n + <span class="number">1</span>)):</span><br><span class="line">            <span class="comment"># generate bitmask, from 0..00 to 1..11</span></span><br><span class="line">            bitmask = bin(i)[<span class="number">3</span>:]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># append subset corresponding to that bitmask</span></span><br><span class="line">            output.append([nums[j] <span class="keyword">for</span> j <span class="keyword">in</span> range(n) <span class="keyword">if</span> bitmask[j] == <span class="string">&#x27;1&#x27;</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：$\mathcal{O}(N \times 2^N)$，生成所有子集，并复制到输出结果中。</p>
+<p>空间复杂度：$\mathcal{O}(N \times 2^N)$，这是子集的数量。</p>
+<p>对于给定的任意元素，它在子集中有两种情况，存在或者不存在（对应二进制中的 0 和 1）。因此，N个数字共有 $2^N$ 个子集。</p>
+<hr>
+<h2 id="IV-数学"><a href="#IV-数学" class="headerlink" title="IV. 数学"></a>IV. 数学</h2><blockquote>
+<p>60.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutation-sequence/">第k个排列</a></p>
+</blockquote>
+<p>这里我们将题目稍微变形一下。来讲解数学知识如何发挥巨大的作用的。</p>
+<p>给你一个排列$s$，由数字<code>1-9</code>组成，在<strong>不求全排列</strong>的前提下，返回它是正序的第k个排列。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: 213</span><br><span class="line">输出: k &#x3D; 3</span><br><span class="line">解释：123全部的排列为 123， 132， 213， 231， 312， 321</span><br></pre></td></tr></table></figure>
+
+<p>要想解决本题，首先需要了解一个简单的结论：</p>
+<blockquote>
+<p>对于 $n$ 个不同的元素（例如数 $1,2,⋯,n$），它们可以组成的排列总数目为 $n!$。</p>
+</blockquote>
+<p>对于给定的 $n$ 和 $k$，我们不妨从左往右确定第 $k$ 个排列中的每一个位置上的元素到底是什么。</p>
+<p>我们首先确定排列中的首个元素 $a_1$ 。根据上述的结论，我们可以知道：</p>
+<ul>
+<li>以 1 为 $a_1$ 的排列一共有 $(n-1)!$ 个；<br>以 2 为 $a_1 $ 的排列一共有 $(n-1)!$ 个；<br>$\cdots⋯$<br>以 n 为 $a_1$ 的排列一共有 $(n-1)!$个。<br>由于我们需要求出从小到大的第 k 个排列，因此：</li>
+</ul>
+<p>如果 $k \leq (n-1)!$，我们就可以确定排列的首个元素为 1；<br>如果 $(n-1)! &lt; k \leq 2 \cdot (n-1)!$，我们就可以确定排列的首个元素为 2；<br>$\cdots⋯$<br>如果 $(n-1) \cdot (n-1)! &lt; k \leq n \cdot (n-1)!$，我们就可以确定排列的首个元素为 n。<br>因此，第 k 个排列的首个元素就是：<br>$$ {a_1 = \lfloor \frac{k-1}{(n-1)!} \rfloor + 1}<br>a_1 = \lfloor \frac{k-1}{(n-1)!} \rfloor + 1<br>$$<br>其中 $\lfloor x \rfloor$ 表示将 x 向下取整。</p>
+<p>当我们确定了 $a_1$后，如何使用相似的思路，确定下一个元素 $a_2$呢？实际上，我们考虑以 $a_1$为首个元素的所有排列：</p>
+<p>第 k 个排列实际上就对应着这其中的第<br>$$<br>k’ = (k-1) \bmod (n-1)! + 1<br>$$<br>个排列。这样一来，我们就把原问题转化成了一个完全相同但规模减少 1的子问题.</p>
+<p><strong>代码</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="built_in">string</span> <span class="title">getPermutation</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">factorial</span><span class="params">(n)</span></span>;</span><br><span class="line">        factorial[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            factorial[i] = factorial[i - <span class="number">1</span>] * i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        --k;</span><br><span class="line">        <span class="built_in">string</span> ans;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">valid</span><span class="params">(n + <span class="number">1</span>, <span class="number">1</span>)</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> order = k / factorial[n - i] + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                order -= valid[j];</span><br><span class="line">                <span class="keyword">if</span> (!order) &#123;</span><br><span class="line">                    ans += (j + <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">                    valid[j] = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            k %= factorial[n - i];</span><br><span class="line">        &#125;   </span><br><span class="line">        <span class="keyword">return</span> ans;     </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h2 id="V-状态压缩"><a href="#V-状态压缩" class="headerlink" title="V. 状态压缩"></a>V. 状态压缩</h2><p>可以使用二进制或者,$bitset$进行状态压缩.</p>
+<p>状态压缩经典问题：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">1371. 每个元音包含偶数次的最长子字符串</a></p>
+<p>给你一个字符串 s ，请你返回满足以下条件的最长子字符串的长度：每个元音字母，即 ‘a’，’e’，’i’，’o’，’u’ ，在子字符串中都恰好出现了偶数次。</p>
+<p>示例 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;eleetminicoworoep&quot;</span><br><span class="line">输出：13</span><br><span class="line">解释：最长子字符串是 &quot;leetminicowor&quot; ，它包含 e，i，o 各 2 个，以及 0 个 a，u 。</span><br></pre></td></tr></table></figure>
+
+<p>示例 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;leetcodeisgreat&quot;</span><br><span class="line">输出：5</span><br><span class="line">解释：最长子字符串是 &quot;leetc&quot; ，其中包含 2 个 e 。</span><br></pre></td></tr></table></figure>
+
+<p>示例 3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;bcbcbc&quot;</span><br><span class="line">输出：6</span><br><span class="line">解释：这个示例中，字符串 &quot;bcbcbc&quot; 本身就是最长的，因为所有的元音 a，e，i，o，u 都出现了 0 次。</span><br></pre></td></tr></table></figure>
+
+
+<p>提示：</p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 5 x 10^5</code></li>
+<li>s 只包含小写英文字母。</li>
+</ul>
+<p>定义$pre[i][k]$表示前$i$个字母，第$k$个元音字母总出现的次数。那么在$[i-1,j-1]$区间内，元音字母出现次数为$pre[j][k]-pre[i][k]$，在$O(1)$时间内得到第$k$个元音字母出现的次数。</p>
+<p>同时我们要考虑避免枚举所有的$i$，计算以它结尾的满足条件的最长子字符串长度，我们要找到最小$i$使得$pre[j][k]-pre[i][k]$均为偶数。 我们需要利用【所有元音出现偶数次】这个条件，对于满足条件的子串而言，$pre[i][k]$和$pre[j][k]$的奇偶性一定相同，因为偶数一定是奇数+奇数，或者偶数+偶数组成。所以我们可以把$pre[i][k]$改为表示$[0,i-1]$的<strong>元音奇偶性</strong>。</p>
+<p>此外我们还需要进行「状态压缩」：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  a: cnta, &#x2F;&#x2F; a 出现次数的奇偶性</span><br><span class="line">  e: cnte, &#x2F;&#x2F; e 出现次数的奇偶性</span><br><span class="line">  i: cnti, &#x2F;&#x2F; i 出现次数的奇偶性</span><br><span class="line">  o: cnto, &#x2F;&#x2F; o 出现次数的奇偶性</span><br><span class="line">  u: cntu  &#x2F;&#x2F; u 出现次数的奇偶性</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们可以用二进制表示这些奇偶。</p>
+<p>举一个例子，假如到第 $i $个位置，<code>u o i e a </code>出现的奇偶性分别为 <code>1 1 0 0 1</code>，那么我们就可以将其压成一个二进制数 $(11001)<em>2=(25)</em>{10}$ 作为它的状态。</p>
+<p><strong>代码：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">findTheLongestSubstring</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!s.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = s.size(), res = <span class="number">0</span>, status = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>,<span class="keyword">int</span>&gt; vowel&#123;</span><br><span class="line">            &#123;<span class="string">&#x27;a&#x27;</span>,<span class="number">1</span>&#125;,&#123;<span class="string">&#x27;e&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">1</span>&#125;,&#123;<span class="string">&#x27;i&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">2</span>&#125;,&#123;<span class="string">&#x27;o&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">3</span>&#125;,&#123;<span class="string">&#x27;u&#x27;</span>,<span class="number">1</span>&lt;&lt;<span class="number">4</span>&#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 我们用pre[status]表示status状态对应的位置i，不断更新</span></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">pre</span><span class="params">(<span class="number">1</span>&lt;&lt;<span class="number">5</span>,<span class="number">-1</span>)</span></span>;<span class="comment">//初始均为偶</span></span><br><span class="line">        pre[<span class="number">0</span>] = <span class="number">0</span>;<span class="comment">//初始状态，所有元音为偶数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= n;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(vowel.count(s[i<span class="number">-1</span>]))</span><br><span class="line">            status ^= vowel[s[i<span class="number">-1</span>]];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(~pre[status]) res = max(res,i - pre[status]); <span class="comment">//pre[status]!=-1</span></span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                pre[status] = i ;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意 18行的 ~pre[status]表示<strong>按位取反</strong>，包含了符号位，所以只有pre[status]不为-1，才为True。</p>
+<p>$ \text{~} 0 = -1$， </p>
+</blockquote>
+<p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
+<p>空间复杂度: $O(1)$.</p>
+<hr>
+<blockquote>
+<p> 一些子母问题（数字重复与不重复）</p>
+</blockquote>
+<ul>
+<li>46 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations/">全排列</a></li>
+</ul>
+<p>数字不重复，求全排列，回溯法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; output, <span class="keyword">int</span> first, <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 所有数都填完了</span></span><br><span class="line">        <span class="keyword">if</span> (first == len) &#123;</span><br><span class="line">            res.emplace_back(output);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = first; i &lt; len; ++i) &#123;</span><br><span class="line">            <span class="comment">// 动态维护数组</span></span><br><span class="line">            swap(output[i], output[first]);</span><br><span class="line">            <span class="comment">// 继续递归填下一个数</span></span><br><span class="line">            backtrack(res, output, first + <span class="number">1</span>, len);</span><br><span class="line">            <span class="comment">// 撤销操作</span></span><br><span class="line">            swap(output[i], output[first]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">permute</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &gt; res;</span><br><span class="line">        backtrack(res, nums, <span class="number">0</span>, (<span class="keyword">int</span>)nums.size());</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>47 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations-ii/">全排列2</a></li>
+</ul>
+<p>数字重复，求全排列【此时一定要用hash表】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; dict;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            res.push_back(arr);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:dict)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(c.second&gt;<span class="number">0</span>) </span><br><span class="line">            &#123;</span><br><span class="line">                arr.push_back(c.first);</span><br><span class="line">                c.second--;</span><br><span class="line">                dfs(n<span class="number">-1</span>);</span><br><span class="line">                c.second++;</span><br><span class="line">                arr.pop_back();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">permuteUnique</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!nums.size()) <span class="keyword">return</span> &#123;&#123;&#125;&#125;;</span><br><span class="line">        <span class="keyword">this</span>-&gt;nums = nums;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:nums)</span><br><span class="line">            dict[c]++;</span><br><span class="line">        dfs(nums.size());</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<ul>
+<li><p>78 子集（上面作为例子讲了）</p>
+</li>
+<li><p>90 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subsets-ii/">子集2</a></p>
+</li>
+</ul>
+<p>求包含重复元素的所有子集</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">pair</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; data;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (i == n) &#123;</span><br><span class="line">           res.push_back(tmp);</span><br><span class="line">           <span class="keyword">return</span> ; </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        dfs(i + <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//i是从n-1开始</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; data[i].second; j ++) &#123;</span><br><span class="line">            tmp.push_back(data[i].first);</span><br><span class="line">            dfs(i + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; data[i].second; j ++) tmp.pop_back();</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">subsetsWithDup</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; mp;<span class="comment">//统计nums每个数字的个数</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> x : nums) &#123;</span><br><span class="line">            mp[x] ++;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> x : mp) &#123;</span><br><span class="line">            data.push_back(x);<span class="comment">//相当于把哈希表存到数组</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        n = data.size();</span><br><span class="line">        dfs(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><ol start="491">
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/increasing-subsequences/">递增子序列</a></li>
+</ol>
+</li>
+</ul>
+<p>给定一个整型数组, 你的任务是找到所有该数组的递增子序列，递增子序列的长度至少是2。</p>
+<p>示例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [4, 6, 7, 7]</span><br><span class="line">输出: [[4, 6], [4, 7], [4, 6, 7], [4, 6, 7, 7], [6, 7], [6, 7, 7], [7,7], [4,7,7]]</span><br></pre></td></tr></table></figure>
+
+<p>说明:</p>
+<ul>
+<li>给定数组的长度不会超过15。</li>
+<li>数组中的整数范围是 [-100,100]。</li>
+<li>给定数组中可能包含重复数字，相等的数字应该被视为递增的一种情况。</li>
+</ul>
+<hr>
+<p><strong>方法1：二进制枚举+哈希</strong></p>
+<p>我们用二进制0，1表示解选中或者不被选中。那么长度为$n$的序列，对应有$2^n$种可能，对于序列去重，我们可以采用串哈希算法，（Rabin-Karp算法），即对于一个序列${a_0,a_1,…,a_{n-1}}$，我们可以认为是一个$\max(a_i)+1$（记为b）进制的数。<br>$$<br>f(a)=\sum\limits_{i=0}^{n-1}b^i×a_i<br>$$<br>在实际使用种，我们发现这个编码可能非常的大，我们可以把它模上一个大素数$P$，再映射到$int$范围。<br>$$<br>f(a)=\sum\limits_{i=0}^{n-1}b^i×a_i(mod \ P)<br>$$<br>Rabin-karp编码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; temp;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MIN_VAL = <span class="number">-100</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAX_VAL = <span class="number">100</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getHash</span><span class="params">(<span class="keyword">int</span> base, <span class="keyword">int</span> mod)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//这里的base为数组的最大值, min_val 为数组可能最小值，题目给出,为了避免负数的情况</span></span><br><span class="line"><span class="comment">//这里的mod 是一个大素数</span></span><br><span class="line"><span class="comment">//时间复杂度 O(N) 慎用</span></span><br><span class="line">    <span class="keyword">int</span> hashVal = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:temp)</span><br><span class="line">    &#123;</span><br><span class="line">        hashVal = <span class="number">1L</span>L*hashVal*base % mod + (c - MIN_VAL + <span class="number">1</span>);  </span><br><span class="line">        hashVal %= mod;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> hashVal;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> hashValue = getHash(MAX_VAL, (<span class="keyword">int</span>)(<span class="number">1E9</span>)+<span class="number">7</span>);</span><br></pre></td></tr></table></figure>
+
+<p>数组编码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; (<span class="number">1</span>&lt;&lt;n);i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> mask = i;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(j&amp;<span class="number">1</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    mask &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>字符串编码</strong></p>
+<p>在该方法中，我们将字符串看成一个 $\textit{base}$ 进制的数，它对应的十进制值就是哈希值。显然，两个字符串的哈希值相等，当且仅当这两个字符串本身相同。然而如果字符串本身很长，其对应的十进制值在大多数语言中无法使用内置的整数类型进行存储。因此，我们会将十进制值对一个大质数 $\textit{mod}$ 进行取模。此时：</p>
+<ul>
+<li><p>如果两个字符串的哈希值在取模后不相等，那么这两个字符串本身一定不相同；</p>
+</li>
+<li><p>如果两个字符串的哈希值在取模后相等，并不能代表这两个字符串本身一定相同。例如两个字符串的哈希值分别为 2 和 15，模数为 13，虽然 $2 \equiv 15 <del>~ (\bmod</del>13)$，但它们不相同。</p>
+</li>
+</ul>
+<p>一般来说，我们选取一个大于字符集大小（即字符串中可能出现的字符种类的数目）的质数作为 $base$，再选取一个在字符串长度平方级别左右的质数作为 $mod$，产生哈希碰撞的概率就会很低。</p>
+<p><strong>复杂度分析</strong></p>
+<p>假设序列的长度是 $n$。</p>
+<ul>
+<li>时间复杂度：$O(2^n \cdot n)$。这里枚举所有子序列的时间代价是 $O(2^n)$，每次检测序列是否合法和获取哈希值的时间代价都是 $O(n)$.</li>
+<li>空间复杂度：$O(2^n)$。最坏情况下整个序列都是递增的，每个长度大于等于 2 的子序列都要加入答案，这里哈希表中要加入 $2^n$<br>  个元素，空间代价为 $O(2^n)$,用一个临时的数组来存当前答案，空间代价为 $O(n)$。</li>
+</ul>
+<p><strong>方法2：递归+剪枝</strong></p>
+<p>这是一个递归枚举子序列的通用模板，即用一个临时数组 $\rm temp$ 来保存当前选出的子序列，使用 $\rm cur$ 来表示当前位置的下标，在 dfs(cur, nums) 开始之前，$[0, {\rm cur} - 1]$这个区间内的所有元素都已经被考虑过，而$ [{\rm cur}, n]$ 这个区间内的元素还未被考虑。在执行 dfs(cur, nums) 时，我们考虑 ${\rm cur}$ 这个位置选或者不选，如果选择当前元素，那么把当前元素加入到 $\rm temp$ 中，然后递归下一个位置，在递归结束后，应当把 $\rm temp$的最后一个元素删除进行回溯；如果不选当前的元素，直接递归下一个位置。</p>
+<p>当然，如果我们简单地这样枚举，对于每一个子序列，我们还需要做一次 $O(n)$ 的合法性检查和哈希判重复，在执行整个程序的过程中，我们还需要使用一个空间代价 $O(2^n) $的哈希表来维护已经出现的子序列的哈希值。我们可以对选择和不选择做一些简单的限定，就可以让枚举出来的都是合法的并且不重复：</p>
+<p>使序列合法的办法非常简单，即给「选择」做一个限定条件，只有当前的元素大于等于上一个选择的元素的时候才能选择这个元素，这样枚举出来的所有元素都是合法的</p>
+<p>那如何保证没有重复呢？我们需要给「不选择」做一个限定条件，只有当当前的元素不等于上一个选择的元素的时候，才考虑不选择当前元素，直接递归后面的元素。因为如果有两个相同的元素，我们会考虑这样四种情况：</p>
+<ul>
+<li><p>前者被选择，后者被选择</p>
+</li>
+<li><p>前者被选择，后者不被选择</p>
+</li>
+<li><p>前者不被选择，后者被选择</p>
+</li>
+<li><p>前者不被选择，后者不被选择</p>
+<p>其中第二种情况和第三种情况其实是等价的，我们这样限制之后，舍弃了第二种，保留了第三种，于是达到了去重的目的。</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; temp; </span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> cur, <span class="keyword">int</span> last, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (cur == nums.size()) &#123;<span class="comment">//当前序号达到末尾才进行答案归纳</span></span><br><span class="line">            <span class="keyword">if</span> (temp.size() &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">                ans.push_back(temp);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (nums[cur] &gt;= last) &#123;</span><br><span class="line">            temp.push_back(nums[cur]);</span><br><span class="line">            dfs(cur + <span class="number">1</span>, nums[cur], nums);</span><br><span class="line">            temp.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (nums[cur] != last) &#123;<span class="comment">//只有前后元素不相同才考虑不选</span></span><br><span class="line">            dfs(cur + <span class="number">1</span>, last, nums);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">findSubsequences</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        dfs(<span class="number">0</span>, INT32_MIN, nums);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="剪枝技巧"><a href="#剪枝技巧" class="headerlink" title="剪枝技巧"></a><strong>剪枝技巧</strong></h2><ul>
+<li>一种常见的技巧是让生成子序列是单增顺序的，如 216. 组合总和III。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> k, <span class="keyword">int</span> target,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sub)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(k==<span class="number">0</span>&amp;&amp;target==<span class="number">0</span>) &#123;res.push_back(sub);<span class="keyword">return</span>;&#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= min(<span class="number">9</span>,target);i++)</span><br><span class="line">        <span class="keyword">if</span>(!sub.size()||i &gt; sub.back())</span><br><span class="line">        &#123;</span><br><span class="line">            sub.emplace_back(i);</span><br><span class="line">            dfs(k<span class="number">-1</span>,target-i,sub);</span><br><span class="line">            sub.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当题目不能出现重复项时，有两种方法。如40.组合总和II</li>
+<li><ol>
+<li>使用哈希表天然去重功能，但是需要编码。</li>
+<li>先对<code>candidates</code>进行排序，然后每次dfs取下一项，遇到<code>candidates</code>重复项就跳过。这里我们分<code>candidates</code>能否被选无限次进行讨论。</li>
+</ol>
+</li>
+</ul>
+<p>A. Candidates只能选取一次【40题】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; candidates;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; path;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (target == <span class="number">0</span>) &#123;</span><br><span class="line">        res.push_back(path);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; candidates.size() &amp;&amp; target - candidates[i] &gt;= <span class="number">0</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt; start &amp;&amp; candidates[i] == candidates[i - <span class="number">1</span>])</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        path.push_back(candidates[i]);</span><br><span class="line">        <span class="comment">// 元素不可重复利用，使用下一个即i+1</span></span><br><span class="line">        DFS(i + <span class="number">1</span>, target - candidates[i]);</span><br><span class="line">        path.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>B. Candidates选取无限次【39题】</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (target == <span class="number">0</span>) &#123;</span><br><span class="line">            res.push_back(path);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start;</span><br><span class="line">             i &lt; candidates.size() &amp;&amp; target - candidates[i] &gt;= <span class="number">0</span>; i++) &#123;</span><br><span class="line">            path.push_back(candidates[i]);</span><br><span class="line">            DFS(i, target - candidates[i]);</span><br><span class="line">            path.pop_back();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>区别在于<code>dfs(i)</code>还是<code>dfs(i+1)</code>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/08/01/2020-8-1-common-way-solve-big-problem/" data-id="ckff8go02001swgsccbwz5gjj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/01/2020-8-1-sliding-windows/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          滑动窗口法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/07/27/2020-07-27-backpack-problem/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">背包问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

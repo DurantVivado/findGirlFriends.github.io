@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>全手写实现AVL树 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="全手写实现AVL树 本文阅读大概需要45分钟，独立编程需要两天，建议预留充足的时间和咖啡。  （友情提示，笔者基本未参考网络资料，边思考边写代码，100%干货，学AVL看这一篇就够了） 学树的顺序，一般来说是：二叉树-&gt;二叉查找树-&gt;AVL树-&gt;2-3-4树-&gt;红黑树。它们的难度依次递增。不得不说的是，树是计算机科学最重要研究课题之一。在算法类面试当中，树的考察也是不可或缺">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全手写实现AVL树">
+<meta property="og:url" content="http://example.com/2020/05/10/2020-04-30-avl-tree/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="全手写实现AVL树 本文阅读大概需要45分钟，独立编程需要两天，建议预留充足的时间和咖啡。  （友情提示，笔者基本未参考网络资料，边思考边写代码，100%干货，学AVL看这一篇就够了） 学树的顺序，一般来说是：二叉树-&gt;二叉查找树-&gt;AVL树-&gt;2-3-4树-&gt;红黑树。它们的难度依次递增。不得不说的是，树是计算机科学最重要研究课题之一。在算法类面试当中，树的考察也是不可或缺">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200425225354848.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200425231356816.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200425233454747.png">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvZjlkY2QxMDBiYWExY2QxMTcxZmFmMWJkYjUxMmM4ZmNjMmNlMmRkYQ?x-oss-process=image/format,png">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvMTMzNTQ4MC8yMDE4MDIvMTMzNTQ4MC0yMDE4MDIyMjIzNTQzMDIwNi0xOTk0NjkwMzQwLmdpZg">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvMTMzNTQ4MC8yMDE4MDIvMTMzNTQ4MC0yMDE4MDIyMjIzNTUwMzEyNC0xNDE1MDk5MzcuZ2lm">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200426232346142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429130542284.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429130844114.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200426233308794.png">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200426234231887.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200428192052711.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200426233513572.png">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429131256439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429131329106.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429142633426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429142942653.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429143050100.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200429143153960.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==">
+<meta property="article:published_time" content="2020-05-10T05:23:45.000Z">
+<meta property="article:modified_time" content="2020-09-13T03:54:14.680Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="平衡树">
+<meta property="article:tag" content="经典数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200425225354848.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-04-30-avl-tree" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/10/2020-04-30-avl-tree/" class="article-date">
+  <time datetime="2020-05-10T05:23:45.000Z" itemprop="datePublished">2020-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      全手写实现AVL树
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="全手写实现AVL树"><a href="#全手写实现AVL树" class="headerlink" title="全手写实现AVL树"></a>全手写实现AVL树</h1><blockquote>
+<p>本文阅读大概需要45分钟，<strong>独立</strong>编程需要两天，建议预留充足的时间和咖啡。</p>
+</blockquote>
+<p>（友情提示，笔者基本未参考网络资料，边思考边写代码，100%干货，学AVL看这一篇就够了）</p>
+<p>学树的顺序，一般来说是：二叉树-&gt;二叉查找树-&gt;AVL树-&gt;2-3-4树-&gt;红黑树。它们的难度依次递增。不得不说的是，树是计算机科学最重要研究课题之一。在算法类面试当中，树的考察也是不可或缺的。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200425225354848.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>先简单回顾一下二叉查找树：</p>
+<p>一棵空树，或者是具有下列性质的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a>：</p>
+<p>（1）若左子树不空，则左子树上所有结点的值均小于它的根结点的值；</p>
+<p>（2）若右子树不空，则右子树上所有结点的值均大于它的根结点的值；</p>
+<p>（3）左、右子树也分别为二叉排序树；</p>
+<p>（4）没有键值相等的结点。</p>
+<p>让我们介绍一种全新的*<strong>自平衡二叉树（斜体加粗表示这玩意很酷炫）*</strong>。相信在你学完并且理解之后。会觉得之前学的树都太low了。</p>
+<p>你可能觉得AVL是某些niubilious（自造词，牛批的意思）的英文缩写。事实是，AVL树的名字来源于它的发明作者G.M. <strong>A</strong>delson-<strong>V</strong>elsky 和 E.M. <strong>L</strong>andis。AVL树是最先发明的自平衡二叉查找树（Self-Balancing Binary Search Tree,简称平衡二叉树）。</p>
+<p>它的特点是：<strong>左右子树高度差（平衡因子）的绝对值小于等于1.</strong> （红色加粗的字体表明你应该记住这句话）</p>
+<p>下面邀请插画师turtle配合演示，事实上，整个AVL树的插入和删除操作我们都会作图演示，保证你能看懂：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200425231356816.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<blockquote>
+<p>感谢turtle先生，你今天的粉色画笔非常好看！</p>
+</blockquote>
+<p> 数字代表val，字母代表payload。你可以借助字典中的key和value来理解。最下面的数字，我们称为<strong>平衡因子（balance factor,bf）</strong>。只有一棵树所有节点平衡因子在1,0,-1之间，这棵树才是平衡的。 所谓的树的高度，就是垂直方向，从当前节点到根节点的最大深度。<strong>平衡因子等于左右子树高度差，叶子节点平衡因子一定为0。</strong></p>
+<p><em>为什么要满足这个条件呢？（斜体表示你问了一个问题）</em>因为我们希望一棵树尽量对称均匀，看起来漂亮（删除线表示这是错误的理解）我们先区分两个概念</p>
+<ol>
+<li><strong>满二叉树：</strong>除最后一层无任何子节点外，每一层上的所有结点都有两个子结点的二叉树为<em>满二叉树（国内定义）</em>。</li>
+<li><strong>完全二叉树：</strong>若设二叉树的深度为k，除第 k 层外，其它各层 (1～k-1) 的结点数都达到最大个数，第k 层所有的结点都<strong>连续集中在最左边</strong>，这就是完全二叉树。</li>
+</ol>
+<p><img src="https://img-blog.csdnimg.cn/20200425233454747.png" alt="img"></p>
+<p>​                                                                                                        <strong>满二叉树</strong></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvZjlkY2QxMDBiYWExY2QxMTcxZmFmMWJkYjUxMmM4ZmNjMmNlMmRkYQ?x-oss-process=image/format,png" alt="img" style="zoom:50%;" />
+
+<p>​                                                                                                <strong>完全二叉树</strong></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>AVL树是一种完全二叉树，因为这个特性，我们发现它的插入，删除操作最好最坏的情况都是log(n)。</p>
+<p><em>这是怎么得来的？</em> 你如果只是死记而不理解的话，这会很糟糕，你可能会记混淆。一棵完全二叉树的深度设为k ， 那么前k-1层一共有2^(k-1)-1个节点，最后一层节点数最少为0，最多为2^(k-1)。设节点总数为N。那么2^(k-1)-1&lt;=N&lt;=2^(k-1)-1+2^(k-1)=2^k-1。解得： k-1&lt;Log2(N+1)&lt;k，按照层数递归的思想，我们的时间复杂度就是O(logN)量级的。</p>
+<p>由于之前的博客已经讲解了<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32439305/article/details/105741842">二叉查找树</a>。下面让我们思考，在插入过程如何保持二叉树动态平衡。</p>
+<p>希望你能保持足够的耐心，关闭音乐，集中注意力，只要不是咖啡撒到键盘上就行。</p>
+<p>下面是插入操作的实现.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span> (<span class="params">self, val, payload</span>):</span></span><br><span class="line">    <span class="keyword">if</span> self.root:</span><br><span class="line">        self._put(val, payload,self.root)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        self.root = BSTNode(val,payload)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_put</span>(<span class="params">self,val,payload,currentNode</span>):</span></span><br><span class="line">    <span class="keyword">if</span> val &lt;= currentNode.val:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> currentNode.left_child:</span><br><span class="line">            left_new = BSTNode(val,payload,parent=currentNode)</span><br><span class="line">            currentNode.left_child = left_new</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._put(val,payload,currentNode.left_child)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> currentNode.right_child:</span><br><span class="line">            right_new = BSTNode(val,payload,parent=currentNode)</span><br><span class="line">            currentNode.right_child = right_new</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._put(val,payload,currentNode.right_child)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>这是BST插入的相关代码。下面介绍添加节点时的平衡操作：</p>
+<h1 id="Put方法实现"><a href="#Put方法实现" class="headerlink" title="Put方法实现"></a>Put方法实现</h1><ul>
+<li>我们先考虑当前节点bf的变化，如果当前节点的bf大于1或小于-1，说明我们需要进行<strong>旋转</strong>操作，下面我会详细介绍；否则在当前节点为左子节点时，我们将其父节点的bf加 1，当前节点为右子节点，其父节点减1. <strong>这里其实是一个递归操作，</strong>每当子节点改变，其上层的所有父节点需要改变，除非某个父节点的平衡因子为0.</li>
+<li>我们先介绍几种平衡方法：**<em>左旋(L_Rot)，右旋(R_Rot)，LR双旋(LR_doubRot)，RL双旋(RL_doubRot)**</em>。它们是你前所未见的炫操作。</li>
+</ul>
+<h2 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h2><p><strong>1.左旋（感谢<a target="_blank" rel="noopener" href="https://blog.csdn.net/sun_tttt">Sun_TTTT博客</a>精彩配图）</strong></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvMTMzNTQ4MC8yMDE4MDIvMTMzNTQ4MC0yMDE4MDIyMjIzNTQzMDIwNi0xOTk0NjkwMzQwLmdpZg" alt="左旋"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>简而言之就是某个节点的父节点变成了其左子节点，对于原来的左子节点，变成原来父节点的右节点。</p>
+<p><strong>2.右旋</strong></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMyMDE4LmNuYmxvZ3MuY29tL2Jsb2cvMTMzNTQ4MC8yMDE4MDIvMTMzNTQ4MC0yMDE4MDIyMjIzNTUwMzEyNC0xNDE1MDk5MzcuZ2lm" alt="右旋"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>简而言之就是某个节点的父节点变成了其右子节点，对于原来的右子节点，变成原来父节点的左节点。</p>
+<p><strong>3.LR双旋</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20200426232346142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>它是左旋和右旋的结合版。</p>
+<p><strong>4.RL双旋</strong></p>
+<p>LR双旋的相反版本。</p>
+<p>至于AVL是如何设计出这样的结构，这不是人类考虑的问题了。但是笔者理解是，为了保持节点平衡，尽可能降低树的高度，在红黑树中也有类似的操作。</p>
+<p>好了，介绍了这几种旋转方法，我猜你已经晕头转向了。但是好戏刚刚开始。</p>
+<ul>
+<li><p>关于旋转：什么时候进行什么样的旋转？<em>我们需要一点想象力(Ignite your Imagination)。</em></p>
+</li>
+<li><p>对于直线型结构和回旋镖型结构，如下图所示。在当前节点的平衡因子小于-1且左子节点不存在并且当前节点的右子节点的左子节点存在，那么表示我们需要进行RL双旋，否则进行左旋；在当前节点的平衡因子大于1且右子节点不存在并且当前节点的左子节点的右子节点存在，那么表示我们需要进行LR双旋，否则进行右旋。</p>
+ <img src="https://img-blog.csdnimg.cn/20200429130542284.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img" style="zoom: 80%;" />
+
+</li>
+</ul>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429130844114.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img" style="zoom:80%;" /><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>代码如下，供参考：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">renew_balance_factor</span>(<span class="params">self,currNode:AVLNode</span>):</span></span><br><span class="line">     <span class="keyword">if</span> currNode.balance_factor&gt;<span class="number">1</span> <span class="keyword">or</span> currNode.balance_factor&lt;<span class="number">-1</span>:</span><br><span class="line">         <span class="keyword">if</span> self.isrebalance: self.rebalance(currNode)</span><br><span class="line">         <span class="keyword">return</span> </span><br><span class="line">     <span class="keyword">if</span> currNode.isLeftChild(): </span><br><span class="line">         currNode.parent.balance_factor+=<span class="number">1</span></span><br><span class="line">     <span class="keyword">elif</span> currNode.isRightChild():</span><br><span class="line">         currNode.parent.balance_factor-=<span class="number">1</span></span><br><span class="line">     <span class="keyword">if</span> currNode.parent!=<span class="literal">None</span> <span class="keyword">and</span> currNode.parent.balance_factor != <span class="number">0</span> :         </span><br><span class="line">         self.renew_balance_factor(currNode.parent)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rebalance</span>(<span class="params">self,currNode:AVLNode</span>):</span></span><br><span class="line">     <span class="keyword">if</span> currNode.balance_factor&gt;<span class="number">1</span>:<span class="comment"># left-heavy sub tree</span></span><br><span class="line">         <span class="keyword">if</span> <span class="keyword">not</span> currNode.right_child <span class="keyword">and</span> currNode.left_child.right_child:</span><br><span class="line">             self.LR_doubRot(currNode)</span><br><span class="line">             <span class="keyword">return</span> </span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">             self.R_Rot(currNode)</span><br><span class="line">     <span class="keyword">elif</span> currNode.balance_factor&lt;<span class="number">-1</span>:<span class="comment"># right-heavy sub tree</span></span><br><span class="line">         <span class="keyword">if</span> <span class="keyword">not</span> currNode.left_child <span class="keyword">and</span> currNode.right_child.left_child:</span><br><span class="line">             self.RL_doubRot(currNode)</span><br><span class="line">         <span class="keyword">else</span>:</span><br><span class="line">             self.L_Rot(currNode)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>旋转后平衡因子如何更新</li>
+</ul>
+<p>我们在BST中插入节点，如果发现某个节点的平很因子大于1或小于-1。就表示我们该进行自平衡操作了。进行R单旋的情况是直线型结构：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200426233308794.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>我们只需要将当前节点16绕7旋转至其右节点即可。其他节点不作改变。我们旋转的同时也<em>必须考虑平衡因子的变化</em>，这里会涉及</p>
+<p>到比较复杂的数学推导，不过没必要紧张，你完全可以画图理解。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200426234231887.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>我们只需要更新A和B的平衡因子即可。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200428192052711.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>上面的new old 分别表示新老节点，h(·)表示节点高度。你看到这可能已经跃跃欲试了，数学可是我的强项呀！ L单旋同理。</p>
+<p>很不幸的是，对于大部分人，包括笔者，数学都不是我们的强项！<strong>所以我们需要调动程序员思维。</strong>正所谓“车到山前必有路”。</p>
+<p>思考替代方案中。。。</p>
+<hr>
+<p>很棒，你已经有了思路，我可以直接获取节点的高度啊！只需要编写一个get_node_bf（）函数就行了。需要注意的是，我们需要得到的是该节点左右子树中高度的<em>最大值。</em>所以我们必须进行递归左右子树，左右子树的“路径”，个数我们不知道：按照h(Node) = 1 + max(h(left_child),h(right_child)). 因此我们需要用两个列表path_level_l 和 path_level_r 来分别存储左右子树各个路径的高度。最后套用公式就是该节点的高度。</p>
+<p>我们稍微整理一下思路写出代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_level</span>(<span class="params">node,depth,path_level</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">if</span> node.isLeaf(): path_level.append(depth);<span class="keyword">return</span>  </span><br><span class="line">            depth+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> node.left_child:</span><br><span class="line">                get_level(node.left_child,depth,path_level)</span><br><span class="line">            <span class="keyword">if</span> node.right_child:</span><br><span class="line">                get_level(node.right_child,depth,path_level)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>如果是叶子节点其高度为1，bf为0，我们再写一个求节点bf的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_node_bf</span>(<span class="params">self,currNode:AVLNode</span>)-&gt;int:</span></span><br><span class="line">        <span class="comment"># obtain current node&#x27;s bf</span></span><br><span class="line">        max_l = max_r =<span class="number">0</span></span><br><span class="line">        path_level_l = []</span><br><span class="line">        path_level_r = []</span><br><span class="line">        <span class="keyword">if</span> currNode.isLeaf():</span><br><span class="line">            <span class="keyword">return</span> (max_l-max_r)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            get_level(currNode.left_child,<span class="number">1</span>,path_level_l)</span><br><span class="line">            get_level(currNode.right_child,<span class="number">1</span>,path_level_r)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> path_level_l: max_l = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:max_l = max(path_level_l)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> path_level_r: max_r = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>: max_r = max(path_level_r)</span><br><span class="line">            <span class="keyword">return</span> (max_l - max_r)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<ul>
+<li>进行LR单旋的是“回旋镖型结构”：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200426233513572.png" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>我们同样进行平衡因子的动态更新，不过这次只用调用get_node_bf函数即可。注意C先变为B的父节点，B为C左子节点，A再变为C的右子节点，C的父节点改为A的父节点。A的父节点改为C是不是非常简单呢？</p>
+<ul>
+<li>下面我们将上述过程可视化：</li>
+</ul>
+<p>以下面数据为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data &#x3D; &#123;16:&#39;A&#39;,3:&#39;B&#39;,7:&#39;C&#39;,11:&#39;D&#39;,9:&#39;E&#39;,26:&#39;F&#39;,18:&#39;G&#39;,14:&#39;H&#39;,15:&#39;I&#39;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200429131256439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200429131329106.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"> 大家可以自行验证另一个完全相反的过程，检查自己的代码有无纰漏。</p>
+<p>好了，非常高兴你能坚持看到这，如果你觉得困的话，可以明天再看删除操作：</p>
+<h1 id="Del-方法实现"><a href="#Del-方法实现" class="headerlink" title="Del 方法实现"></a>Del 方法实现</h1><p>你已经喝完了咖啡，是否还感觉困呢？咖啡不要放太多糖。</p>
+<p>Del 方法比put方法稍微复杂一点，但是我们有了put的相关方法，因而不会太麻烦。我们构建了上述二叉树，现在尝试依次删除150，130，160，140，155，120，157。</p>
+<p>删除有三种情况：</p>
+<ol>
+<li>删除叶子节点；</li>
+<li>删除节点只有一个子节点；</li>
+<li>删除节点有两个子节点。</li>
+</ol>
+<p>如果你认真看了我关于二叉查找树的博客的话，会发现万变不离其宗。我们只需要在每次删除节点后更新bf即可。为此我们设计函数update_del_bf（）。如果我们发现当前节点不平衡，就将其通过旋转的方式平衡，继续更新它的父节点；如果节点平衡，我们依次更新父节点，直到父节点为None止。</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_del_bf</span>(<span class="params">self,currNode:AVLNode</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> currNode:<span class="keyword">return</span></span><br><span class="line">    currNode.balance_factor = self.get_node_bf(currNode)</span><br><span class="line">    <span class="keyword">if</span> currNode.balance_factor&gt;<span class="number">1</span> <span class="keyword">or</span> currNode.balance_factor&lt;<span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">if</span> self.isrebalance: self.rebalance(currNode)</span><br><span class="line">        self.update_del_bf(currNode.parent)</span><br><span class="line">        <span class="keyword">return</span> </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> currNode.parent:<span class="comment">#update all parent bf         </span></span><br><span class="line">        self.update_del_bf(currNode.parent)</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"></p>
+<p>好了删除操作我们也完成了，下面以图片的形式展示整个删除过程。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200429142633426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429142942653.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429143050100.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动"><img src="https://img-blog.csdnimg.cn/20200429143153960.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNDM5MzA1,size_16,color_FFFFFF,t_70" alt="img"><img src="data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==" alt="点击并拖拽以移动">上面就是，整个插入和删除的过程，相信你一定会有许多收获或者疑问，欢迎留言或者email .</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/durantSaaS/data_structure_source_plan/blob/master/Advanced/AVL_tree.py">源代码在这里！</a></p>
+<p>下一期介绍红黑树*</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/05/10/2020-04-30-avl-tree/" data-id="ckff8gnzr001owgsc4tk37nh8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/10/2020-08-4-ML2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          机器学习II 模型评估与选择
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/10/2020-05-10-red-black-tree/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">全手写实现红黑树</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
