@@ -7,15 +7,15 @@
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java八大数据类型以及封装类Java基本类型共有八种，基本类型可以分为三类，字符类型char，布尔类型boolean以及数值类型byte、short、int、long、float、double。数值类型又可以分为整数类型byte、short、int、long和浮点数类型float、double。JAVA中的数值类型不存在无符号的，它们的取值范围是固定的，不会随着机器硬件环境或者操作系统的改变而改">
+  <meta name="description" content="机器学习算法I: 决策树决策树的基本算法是「分而治之」。 设有训练集$D$以及属性集$A$. 函数TreeGenerate(D,A)算法如下：  我们生成树节点node，若D中样本全部属于同一类别C.就将node标记为C类叶节点。  如果A为空集或者D中样本在A上取值相同，那么将node标记为叶节点，其类别标记为D中样本数最多的类。然后返回。  从A中选择最优划分属性$a^*$.  对最优划分属性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2020/09/23/Java%E5%85%AB%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E5%B0%81%E8%A3%85%E7%B1%BB/index.html">
+<meta property="og:url" content="http://example.com/2020/09/23/ML4_DecisionTree/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Java八大数据类型以及封装类Java基本类型共有八种，基本类型可以分为三类，字符类型char，布尔类型boolean以及数值类型byte、short、int、long、float、double。数值类型又可以分为整数类型byte、short、int、long和浮点数类型float、double。JAVA中的数值类型不存在无符号的，它们的取值范围是固定的，不会随着机器硬件环境或者操作系统的改变而改">
+<meta property="og:description" content="机器学习算法I: 决策树决策树的基本算法是「分而治之」。 设有训练集$D$以及属性集$A$. 函数TreeGenerate(D,A)算法如下：  我们生成树节点node，若D中样本全部属于同一类别C.就将node标记为C类叶节点。  如果A为空集或者D中样本在A上取值相同，那么将node标记为叶节点，其类别标记为D中样本数最多的类。然后返回。  从A中选择最优划分属性$a^*$.  对最优划分属性">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-09-23T10:16:45.072Z">
-<meta property="article:modified_time" content="2020-09-22T14:29:53.957Z">
+<meta property="article:published_time" content="2020-09-23T10:16:45.067Z">
+<meta property="article:modified_time" content="2020-09-22T15:39:16.178Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -66,10 +66,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Java八大数据类型以及封装类" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-ML4_DecisionTree" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/09/23/Java%E5%85%AB%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E5%B0%81%E8%A3%85%E7%B1%BB/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.072Z" itemprop="datePublished">2020-09-23</time>
+    <a href="/2020/09/23/ML4_DecisionTree/" class="article-date">
+  <time datetime="2020-09-23T10:16:45.067Z" itemprop="datePublished">2020-09-23</time>
 </a>
     
   </div>
@@ -78,81 +78,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Java八大数据类型以及封装类"><a href="#Java八大数据类型以及封装类" class="headerlink" title="Java八大数据类型以及封装类"></a>Java八大数据类型以及封装类</h1><p>Java基本类型共有八种，基本类型可以分为三类，字符类型char，布尔类型boolean以及数值类型byte、short、int、long、float、double。数值类型又可以分为整数类型byte、short、int、long和浮点数类型float、double。JAVA中的数值类型不存在无符号的，它们的取值范围是固定的，不会随着机器硬件环境或者<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/operatingsystem">操作系统</a>的改变而改变。</p>
-<p>byte：8位，最大存储数据量是255，存放的数据范围是-128~127之间。</p>
-<p>short：16位，最<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/hadoop">大数据</a>存储量是65536，数据范围是-32768~32767之间。</p>
-<p>int：32位，最大数据存储容量是2的32次方减1，数据范围是负的2的31次方到正的2的31次方减1。</p>
-<p>long：64位，最大数据存储容量是2的64次方减1，数据范围为负的2的63次方到正的2的63次方减1。</p>
-<p>float：32位，数据范围在3.4e-45~1.4e38，直接赋值时必须在数字后加上f或F。</p>
-<p>double：64位，数据范围在4.9e-324~1.8e308，赋值时可以加d或D也可以不加。</p>
-<p>boolean：只有true和false两个取值。</p>
-<p>char：16位，存储Unicode码，用单引号赋值。</p>
-<table>
-<thead>
-<tr>
-<th>单类型</th>
-<th>boolean</th>
-<th>byte</th>
-<th>char</th>
-<th>short</th>
-<th>Int</th>
-<th>long</th>
-<th>float</th>
-<th>double</th>
-<th>void</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>二进制位数</td>
-<td>1</td>
-<td>8</td>
-<td>16</td>
-<td>16</td>
-<td>32</td>
-<td>64</td>
-<td>32</td>
-<td>64</td>
-<td>–</td>
-</tr>
-<tr>
-<td>封装器类</td>
-<td>Boolean</td>
-<td>Byte</td>
-<td>Character</td>
-<td>Short</td>
-<td>Integer</td>
-<td>Long</td>
-<td>Float</td>
-<td>Double</td>
-<td>Void</td>
-</tr>
-</tbody></table>
-<h2 id="自动类型转换"><a href="#自动类型转换" class="headerlink" title="自动类型转换"></a>自动类型转换</h2><p>$(byte，short，char)–int–long–float—double$</p>
-<h2 id="字符串转换"><a href="#字符串转换" class="headerlink" title="字符串转换"></a>字符串转换</h2><p>X转字符串</p>
+        <h1 id="机器学习算法I-决策树"><a href="#机器学习算法I-决策树" class="headerlink" title="机器学习算法I: 决策树"></a>机器学习算法I: 决策树</h1><p>决策树的基本算法是「<strong>分而治之</strong>」。</p>
+<p>设有训练集$D$以及属性集$A$. 函数<code>TreeGenerate(D,A)</code>算法如下：</p>
 <ul>
-<li>调用类转换方法：<code>X.toString()</code></li>
-<li>自动类型转换：<code>X+&quot;&quot;</code></li>
-<li>使用String方法，<code>String.ValueOf(X)</code></li>
-</ul>
-<p>转字符</p>
+<li><p>我们生成树节点node，若D中样本全部属于同一类别C.就将node标记为C类叶节点。</p>
+</li>
+<li><p>如果A为空集或者D中样本在A上取值相同，那么将node标记为叶节点，其类别标记为D中样本数最多的类。然后返回。</p>
+</li>
+<li><p>从A中选择最优划分属性$a^*$.</p>
+</li>
+<li><p>对最优划分属性的每个子属性$a_i$:</p>
 <ul>
-<li>调用类转换方法：<code>X.toCharArray()</code></li>
+<li>为node生成一个分支，令$D_v$表示$D$在$a^*$上取值为$a_i$的样本子集；<ul>
+<li>如果$D_v$为空，那么将分支节点标记为叶节点，其类别标记为$D$中样本最多的类。并返回。</li>
+<li>以$TreeGenrate(D_v,A/(a_*))为分支节点$</li>
 </ul>
-<p>字符串转X</p>
-<p>①先转换成相应的封装器实例,再调用对应的方法转换成其它类型</p>
-<p>例如，字符中”32.1”转换double型的值的格式为:new Float(“32.1”).doubleValue()。也可以用:Double.valueOf(“32.1”).doubleValue()</p>
-<p>②静态parseXXX方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">&quot;1&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span> b = Byte.parseByte( s );</span><br><span class="line"></span><br><span class="line"><span class="keyword">short</span> t = Short.parseShort( s );</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = Integer.parseInt( s );</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> l = Long.parseLong( s );</span><br><span class="line"></span><br><span class="line">Float f = Float.parseFloat( s );</span><br><span class="line"></span><br><span class="line">Double d = Double.parseDouble( s );</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Java引用类型"><a href="#Java引用类型" class="headerlink" title="Java引用类型"></a>Java引用类型</h1><p>Java有 5种引用类型（对象类型）：类 (Class) 接口(Interface) 数组 (List/ArrayList)枚举(enum) 标注</p>
-<p>引用类型：底层结构和基本类型差别较大</p>
+</li>
+</ul>
+<p>最后输出一棵以node为根节点的决策树。</p>
+</li>
+</ul>
+<h2 id="划分选择"><a href="#划分选择" class="headerlink" title="划分选择"></a>划分选择</h2><p>如何选择最优划分属性？我们希望决策树的分支节点所包含的样本尽可能属于同一类别，即纯度（purity）越来越高。</p>
+<h3 id="信息增益"><a href="#信息增益" class="headerlink" title="信息增益"></a>信息增益</h3><p>假定当前样本集合$D$中第$k$类样本所占的比例为$p_k(k=1,2,..n)$，则$D$的信息熵定义为<br>$$<br>Entropy(D)=-\sum_\limits{k=1}^{n}p_k\log_2 p_k<br>$$</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/Java%E5%85%AB%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BB%A5%E5%8F%8A%E5%B0%81%E8%A3%85%E7%B1%BB/" data-id="ckfj56rfa0019qkscc16u05rw" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/09/23/ML4_DecisionTree/" data-id="ckfj59n1k00192osc4hsm5hnt" class="article-share-link">Share</a>
       
       
     </footer>
@@ -161,7 +113,7 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/09/23/2020-9-3-Markdown%20-fantastic/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/09/23/2020-08-23-ML3/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
@@ -171,9 +123,9 @@
     </a>
   
   
-    <a href="/2020/09/23/2020-08-23-ML3/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/09/23/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
+      <div class="article-nav-title">Hello World</div>
     </a>
   
 </nav>
