@@ -1,99 +1,204 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>动态规划 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
   
 
   
-  <title>动态规划-自己的一点理解 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="动态规划(DP)的重要性我就不用说了，LeetCode 上DP问题多达228道，仅次于数组301题。   个人感觉，DP问题就像斐波那契数列一样，你需要找到能够递归的通式子，我们把这个式子称作状态转移方程（$transfer\  eqution$）。本文采取题目加讲解的方式，中等题目强调找出状态转移方程，难题则附加代码研究细节，此篇可作为你刷DP类问题的指南。  然后，现在我们干一件事情，把DP">
-<meta property="og:type" content="article">
-<meta property="og:title" content="动态规划-自己的一点理解">
-<meta property="og:url" content="http://example.com/2020/07/21/2020-07-21-dynamic-planning/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="动态规划(DP)的重要性我就不用说了，LeetCode 上DP问题多达228道，仅次于数组301题。   个人感觉，DP问题就像斐波那契数列一样，你需要找到能够递归的通式子，我们把这个式子称作状态转移方程（$transfer\  eqution$）。本文采取题目加讲解的方式，中等题目强调找出状态转移方程，难题则附加代码研究细节，此篇可作为你刷DP类问题的指南。  然后，现在我们干一件事情，把DP">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-07-21T07:56:27.000Z">
-<meta property="article:modified_time" content="2020-09-12T08:26:49.799Z">
-<meta property="article:author" content="John Doe">
-<meta property="article:tag" content="算法">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
 <meta name="generator" content="Hexo 5.2.0"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
-      </nav>
-      <nav id="sub-nav">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-2020-07-21-dynamic-planning" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/21/2020-07-21-dynamic-planning/" class="article-date">
-  <time datetime="2020-07-21T07:56:27.000Z" itemprop="datePublished">2020-07-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
   
-    <h1 class="article-title" itemprop="name">
-      动态规划-自己的一点理解
-    </h1>
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-21 00:00" pubdate>
+        2020年7月21日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.8k 字
+    </span>
   
 
-      </header>
+  
     
-    <div class="article-entry" itemprop="articleBody">
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
       
-        <blockquote>
+      
+      103
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">动态规划</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <blockquote>
 <p>动态规划(DP)的重要性我就不用说了，<code>LeetCode</code> 上DP问题多达228道，仅次于数组301题。</p>
-</blockquote>
-<blockquote>
-<p>个人感觉，DP问题就像斐波那契数列一样，你需要找到能够递归的通式子，我们把这个式子称作<strong>状态转移方程</strong>（$transfer\  eqution$）。本文采取题目加讲解的方式，中等题目强调找出状态转移方程，难题则附加代码研究细节，此篇可作为你刷DP类问题的指南。</p>
+<p>个人感觉，DP问题就像斐波那契数列一样，你需要找到能够递归的通式子，我们把这个式子称作<strong>状态转移方程</strong>（$transfer  eqution$）。本文采取题目加讲解的方式，中等题目强调找出状态转移方程，难题则附加代码研究细节，此篇可作为你刷DP类问题的指南。</p>
 </blockquote>
 <p>然后，现在我们干一件事情，把DP题目罗列出来，找到共同点，未来我们要做到看一眼题目就知道用什么方法。</p>
 <ol>
@@ -120,10 +225,12 @@
 <hr>
 <p>下面结合实例分析</p>
 <h2 id="70-爬楼梯"><a href="#70-爬楼梯" class="headerlink" title="70. 爬楼梯"></a>70. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/climbing-stairs/">爬楼梯</a></h2><p>非常经典！</p>
-<p>用$dp[i]$表示爬上第i个梯子的方法数。那么<br>状态转移方程<br>$$<br>dp[i] = dp[i-1] + dp[i-2];<br>$$</p>
-<p>边界条件: $dp[0] = 1, dp[1]=1$</p>
-<h2 id="746-使用最小花费爬楼梯"><a href="#746-使用最小花费爬楼梯" class="headerlink" title="746. 使用最小花费爬楼梯"></a>746. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/">使用最小花费爬楼梯</a></h2><p>用$dp[i]$表示爬上第i个梯子的<code>最小</code>消耗。那么<br>状态转移方程<br>$$<br>dp[i] = min{dp[i-1] + cost[i-1], dp[i-2] + cost[i-1]};<br>$$</p>
-<p>边界条件: $dp[0] = 0, dp[1]=0$</p>
+<p>用$dp[i]$表示爬上第i个梯子的方法数。那么<br>状态转移方程 </p>
+<script type="math/tex; mode=display">
+dp[i] = dp[i-1] + dp[i-2];</script><p>边界条件: $dp[0] = 1, dp[1]=1$</p>
+<h2 id="746-使用最小花费爬楼梯"><a href="#746-使用最小花费爬楼梯" class="headerlink" title="746. 使用最小花费爬楼梯"></a>746. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/">使用最小花费爬楼梯</a></h2><p>用$dp[i]$表示爬上第i个梯子的<code>最小</code>消耗。那么<br>状态转移方程 </p>
+<script type="math/tex; mode=display">
+dp[i] = min{dp[i-1] + cost[i-1], dp[i-2] + cost[i-1]};</script><p>边界条件: $dp[0] = 0, dp[1]=0$</p>
 <p><strong>总结，这两题能这么做是因为，它们相邻两项的间距是恒定的要么为1，要么为2.</strong></p>
 <h2 id="198-打家劫舍"><a href="#198-打家劫舍" class="headerlink" title="198. 打家劫舍"></a>198. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/house-robber/">打家劫舍</a></h2><blockquote>
 <p>老dp了，还贪讷</p>
@@ -133,16 +240,41 @@
 <p>边值条件$dp[0]=0,dp[1]=nums[0]$，注意下标对应关系。</p>
 <hr>
 <p>再看跟路径有关的问题</p>
-<h2 id="64-最小路径和"><a href="#64-最小路径和" class="headerlink" title="64. 最小路径和"></a>64. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-path-sum/">最小路径和</a></h2><p>用$dp[i][j]$表示从原点到达(m,n)的<code>最小</code>路径和。那么<br>状态转移方程<br>$$<br>dp[i][j] = min(dp[i][j-1], dp[i-1][j])+grid[i][j];<br>$$</p>
-<p>边界条件:<br>$$<br>dp[0][i] = dp[0][i-1] + grid[0][i](0 \le{i}\le{m}),<br>\<br>dp[j][0] = dp[j-1][0] + grid[j][0](0 \le{j}\le{n})<br>$$<br>这题很特殊的地方是，先求完边界条件才能进行DP操作。</p>
+<h2 id="64-最小路径和"><a href="#64-最小路径和" class="headerlink" title="64. 最小路径和"></a>64. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-path-sum/">最小路径和</a></h2><p>用$dp[i][j]$表示从原点到达(m,n)的<code>最小</code>路径和。那么<br>状态转移方程 </p>
+<script type="math/tex; mode=display">
+dp[i][j] = min(dp[i][j-1], dp[i-1][j])+grid[i][j];</script><p>边界条件: </p>
+<script type="math/tex; mode=display">
+dp[0][i] = dp[0][i-1] + grid[0][i](0 \le{i}\le{m}), 
+\\
+dp[j][0] = dp[j-1][0] + grid[j][0](0 \le{j}\le{n})</script><p>这题很特殊的地方是，先求完边界条件才能进行DP操作。</p>
 <h2 id="62-不同路径"><a href="#62-不同路径" class="headerlink" title="62. 不同路径"></a>62. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/unique-paths/">不同路径</a></h2><p>这题和上一题的区别是，不用管路径开销，这样的话我们可以把路径都设为1。</p>
-<p>用$dp[i][j]$表示从原点到达(m,n)的<code>不同</code>路径数目。那么<br>状态转移方程<br>$$<br>dp[i][j] = dp[i][j-1]+ dp[i-1][j];<br>$$</p>
-<p>边界条件:<br>$$<br>dp[0][i] = 1(0 \le{i}\le{m}),<br>\<br>dp[j][0] = 1(0 \le{j}\le{n})<br>$$</p>
-<h2 id="63-不同路径2"><a href="#63-不同路径2" class="headerlink" title="63. 不同路径2"></a>63. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/unique-paths-ii/">不同路径2</a></h2><p>用$dp[i][j]$表示从<code>原点</code>到$(i,j)$的路径总数，只不过这题玩了一点花样，加入障碍物，和<code>62</code>异曲同工。上一题我们把边界，包括上边界和左边界，都设为1。这一题，我们想如果遇到障碍物在$(i,j)$，那么肯定$dp[i][j]=0$对吧？然后对于边界，一旦$dp[0][j]==0或dp[i][0]==0$表明，之后的全到不了，因为上左边界分别只有一条路径。</p>
-<p>$$<br> dp[i][j]=\left{<br>\begin{array}{lcl}<br>dp[i-1][j]+dp[i][j-1],       &amp;      &amp; {obstacleGrid[i][j]!=1}\<br>0,     &amp;      &amp; {obstacleGrid[i][j]==1}\<br>\end{array} \right.<br>$$</p>
-<blockquote>
-<p>边界<br>$$<br>dp[0][j] =\left{<br>\begin{array}{lcr}<br> 0, {dp[0][j-1]==0||obstacleGrid[0][j]==0}\<br>1, {dp[0][j-1]!=0}\<br>\end{array} \right.\<br>,<br>\<br>dp[i][0] =\left{<br>\begin{array}{lcr}<br> 0, {dp[i-1][0]==0||obstacleGrid[i][0]==0}\<br>1, {dp[i-1][0]!=0}\<br>\end{array} \right.<br>$$</p>
-</blockquote>
+<p>用$dp[i][j]$表示从原点到达(m,n)的<code>不同</code>路径数目。那么<br>状态转移方程 </p>
+<script type="math/tex; mode=display">
+dp[i][j] = dp[i][j-1]+ dp[i-1][j];</script><p>边界条件: </p>
+<script type="math/tex; mode=display">
+dp[0][i] = 1(0 \le{i}\le{m}), 
+\\
+dp[j][0] = 1(0 \le{j}\le{n})</script><h2 id="63-不同路径2"><a href="#63-不同路径2" class="headerlink" title="63. 不同路径2"></a>63. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/unique-paths-ii/">不同路径2</a></h2><p>用$dp[i][j]$表示从<code>原点</code>到$(i,j)$的路径总数，只不过这题玩了一点花样，加入障碍物，和<code>62</code>异曲同工。上一题我们把边界，包括上边界和左边界，都设为1。这一题，我们想如果遇到障碍物在$(i,j)$，那么肯定$dp[i][j]=0$对吧？然后对于边界，一旦$dp[0][j]==0或dp[i][0]==0$表明，之后的全到不了，因为上左边界分别只有一条路径。</p>
+<script type="math/tex; mode=display">
+ dp[i][j]=\left\{
+\begin{array}{lcl}
+dp[i-1][j]+dp[i][j-1],       &      & {obstacleGrid[i][j]!=1}\\
+0,     &      & {obstacleGrid[i][j]==1}\\
+\end{array} \right.</script><blockquote>
+<p>边界</p>
+<script type="math/tex; mode=display">
+dp[0][j] =\left\{ 
+\begin{array}{lcr}
+ 0, {dp[0][j-1]==0||obstacleGrid[0][j]==0}\\
+1, {dp[0][j-1]!=0}\\
+\end{array} \right.\\
+,
+\\
+dp[i][0] =\left\{ 
+\begin{array}{lcr}
+ 0, {dp[i-1][0]==0||obstacleGrid[i][0]==0}\\
+1, {dp[i-1][0]!=0}\\
+\end{array} \right.</script></blockquote>
 <p><strong>总结，因为路径问题只能向下或向右走和爬楼梯的只能走一步或者两步都是异曲同工的，把状态转移方程和边界条件想出来有助于快速解决问题</strong></p>
 <hr>
 <blockquote>
@@ -150,10 +282,21 @@
 </blockquote>
 <h2 id="96-不同的搜索二叉树"><a href="#96-不同的搜索二叉树" class="headerlink" title="96. 不同的搜索二叉树"></a>96. 不同的搜索二叉树</h2><p>给定一个整数 n，求以 1 … n 为节点组成的二叉搜索树有多少种？</p>
 <p>示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入: 3</span><br><span class="line">输出: 5</span><br><span class="line">解释:</span><br><span class="line">给定 n &#x3D; 3, 一共有 5 种不同结构的二叉搜索树:</span><br><span class="line"></span><br><span class="line">   1         3     3      2      1</span><br><span class="line">    \       &#x2F;     &#x2F;      &#x2F; \      \</span><br><span class="line">     3     2     1      1   3      2</span><br><span class="line">    &#x2F;     &#x2F;       \                 \</span><br><span class="line">   2     1         2                 3</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs angelscript">输入: <span class="hljs-number">3</span>
+输出: <span class="hljs-number">5</span>
+解释:
+给定 n = <span class="hljs-number">3</span>, 一共有 <span class="hljs-number">5</span> 种不同结构的二叉搜索树:
 
-<p>$$<br>f[i] = \begin{cases}<br>2×(f[i-1]+···+f[(i-1)/2])+f[i/2]^2,i为奇数\<br>2×(f[i-1]+···+f[(i-1)/2])，i为偶数\<br>\end{cases}<br>$$</p>
-<hr>
+   <span class="hljs-number">1</span>         <span class="hljs-number">3</span>     <span class="hljs-number">3</span>      <span class="hljs-number">2</span>      <span class="hljs-number">1</span>
+    \       /     /      / \      \
+     <span class="hljs-number">3</span>     <span class="hljs-number">2</span>     <span class="hljs-number">1</span>      <span class="hljs-number">1</span>   <span class="hljs-number">3</span>      <span class="hljs-number">2</span>
+    /     /       \                 \
+   <span class="hljs-number">2</span>     <span class="hljs-number">1</span>         <span class="hljs-number">2</span>                 <span class="hljs-number">3</span></code></pre>
+<script type="math/tex; mode=display">
+f[i] = \begin{cases}
+2×(f[i-1]+···+f[(i-1)/2])+f[i/2]^2,i为奇数\\
+2×(f[i-1]+···+f[(i-1)/2])，i为偶数\\
+\end{cases}</script><hr>
 <p>事实上我们在方法一中推导出的 $G(n)$函数的值在数学上被称为卡塔兰数 $C_n $</p>
 <p> 。卡塔兰数更便于计算的定义如下:$C_0 = 1, \qquad C_{n+1} = \frac{2(2n+1)}{n+2}C_n$,证明过程可以参考上述文献，此处不再赘述。</p>
 <blockquote>
@@ -161,25 +304,35 @@
 </blockquote>
 <h2 id="221-最大正方形"><a href="#221-最大正方形" class="headerlink" title="221. 最大正方形"></a>221. 最大正方形</h2><p>在一个由 0 和 1 组成的二维矩阵内，找到只包含 1 的最大正方形，并返回其面积。</p>
 <p>示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line"></span><br><span class="line">1 0 1 0 0</span><br><span class="line">1 0 1 1 1</span><br><span class="line">1 1 1 1 1</span><br><span class="line">1 0 0 1 0</span><br><span class="line"></span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
-<hr>
-<p>可以使用动态规划降低时间复杂度。我们用 $dp(i, j)$ 表示以 $(i, j)$ 为右下角，且只包含 1 的正方形的边长最大值。如果我们能计算出所有 $dp(i, j)$的值，那么其中的最大值即为矩阵中只包含 1 的正方形的边长最大值，其平方即为最大正方形的面积。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><pre><code class="hljs angelscript">输入: 
+<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>
+输出: <span class="hljs-number">4</span></code></pre></h2><p>可以使用动态规划降低时间复杂度。我们用 $dp(i, j)$ 表示以 $(i, j)$ 为右下角，且只包含 1 的正方形的边长最大值。如果我们能计算出所有 $dp(i, j)$的值，那么其中的最大值即为矩阵中只包含 1 的正方形的边长最大值，其平方即为最大正方形的面积。</p>
 <p>那么如何计算 dp 中的每个元素值呢？对于每个位置$(i, j)$,检查在矩阵中该位置的值：</p>
 <p>如果该位置的值是 0，则 $dp(i,j)=0$，因为当前位置不可能在由 1 组成的正方形中；</p>
-<p>如果该位置的值是 1，则 $dp(i, j)$ 的值由其上方、左方和左上方的三个相邻位置的 dp 值决定。具体而言，当前位置的元素值等于三个相邻位置的元素中的最小值加 1，状态转移方程如下：<br>$$<br>dp(i, j)=min(dp(i−1, j), dp(i−1, j−1), dp(i, j−1))+1<br>$$<br>形子矩阵的官方题解，其中给出了详细的证明。</p>
+<p>如果该位置的值是 1，则 $dp(i, j)$ 的值由其上方、左方和左上方的三个相邻位置的 dp 值决定。具体而言，当前位置的元素值等于三个相邻位置的元素中的最小值加 1，状态转移方程如下：</p>
+<script type="math/tex; mode=display">
+dp(i, j)=min(dp(i−1, j), dp(i−1, j−1), dp(i, j−1))+1</script><p>形子矩阵的官方题解，其中给出了详细的证明。</p>
 <p>此外，还需要考虑边界条件。如果 $i$ 和 $j$ 中至少有一个为 $0$，则以位置 $(i,j)$ 为右下角的最大正方形的边长只能是 1，因此 $dp(i, j) = 1$。</p>
 <blockquote>
 <p>扩展85.最大矩形(Hard)<br>1277.统计全为1的正方形子矩阵</p>
 </blockquote>
 <hr>
 <h2 id="53-最大字序和"><a href="#53-最大字序和" class="headerlink" title="53. 最大字序和"></a>53. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/solution/zui-da-zi-xu-he-by-leetcode-solution/">最大字序和</a></h2><p>给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">示例:</span><br><span class="line"></span><br><span class="line">输入: [-2,1,-3,4,-1,2,1,-5,4]</span><br><span class="line">输出: 6</span><br><span class="line">解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs angelscript">示例:
 
+输入: [<span class="hljs-number">-2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">4</span>]
+输出: <span class="hljs-number">6</span>
+解释: 连续子数组 [<span class="hljs-number">4</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>] 的和最大，为 <span class="hljs-number">6</span>。</code></pre>
 <p>进阶:</p>
 <p>如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的分治法求解。</p>
 <hr>
 <p>一般人思路是暴力法，我承认，这的确很舒服，但是告诉你有$O(n)$的方法，你会怎么想呢。</p>
-<p>用$dp[i]$，如何表示才具有可行性。刚开始想的是序号从$0-n-1$的最大字序和。后来发现存在$dp[i-1]与nums[i-1]$断开的情况，而且中间的和一定不大于0. 官解给的是 <em>以第i个数结尾的连续数组最大和。</em>也就是不存在断开的情况。妙，实在是妙！<br>$$<br>dp[i] = max(dp[i-1]+nums[i-1],num[i-1])<br>$$<br>max里面前者表示存在新的后续元素使之更大，后者是新元素比原来的和更大。</p>
+<p>用$dp[i]$，如何表示才具有可行性。刚开始想的是序号从$0-n-1$的最大字序和。后来发现存在$dp[i-1]与nums[i-1]$断开的情况，而且中间的和一定不大于0. 官解给的是 <em>以第i个数结尾的连续数组最大和。</em>也就是不存在断开的情况。妙，实在是妙！</p>
+<script type="math/tex; mode=display">
+dp[i] = max(dp[i-1]+nums[i-1],num[i-1])</script><p>max里面前者表示存在新的后续元素使之更大，后者是新元素比原来的和更大。</p>
 <blockquote>
 <p> 边界条件：</p>
 </blockquote>
@@ -188,30 +341,54 @@
 <h2 id="139-单词拆分"><a href="#139-单词拆分" class="headerlink" title="139.单词拆分"></a>139.单词拆分</h2><p>给定一个非空字符串 s 和一个包含非空单词列表的字典 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。</p>
 <p>说明：</p>
 <p>拆分时可以重复使用字典中的单词。<br>你可以假设字典中没有重复的单词。<br>示例 1：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: s &#x3D; &quot;leetcode&quot;, wordDict &#x3D; [&quot;leet&quot;, &quot;code&quot;]</span><br><span class="line">输出: true</span><br><span class="line">解释: 返回 true 因为 &quot;leetcode&quot; 可以被拆分成 &quot;leet code&quot;。 </span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs nix">输入: <span class="hljs-attr">s</span> = <span class="hljs-string">&quot;leetcode&quot;</span>, <span class="hljs-attr">wordDict</span> = [<span class="hljs-string">&quot;leet&quot;</span>, <span class="hljs-string">&quot;code&quot;</span>]
+输出: <span class="hljs-literal">true</span>
+解释: 返回 <span class="hljs-literal">true</span> 因为 <span class="hljs-string">&quot;leetcode&quot;</span> 可以被拆分成 <span class="hljs-string">&quot;leet code&quot;</span>。</code></pre>
 <hr>
 <p>这一题可以正好填补一些我们思路上的空白。即，动态规划的迭代并不一定是连续的，很有可能存在跳跃。</p>
-<p>用$dp[i]$表示s前i个字符能否由字典中单词组成。那么$dp[i]=dp[j]\ \text{and}\  dict.check(s.substr(j,i-j));$，check在这里检查$s[j:i-1]$与字典中某一个单词匹配。初始条件为$dp[0]=true$空字符一定匹配，实际上，dp中大部分元素都是$false$。</p>
+<p>用$dp[i]$表示s前i个字符能否由字典中单词组成。那么$dp[i]=dp[j] \text{and}  dict.check(s.substr(j,i-j));$，check在这里检查$s[j:i-1]$与字典中某一个单词匹配。初始条件为$dp[0]=true$空字符一定匹配，实际上，dp中大部分元素都是$false$。</p>
 <h2 id="152-乘积最大子数组"><a href="#152-乘积最大子数组" class="headerlink" title="152. 乘积最大子数组"></a>152. 乘积最大子数组</h2><p>给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。</p>
 <p>示例 1:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,3,-2,4]</span><br><span class="line">输出: 6</span><br><span class="line">解释: 子数组 [2,3] 有最大乘积 6。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入: [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">4</span>]
+输出: <span class="hljs-number">6</span>
+解释: 子数组 [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] 有最大乘积 <span class="hljs-number">6</span>。
+</code></pre>
 <p>示例 2:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [-2,0,-1]</span><br><span class="line">输出: 0</span><br><span class="line">解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入: [<span class="hljs-number">-2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>]
+输出: <span class="hljs-number">0</span>
+解释: 结果不能为 <span class="hljs-number">2</span>, 因为 [<span class="hljs-number">-2</span>,<span class="hljs-number">-1</span>] 不是子数组。</code></pre>
 <hr>
-<p>这道题我们很容易陷入惯性思维，与最大子序和相似，我们可以设定$dp[i]$为以$nums[i-1]$为末尾的最大乘积，很容易知道<br>$$<br>dp[i]=max{dp[i-1]*nums[i-1],nums[i-1]}<br>$$<br>但是这一题与53不同的是，负负得正，比如$[-9,1,-8]$得到最大和是72而不是1. 所以我们需要分类讨论，$num[i-1]$正负性，还要设计一个求最小积的$mdp[i]$，与求最大积$Mdp[i]$相对，具体如下：<br>$$<br>Mdp=\begin{cases}<br>    \max{Mdp[i-1]*nums[i-1],nums[i-1]},nums[i-1]&gt;0\<br>    \max{mdp[i-1]*nums[i-1],nums[i-1]},otherwise\<br>    \end{cases}\<br>    \<br>    \<br>    \<br>mdp=\begin{cases}<br>    \min{mdp[i-1]*nums[i-1],nums[i-1]},nums[i-1]&gt;0\<br>    \min{Mdp[i-1]*nums[i-1],nums[i-1]},otherwise\<br>    \end{cases}<br>$$<br>初始条件$mdp[1]=nums[0],Mdp[1]=nums[0].$</p>
+<p>这道题我们很容易陷入惯性思维，与最大子序和相似，我们可以设定$dp[i]$为以$nums[i-1]$为末尾的最大乘积，很容易知道 </p>
+<script type="math/tex; mode=display">
+dp[i]=max\{dp[i-1]*nums[i-1],nums[i-1]\}</script><p>但是这一题与53不同的是，负负得正，比如$[-9,1,-8]$得到最大和是72而不是1. 所以我们需要分类讨论，$num[i-1]$正负性，还要设计一个求最小积的$mdp[i]$，与求最大积$Mdp[i]$相对，具体如下：</p>
+<script type="math/tex; mode=display">
+Mdp=\begin{cases}
+    \max\{Mdp[i-1]*nums[i-1],nums[i-1]\},nums[i-1]>0\\
+    \max\{mdp[i-1]*nums[i-1],nums[i-1]\},otherwise\\
+    \end{cases}\\
+    \\
+    \\
+
+    \\
+mdp=\begin{cases}
+    \min\{mdp[i-1]*nums[i-1],nums[i-1]\},nums[i-1]>0\\
+    \min\{Mdp[i-1]*nums[i-1],nums[i-1]\},otherwise\\
+    \end{cases}</script><p>初始条件$mdp[1]=nums[0],Mdp[1]=nums[0].$</p>
 <h2 id="279-完全平方数"><a href="#279-完全平方数" class="headerlink" title="279. 完全平方数"></a>279. 完全平方数</h2><p>给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, …）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。</p>
 <p>示例 1:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入: n &#x3D; 12</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 12 &#x3D; 4 + 4 + 4.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入: n = <span class="hljs-number">12</span>
+输出: <span class="hljs-number">3</span> 
+解释: <span class="hljs-number">12</span> = <span class="hljs-number">4</span> + <span class="hljs-number">4</span> + <span class="hljs-number">4.</span>
+</code></pre>
 <p>示例 2:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: n &#x3D; 13</span><br><span class="line">输出: 2</span><br><span class="line">解释: 13 &#x3D; 4 + 9.</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入: n = <span class="hljs-number">13</span>
+输出: <span class="hljs-number">2</span>
+解释: <span class="hljs-number">13</span> = <span class="hljs-number">4</span> + <span class="hljs-number">9.</span></code></pre>
 <hr>
 <p>这个例子表明dp算法可以和其它算法结合在一起，比如贪心算法。</p>
-<p>我们设$minSquare(i)$表示数字$i$对应的最小完全平方数数目，那么：<br>$$<br>minSquare(i) = \min\limits_{1\le k &lt; i}(minSqaure(i-k)+1)<br>$$<br>但其实我们并不需要全部计算出$minSquare(i-k)$的值，因为中间结果可能出现$minSquare(i-k)$，因此我们可以采用哈希表加速。</p>
+<p>我们设$minSquare(i)$表示数字$i$对应的最小完全平方数数目，那么：</p>
+<script type="math/tex; mode=display">
+minSquare(i) = \min\limits_{1\le k < i}(minSqaure(i-k)+1)</script><p>但其实我们并不需要全部计算出$minSquare(i-k)$的值，因为中间结果可能出现$minSquare(i-k)$，因此我们可以采用哈希表加速。</p>
 <blockquote>
 <p>边界条件：minSquare(0)=0; // 注意这个条件是虚构的</p>
 </blockquote>
@@ -231,43 +408,67 @@
 <li>1 ≤ n ≤ 1000</li>
 <li>1 ≤ m ≤ min(50, n)</li>
 </ul>
-<p>示例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">nums &#x3D; [7,2,5,10,8]</span><br><span class="line">m &#x3D; 2</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">18</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line">一共有四种方法将nums分割为2个子数组。</span><br><span class="line">其中最好的方式是将其分为[7,2,5] 和 [10,8]，</span><br><span class="line">因为此时这两个子数组各自的和的最大值为18，在所有情况中最小。</span><br></pre></td></tr></table></figure>
+<p>示例:<br><pre><code class="hljs angelscript">输入:
+nums = [<span class="hljs-number">7</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">8</span>]
+m = <span class="hljs-number">2</span>
 
+输出:
+<span class="hljs-number">18</span>
+
+解释:
+一共有四种方法将nums分割为<span class="hljs-number">2</span>个子数组。
+其中最好的方式是将其分为[<span class="hljs-number">7</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>] 和 [<span class="hljs-number">10</span>,<span class="hljs-number">8</span>]，
+因为此时这两个子数组各自的和的最大值为<span class="hljs-number">18</span>，在所有情况中最小。</code></pre></p>
 <hr>
 <p><code>将数组分割为m段，求...</code>是动态规划的常见问法。</p>
 <p>我们可以令$dp[i][j]$表示数组前$i$个数分割为$j$段，所能得到最大连续子数组和的最小值，我们可以考虑第$j$段的具体范围，即我们可以枚举$k$，将前$k$个数分割为$j-1$段，而第$k+1$到第$i$个数为第$j$段，此时，这$j$段数组中和的最大值等于$dp[k][j-1]$与$sum(k+1,i)$中和的较大值，其中$sum(a,b)$表示$nums[i]在[a,b]$的范围和。</p>
 <p>状态转移方程：</p>
-<p>$$<br>dp[i][j]=\min\limits_{k=0}^{i-1}(\max(dp[k][j-1],\sum\limits_{k+1}^i{nums[i]})<br>$$</p>
-<p>边界条件:<br>$$<br>dp[0][0] = 0;<br>$$</p>
-<p>时间复杂度: $O(n^2m)$,其中$n$是数组长度，$m$是分成非空的连续子数组个数，总状态数$O(n×m)$,状态转移时间$O(n)$。<br>空间复杂度：$O(n×m)$为动态规划数组开销。</p>
+<script type="math/tex; mode=display">
+dp[i][j]=\min\limits_{k=0}^{i-1}(\max(dp[k][j-1],\sum\limits_{k+1}^i{nums[i]})</script><p>边界条件:</p>
+<script type="math/tex; mode=display">
+dp[0][0] = 0;</script><p>时间复杂度: $O(n^2m)$,其中$n$是数组长度，$m$是分成非空的连续子数组个数，总状态数$O(n×m)$,状态转移时间$O(n)$。<br>空间复杂度：$O(n×m)$为动态规划数组开销。</p>
 <blockquote>
 <p>“我🤮饱了，后面还有吗” </p>
 <p>“当然”</p>
 </blockquote>
 <p>下面介绍一下字符串中的dp解法，比如10. 正则表达式匹配 和 44. 通配符匹配。 都是很经典的dp。 寥寥几句足以把超复杂的可能性涵盖其中，真让人不尽感叹造物主的鬼斧神工。</p>
 <h1 id="10-正则表达式匹配"><a href="#10-正则表达式匹配" class="headerlink" title="10.正则表达式匹配"></a>10.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/regular-expression-matching/">正则表达式匹配</a></h1><p>给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 ‘.’ 和 ‘*’ 的正则表达式匹配。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#39;.&#39; 匹配任意单个字符</span><br><span class="line">&#39;*&#39; 匹配零个或多个前面的那一个元素</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs 1c">&#x27;.&#x27; 匹配任意单个字符
+&#x27;*&#x27; 匹配零个或多个前面的那一个元素</code></pre>
 <p>所谓匹配，是要涵盖 整个字符串 s的，而不是部分字符串。</p>
 <p>说明:</p>
 <p>s 可能为空，且只包含从 a-z 的小写字母。<br>p 可能为空，且只包含从 a-z 的小写字母，以及字符 . 和 *。<br>示例 1:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s &#x3D; &quot;aa&quot;</span><br><span class="line">p &#x3D; &quot;a&quot;</span><br><span class="line">输出: false</span><br><span class="line">解释: &quot;a&quot; 无法匹配 &quot;aa&quot; 整个字符串。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+s = <span class="hljs-string">&quot;aa&quot;</span>
+p = <span class="hljs-string">&quot;a&quot;</span>
+<span class="hljs-section">输出: false</span>
+<span class="hljs-section">解释: &quot;a&quot; 无法匹配 &quot;aa&quot; 整个字符串。</span></code></pre>
 <p>示例 2:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s &#x3D; &quot;aa&quot;</span><br><span class="line">p &#x3D; &quot;a*&quot;</span><br><span class="line">输出: true</span><br><span class="line">解释: 因为 &#39;*&#39; 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 &#39;a&#39;。因此，字符串 &quot;aa&quot; 可被视为 &#39;a&#39; 重复了一次。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs smalltalk">输入:
+s = <span class="hljs-comment">&quot;aa&quot;</span>
+p = <span class="hljs-comment">&quot;a*&quot;</span>
+输出: <span class="hljs-keyword">true</span>
+解释: 因为 <span class="hljs-string">&#x27;*&#x27;</span> 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 <span class="hljs-string">&#x27;a&#x27;</span>。因此，字符串 <span class="hljs-comment">&quot;aa&quot;</span> 可被视为 <span class="hljs-string">&#x27;a&#x27;</span> 重复了一次。</code></pre>
 <p>示例 3:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s &#x3D; &quot;ab&quot;</span><br><span class="line">p &#x3D; &quot;.*&quot;</span><br><span class="line">输出: true</span><br><span class="line">解释: &quot;.*&quot; 表示可匹配零个或多个（&#39;*&#39;）任意字符（&#39;.&#39;）。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+s = <span class="hljs-string">&quot;ab&quot;</span>
+p = <span class="hljs-string">&quot;.*&quot;</span>
+<span class="hljs-section">输出: true</span>
+<span class="hljs-section">解释: &quot;.*&quot; 表示可匹配零个或多个（&#x27;*&#x27;）任意字符（&#x27;.&#x27;）。</span></code></pre>
 <p>示例 4:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s &#x3D; &quot;aab&quot;</span><br><span class="line">p &#x3D; &quot;c*a*b&quot;</span><br><span class="line">输出: true</span><br><span class="line">解释: 因为 &#39;*&#39; 表示零个或多个，这里 &#39;c&#39; 为 0 个, &#39;a&#39; 被重复一次。因此可以匹配字符串 &quot;aab&quot;。</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs smalltalk">输入:
+s = <span class="hljs-comment">&quot;aab&quot;</span>
+p = <span class="hljs-comment">&quot;c*a*b&quot;</span>
+输出: <span class="hljs-keyword">true</span>
+解释: 因为 <span class="hljs-string">&#x27;*&#x27;</span> 表示零个或多个，这里 <span class="hljs-string">&#x27;c&#x27;</span> 为 <span class="hljs-number">0</span> 个, <span class="hljs-string">&#x27;a&#x27;</span> 被重复一次。因此可以匹配字符串 <span class="hljs-comment">&quot;aab&quot;</span>。</code></pre>
 <p>示例5</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s &#x3D; &quot;mississippi&quot;</span><br><span class="line">p &#x3D; &quot;mis*is*p*.&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
-<hr>
-<p>我们用 $dp[i][j]$ 表示 s 的前 i 个字符与 pp 中的前 j 个字符是否能够匹配。在进行状态转移时，我们考虑 pp 的第 jj 个字符的匹配情况：</p>
+<h2 id="-1"><a href="#-1" class="headerlink" title=""></a><pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+s = <span class="hljs-string">&quot;mississippi&quot;</span>
+p = <span class="hljs-string">&quot;mis*is*p*.&quot;</span>
+<span class="hljs-section">输出: false</span></code></pre></h2><p>我们用 $dp[i][j]$ 表示 s 的前 i 个字符与 pp 中的前 j 个字符是否能够匹配。在进行状态转移时，我们考虑 pp 的第 jj 个字符的匹配情况：</p>
 <ul>
-<li>如果 p 的第 j 个字符是一个小写字母，那么我们必须在 s 中匹配一个相同的小写字母，即<br>$$<br>dp[i][j] =  (s[i-1]==p[j-1] &amp;&amp; dp[i-1][j-1]<br>$$</li>
+<li>如果 p 的第 j 个字符是一个小写字母，那么我们必须在 s 中匹配一个相同的小写字母，即<script type="math/tex; mode=display">
+dp[i][j] =  (s[i-1]==p[j-1] \&\& dp[i-1][j-1]</script></li>
 </ul>
 <p>如果我们通过这种方法进行转移，那么我们就需要枚举这个组合到底匹配了 ss 中的几个字符，会增导致时间复杂度增加，并且代码编写起来十分麻烦。我们不妨换个角度考虑这个问题：字母 + 星号的组合在匹配的过程中，本质上只会有两种情况：</p>
 <ul>
@@ -277,28 +478,80 @@
 </li>
 </ul>
 <p>如果按照这个角度进行思考，我们可以写出很精巧的状态转移方程：</p>
-<p>$$<br>dp[i][j]=\left{<br>\begin{array}{lcr}<br>dp[i-1][j]||dp[i][j-2],\ s[i]==p[j-1]<br>\<br>dp[i][j-2],\ s[i]\ne p[j-1]<br>\end{array}<br>\right.<br>$$</p>
-<ul>
-<li>在任意情况下，只要 $p[j]$ 是<code> .</code>，那么 $p[j]$ 一定成功匹配 ss 中的任意一个小写字母。</li>
+<script type="math/tex; mode=display">
+dp[i][j]=\left\{
+\begin{array}{lcr}
+dp[i-1][j]||dp[i][j-2],\ s[i]==p[j-1]
+\\
+dp[i][j-2],\ s[i]\ne p[j-1]
+\end{array}
+\right.</script><ul>
+<li>在任意情况下，只要 $p[j]$ 是<code>.</code>，那么 $p[j]$ 一定成功匹配 ss 中的任意一个小写字母。</li>
 </ul>
 <p>最终的状态转移方程如下：</p>
-<p>$$<br>dp[i][j] =<br>\begin{cases}<br>\text{if}\ (p[j]\ne ‘*’)=\begin{cases}<br>dp[i-1][j-1], matches(s[i],p[j]) \<br>false, \ otherwise<br>\end{cases}<br>\<br>\<br>otherwise = \begin{cases}<br>dp[i-1][j]\ || \ dp[i][j-2], \ matches(s[i],p[j-1])<br>\<br>dp[i][j-2], otherwise<br>\end{cases}<br>\end{cases}<br>$$</p>
-<p>其中$\textit{matches}(x, y)$ 判断两个字符是否匹配的辅助函数。只有当 y 是 <code>.</code> 或者 x 和 y 本身相同时，这两个字符才会匹配。</p>
+<script type="math/tex; mode=display">
+dp[i][j] = 
+\begin{cases}
+\text{if}\ (p[j]\ne '*')=\begin{cases}
+dp[i-1][j-1], matches(s[i],p[j]) \\
+false, \ otherwise
+\end{cases}
+\\
+\\
+otherwise = \begin{cases}
+dp[i-1][j]\ || \ dp[i][j-2], \ matches(s[i],p[j-1])
+\\
+dp[i][j-2], otherwise
+\end{cases}
+\end{cases}</script><p>其中$\textit{matches}(x, y)$ 判断两个字符是否匹配的辅助函数。只有当 y 是 <code>.</code> 或者 x 和 y 本身相同时，这两个字符才会匹配。</p>
 <blockquote>
 <p> 细节</p>
 </blockquote>
 <p>动态规划的边界条件为 $ dp[0][0] = true $，即两个空字符串是可以匹配的。最终的答案即为 $dp[m][n]$，其中 m和 n 分别是字符串 s 和 p 的长度。由于大部分语言中，字符串的字符下标是从 0 开始的，因此在实现上面的状态转移方程时，需要注意状态中每一维下标与实际字符下标的对应关系。</p>
-<p>在上面的状态转移方程中，如果字符串 p 中包含一个字符+星号的组合（例如 $a*$），那么在进行状态转移时，会先将 a 进行匹配（当 $p[j]$ 为 a 时），再将 a* 作为整体进行匹配（当 $p[j]$ 为 * 时）。然而，在题目描述中，我们必须将 a* 看成一个整体，因此将 a 进行匹配是不符合题目要求的。看来我们进行了额外的状态转移，这样会对最终的答案产生影响吗？这个问题留给读者进行思考。</p>
+<p>在上面的状态转移方程中，如果字符串 p 中包含一个字符+星号的组合（例如 $a<em>$），那么在进行状态转移时，会先将 a 进行匹配（当 $p[j]$ 为 a 时），再将 a</em> 作为整体进行匹配（当 $p[j]$ 为 <em> 时）。然而，在题目描述中，我们必须将 a</em> 看成一个整体，因此将 a 进行匹配是不符合题目要求的。看来我们进行了额外的状态转移，这样会对最终的答案产生影响吗？这个问题留给读者进行思考。</p>
 <p>C++代码</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = s.size();</span><br><span class="line">        <span class="keyword">int</span> n = p.size();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">auto</span> matches = [&amp;](<span class="keyword">int</span> i, <span class="keyword">int</span> j) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (p[j - <span class="number">1</span>] == <span class="string">&#x27;.&#x27;</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> s[i - <span class="number">1</span>] == p[j - <span class="number">1</span>];</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">f</span><span class="params">(m + <span class="number">1</span>, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n + <span class="number">1</span>))</span></span>;</span><br><span class="line">        f[<span class="number">0</span>][<span class="number">0</span>] = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (p[j - <span class="number">1</span>] == <span class="string">&#x27;*&#x27;</span>) &#123;</span><br><span class="line">                    f[i][j] |= f[i][j - <span class="number">2</span>];</span><br><span class="line">                    <span class="keyword">if</span> (matches(i, j - <span class="number">1</span>)) &#123;</span><br><span class="line">                        f[i][j] |= f[i - <span class="number">1</span>][j];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (matches(i, j)) &#123;</span><br><span class="line">                        f[i][j] |= f[i - <span class="number">1</span>][j - <span class="number">1</span>];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> f[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isMatch</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s, <span class="hljs-built_in">string</span> p)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> m = s.size();
+        <span class="hljs-keyword">int</span> n = p.size();
 
+        <span class="hljs-keyword">auto</span> matches = [&amp;](<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j) &#123;
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            &#125;
+            <span class="hljs-keyword">if</span> (p[j - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;.&#x27;</span>) &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            &#125;
+            <span class="hljs-keyword">return</span> s[i - <span class="hljs-number">1</span>] == p[j - <span class="hljs-number">1</span>];
+        &#125;;
 
-
-
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">f</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(n + <span class="hljs-number">1</span>))</span></span>;
+        f[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= m; ++i) &#123;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; ++j) &#123;
+                <span class="hljs-keyword">if</span> (p[j - <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>) &#123;
+                    f[i][j] |= f[i][j - <span class="hljs-number">2</span>];
+                    <span class="hljs-keyword">if</span> (matches(i, j - <span class="hljs-number">1</span>)) &#123;
+                        f[i][j] |= f[i - <span class="hljs-number">1</span>][j];
+                    &#125;
+                &#125;
+                <span class="hljs-keyword">else</span> &#123;
+                    <span class="hljs-keyword">if</span> (matches(i, j)) &#123;
+                        f[i][j] |= f[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>];
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> f[m][n];
+    &#125;
+&#125;;
+</code></pre>
 <hr>
 <h1 id="44-通配符匹配"><a href="#44-通配符匹配" class="headerlink" title="44. 通配符匹配"></a>44. <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/wildcard-matching/">通配符匹配</a></h1><p>给定一个字符串 (s) 和一个字符模式 (p) ，实现一个支持 ‘?’ 和 ‘*’ 的通配符匹配。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;?&#x27;</span> 可以匹配任何单个字符。</span><br><span class="line"><span class="string">&#x27;*&#x27;</span> 可以匹配任意字符串（包括空字符串）。</span><br><span class="line">两个字符串完全匹配才算匹配成功。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-string">&#x27;?&#x27;</span> 可以匹配任何单个字符。
+<span class="hljs-string">&#x27;*&#x27;</span> 可以匹配任意字符串（包括空字符串）。
+两个字符串完全匹配才算匹配成功。</code></pre>
 <p>说明:</p>
 <ul>
 <li>s 可能为空，且只包含从 a-z 的小写字母。</li>
@@ -307,14 +560,27 @@
 <hr>
 <p>我们用$dp[i][j]$表示s的第$i$个字符与p的第$j$个字符是否匹配。</p>
 <ul>
-<li><p>第一种情况是字母与字母匹配，即<br>$$<br>dp[i][j] =  (s[i-1]==p[j-1] &amp;&amp; dp[i-1][j-1])<br>$$</p>
-</li>
-<li><p>第二种情况是$p[j]$是问好，则对$s[i]$没有任何要求<br>$$<br>dp[i][j] = (p[j-1]==’?’&amp;&amp;dp[i-1][j-1])<br>$$</p>
-</li>
+<li><p>第一种情况是字母与字母匹配，即</p>
+<script type="math/tex; mode=display">
+dp[i][j] =  (s[i-1]==p[j-1] \&\& dp[i-1][j-1])</script></li>
+<li><p>第二种情况是$p[j]$是问好，则对$s[i]$没有任何要求</p>
+<script type="math/tex; mode=display">
+dp[i][j] = (p[j-1]=='?'\&\&dp[i-1][j-1])</script></li>
 <li><p>第三种情况，是遇到$’’*’’$，这种情况最为复杂，因为不知道星号要匹配多少个字符，这里很容易想到<code>回溯</code>方法，但是回溯一般会超时，著名的KMP算法是因为了避免回溯才会那么快。</p>
-<p>所以我们想这个星号可以使用多次，也可以一次都不使用。<br>$$<br>dp[i][j] = dp[i-1][j]||dp[i][j-1]<br>$$<br>后面一项表示不使用星号，前面一项表示使用星号。</p>
-<p>总结一下：<br>$$<br>dp[i][j]=\left{<br>\begin{array}{lcr}<br>s[i-1]==p[j-1] &amp;&amp; dp[i-1][j-1]，’a-z’<br>\<br>p[j-1]==’?’&amp;&amp;dp[i-1][j-1],’?’<br>\<br>dp[i-1][j]||dp[i][j-1], ‘*’<br>\end{array}<br>\right.<br>$$</p>
-</li>
+<p>所以我们想这个星号可以使用多次，也可以一次都不使用。</p>
+<script type="math/tex; mode=display">
+dp[i][j] = dp[i-1][j]||dp[i][j-1]</script><p>后面一项表示不使用星号，前面一项表示使用星号。</p>
+<p>总结一下：</p>
+<script type="math/tex; mode=display">
+dp[i][j]=\left\{
+\begin{array}{lcr}
+s[i-1]==p[j-1] \&\& dp[i-1][j-1]，'a-z'
+\\
+p[j-1]=='?'\&\&dp[i-1][j-1],'?'
+\\
+dp[i-1][j]||dp[i][j-1], '*'
+\end{array}
+\right.</script></li>
 </ul>
 <blockquote>
 <p>边界条件：</p>
@@ -322,22 +588,53 @@
 </blockquote>
 <ol>
 <li><p>若两个字符串为空，$dp[0][0]$也为True.</p>
-<p>$$ dp[i][0]=!s.size() $$<br>即空字符串无法匹配非空字符串。</p>
+<script type="math/tex; mode=display">dp[i][0]=!s.size()</script><p>即空字符串无法匹配非空字符串。</p>
 </li>
-<li><p>若s为空，p全为”<em>“，才能完成匹配。<br>$$<br>dp[0][j] = (p[j]==’</em>‘)&amp;&amp;dp[0][j-1]<br>$$</p>
-</li>
+<li><p>若s为空，p全为”*”，才能完成匹配。</p>
+<script type="math/tex; mode=display">
+dp[0][j] = (p[j]=='*')\&\&dp[0][j-1]</script></li>
 </ol>
 <p>我们可以发现，$dp[i][0]$的值恒为假，$dp[0][j]$ 在 $j$ 大于模式 $p$ 的开头出现的星号字符个数之后，值也恒为假，而 $dp[i][j]$ 的默认值（其它情况）也为假，因此在对动态规划的数组初始化时，我们就可以将所有的状态初始化为 False，减少状态转移的代码编写难度。</p>
 <p>此外还要考虑字符串的硬边界。此外，<strong>注意</strong>下标对$dp[i][j]$表示$s[i-1]$与$p[j-1]$匹配，因为下标是从0开始的。</p>
 <p>Python 实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isMatch</span>(<span class="params">self, s: str, p: str</span>) -&gt; bool:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> p <span class="keyword">and</span> s: <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> s <span class="keyword">and</span> <span class="keyword">not</span> p: <span class="keyword">return</span> <span class="literal">True</span> </span><br><span class="line">        </span><br><span class="line">    m = len(s); n = len(p)</span><br><span class="line">    dp = [[<span class="literal">False</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n+<span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m+<span class="number">1</span>) ]</span><br><span class="line">    dp[<span class="number">0</span>][<span class="number">0</span>] = (p[<span class="number">0</span>]==<span class="string">&#x27;?&#x27;</span>) <span class="keyword">or</span> (p[<span class="number">0</span>]==<span class="string">&#x27;*&#x27;</span>) <span class="keyword">or</span> (s <span class="keyword">and</span> s[<span class="number">0</span>]==p[<span class="number">0</span>]) </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,m+<span class="number">1</span>):</span><br><span class="line">        dp[i][<span class="number">0</span>] = <span class="keyword">not</span> len(s)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        dp[<span class="number">0</span>][j] = (p[j<span class="number">-1</span>] == <span class="string">&#x27;*&#x27;</span>) <span class="keyword">and</span> dp[<span class="number">0</span>][j<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,m+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">            dp[i][j] = (s[i<span class="number">-1</span>] == p[j<span class="number">-1</span>] <span class="keyword">and</span> dp[i<span class="number">-1</span>][j<span class="number">-1</span>]) <span class="keyword">or</span> \</span><br><span class="line">                        (p[j<span class="number">-1</span>] == <span class="string">&#x27;?&#x27;</span> <span class="keyword">and</span> dp[i<span class="number">-1</span>][j<span class="number">-1</span>]) <span class="keyword">or</span> \</span><br><span class="line">                        (p[j<span class="number">-1</span>] == <span class="string">&#x27;*&#x27;</span> <span class="keyword">and</span> (dp[i<span class="number">-1</span>][j] <span class="keyword">or</span> dp[i][j<span class="number">-1</span>]))</span><br><span class="line">            print(<span class="string">&quot;(%d,%d):&quot;</span>%(i,j),dp[i][j])</span><br><span class="line">    <span class="keyword">return</span> dp[m][n]</span><br></pre></td></tr></table></figure>
-
-
-
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">isMatch</span>(<span class="hljs-params">self, s: str, p: str</span>) -&gt; bool:</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> p <span class="hljs-keyword">and</span> s: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> p: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span> 
+        
+    m = len(s); n = len(p)
+    dp = [[<span class="hljs-literal">False</span> <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(n+<span class="hljs-number">1</span>)] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(m+<span class="hljs-number">1</span>) ]
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = (p[<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;?&#x27;</span>) <span class="hljs-keyword">or</span> (p[<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;*&#x27;</span>) <span class="hljs-keyword">or</span> (s <span class="hljs-keyword">and</span> s[<span class="hljs-number">0</span>]==p[<span class="hljs-number">0</span>]) 
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,m+<span class="hljs-number">1</span>):
+        dp[i][<span class="hljs-number">0</span>] = <span class="hljs-keyword">not</span> len(s)
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,n+<span class="hljs-number">1</span>):
+        dp[<span class="hljs-number">0</span>][j] = (p[j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;*&#x27;</span>) <span class="hljs-keyword">and</span> dp[<span class="hljs-number">0</span>][j<span class="hljs-number">-1</span>]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,m+<span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,n+<span class="hljs-number">1</span>):
+            dp[i][j] = (s[i<span class="hljs-number">-1</span>] == p[j<span class="hljs-number">-1</span>] <span class="hljs-keyword">and</span> dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]) <span class="hljs-keyword">or</span> \
+                        (p[j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;?&#x27;</span> <span class="hljs-keyword">and</span> dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]) <span class="hljs-keyword">or</span> \
+                        (p[j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;*&#x27;</span> <span class="hljs-keyword">and</span> (dp[i<span class="hljs-number">-1</span>][j] <span class="hljs-keyword">or</span> dp[i][j<span class="hljs-number">-1</span>]))
+            print(<span class="hljs-string">&quot;(%d,%d):&quot;</span>%(i,j),dp[i][j])
+    <span class="hljs-keyword">return</span> dp[m][n]</code></pre>
 <p>C++实现：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isMatch</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> p)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!p.size() &amp;&amp; s.size()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (!s.size() &amp;&amp; !p.size()) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">int</span> m = s.size(), n = p.size();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&gt; <span class="title">dp</span><span class="params">(m+<span class="number">1</span>,<span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;(n+<span class="number">1</span>,<span class="literal">false</span>))</span></span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = (p[<span class="number">0</span>]==<span class="string">&#x27;?&#x27;</span>)||(p[<span class="number">0</span>]==<span class="string">&#x27;*&#x27;</span>)||(s.size()&amp;&amp;s[<span class="number">0</span>]==p[<span class="number">0</span>]);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; m+<span class="number">1</span>; i++) dp[i][<span class="number">0</span>] = !s.size();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n+<span class="number">1</span>; j++) dp[<span class="number">0</span>][j] = (p[j<span class="number">-1</span>]==<span class="string">&#x27;*&#x27;</span>) &amp;&amp; dp[<span class="number">0</span>][j<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; m+<span class="number">1</span>; i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; n+<span class="number">1</span>; j++)</span><br><span class="line">        dp[i][j] = (s[i<span class="number">-1</span>] == p[j<span class="number">-1</span>] &amp;&amp; dp[i<span class="number">-1</span>][j<span class="number">-1</span>]) || \</span><br><span class="line">                            (p[j<span class="number">-1</span>] == <span class="string">&#x27;?&#x27;</span> &amp;&amp; dp[i<span class="number">-1</span>][j<span class="number">-1</span>]) || \</span><br><span class="line">                            (p[j<span class="number">-1</span>] == <span class="string">&#x27;*&#x27;</span> &amp;&amp; (dp[i<span class="number">-1</span>][j] || dp[i][j<span class="number">-1</span>]));</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isMatch</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s, <span class="hljs-built_in">string</span> p)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span> (!p.size() &amp;&amp; s.size()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">if</span> (!s.size() &amp;&amp; !p.size()) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">int</span> m = s.size(), n = p.size();
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt;&gt; <span class="hljs-title">dp</span><span class="hljs-params">(m+<span class="hljs-number">1</span>,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt;(n+<span class="hljs-number">1</span>,<span class="hljs-literal">false</span>))</span></span>;
+        dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = (p[<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;?&#x27;</span>)||(p[<span class="hljs-number">0</span>]==<span class="hljs-string">&#x27;*&#x27;</span>)||(s.size()&amp;&amp;s[<span class="hljs-number">0</span>]==p[<span class="hljs-number">0</span>]);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; m+<span class="hljs-number">1</span>; i++) dp[i][<span class="hljs-number">0</span>] = !s.size();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; n+<span class="hljs-number">1</span>; j++) dp[<span class="hljs-number">0</span>][j] = (p[j<span class="hljs-number">-1</span>]==<span class="hljs-string">&#x27;*&#x27;</span>) &amp;&amp; dp[<span class="hljs-number">0</span>][j<span class="hljs-number">-1</span>];
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; m+<span class="hljs-number">1</span>; i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; n+<span class="hljs-number">1</span>; j++)
+        dp[i][j] = (s[i<span class="hljs-number">-1</span>] == p[j<span class="hljs-number">-1</span>] &amp;&amp; dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]) || \
+                            (p[j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;?&#x27;</span> &amp;&amp; dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]) || \
+                            (p[j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;*&#x27;</span> &amp;&amp; (dp[i<span class="hljs-number">-1</span>][j] || dp[i][j<span class="hljs-number">-1</span>]));
+        <span class="hljs-keyword">return</span> dp[m][n];            
+    &#125;
+&#125;;</code></pre>
 <p>明显是C++要快些()，嘻嘻😂，而且内存占用要小些</p>
 <p>老规矩，下面分析时间复杂度和空间复杂度.</p>
 <p>时间复杂度：$O(MN)$</p>
@@ -363,8 +660,27 @@
 </blockquote>
 <p>就是完全的删除或者完全插入。</p>
 <p><strong>代码</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minDistance</span><span class="params">(<span class="built_in">string</span> word1, <span class="built_in">string</span> word2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!word1.size()) <span class="keyword">return</span> word2.size();</span><br><span class="line">        <span class="keyword">if</span>(!word2.size()) <span class="keyword">return</span> word1.size();</span><br><span class="line">        <span class="comment">//dp[i][j]表示word1的前i位替换为word2前i位所需的最小步数</span></span><br><span class="line">        <span class="keyword">int</span> m = word1.size(), n = word2.size();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">dp</span><span class="params">(m+<span class="number">1</span>,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(n+<span class="number">1</span>))</span></span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">1</span>][<span class="number">1</span>] = (word1[<span class="number">0</span>]==word2[<span class="number">0</span>])? <span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;=m ;i++) dp[i][<span class="number">0</span>] = i;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;=n ;j++) dp[<span class="number">0</span>][j] = j;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;=m; i++ )</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;=n; j++ )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> exchange = (word1[i<span class="number">-1</span>]==word2[j<span class="number">-1</span>])?dp[i<span class="number">-1</span>][j<span class="number">-1</span>]:dp[i<span class="number">-1</span>][j<span class="number">-1</span>]+<span class="number">1</span>;</span><br><span class="line">            dp[i][j] = min(exchange, min(dp[i<span class="number">-1</span>][j]+<span class="number">1</span>,dp[i][j<span class="number">-1</span>]+<span class="number">1</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minDistance</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word1, <span class="hljs-built_in">string</span> word2)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!word1.size()) <span class="hljs-keyword">return</span> word2.size();
+        <span class="hljs-keyword">if</span>(!word2.size()) <span class="hljs-keyword">return</span> word1.size();
+        <span class="hljs-comment">//dp[i][j]表示word1的前i位替换为word2前i位所需的最小步数</span>
+        <span class="hljs-keyword">int</span> m = word1.size(), n = word2.size();
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">dp</span><span class="hljs-params">(m+<span class="hljs-number">1</span>,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(n+<span class="hljs-number">1</span>))</span></span>;
+        dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        dp[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = (word1[<span class="hljs-number">0</span>]==word2[<span class="hljs-number">0</span>])? <span class="hljs-number">0</span>:<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;=m ;i++) dp[i][<span class="hljs-number">0</span>] = i;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;=n ;j++) dp[<span class="hljs-number">0</span>][j] = j;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;=m; i++ )
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;=n; j++ )
+        &#123;
+            <span class="hljs-keyword">int</span> exchange = (word1[i<span class="hljs-number">-1</span>]==word2[j<span class="hljs-number">-1</span>])?dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]:dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]+<span class="hljs-number">1</span>;
+            dp[i][j] = min(exchange, min(dp[i<span class="hljs-number">-1</span>][j]+<span class="hljs-number">1</span>,dp[i][j<span class="hljs-number">-1</span>]+<span class="hljs-number">1</span>));
+        &#125;
+        <span class="hljs-keyword">return</span> dp[m][n];
+    &#125;
+&#125;;</code></pre>
 <blockquote>
 <p>小伙伴如果有收获，请点赞留言哦Σ(っ °Д °;)っ</p>
 </blockquote>
@@ -375,25 +691,44 @@
 <p>请你返回从 start 到 finish 所有可能路径的数目。</p>
 <p>由于答案可能很大， 请将它对 10^9 + 7 取余后返回。</p>
 <p>示例 1：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：locations &#x3D; [2,3,6,8,4], start &#x3D; 1, finish &#x3D; 3, fuel &#x3D; 5</span><br><span class="line">输出：4</span><br><span class="line">解释：以下为所有可能路径，每一条都用了 5 单位的汽油：</span><br><span class="line">1 -&gt; 3</span><br><span class="line">1 -&gt; 2 -&gt; 3</span><br><span class="line">1 -&gt; 4 -&gt; 3</span><br><span class="line">1 -&gt; 4 -&gt; 2 -&gt; 3</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
+<pre><code class="hljs angelscript">输入：locations = [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>], start = <span class="hljs-number">1</span>, finish = <span class="hljs-number">3</span>, fuel = <span class="hljs-number">5</span>
+输出：<span class="hljs-number">4</span>
+解释：以下为所有可能路径，每一条都用了 <span class="hljs-number">5</span> 单位的汽油：
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">4</span> -&gt; <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">4</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">3</span>
+</code></pre>
 <p>示例 2：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入：locations &#x3D; [4,3,1], start &#x3D; 1, finish &#x3D; 0, fuel &#x3D; 6</span><br><span class="line">输出：5</span><br><span class="line">解释：以下为所有可能的路径：</span><br><span class="line">1 -&gt; 0，使用汽油量为 fuel &#x3D; 1</span><br><span class="line">1 -&gt; 2 -&gt; 0，使用汽油量为 fuel &#x3D; 5</span><br><span class="line">1 -&gt; 2 -&gt; 1 -&gt; 0，使用汽油量为 fuel &#x3D; 5</span><br><span class="line">1 -&gt; 0 -&gt; 1 -&gt; 0，使用汽油量为 fuel &#x3D; 3</span><br><span class="line">1 -&gt; 0 -&gt; 1 -&gt; 0 -&gt; 1 -&gt; 0，使用汽油量为 fuel &#x3D; 5</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入：locations = [<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>], start = <span class="hljs-number">1</span>, finish = <span class="hljs-number">0</span>, fuel = <span class="hljs-number">6</span>
+输出：<span class="hljs-number">5</span>
+解释：以下为所有可能的路径：
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span>，使用汽油量为 fuel = <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">0</span>，使用汽油量为 fuel = <span class="hljs-number">5</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">2</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span>，使用汽油量为 fuel = <span class="hljs-number">5</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span>，使用汽油量为 fuel = <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span>，使用汽油量为 fuel = <span class="hljs-number">5</span></code></pre>
 <p>示例 3：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：locations &#x3D; [5,2,1], start &#x3D; 0, finish &#x3D; 2, fuel &#x3D; 3</span><br><span class="line">输出：0</span><br><span class="line">解释：没有办法只用 3 单位的汽油从 0 到达 2 。因为最短路径需要 4 单位的汽油。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入：locations = [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], start = <span class="hljs-number">0</span>, finish = <span class="hljs-number">2</span>, fuel = <span class="hljs-number">3</span>
+输出：<span class="hljs-number">0</span>
+解释：没有办法只用 <span class="hljs-number">3</span> 单位的汽油从 <span class="hljs-number">0</span> 到达 <span class="hljs-number">2</span> 。因为最短路径需要 <span class="hljs-number">4</span> 单位的汽油。</code></pre>
 <p>示例 4 ：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：locations &#x3D; [2,1,5], start &#x3D; 0, finish &#x3D; 0, fuel &#x3D; 3</span><br><span class="line">输出：2</span><br><span class="line">解释：总共有两条可行路径，0 和 0 -&gt; 1 -&gt; 0 。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入：locations = [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>], start = <span class="hljs-number">0</span>, finish = <span class="hljs-number">0</span>, fuel = <span class="hljs-number">3</span>
+输出：<span class="hljs-number">2</span>
+解释：总共有两条可行路径，<span class="hljs-number">0</span> 和 <span class="hljs-number">0</span> -&gt; <span class="hljs-number">1</span> -&gt; <span class="hljs-number">0</span> 。
+</code></pre>
 <p>示例 5：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：locations &#x3D; [1,2,3], start &#x3D; 0, finish &#x3D; 2, fuel &#x3D; 40</span><br><span class="line">输出：615088286</span><br><span class="line">解释：路径总数为 2615088300 。将结果对 10^9 + 7 取余，得到 615088286 。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入：locations = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], start = <span class="hljs-number">0</span>, finish = <span class="hljs-number">2</span>, fuel = <span class="hljs-number">40</span>
+输出：<span class="hljs-number">615088286</span>
+解释：路径总数为 <span class="hljs-number">2615088300</span> 。将结果对 <span class="hljs-number">10</span>^<span class="hljs-number">9</span> + <span class="hljs-number">7</span> 取余，得到 <span class="hljs-number">615088286</span> 。
+</code></pre>
 <p>提示：</p>
 <ul>
-<li><code>2 &lt;= locations.length &lt;= 100 1 &lt;= locations[i] &lt;= 10^9 所有 locations 中的整数 互不相同 。 0 &lt;= start, finish &lt; locations.length 1 &lt;= fuel &lt;= 200</code></li>
+<li><code>2 &lt;= locations.length &lt;= 100
+1 &lt;= locations[i] &lt;= 10^9
+所有 locations 中的整数 互不相同 。
+0 &lt;= start, finish &lt; locations.length
+1 &lt;= fuel &lt;= 200</code></li>
 </ul>
 <hr>
 <p>此题乃背包问题的变形。背包内有一些物品，拿相邻两个物品需要时间，这个时间取决于它们的重量差，一共给你<code>fuel</code>时间，问开始拿<code>start</code>物品，最后拿<code>finsih</code>物品有多少种可行方案。</p>
@@ -422,8 +757,44 @@
 <li><p>细节，由于dp中间结果可能非常大，每做一次状态转移都要取模。</p>
 </li>
 <li><p>代码实现：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line">    ll mod = <span class="number">1E9</span>+<span class="number">7</span>;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> res;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countRoutes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; locations, <span class="keyword">int</span> start, <span class="keyword">int</span> finish, <span class="keyword">int</span> fuel)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//老思路dp, 不过这里的节点可以反复遍历，直到汽油耗光为止,可以转化为完全背包</span></span><br><span class="line">        <span class="keyword">int</span> n = locations.size();</span><br><span class="line">        res = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//dp[i][f]表示从起点到第i城市刚好消耗f燃料的可行路径数。</span></span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt;&gt; <span class="title">dp</span><span class="params">(n, <span class="built_in">vector</span>&lt;<span class="keyword">long</span> <span class="keyword">long</span> &gt;(fuel+<span class="number">1</span>,<span class="number">0</span>))</span></span>;</span><br><span class="line">        <span class="comment">//初始条件</span></span><br><span class="line">        dp[start][<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">       	<span class="comment">//状态转移</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> f = <span class="number">0</span>; f &lt;= fuel; f++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>;j &lt; n;j++)</span><br><span class="line">        <span class="keyword">if</span>(j!=i)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">int</span> cost = <span class="built_in">abs</span>(locations[i]-locations[j]);</span><br><span class="line">        <span class="keyword">if</span>(f &gt;= cost) </span><br><span class="line">        &#123; </span><br><span class="line">            dp[i][f] +=  dp[j][f-cost] ; </span><br><span class="line">            dp[i][f] %= mod;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d-&gt;%d-&gt;%d,cost:%d,dp:%d\n&quot;</span>,start,j,i,cost,dp[i][f]);</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> f = <span class="number">0</span>; f &lt;= fuel ;f++) </span><br><span class="line">        <span class="keyword">if</span>(dp[finish][f])</span><br><span class="line">        &#123;</span><br><span class="line">            res += dp[finish][f];</span><br><span class="line">            res %= mod;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res%mod;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> ll;
+    ll mod = <span class="hljs-number">1E9</span>+<span class="hljs-number">7</span>;
+    <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> res;
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">countRoutes</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; locations, <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> finish, <span class="hljs-keyword">int</span> fuel)</span> </span>&#123;
+        
+        <span class="hljs-comment">//老思路dp, 不过这里的节点可以反复遍历，直到汽油耗光为止,可以转化为完全背包</span>
+        <span class="hljs-keyword">int</span> n = locations.size();
+        res = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">//dp[i][f]表示从起点到第i城市刚好消耗f燃料的可行路径数。</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>&gt;&gt; <span class="hljs-title">dp</span><span class="hljs-params">(n, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> &gt;(fuel+<span class="hljs-number">1</span>,<span class="hljs-number">0</span>))</span></span>;
+        <span class="hljs-comment">//初始条件</span>
+        dp[start][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+       	<span class="hljs-comment">//状态转移</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>; f &lt;= fuel; f++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; n;j++)
+        <span class="hljs-keyword">if</span>(j!=i)
+        &#123;
+        <span class="hljs-keyword">int</span> cost = <span class="hljs-built_in">abs</span>(locations[i]-locations[j]);
+        <span class="hljs-keyword">if</span>(f &gt;= cost) 
+        &#123; 
+            dp[i][f] +=  dp[j][f-cost] ; 
+            dp[i][f] %= mod;
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d-&gt;%d-&gt;%d,cost:%d,dp:%d\n&quot;</span>,start,j,i,cost,dp[i][f]);
+        &#125;
+        &#125;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>; f &lt;= fuel ;f++) 
+        <span class="hljs-keyword">if</span>(dp[finish][f])
+        &#123;
+            res += dp[finish][f];
+            res %= mod;
+        &#125;
+        <span class="hljs-keyword">return</span> res%mod;
+    &#125;
+&#125;;</code></pre>
 <ul>
 <li>时间复杂度：$O(N^2*f)$. $N$为城市数，$f$为总汽油量</li>
 <li>空间复杂度:   $O(N*f)$.</li>
@@ -432,150 +803,314 @@
 </ul>
 <p><strong>记忆化搜索</strong></p>
 <p>根据题目给的数据范围，数组长度不太大,<code>fuel</code>不太大，判断记忆化搜索可行。</p>
-<p><code>2 &lt;= locations.length &lt;= 100 1 &lt;= locations[i] &lt;= 10^9 所有 locations 中的整数 互不相同 。 0 &lt;= start, finish &lt; locations.length 1 &lt;= fuel &lt;= 200</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="keyword">int</span> dp[<span class="number">105</span>][<span class="number">205</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MOD = <span class="number">1e9</span> + <span class="number">7</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; locations, <span class="keyword">int</span> start, <span class="keyword">int</span> finish, <span class="keyword">int</span> fuel)</span></span>&#123;</span><br><span class="line">        <span class="comment">//返回从start到finish的可行路径数</span></span><br><span class="line">        <span class="keyword">if</span>(dp[start][fuel] != <span class="number">-1</span>) <span class="keyword">return</span> dp[start][fuel];</span><br><span class="line">        ll ans = <span class="number">0</span>; <span class="keyword">int</span> len = locations.size();</span><br><span class="line">        <span class="keyword">if</span>(start == finish) ans++;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> diff = <span class="built_in">abs</span>(locations[i] - locations[start]);</span><br><span class="line">            <span class="keyword">if</span>(start == i) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">if</span>(fuel - diff &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">                ans = (ans + dfs(locations, i, finish, fuel - diff)) % MOD;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        dp[start][fuel] = (ans % MOD);</span><br><span class="line">        <span class="keyword">return</span> dp[start][fuel];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countRoutes</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; locations, <span class="keyword">int</span> start, <span class="keyword">int</span> finish, <span class="keyword">int</span> fuel)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">memset</span>(dp, <span class="number">-1</span>, <span class="keyword">sizeof</span>(dp));</span><br><span class="line">        <span class="keyword">return</span> dfs(locations, start, finish, fuel);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>2 &lt;= locations.length &lt;= 100
+1 &lt;= locations[i] &lt;= 10^9
+所有 locations 中的整数 互不相同 。
+0 &lt;= start, finish &lt; locations.length
+1 &lt;= fuel &lt;= 200</code></p>
+<pre><code class="hljs C++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> ll;
+<span class="hljs-keyword">int</span> dp[<span class="hljs-number">105</span>][<span class="hljs-number">205</span>];
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> MOD = <span class="hljs-number">1e9</span> + <span class="hljs-number">7</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; locations, <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> finish, <span class="hljs-keyword">int</span> fuel)</span></span>&#123;
+        <span class="hljs-comment">//返回从start到finish的可行路径数</span>
+        <span class="hljs-keyword">if</span>(dp[start][fuel] != <span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> dp[start][fuel];
+        ll ans = <span class="hljs-number">0</span>; <span class="hljs-keyword">int</span> len = locations.size();
+        <span class="hljs-keyword">if</span>(start == finish) ans++;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++)&#123;
+            <span class="hljs-keyword">int</span> diff = <span class="hljs-built_in">abs</span>(locations[i] - locations[start]);
+            <span class="hljs-keyword">if</span>(start == i) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span>(fuel - diff &gt;= <span class="hljs-number">0</span>)&#123;
+                ans = (ans + dfs(locations, i, finish, fuel - diff)) % MOD;
+            &#125;
+        &#125;
+        dp[start][fuel] = (ans % MOD);
+        <span class="hljs-keyword">return</span> dp[start][fuel];
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">countRoutes</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; locations, <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> finish, <span class="hljs-keyword">int</span> fuel)</span> </span>&#123;
+        <span class="hljs-built_in">memset</span>(dp, <span class="hljs-number">-1</span>, <span class="hljs-keyword">sizeof</span>(dp));
+        <span class="hljs-keyword">return</span> dfs(locations, start, finish, fuel);
+    &#125;
+&#125;;
+</code></pre>
 
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-8-20-what-is-Trie/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Google划词搜索的秘密</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/19/2020-07-19-damn_blog/">
+                        <span class="hidden-mobile">Durant终于有个家写写东西了</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/07/21/2020-07-21-dynamic-planning/" data-id="ckfj5lo7h002e3osc28t0g2jz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2020/07/27/2020-07-27-backpack-problem/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          背包问题
-        
+            
+          </article>
+        </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
     </a>
   
-  
-    <a href="/2020/07/19/2020-07-19-damn_blog/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">捣鼓这个该死的博客</div>
-    </a>
-  
-</nav>
 
   
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
   </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "动态规划&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

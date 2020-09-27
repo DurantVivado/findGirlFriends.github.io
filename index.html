@@ -1,894 +1,882 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>Durant Thorvalds 的米奇妙妙屋</title>
 
-  
-  <title>Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
 <meta name="generator" content="Hexo 5.2.0"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
-      </nav>
-      <nav id="sub-nav">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-2020-8=23-string" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-8=23-string/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.139Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><ul>
-<li>字符串查找</li>
-<li>KMP算法</li>
-</ul>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/repeated-substring-pattern/">459.重复的子字符串</a></li>
-</ul>
-<p>方法二：字符串匹配<br>思路与算法</p>
-<p>我们可以把字符串 ss 写成</p>
-<p>s’s’ \cdots s’s’<br>s<br>′<br> s<br>′<br> ⋯s<br>′<br> s<br>′</p>
-<p>的形式，总计 \frac{n}{n’}<br>n<br>′</p>
-<p>n</p>
-<p>  个 s’s<br>′<br> 。但我们如何在不枚举 n’n<br>′<br>  的情况下，判断 ss 是否能写成上述的形式呢？</p>
-<p>如果我们移除字符串 ss 的前 n’n<br>′<br>  个字符（即一个完整的 s’s<br>′<br> ），再将这些字符保持顺序添加到剩余字符串的末尾，那么得到的字符串仍然是 ss。由于 1 \leq n’ &lt; n1≤n<br>′<br> &lt;n，那么如果将两个 ss 连在一起，并移除第一个和最后一个字符，那么得到的字符串一定包含 ss，即 ss 是它的一个子串。</p>
-<p>因此我们可以考虑这种方法：我们将两个 ss 连在一起，并移除第一个和最后一个字符。如果 ss 是该字符串的子串，那么 ss 就满足题目要求。</p>
-<p>注意到我们证明的是如果 ss 满足题目要求，那么 ss 有这样的性质，而我们使用的方法却是如果 ss 有这样的性质，那么 ss 满足题目要求。因此，只证明了充分性是远远不够的，我们还需要证明必要性。</p>
-<p>题解区的很多题解都忽略了这一点，但它是非常重要的。</p>
-<p>证明需要使用一些同余运算的小技巧，可以见方法三之后的「正确性证明」部分。这里先假设我们已经完成了证明，这样就可以使用非常简短的代码完成本题。在下面的代码中，我们可以从位置 11 开始查询，并希望查询结果不为位置 nn，这与移除字符串的第一个和最后一个字符是等价的。</p>
-<p>代码</p>
-<p>C++JavaPython3C</p>
-<p>class Solution {<br>public:<br>    bool repeatedSubstringPattern(string s) {<br>        return (s + s).find(s, 1) != s.size();<br>    }<br>};<br>复杂度分析</p>
-<p>由于我们使用了语言自带的字符串查找函数，因此这里不深入分析其时空复杂度。</p>
-<p>方法三：KMP 算法<br>思路与算法</p>
-<p>在方法二中，我们使用了语言自带的字符串查找函数。同样我们也可以自己实现这个函数，例如使用比较经典的 KMP 算法。</p>
-<p>读者需要注意以下几点：</p>
-<p>KMP 算法虽然有着良好的理论时间复杂度上限，但大部分语言自带的字符串查找函数并不是用 KMP 算法实现的。这是因为在实现 API 时，我们需要在平均时间复杂度和最坏时间复杂度二者之间权衡。普通的暴力匹配算法以及优化的 BM 算法拥有比 KMP 算法更为优秀的平均时间复杂度；</p>
-<p>学习 KMP 算法时，一定要理解其本质。如果放弃阅读晦涩难懂的材料（即使大部分讲解 KMP 算法的材料都包含大量的图，但图毕竟只能描述特殊而非一般情况）而是直接去阅读代码，是永远无法学会 KMP 算法的。读者甚至无法理解 KMP 算法关键代码中的任意一行。</p>
-<p>由于本题就是在一个字符串中查询另一个字符串是否出现，可以直接套用 KMP 算法。因此这里对 KMP 算法本身不再赘述。读者可以自行查阅资料进行学习。这里留了三个思考题，读者可以在学习完毕后尝试回答这三个问题，检验自己的学习成果：</p>
-<p>设查询串的的长度为 nn，模式串的长度为 mm，我们需要判断模式串是否为查询串的子串。那么使用 KMP 算法处理该问题时的时间复杂度是多少？在分析时间复杂度时使用了哪一种分析方法？</p>
-<p>如果有多个查询串，平均长度为 nn，数量为 kk，那么总时间复杂度是多少？</p>
-<p>在 KMP 算法中，对于模式串，我们需要预处理出一个 \textit{fail}fail 数组（有时也称为 \textit{next}next 数组、\piπ 数组等）。这个数组到底表示了什么？</p>
-<p>代码</p>
-<p>C++JavaPython3GolangC</p>
-<p>class Solution {<br>public:<br>    bool kmp(const string&amp; query, const string&amp; pattern) {<br>        int n = query.size();<br>        int m = pattern.size();<br>        vector<int> fail(m, -1);<br>        for (int i = 1; i &lt; m; ++i) {<br>            int j = fail[i - 1];<br>            while (j != -1 &amp;&amp; pattern[j + 1] != pattern[i]) {<br>                j = fail[j];<br>            }<br>            if (pattern[j + 1] == pattern[i]) {<br>                fail[i] = j + 1;<br>            }<br>        }<br>        int match = -1;<br>        for (int i = 1; i &lt; n - 1; ++i) {<br>            while (match != -1 &amp;&amp; pattern[match + 1] != query[i]) {<br>                match = fail[match];<br>            }<br>            if (pattern[match + 1] == query[i]) {<br>                ++match;<br>                if (match == m - 1) {<br>                    return true;<br>                }<br>            }<br>        }<br>        return false;<br>    }</p>
-<pre><code>bool repeatedSubstringPattern(string s) &#123;
-    return kmp(s + s, s);
-&#125;</code></pre>
-<p>};<br>复杂度分析</p>
-<p>时间复杂度：O(n)O(n)，其中 nn 是字符串 ss 的长度。</p>
-<p>空间复杂度：O(n)O(n)。</p>
-<p>正确性证明<br>一方面，如果长度为 nn 的字符串 ss 是字符串 t=s+st=s+s 的子串，并且 ss 在 tt 中的起始位置不为 00 或 nn，那么 ss 就满足题目的要求。证明过程如下：</p>
-<p>我们设 ss 在 tt 中的起始位置为 ii，i \in (0, n)i∈(0,n)。也就是说，tt 中从位置 ii 开始的 nn 个连续的字符，恰好就是字符串 ss。那么我们有：</p>
-<p>s[0:n-1] = t[i:n+i-1]<br>s[0:n−1]=t[i:n+i−1]</p>
-<p>由于 tt 是由两个 ss 拼接而成的，我们可以将 t[i:n+i-1]t[i:n+i−1] 分成位置 n-1n−1 左侧和右侧两部分：</p>
-<p>\left { \begin{aligned} s[0:n-i-1] &amp;= t[i:n-1] \ s[n-i:n-1] &amp;= t[n:n+i-1] = t[0:i-1] \end{aligned} \right.<br>{<br>s[0:n−i−1]<br>s[n−i:n−1]</p>
-<p>=t[i:n−1]<br>=t[n:n+i−1]=t[0:i−1]</p>
-<p>每一部分都可以对应回 ss：</p>
-<p>\left { \begin{aligned} s[0:n-i-1] &amp;= s[i:n-1] \ s[n-i:n-1] &amp;= s[0:i-1] \end{aligned} \right.<br>{<br>s[0:n−i−1]<br>s[n−i:n−1]</p>
-<p>=s[i:n−1]<br>=s[0:i−1]</p>
-<p>这说明，ss 是一个「可旋转」的字符串：将 ss 的前 ii 个字符保持顺序，移动到 ss 的末尾，得到的新字符串与 ss 相同。也就是说，在模 nn 的意义下，</p>
-<p>s[j] = s[j+i]<br>s[j]=s[j+i]</p>
-<p>对于任意的 jj 恒成立。</p>
-<p>「在模 nn 的意义下」可以理解为，所有的加法运算的结果都需要对 nn 取模，使得结果保持在 [0, n)[0,n) 中，这样加法就自带了「旋转」的效果。</p>
-<p>如果我们不断地连写这个等式：</p>
-<p>s[j] = s[j+i] = s[j+2i] = s[j+3i] = \cdots<br>s[j]=s[j+i]=s[j+2i]=s[j+3i]=⋯</p>
-<p>那么所有满足 j_0 = j + k \cdot ij<br>0</p>
-<p> =j+k⋅i 的位置 j_0j<br>0</p>
-<p>  都有 s[j] = s[j_0]s[j]=s[j<br>0</p>
-<p> ]，jj 和 j_0j<br>0</p>
-<p>  在模 ii 的意义下等价。由于我们已经在模 nn 的意义下讨论这个问题，因此 jj 和 j_0j<br>0</p>
-<p>  在模 \mathrm{gcd}(n, i)gcd(n,i) 的意义下等价，其中 \mathrm{gcd}gcd 表示最大公约数。也就是说，字符串 ss 中的两个位置如果在模 \mathrm{gcd}(n, i)gcd(n,i) 的意义下等价，那么它们对应的字符必然是相同的。</p>
-<p>由于 \mathrm{gcd}(n, i)gcd(n,i) 一定是 nn 的约数，那么字符串 ss 一定可以由其长度为 \mathrm{gcd}(n, i)gcd(n,i) 的前缀重复 \frac{n}{\mathrm{gcd}(n, i)}<br>gcd(n,i)<br>n</p>
-<p>  次构成。</p>
-<p>另一方面，如果 ss 满足题目的要求，那么 ss 包含若干个「部分」，t=s+st=s+s 包含两倍数量的「部分」，因此 ss 显然是 tt 的子串，并且起始位置可以不为 00 或 nn：我们只需要选择 tt 中第一个「部分」的起始位置即可。</p>
-<p>综上所述，我们证明了：长度为 nn 的字符串 ss 是字符串 t=s+st=s+s 的子串，并且 ss 在 tt 中的起始位置不为 00 或 nn，当且仅当 ss 满足题目的要求。因此，</p>
-<p>思考题答案<br>设查询串的的长度为 nn，模式串的长度为 mm，我们需要判断模式串是否为查询串的子串。那么使用 KMP 算法处理该问题时的时间复杂度是多少？在分析时间复杂度时使用了哪一种分析方法？</p>
-<p>时间复杂度为 O(n+m)O(n+m)，用到了均摊分析（摊还分析）的方法。</p>
-<p>具体地，无论在预处理过程还是查询过程中，虽然匹配失败时，指针会不断地根据 \textit{fail}fail 数组向左回退，看似时间复杂度会很高。但考虑匹配成功时，指针会向右移动一个位置，这一部分对应的时间复杂度为 O(n+m)O(n+m)。又因为向左移动的次数不会超过向右移动的次数，因此总时间复杂度仍然为 O(n+m)O(n+m)。</p>
-<p>如果有多个查询串，平均长度为 nn，数量为 kk，那么总时间复杂度是多少？</p>
-<p>时间复杂度为 O(nk+m)O(nk+m)。模式串只需要预处理一次。<br>在 KMP 算法中，对于模式串，我们需要预处理出一个 \textit{fail}fail 数组（有时也称为 \textit{next}next 数组、\piπ 数组等）。这个数组到底表示了什么？</p>
-<p>\textit{fail}[i]fail[i] 等于满足下述要求的 xx 的最大值：s[0:i]s[0:i] 具有长度为 x+1x+1 的完全相同的前缀和后缀。这也是 KMP 算法最重要的一部分。<br>方法四：优化的 KMP 算法<br>思路与算法</p>
-<p>如果读者能够看懂「正确性证明」和「思考题答案」这两部分，那么一定已经发现了方法三中的 KMP 算法有可以优化的地方。即：</p>
-<p>在「正确性证明」部分，如果我们设 ii 为最小的起始位置，那么一定有 \mathrm{gcd}(n, i) = igcd(n,i)=i，即 nn 是 ii 的倍数。这说明字符串 ss 是由长度为 ii 的前缀重复 \frac{n}{i}<br>i<br>n</p>
-<p>  次构成；</p>
-<p>由于 \textit{fail}[n-1]fail[n−1] 表示 ss 具有长度为 \textit{fail}[n-1]+1fail[n−1]+1 的完全相同的（且最长的）前缀和后缀。那么对于满足题目要求的字符串，一定有 \textit{fail}[n-1] = n-i-1fail[n−1]=n−i−1，即 i = n - \textit{fail}[n-1] - 1i=n−fail[n−1]−1；</p>
-<p>对于不满足题目要求的字符串，nn 一定不是 n - \textit{fail}[n-1] - 1n−fail[n−1]−1 的倍数。</p>
-<p>上述所有的结论都可以很容易地使用反证法证出。</p>
-<p>因此，我们在预处理出 \textit{fail}fail 数组后，只需要判断 nn 是否为 n - \textit{fail}[n-1] - 1n−fail[n−1]−1 的倍数即可。</p>
-<p>代码</p>
-<p>C++JavaPython3GolangC</p>
-<p>class Solution {<br>public:<br>    bool kmp(const string&amp; pattern) {<br>        int n = pattern.size();<br>        vector<int> fail(n, -1);<br>        for (int i = 1; i &lt; n; ++i) {<br>            int j = fail[i - 1];<br>            while (j != -1 &amp;&amp; pattern[j + 1] != pattern[i]) {<br>                j = fail[j];<br>            }<br>            if (pattern[j + 1] == pattern[i]) {<br>                fail[i] = j + 1;<br>            }<br>        }<br>        return fail[n - 1] != -1 &amp;&amp; n % (n - fail[n - 1] - 1) == 0;<br>    }</p>
-<pre><code>bool repeatedSubstringPattern(string s) &#123;
-    return kmp(s);
-&#125;</code></pre>
-<p>};<br>复杂度分析</p>
-<p>时间复杂度：O(n)O(n)，其中 nn 是字符串 ss 的长度。</p>
-<p>空间复杂度：O(n)O(n)。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-8=23-string/" data-id="ckfj5lo6a000w3osc1yhtf32x" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-8-30-prefix_sum" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-8-30-prefix_sum/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.130Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h1><ul>
-<li><ol start="560">
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">和为k的子数组</a>(Medium)</li>
-</ol>
-</li>
-</ul>
-<p>定义$pre[i]$表示$[0…i]$所有数之和,那么范围$[j-i]$可以表示为: $pre[i]-pre[j-1]$,  且$pre[i] = pre[i-1] + nums[i]$ , 问题转化为,</p>
-<p>找到有多少个区间,满足$pre[i]-pre[j-1]==k$. 所以我们考虑以 $i$ 结尾的和为 $k$ 的连续子数组个数时只要统计有多少个前缀和为 $\textit{pre}[i]-k$的 $\textit{pre}[j]$ 即可。我们建立哈希表 $\textit{mp}$，以和为键，出现次数为对应的值，记录 $\textit{pre}[i]$ 出现的次数，从左往右边更新 $\textit{mp}$边计算答案，那么以 $i$ 结尾的答案 $\textit{mp}[\textit{pre}[i]-k]$ 即可在 $O(1)$ 时间内得到。最后的答案即为所有下标结尾的和为 $k$ 的子数组个数之和。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-8-30-prefix_sum/" data-id="ckfj5lo69000u3osc90un38tu" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-9-2-fsm" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-9-2-fsm/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.126Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="什么是确定有限状态自动机（Deterministic-State-Automata）？"><a href="#什么是确定有限状态自动机（Deterministic-State-Automata）？" class="headerlink" title="什么是确定有限状态自动机（Deterministic State Automata）？"></a>什么是确定有限状态自动机（Deterministic State Automata）？</h1><p>确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：</p>
-<ul>
-<li>有一个特殊的状态，被称作「初始状态」。</li>
-<li>还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。</li>
-</ul>
-<p>起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一个字符，并根据当前状态和读入的字符，按照某个事先约定好的「转移规则」，从当前状态转移到下一个状态；当状态转移完成后，它就读取下一个字符。当字符串全部读取完毕后，如果自动机处于某个「接受状态」，则判定该字符串「被接受」；否则，判定该字符串「被拒绝」。</p>
-<p>一个自动机，总能够回答某种形式的「对于给定的输入字符串 S，判断其是否满足条件 P」的问题。在本题中，条件 P 即为「构成合法的表示数值的字符串」。</p>
-<p>自动机驱动的编程，可以被看做一种暴力枚举方法的延伸：它穷尽了在任何一种情况下，对应任何的输入，需要做的事情。</p>
-<p>自动机在计算机科学领域有着广泛的应用。在算法领域，它与大名鼎鼎的字符串查找算法「KMP」算法有着密切的关联；在工程领域，它是实现「正则表达式」的基础。</p>
-<hr>
-<p><strong>例题：</strong></p>
-<ul>
-<li><ol start="65">
-<li><a href="">有效的数字</a>(Hard)</li>
-</ol>
-</li>
-<li>剑指Offer 20. <a href="">表示数值的字符串</a>(Medium)</li>
-</ul>
-<hr>
-<p>以 剑指Offer 20. <a href="">表示数值的字符串</a>(Medium) 为例。</p>
-<blockquote>
-<p> 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”、”5e2”、”-123”、”3.1416”、”-1E-16”、”0123”都表示数值，但”12e”、”1a3.14”、”1.2.3”、”+-5”及”12e+5.4”都不是。</p>
-</blockquote>
-<hr>
-<p><strong>思路与算法</strong></p>
-<p>根据上面的描述，现在可以定义自动机的「状态集合」了。那么怎么挖掘出所有可能的状态呢？一个常用的技巧是，用「当前处理到字符串的哪个部分」当作状态的表述。根据这一技巧，不难挖掘出所有状态：</p>
-<ol>
-<li>起始的空格</li>
-<li>符号位</li>
-<li>整数部分</li>
-<li>左侧有整数的小数点</li>
-<li>左侧无整数的小数点</li>
-<li>小数部分</li>
-<li>字符$E$</li>
-<li>指数部分的符号位</li>
-<li>指数的整数部分</li>
-<li>结束的空格</li>
-</ol>
-<p>下一步是找出「初始状态」和「接受状态」的集合。根据题意，「初始状态」应当为状态 1，而「接受状态」的集合则为状态 3、状态 4、状态 6、状态 9 以及状态 10。换言之，字符串的末尾要么是空格，要么是数字，要么是小数点，但前提是小数点的前面有数字。</p>
-<p>最后，需要定义「转移规则」。结合数值字符串应当具备的格式，将自动机转移的过程以图解的方式表示出来：</p>
-<p>![image-20200902111512582](E:\Github pages\saasproj.github.io_posts\img\image-fsa.png)</p>
-<p>在实际代码中，我们需要处理转移失败的情况。例如当位于状态 1（起始空格）时，没有对应字符 \text{e}e 的状态。为了处理这种情况，我们可以创建一个特殊的拒绝状态。如果当前状态下没有对应读入字符的「转移规则」，我们就转移到这个特殊的拒绝状态。一旦自动机转移到这个特殊状态，我们就可以立即判定该字符串不「被接受」。</p>
-<hr>
-<p><strong>代码</strong>：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">enum</span> state</span><br><span class="line">    &#123;</span><br><span class="line">        STATE_INIT,</span><br><span class="line">        <span class="comment">// STATE_SPACE,</span></span><br><span class="line">        STATE_SIGN,</span><br><span class="line">        STATE_INTEGER,</span><br><span class="line">        STATE_POINT_INT,</span><br><span class="line">        STATE_POINT_NOT_INT,</span><br><span class="line">        STATE_DECIMAL,</span><br><span class="line">        STATE_EXP,</span><br><span class="line">        STATE_EXP_SIGN,</span><br><span class="line">        STATE_EXP_INT,</span><br><span class="line">        STATE_END,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">enum</span> charType</span><br><span class="line">    &#123;</span><br><span class="line">        CHAR_NUM,</span><br><span class="line">        CHAR_SPACE,</span><br><span class="line">        CHAR_POINT,</span><br><span class="line">        CHAR_EXP,</span><br><span class="line">        CHAR_SIGN,</span><br><span class="line">        CHAR_INVALID,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="function">charType <span class="title">getCharType</span><span class="params">(<span class="keyword">char</span> ch)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(ch&gt;=<span class="string">&#x27;0&#x27;</span>&amp;&amp;ch&lt;=<span class="string">&#x27;9&#x27;</span>) <span class="keyword">return</span> CHAR_NUM;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (ch == <span class="string">&#x27; &#x27;</span>) <span class="keyword">return</span> CHAR_SPACE;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(ch == <span class="string">&#x27;.&#x27;</span>) <span class="keyword">return</span> CHAR_POINT;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(ch == <span class="string">&#x27;E&#x27;</span>||ch == <span class="string">&#x27;e&#x27;</span>) <span class="keyword">return</span> CHAR_EXP;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (ch==<span class="string">&#x27;+&#x27;</span>||ch==<span class="string">&#x27;-&#x27;</span>) <span class="keyword">return</span> CHAR_SIGN;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> CHAR_INVALID;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isNumber</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!s.size()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        state sta = STATE_INIT;</span><br><span class="line">        <span class="comment">//用哈希表存储状态转移方程</span></span><br><span class="line">        <span class="built_in">unordered_map</span>&lt;state,<span class="built_in">unordered_map</span>&lt;charType,state&gt;&gt; transfer&#123;</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_INIT, &#123;&#123;CHAR_SPACE,STATE_INIT&#125;,</span><br><span class="line">                            &#123;CHAR_SIGN, STATE_SIGN&#125;,</span><br><span class="line">                            &#123;CHAR_NUM, STATE_INTEGER&#125;,</span><br><span class="line">                            &#123;CHAR_POINT,STATE_POINT_NOT_INT&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_SIGN,&#123;&#123;CHAR_NUM, STATE_INTEGER&#125;,</span><br><span class="line">                           &#123;CHAR_POINT, STATE_POINT_NOT_INT&#125;,</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_DECIMAL,  &#123;&#123;CHAR_NUM, STATE_DECIMAL&#125;,</span><br><span class="line">                                &#123;CHAR_EXP, STATE_EXP&#125;,</span><br><span class="line">                                &#123;CHAR_SPACE, STATE_END&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_INTEGER,  &#123;&#123;CHAR_NUM, STATE_INTEGER&#125;,</span><br><span class="line">                                &#123;CHAR_EXP,STATE_EXP&#125;,</span><br><span class="line">                                &#123;CHAR_POINT,STATE_POINT_INT&#125;,</span><br><span class="line">                                &#123;CHAR_SPACE,STATE_END&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_POINT_NOT_INT,&#123;&#123;CHAR_NUM, STATE_DECIMAL&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_POINT_INT,&#123;&#123;CHAR_SPACE,STATE_END&#125;,</span><br><span class="line">                                &#123;CHAR_NUM,STATE_DECIMAL&#125;,</span><br><span class="line">                                &#123;CHAR_EXP,STATE_EXP&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_EXP,  &#123;&#123;CHAR_SIGN, STATE_EXP_SIGN&#125;,</span><br><span class="line">                            &#123;CHAR_NUM, STATE_EXP_INT&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_EXP_SIGN,&#123;&#123;CHAR_NUM, STATE_EXP_INT&#125;</span><br><span class="line">            &#125;&#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_EXP_INT,&#123;&#123;CHAR_NUM,STATE_EXP_INT&#125;,</span><br><span class="line">                                &#123;CHAR_SPACE,STATE_END&#125;&#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                STATE_END,&#123;&#123;CHAR_SPACE,STATE_END&#125;,&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            charType ct = getCharType(s[i]);</span><br><span class="line">            <span class="comment">//如果是非法状态，直接返回false</span></span><br><span class="line">        </span><br><span class="line">            <span class="keyword">if</span>(!transfer[sta].count(ct)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            sta = transfer[sta][ct];</span><br><span class="line">            </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> sta == STATE_END || sta == STATE_INTEGER || sta == STATE_POINT_INT || sta == STATE_DECIMAL|| sta == STATE_EXP_INT;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-9-2-fsm/" data-id="ckfj5lo6d000z3oscaulhhkxb" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Curriculum Selection" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/Curriculum%20Selection/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.118Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <table>
-<thead>
-<tr>
-<th align="center">课程名称</th>
-<th align="center">学期</th>
-<th align="center">学分</th>
-<th align="center">类别</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">英语I</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">公共必修课</td>
-</tr>
-<tr>
-<td align="center">中国特色社会主义</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">公共必修课</td>
-</tr>
-<tr>
-<td align="center">自然辩证法</td>
-<td align="center">第二学期</td>
-<td align="center">1</td>
-<td align="center">公共必修课</td>
-</tr>
-<tr>
-<td align="center">矩阵论</td>
-<td align="center">第一学期</td>
-<td align="center">3</td>
-<td align="center">一级学科基础课</td>
-</tr>
-<tr>
-<td align="center">分布式系统</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">一级学科基础课</td>
-</tr>
-<tr>
-<td align="center">人工智能</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">一级学科基础课</td>
-</tr>
-<tr>
-<td align="center">现代数据管理理论和技术</td>
-<td align="center">第二学期</td>
-<td align="center">2</td>
-<td align="center">一级学科基础课</td>
-</tr>
-<tr>
-<td align="center">信息存储理论与技术</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">二级学科基础课</td>
-</tr>
-<tr>
-<td align="center">机器学习</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">二级学科基础课</td>
-</tr>
-<tr>
-<td align="center">数据挖掘与知识发现</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">硕士专业</td>
-</tr>
-<tr>
-<td align="center">.操作系统分析与设计</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">硕士专业</td>
-</tr>
-<tr>
-<td align="center">Hadoop/MapReduce编程模型与应用</td>
-<td align="center">第一学期</td>
-<td align="center">2</td>
-<td align="center">跨一级学科课程</td>
-</tr>
-<tr>
-<td align="center">文献阅读与选题报告</td>
-<td align="center">第三学期</td>
-<td align="center">1</td>
-<td align="center">研究实践环节</td>
-</tr>
-<tr>
-<td align="center">参加校内外公开学术报告</td>
-<td align="center">第六学期</td>
-<td align="center">1</td>
-<td align="center">研究实践环节</td>
-</tr>
-<tr>
-<td align="center">学位论文</td>
-<td align="center">第六学期</td>
-<td align="center">10</td>
-<td align="center">研究实践环节</td>
-</tr>
-<tr>
-<td align="center">面向对象的程序设计</td>
-<td align="center">第一学期</td>
-<td align="center">1</td>
-<td align="center">公共选修课</td>
-</tr>
-<tr>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">37</td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/Curriculum%20Selection/" data-id="ckfj5lo6h00163osc4c2433aj" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CS_heap_stack" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/CS_heap_stack/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.096Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="弄懂内存中堆和栈的区别"><a href="#弄懂内存中堆和栈的区别" class="headerlink" title="弄懂内存中堆和栈的区别"></a>弄懂内存中堆和栈的区别</h1><blockquote>
-<p>知识的<a target="_blank" rel="noopener" href="https://blog.csdn.net/myqq1418/article/details/81584761">传送门</a></p>
-</blockquote>
-<p><strong>栈区</strong>($stack$)：由编译器自动分配释放，存放函数的参数值，以及局部变量的值，其操作方式类似数据结构的栈。</p>
-<p><strong>堆区</strong>($heap$)：一般由程序员分配释放，若程序不释放，会被操作系统回收。其操作方式类似于数据结构的链表。</p>
-<p><strong>全局区</strong>($static$)：全局变量和静态变量的存储在一起，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。程序结束后由系统释放。</p>
-<p><strong>文字常量区</strong>：常量和字符串等。</p>
-<p><strong>程序代码区</strong>：程序的二进制代码。</p>
-<h2 id="图表"><a href="#图表" class="headerlink" title="图表"></a>图表</h2><p><img src="C:\Users\xiODUZI\AppData\Roaming\Typora\typora-user-images\image-20200918200847502.png" alt="image-20200918200847502"></p>
-<p><img src="https://images2018.cnblogs.com/blog/1308093/201803/1308093-20180328153049383-817765669.png" alt="img"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main.cpp</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区</span></span><br><span class="line"><span class="keyword">char</span> *p1; <span class="comment">//全局未初始化区</span></span><br><span class="line">main() &#123;</span><br><span class="line">    <span class="keyword">int</span> b; <span class="comment">//栈</span></span><br><span class="line">    <span class="keyword">char</span> s[] = <span class="string">&quot;abc&quot;</span>; <span class="comment">//栈</span></span><br><span class="line">    <span class="keyword">char</span> *p2; <span class="comment">//栈</span></span><br><span class="line">    <span class="keyword">char</span> *p3 = <span class="string">&quot;123456&quot;</span>; <span class="comment">//123456\0在常量区，p3在栈上。</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c = <span class="number">0</span>; <span class="comment">//全局（静态）初始化区</span></span><br><span class="line">    p1 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">//堆区，程序员自己申请，new也是的</span></span><br><span class="line">    p2 = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">20</span>);</span><br><span class="line">    <span class="comment">//分配得来得10和20字节的区域就在堆区。</span></span><br><span class="line">    <span class="built_in">strcpy</span>(p1, <span class="string">&quot;123456&quot;</span>); <span class="comment">//123456\0放在常量区，编译器可能会将它与p3所指向的&quot;123456&quot;优化成一个地方。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/CS_heap_stack/" data-id="ckfj5lo6g00133osccvhh9vc7" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-8-26-lotus" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-8-26-lotus/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.091Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="股票系列问题"><a href="#股票系列问题" class="headerlink" title="股票系列问题"></a>股票系列问题</h1><ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">买卖股票的最佳时机</a>(Easy)</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/">买卖股票的最佳时机 II</a>(Easy)</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">买卖股票的最佳时机 III</a>(Hard)</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">买卖股票的最佳时机 IV</a>(Hard)</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">最佳买卖股票时机含冷冻期</a>(Medium)</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">买卖股票的最佳时机含手续费</a>(Medium)</p>
-</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/">剑指 Offer 63. 股票的最大利润</a>(Medium)</p>
-<p>一种常用的方法是将「买入」和「卖出」分开进行考虑：「买入」为负收益，而「卖出」为正收益。在初入股市时，你只有「买入」的权利，只能获得负收益。而当你「买入」之后，你就有了「卖出」的权利，可以获得正收益。显然，我们需要尽可能地降低负收益而提高正收益，因此我们的目标总是将收益值最大化。因此，我们可以使用动态规划的方法，维护在股市中每一天结束后可以获得的「累计最大收益」，并以此进行状态转移，得到最终的答案。</p>
-<hr>
-<h3 id="1-最佳买卖股票时机含冷冻期-Medium"><a href="#1-最佳买卖股票时机含冷冻期-Medium" class="headerlink" title="1.最佳买卖股票时机含冷冻期(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">1.最佳买卖股票时机含冷冻期</a>(Medium)</strong></h3><p>给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。</p>
-<p>设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:</p>
-<ul>
-<li>你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</li>
-<li>卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。<br>示例:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,0,2]</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 对应的交易状态为: [买入, 卖出, 冷冻期, 买入, 卖出]</span><br></pre></td></tr></table></figure>
-
-<hr>
-<ol>
-<li><strong>动态规划</strong></li>
-</ol>
-<p>由于题目规定不能同时进行多笔交易，那么我们便能通过动态规划进行求解：</p>
-<p>我们用$f[i]$表示<strong>第$i$天结束后的「累计最大收益」</strong>，我们会有三种可能的状态：</p>
-<ol>
-<li>第$i$天，处于可以买入状态的最大收益， 记为$f[i][0]$</li>
-<li>买入了一只股票，记为$f[i][1]$</li>
-<li>卖出了一只股票，处于冷冻期，记为$f[i][2]$</li>
-</ol>
-<blockquote>
-<p><strong>这里的「处于冷冻期」指的是在第 i天结束之后的状态。也就是说：如果第 i 天结束之后处于冷冻期，那么第 i+1 天无法买入股票。</strong></p>
-</blockquote>
-<p>我们分别对三种状态进行分析</p>
-<p>![image-20200827124158917](E:\Github pages\saasproj.github.io_posts\img\image-dp.png)</p>
-<p>状态转移方程为<br>$$<br>dp[i][0]=\max(dp[i-1][0],dp[i-1][2])\<br>dp[i][1]=\max(dp[i-1][0]-price[i-1],dp[i-1][1])\<br>dp[i][2]=dp[i-1][1]+price[i-1]<br>$$<br>这里需要理解的是，在卖出一只股票后，一定处于冷冻状态，这时候最大利润一定是前一个卖出的状态加上卖出的价格。</p>
-<blockquote>
-<p>边界条件，千万要思考清楚，第二种状态初始值应该为INT_MIN。因为这种状态在逻辑上是不存在的！</p>
-</blockquote>
-<p>$$<br>\begin{array}{lcc}<br>dp[0][0] = 0;\<br>dp[0][1] = INT_MIN;\<br>dp[0][2] = 0;<br>\end{array}<br>$$</p>
-<p><strong>代码</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!prices.size()) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//要获得最大利润，利润=\sum（卖出价格-买入价格）</span></span><br><span class="line">        <span class="keyword">int</span> n = prices.size();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">dp</span><span class="params">(n+<span class="number">1</span>,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(<span class="number">3</span>,INT_MIN))</span></span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = INT_MIN;</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;=n ;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            dp[i][<span class="number">0</span>] = max(dp[i<span class="number">-1</span>][<span class="number">0</span>],dp[i<span class="number">-1</span>][<span class="number">2</span>]);</span><br><span class="line">            dp[i][<span class="number">1</span>] = max(dp[i<span class="number">-1</span>][<span class="number">0</span>] - prices[i<span class="number">-1</span>],dp[i<span class="number">-1</span>][<span class="number">1</span>]);</span><br><span class="line">            dp[i][<span class="number">2</span>] = dp[i<span class="number">-1</span>][<span class="number">1</span>]+prices[i<span class="number">-1</span>];        </span><br><span class="line">            <span class="comment">//printf(&quot;%d,%d,%d,%d\n&quot;,i,dp[i][0],dp[i][1],dp[i][2]);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> max(dp[n][<span class="number">0</span>],dp[n][<span class="number">2</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>优化</strong></p>
-<p>滚动数组【略】</p>
-<ol start="2">
-<li><strong>有限状态自动机解法</strong></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-8-26-lotus/" data-id="ckfj5lo68000r3osc1zyt1cld" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-7-28-HuaRongDao" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-7-28-HuaRongDao/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.086Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="解华容道问题"><a href="#解华容道问题" class="headerlink" title="解华容道问题"></a>解华容道问题</h1><h2 id="状态空间表示法及搜索策略"><a href="#状态空间表示法及搜索策略" class="headerlink" title="状态空间表示法及搜索策略"></a>状态空间表示法及搜索策略</h2><p>华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.</p>
-<p><img src="https://img-blog.csdn.net/20161002102820064" alt="同质"></p>
-<hr>
-<p>我们不妨从简单问题出发，考虑一个3x3的华容道问题。</p>
-<p><img src="https://exp-picture.cdn.bcebos.com/025d87c0affce18685f722c61f1fbee435daeb6c.jpg?x-bce-process=image/resize,m_lfit,w_500,limit_1" alt="数字华容道游戏3X3模式怎么过？"></p>
-<p>在搜索时需要解决的基本问题：</p>
-<ul>
-<li>搜索过程能否一定能找到一个解</li>
-<li>找到一个解，是否为最优解</li>
-<li>时间与空间复杂度如何</li>
-<li>搜索过程是否终止运行或者陷入一个死循环</li>
-</ul>
-<p><strong>基本定义</strong></p>
-<ol>
-<li>状态（State）：描述问题在任一时刻所处状态的数据结构。</li>
-<li>初始状态集S0，和目标状态集G</li>
-<li>操作Operator：状态之间的转换函数</li>
-<li>状态空间：四元组$（S，O，S_0，G）$</li>
-</ol>
-<p><strong>搜索分类</strong></p>
-<p><code>盲目搜索</code>：在特定问题不具有任何相关信息，包括DFS和BFS。</p>
-<p><code>启发式搜索</code>:考虑特定问题领域可应用的知识，动态地确定调用操作算子的步骤。优先选择较合适的操作算子，尽量减少不必要的搜索，以尽快到达目标状态。</p>
-<blockquote>
-<p>A*启发式搜索</p>
-</blockquote>
-<p>A*核心的思想是 $$f(n)=g(n)+h(n)$$</p>
-<p>$$f(n)$$是节点n的综合优先级，$$g(n)$$是节点n距离起点的代价，$$h(n)$$是节点n距离终点的预计代价，也即启发函数,显然$$h(n)$$的好坏直接关乎到算法的好坏，一般而言$$h(n)$$比最优解大，一定是错误的，没有任何意义，$$h(n)$$与最优解相同，是理想状态；如果$$h(n)$$比最优解小，那么相差越大性能越差。一般用<code>open_set</code>来表示待遍历的节点，<code>close_set</code>表示已经遍历过的节点。</p>
-<p>为了避免重复搜索或者陷入死循环，我们需要记录已经经历的状态，以及为了回溯，我们需要另外一个表记录相邻的状态。</p>
-<p>设网格大小4x4, 给定任意初始状态S,请返回达到目标状态G所需要的最小步骤数.</p>
-<blockquote>
-<p>我们可以把华容道问题转换为并查集，每次只能交换空白方块和邻近方块，</p>
-<p>在最好的情况下，所有块都排好了，那么这样交换次数为 $N-N$</p>
-<p>在最坏情况下，</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-7-28-HuaRongDao/" data-id="ckfj5lo5z000f3oscgv5g51vd" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-9-3-Markdown -fantastic" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-9-3-Markdown%20-fantastic/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.080Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Markdown-那些不为人知的炫🆒特性"><a href="#Markdown-那些不为人知的炫🆒特性" class="headerlink" title="Markdown 那些不为人知的炫🆒特性"></a>Markdown 那些不为人知的炫🆒特性</h1><hr>
-<h2 id="新的甘特图功能，丰富你的文章（Mermaid语言）"><a href="#新的甘特图功能，丰富你的文章（Mermaid语言）" class="headerlink" title="新的甘特图功能，丰富你的文章（Mermaid语言）"></a>新的甘特图功能，丰富你的文章（Mermaid语言）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gantt</span><br><span class="line">        dateFormat  YYYY-MM-DD</span><br><span class="line">        title Adding GANTT diagram functionality to mermaid</span><br><span class="line">        section 现有任务</span><br><span class="line">        已完成               :done,    des1, 2014-01-06,2014-01-08</span><br><span class="line">        进行中               :active,  des2, 2014-01-09, 3d</span><br><span class="line">        计划一               :         des3, after des2, 5d</span><br><span class="line">        计划二               :         des4, after des3, 5d</span><br></pre></td></tr></table></figure>
-<ul>
-<li>关于 <strong>甘特图</strong> 语法，参考 [这儿][2],</li>
-</ul>
-<h2 id="UML-图表（Mermaid语言）"><a href="#UML-图表（Mermaid语言）" class="headerlink" title="UML 图表（Mermaid语言）"></a>UML 图表（Mermaid语言）</h2><p>可以使用UML图表进行渲染。 <a target="_blank" rel="noopener" href="https://mermaidjs.github.io/">Mermaid</a>. 例如下面产生的一个序列图：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">张三 -&gt;&gt; 李四: 你好！李四, 最近怎么样?</span><br><span class="line">李四--&gt;&gt;王五: 你最近怎么样，王五？</span><br><span class="line">李四--x 张三: 我很好，谢谢!</span><br><span class="line">李四-x 王五: 我很好，谢谢!</span><br><span class="line">Note right of 王五: 李四想了很长时间, 文字太长了&lt;br&#x2F;&gt;不适合放在一行.</span><br><span class="line"></span><br><span class="line">李四--&gt;&gt;张三: 打量着王五...</span><br><span class="line">张三-&gt;&gt;王五: 很好... 王五, 你怎么样?</span><br></pre></td></tr></table></figure>
-
-<p>这将产生一个流程图:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[长方形] -- 链接 --&gt; B((圆))</span><br><span class="line">A --&gt; C(圆角长方形)</span><br><span class="line">B --&gt; D&#123;菱形&#125;</span><br><span class="line">C --&gt; D</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>关于 <strong>Mermaid</strong> 语法，参考 [这儿][3],</li>
-</ul>
-<h2 id="FLowchart流程图（flow语言）"><a href="#FLowchart流程图（flow语言）" class="headerlink" title="FLowchart流程图（flow语言）"></a>FLowchart流程图（flow语言）</h2><p>我们依旧会支持flowchart的流程图：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">start&#x3D;&gt;start: 开始</span><br><span class="line">loginInfo&#x3D;&gt;inputoutput: 登录数据</span><br><span class="line">verifyLogin&#x3D;&gt;subroutine: 登录验证</span><br><span class="line">isSuccess&#x3D;&gt;condition: 验证成功？</span><br><span class="line">respondSuccess&#x3D;&gt;operation: 响应成功</span><br><span class="line">responseFailure&#x3D;&gt;operation: 响应失败</span><br><span class="line">end&#x3D;&gt;end: 结束</span><br><span class="line"></span><br><span class="line">start-&gt;loginInfo-&gt;verifyLogin-&gt;isSuccess</span><br><span class="line">isSuccess(yes)-&gt;respondSuccess-&gt;end</span><br><span class="line">isSuccess(no)-&gt;responseFailure-&gt;end</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>关于 <strong>Flowchart流程图</strong> 语法，参考 <a target="_blank" rel="noopener" href="http://flowchart.js.org/">这儿</a>.</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Iccyco/article/details/106202945">https://blog.csdn.net/Iccyco/article/details/106202945</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-9-3-Markdown%20-fantastic/" data-id="ckfj5lo6f00113osc7awtbv6j" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java_notes" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/Java_notes/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.072Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Java八大数据类型以及封装类"><a href="#Java八大数据类型以及封装类" class="headerlink" title="Java八大数据类型以及封装类"></a>Java八大数据类型以及封装类</h1><p>Java基本类型共有八种，基本类型可以分为三类，字符类型char，布尔类型boolean以及数值类型byte、short、int、long、float、double。数值类型又可以分为整数类型byte、short、int、long和浮点数类型float、double。JAVA中的数值类型不存在无符号的，它们的取值范围是固定的，不会随着机器硬件环境或者<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/operatingsystem">操作系统</a>的改变而改变。</p>
-<p>byte：8位，最大存储数据量是255，存放的数据范围是-128~127之间。</p>
-<p>short：16位，最<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/hadoop">大数据</a>存储量是65536，数据范围是-32768~32767之间。</p>
-<p>int：32位，最大数据存储容量是2的32次方减1，数据范围是负的2的31次方到正的2的31次方减1。</p>
-<p>long：64位，最大数据存储容量是2的64次方减1，数据范围为负的2的63次方到正的2的63次方减1。</p>
-<p>float：32位，数据范围在3.4e-45~1.4e38，直接赋值时必须在数字后加上f或F。</p>
-<p>double：64位，数据范围在4.9e-324~1.8e308，赋值时可以加d或D也可以不加。</p>
-<p>boolean：只有true和false两个取值。</p>
-<p>char：16位，存储Unicode码，用单引号赋值。</p>
-<table>
-<thead>
-<tr>
-<th>单类型</th>
-<th>boolean</th>
-<th>byte</th>
-<th>char</th>
-<th>short</th>
-<th>Int</th>
-<th>long</th>
-<th>float</th>
-<th>double</th>
-<th>void</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>二进制位数</td>
-<td>1</td>
-<td>8</td>
-<td>16</td>
-<td>16</td>
-<td>32</td>
-<td>64</td>
-<td>32</td>
-<td>64</td>
-<td>–</td>
-</tr>
-<tr>
-<td>封装器类</td>
-<td>Boolean</td>
-<td>Byte</td>
-<td>Character</td>
-<td>Short</td>
-<td>Integer</td>
-<td>Long</td>
-<td>Float</td>
-<td>Double</td>
-<td>Void</td>
-</tr>
-</tbody></table>
-<h2 id="自动类型转换"><a href="#自动类型转换" class="headerlink" title="自动类型转换"></a>自动类型转换</h2><p>$(byte，short，char)–int–long–float—double$</p>
-<h2 id="字符串转换"><a href="#字符串转换" class="headerlink" title="字符串转换"></a>字符串转换</h2><p>X转字符串</p>
-<ul>
-<li>调用类转换方法：<code>X.toString()</code></li>
-<li>自动类型转换：<code>X+&quot;&quot;</code></li>
-<li>使用String方法，<code>String.ValueOf(X)</code></li>
-</ul>
-<p>转字符</p>
-<ul>
-<li>调用类转换方法：<code>X.toCharArray()</code></li>
-</ul>
-<p>字符串转X</p>
-<p>①先转换成相应的封装器实例,再调用对应的方法转换成其它类型</p>
-<p>例如，字符中”32.1”转换double型的值的格式为:new Float(“32.1”).doubleValue()。也可以用:Double.valueOf(“32.1”).doubleValue()</p>
-<p>②静态parseXXX方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="string">&quot;1&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span> b = Byte.parseByte( s );</span><br><span class="line"></span><br><span class="line"><span class="keyword">short</span> t = Short.parseShort( s );</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = Integer.parseInt( s );</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> l = Long.parseLong( s );</span><br><span class="line"></span><br><span class="line">Float f = Float.parseFloat( s );</span><br><span class="line"></span><br><span class="line">Double d = Double.parseDouble( s );</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Java引用类型"><a href="#Java引用类型" class="headerlink" title="Java引用类型"></a>Java引用类型</h1><p>Java有 5种引用类型（对象类型）：类 (Class) 接口(Interface) 数组 (List/ArrayList)枚举(enum) 标注</p>
-<p>引用类型：底层结构和基本类型差别较大</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/Java_notes/" data-id="ckfj5lo6j00173osc7ss8e8r0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2020-08-23-ML3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/23/2020-08-23-ML3/" class="article-date">
-  <time datetime="2020-09-23T10:16:45.069Z" itemprop="datePublished">2020-09-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="三、线性模型"><a href="#三、线性模型" class="headerlink" title="三、线性模型"></a>三、线性模型</h1><p>一元线性模型用向量表示为<br>$$<br>f(x)=w^Tx+b<br>$$<br>其中$w$称为权重向量，$b$称为偏置。我们可以利用均方误差，来求得$w$与$b$.<br>$$<br>(w^*,b^*)=\arg \min\sum\limits_{i=1}^{m}(f(x_i)-y_i)^2<br>$$<br>均方误差对应于几何中欧氏距离($Euclidean Distance$)。该方法被称为「<strong>最小二乘法</strong>」($least\ square\ method$)。</p>
-<p>当然有更一般的形式“多元线性回归”。<br>$$<br>f(x_i)=\bf{w}^Tx_i+b<br>$$<br>我们把数据集表示为矩阵$X$<br>$$<br>X= \left(\begin{array}{ccc}<br>    x_1^T &amp; 1\x_2^T &amp;1\ \quad  …<br>    \x_n^T &amp;1<br>    \end{array}\right)<br>$$</p>
-<p>则：<br>$$<br>\hat{\bf{w}}=\arg \min(\bf{y-X\hat{w}})^T(\bf{y-X\hat{w}})<br>$$<br>令$E=(\bf{y-X\hat{w}})^T(\bf{y-X\hat{w}})$，对$w$求导得：<br>$$<br>\frac{\partial{E}}{\partial{\bf{w}}}=2\bf{X}^T(X\hat{w}-y)<br>$$<br>当$X^TX$为满秩矩阵时，令$(6)$为$0$得:<br>$$<br>\hat{w}^*=\bf(X^TX)^{-1}X^Ty<br>$$<br>然而现实任务中我们遇到的往往是非满秩矩阵，可以解出多个$\hat{w}$,选择哪一个解作为输出，由机器学习算法的归纳偏好决定，一般会引入正则化项($regularization$)。</p>
-<p>为了更方便表示，我们引入“对数线性逻辑回归”：<br>$$<br>\ln y = w^Tx+b<br>$$<br>这里的对数值其实是让线性回归模型的预测值与真实标记联系起来的作用。</p>
-<p>一般地，我们考虑单调可微函数$g(.)$<br>$$<br>y = g^{-1}(w^Tx+b)<br>$$<br>这里的$g(.)$我们称为联系函数。</p>
-<p><strong>对数几率回归</strong></p>
-<p><img src="https://bkimg.cdn.bcebos.com/pic/d009b3de9c82d158dfb4e7218a0a19d8bc3e426f?x-bce-process=image/resize,m_lfit,w_268,limit_1/format,f_jpg" alt="img"><br>$$</p>
-<p>y = \frac{1}{1+e^{-z}}<br>$$<br>我们称之为Sigmoid函数。我们将其作为联系函数则：<br>$$<br>y= 1/(1+e\wedge (-w^Tx+b))<br>$$</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/09/23/2020-08-23-ML3/" data-id="ckfj5lo5w000b3osc6lg72wbm" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
           </li>
         
-          <li>
-            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
-          </li>
         
-          <li>
-            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
           </li>
         
       </ul>
     </div>
   </div>
+</nav>
 
-  
-</aside>
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/27/2020-8-12-dfs-bfs/">双胞胎DFS与BFS</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/27/2020-8-12-dfs-bfs/">
+          
+          
+            
+          
+          专题:DFS&amp;BFS
+ DFS:深度优先搜索，BFS：广度优先搜索，是最频繁被考察的算法知识点之一。我们来找一些例题专门研究一下。
+
+二叉树里面的三种遍历既可以用DFS（递归写法），也可以用BFS（迭代+栈），而层序遍历对应的就是BFS。
+在图论中，DFS是万金油算法，其衍生的如Dijisktra(优先队列)，SPFA算法是最短路的主流算法。
+下面介绍一类二维矩阵中典型的「岛屿问题」，来加
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-27 00:00" pubdate>
+              2020-09-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
+            
+              <a href="/tags/DFS/">DFS</a>
+            
+              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
+            
+          </div>
         
       </div>
-      <footer id="footer">
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/27/ML4_DecisionTree/">机器学习算法I 决策树</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/27/ML4_DecisionTree/">
+          
+          
+            
+          
+          机器学习算法I: 决策树决策树的基本算法是「分而治之」。
+设有训练集$D$以及属性集$A$. 函数TreeGenerate(D,A)算法如下：
+
+我们生成树节点node，若D中样本全部属于同一类别C.就将node标记为C类叶节点。
+
+如果A为空集或者D中样本在A上取值相同，那么将node标记为叶节点，其类别标记为D中样本数最多的类。然后返回。
+
+从A中选择最优划分属性$a^*$.
+
+对最优划分属性
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-27 00:00" pubdate>
+              2020-09-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a>
+            
+              <a href="/tags/python/">python</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/23/2020-9-23-binary_tree/">必须掌握数据结构-二叉树</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/23/2020-9-23-binary_tree/">
+          
+          
+            
+          
+          二叉树相关算法
+一看到二叉树，基本上可以确定是DFS或者BFS了，比较单调，但是也有一些很复杂的题目。二叉树，根据实际需要，演变为二叉搜索树，2-3-4树，平衡树（红黑树、AVL树），在计算机系统中占据重要地位。
+
+树是一种抽象数据类型（ADT）或是实现这种抽象数据类型的数据结构，用来模拟具有树状结构性质的数据集合。它是由 $n(n&gt;0)$ 个有限节点组成一个具有层次关系的集合。
+
+把它叫做
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-23 00:00" pubdate>
+              2020-09-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">经典数据结构</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A0%91/">树</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/18/CS_heap_stack/">弄懂内存中堆和栈的区别</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/18/CS_heap_stack/">
+          
+          
+            
+          
+          弄懂内存中堆和栈的区别
+知识的传送门
+
+栈区($stack$)：由编译器自动分配释放，存放函数的参数值，以及局部变量的值，其操作方式类似数据结构的栈。
+堆区($heap$)：一般由程序员分配释放，若程序不释放，会被操作系统回收。其操作方式类似于数据结构的链表。
+全局区($static$)：全局变量和静态变量的存储在一起，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-18 00:00" pubdate>
+              2020-09-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90/">计算机组成</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%86%85%E5%AD%98-%E5%A0%86/">内存 - 堆</a>
+            
+              <a href="/tags/%E6%A0%88/">栈</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/18/Java_notes/">Java八大数据类型以及封装类</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/18/Java_notes/">
+          
+          
+            
+          
+          Java八大数据类型以及封装类Java基本类型共有八种，基本类型可以分为三类，字符类型char，布尔类型boolean以及数值类型byte、short、int、long、float、double。数值类型又可以分为整数类型byte、short、int、long和浮点数类型float、double。JAVA中的数值类型不存在无符号的，它们的取值范围是固定的，不会随着机器硬件环境或者操作系统的改变而改
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-18 00:00" pubdate>
+              2020-09-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Java%E5%9F%BA%E7%A1%80/">Java基础</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/02/2020-8-25-greedy/">贪婪却巧妙的贪心算法</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/02/2020-8-25-greedy/">
+          
+          
+            
+          
+          贪心算法及其应用
+300. 最长上升子序列
+45.跳跃游戏II
+55.跳跃游戏
+
+
+贪心算法（又称贪婪算法）是指，在对问题求解时，总是做出在当前看来是最好的选择。也就是说，不从整体最优上加以考虑，他所做出的是在某种意义上的局部最优解。
+贪心算法不是对所有问题都能得到整体最优解，关键是贪心策略的选择，选择的贪心策略必须具备无后效性，即某个状态以前的过程不会影响以后的状态，只与当前状态有关。
+
+最长上
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-02 00:00" pubdate>
+              2020-09-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%B4%AA%E5%BF%83/">贪心</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/02/2020-8-25-math/">数学和信号应用于解题</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/02/2020-8-25-math/">
+          
+          
+            
+          
+          
+hi这里数学仅仅指数论和几何以及离散数学，没有谁用高等数学出题的，不过你也可以试试，让面试官刮目相看。我们重点研究一些很经典的数学问题。
+
+利用数学、信号理论解题
+包括但不限于数论，几何，排列组合等。。。
+LC上有很多题目是和数学相关的，如果我们有一定的数学基础，那么解起题来事半功倍！
+
+
+
+完全平方数
+
+
+
+圆和矩形是否有重叠
+
+
+求质因数（GCD）
+快速幂算法
+FFT算法
+Java bitC
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-02 00:00" pubdate>
+              2020-09-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E8%AE%BA/">数论</a>
+            
+              <a href="/tags/%E5%87%A0%E4%BD%95/">几何</a>
+            
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E7%90%86%E8%AE%BA/">信号理论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/09/02/2020-9-2-fsm/">貌似很难懂的DSA是什么？</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/09/02/2020-9-2-fsm/">
+          
+          
+            
+          
+          什么是确定有限状态自动机（Deterministic State Automata）？确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：
+
+有一个特殊的状态，被称作「初始状态」。
+还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。
+
+起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-02 00:00" pubdate>
+              2020-09-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E7%8A%B6%E6%80%81%E6%9C%BA/">有限自动状态机</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/30/2020-8-30-prefix_sum/">神奇的前缀和</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/30/2020-8-30-prefix_sum/">
+          
+          
+            
+          
+          前缀和
+
+和为k的子数组(Medium)
+
+
+
+定义$pre[i]$表示$[0…i]$所有数之和,那么范围$[j-i]$可以表示为: $pre[i]-pre[j-1]$,  且$pre[i] = pre[i-1] + nums[i]$ , 问题转化为,
+找到有多少个区间,满足$pre[i]-pre[j-1]==k$. 所以我们考虑以 $i$ 结尾的和为 $k$ 的连续子数组个数时只要统计有多少个前
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-30 00:00" pubdate>
+              2020-08-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
+            
+              <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/28/2020-8-28-memorized-search/">记忆化搜索vs动态规划</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/28/2020-8-28-memorized-search/">
+          
+          
+            
+          
+          记忆化搜索vs动态规划
+
+记忆化搜索实际上是递归来实现的，但是递归的过程中有许多的结果是被反复计算的，这样会大大降低算法的执行效率。　而记忆化搜索是在递归的过程中，将已经计算出来的结果保存起来，当之后的计算用到的时候直接取出结果，避免重复运算，因此极大的提高了算法的效率。
+
+
+
+
+记忆化搜索与动态规划区别：记忆化搜索：「自顶向下」，动态规划：「自底向上」。所有动态规划能解决的问题，记忆化搜索也能解
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-28 00:00" pubdate>
+              2020-08-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+            
+              <a href="/tags/%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2/">记忆化搜索</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
   </div>
-</footer>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
 
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
+    
   </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Durant Thorvald的米奇妙妙屋&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

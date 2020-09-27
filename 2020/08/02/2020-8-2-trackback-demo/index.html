@@ -1,0 +1,825 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>抛砖引玉析回溯 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-02 00:00" pubdate>
+        2020年8月2日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">抛砖引玉析回溯</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="浅析回溯法"><a href="#浅析回溯法" class="headerlink" title="浅析回溯法"></a>浅析回溯法</h1><blockquote>
+<p>想必大家都玩过一些智力游戏，比如解数独，华容道，魔方，甚至围棋这些。 让我们用计算机去解决这些问题，并且使得时间尽可能短，一种可能的方法是<strong>回溯法</strong>，现在已经有用机器学习中的对抗学习(GAN)以及强化学习(RL)，著名的有AlphaGo以及OpenAI,后者甚至可以在最难的MOBA类游戏战胜人类。</p>
+<p><strong>推荐阅读</strong>Liweiwei1419大佬的「<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/permutations/solution/hui-su-suan-fa-python-dai-ma-java-dai-ma-by-liweiw/">回溯算法入门级讲解</a>」</p>
+</blockquote>
+<ul>
+<li><ol>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sudoku-solver/">解数独</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/24-game/">24点游戏</a></p>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/n-queens/">N皇后</a></li>
+</ol>
+</li>
+<li><ol>
+<li><a href="">扫雷游戏</a></li>
+</ol>
+</li>
+<li><ol>
+<li><a href="">祖玛游戏</a></li>
+</ol>
+</li>
+</ul>
+<h2 id="679-24点游戏"><a href="#679-24点游戏" class="headerlink" title="679. 24点游戏"></a>679. 24点游戏</h2><p>你有 4 张写有 1 到 9 数字的牌。你需要判断是否能通过 *，/，+，-，(，) 的运算得到 24。</p>
+<p>示例 1:</p>
+<pre><code class="hljs angelscript">输入: [<span class="hljs-number">4</span>, <span class="hljs-number">1</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>]
+输出: True
+解释: (<span class="hljs-number">8</span><span class="hljs-number">-4</span>) * (<span class="hljs-number">7</span><span class="hljs-number">-1</span>) = <span class="hljs-number">24</span>
+</code></pre>
+<p>示例 2:</p>
+<pre><code class="hljs yaml"><span class="hljs-string">输入:</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+<span class="hljs-string">输出:</span> <span class="hljs-literal">False</span></code></pre>
+<p>注意:</p>
+<p>`1. 除法运算符 / 表示实数除法，而不是整数除法。例如 4 / (1 - 2/3) = 12 。</p>
+<ol>
+<li>每个运算符对两个数进行运算。特别是我们不能用 - 作为一元运算符。例如，[1, 1, 1, 1] 作为输入时，表达式 -1 - 1 - 1 - 1 是不允许的。</li>
+<li>你不能将数字连接在一起。例如，输入为 [1, 2, 1, 2] 时，不能写成 12 + 12 。</li>
+</ol>
+<hr>
+<p>1<strong>.暴力法</strong></p>
+<p>思路：因为此题规模不大，可以采用暴力法，我们先把4个数每一种排列考虑到，然后把每一种计算顺序考虑一下（最多三次运算），括号有两种情况，一个是<code>a*(b-(c/d))</code>，另一种是<code>(a+b)\*(c+d)</code>这里是举例子。最后是精度问题保证<code>|res-24.0|&lt;1e-5</code>即可。</p>
+<p><strong>回溯法</strong></p>
+<p>一共有四个数，三种操作。首先从四个数有序的选出两个数，有$4×3=12$种方法，并选择加减乘除不同的，用得到的结果取代选出的两个数字。</p>
+<p>在剩下3个数有序选择2个数字，有6种方法，并选择四种运算符之一。</p>
+<p>最后剩下2个数字，有两种不同的顺序，并选择4种运算操作之一。因此共有$12×4×6×4×2×4=9216$种选法。</p>
+<p>实现时，有一些细节需要注意：</p>
+<ul>
+<li><p>除法运算为实数除法，因此结果为浮点数，列表中存储的数字也都是浮点数。在判断结果是否等于 2424 时应考虑精度误差，这道题中，误差小于 $10^{-6}$  可以认为是相等。</p>
+</li>
+<li><p>进行除法运算时，除数不能为 0，如果遇到除数为 0 的情况，则这种可能性可以直接排除。由于列表中存储的数字是浮点数，因此判断除数是否为 0 时应考虑精度误差，这道题中，当一个数字的绝对值小于 $10^{-6}$  时，可以认为该数字等于 0。</p>
+</li>
+</ul>
+<p>还有一个可以优化的点。</p>
+<p>加法和乘法都满足交换律，因此如果选择的运算操作是加法或乘法，则对于选出的 22 个数字不需要考虑不同的顺序，在遇到第二种顺序时可以不进行运算，直接跳过。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">int</span> TARGET = <span class="hljs-number">24</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">double</span> EPSILON = <span class="hljs-number">1e-6</span>;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">int</span> ADD = <span class="hljs-number">0</span>, MULTIPLY = <span class="hljs-number">1</span>, SUBTRACT = <span class="hljs-number">2</span>, DIVIDE = <span class="hljs-number">3</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">judgePoint24</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp;nums)</span> </span>&#123;
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt; l;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> &amp;num : nums) &#123;
+            l.emplace_back(<span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">double</span>&gt;(num));<span class="hljs-comment">//转为double</span>
+        &#125;
+        <span class="hljs-keyword">return</span> solve(l);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">solve</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt; &amp;l)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (l.size() == <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+        <span class="hljs-keyword">if</span> (l.size() == <span class="hljs-number">1</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">fabs</span>(l[<span class="hljs-number">0</span>] - TARGET) &lt; EPSILON;
+        &#125;
+        <span class="hljs-keyword">int</span> size = l.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) &#123;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; size; j++) &#123;
+                <span class="hljs-keyword">if</span> (i != j) &#123;
+                    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt; list2 = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">double</span>&gt;();
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; size; k++) &#123;
+                        <span class="hljs-keyword">if</span> (k != i &amp;&amp; k != j) &#123;
+                            list2.emplace_back(l[k]);
+                        &#125;
+                    &#125;
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">4</span>; k++) &#123;
+                        <span class="hljs-keyword">if</span> (k &lt; <span class="hljs-number">2</span> &amp;&amp; i &gt; j) &#123;
+                            <span class="hljs-keyword">continue</span>;
+                        &#125;
+                        <span class="hljs-keyword">if</span> (k == ADD) &#123;
+                            list2.emplace_back(l[i] + l[j]);
+                        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (k == MULTIPLY) &#123;
+                            list2.emplace_back(l[i] * l[j]);
+                        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (k == SUBTRACT) &#123;
+                            list2.emplace_back(l[i] - l[j]);
+                        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (k == DIVIDE) &#123;
+                            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">fabs</span>(l[j]) &lt; EPSILON) &#123;
+                                <span class="hljs-keyword">continue</span>;
+                            &#125;
+                            list2.emplace_back(l[i] / l[j]);
+                        &#125;
+                        <span class="hljs-keyword">if</span> (solve(list2)) &#123;
+                            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                        &#125;
+                        list2.pop_back();
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+&#125;;
+</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(1)$。一共有 $9216$ 种可能性，对于每种可能性，各项操作的时间复杂度都是 $O(1)$，因此总时间复杂度是 $O(1)$。</li>
+<li>空间复杂度：$O(1)$。空间复杂度取决于递归调用层数与存储中间状态的列表，因为一共有 $4$ 个数，所以递归调用的层数最多为 $4$，存储中间状态的列表最多包含 $4$个元素，因此空间复杂度为常数。</li>
+</ul>
+<hr>
+<h2 id="37-解数独"><a href="#37-解数独" class="headerlink" title="37. 解数独"></a>37. 解数独</h2><p>编写一个程序，通过已填充的空格来解决数独问题。</p>
+<p>一个数独的解法需遵循如下规则：</p>
+<p><code>数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。</code></p>
+<p>空白格用 ‘.’ 表示。</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Sudoku-by-L2G-20050714.svg/250px-Sudoku-by-L2G-20050714.svg.png" srcset="/img/loading.gif" alt="img"></p>
+<p>一个数独。</p>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Sudoku-by-L2G-20050714_solution.svg/250px-Sudoku-by-L2G-20050714_solution.svg.png" srcset="/img/loading.gif" alt="img"></p>
+<p>答案被标成红色。</p>
+<p>Note:</p>
+<ol>
+<li>给定的数独序列只包含数字 1-9 和字符 ‘.’ 。</li>
+<li>你可以假设给定的数独只有唯一解。</li>
+<li>给定数独永远是 9x9 形式的。</li>
+</ol>
+<hr>
+<ol>
+<li><strong>DFS+回溯</strong></li>
+</ol>
+<p>由于每个数字在同一行、同一列、同一个九宫格中只会出现一次，因此我们可以使用$ \textit{line}[i]$，$\textit{column}[j]$，$\textit{block}[x][y]分别$表示第 $i$ 行，第 $j$ 列，第 $(x, y)$ 个九宫格中填写数字的情况。在下面给出的三种方法中，我们将会介绍两种不同的表示填写数字情况的方法。</p>
+<blockquote>
+<p>九宫格内坐标范围：$0\le x\le2,0 \le y \le 2$.具体的 第 $i$行第$j$列的数字，属于第$\lfloor \frac{i}{3},\frac{j}{3} \rfloor$个九宫格。$\lfloor$表示向下取整。</p>
+</blockquote>
+<p>我们首先对整个数独数组进行遍历，当我们遍历到第$i$行，第$j$个位置：</p>
+<ul>
+<li>如果该位置是一个空白格，那么我们将其加入一个用于存储空白格的列表中，方便后续进行递归。</li>
+<li>如果该位置是一个数字，我们将$line$，$column$,$block$相应位置分别置为$True$。</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+    <span class="hljs-keyword">private</span> boolean[][] line = <span class="hljs-keyword">new</span> boolean [<span class="hljs-number">9</span>][<span class="hljs-number">9</span>];<span class="hljs-comment">//行号和具体数字</span>
+    <span class="hljs-keyword">private</span> boolean[][] column = <span class="hljs-keyword">new</span> boolean [<span class="hljs-number">9</span>][<span class="hljs-number">9</span>];<span class="hljs-comment">//列号和具体数字</span>
+    <span class="hljs-keyword">private</span> boolean[][] block = <span class="hljs-keyword">new</span> boolean [<span class="hljs-number">9</span>][<span class="hljs-number">9</span>];<span class="hljs-comment">//第几个方块（3*x/3+y/3），具体数字</span>
+    <span class="hljs-keyword">private</span> boolean succ = <span class="hljs-literal">false</span>;<span class="hljs-comment">//是否成功填完</span>
+    <span class="hljs-keyword">private</span> List&lt;<span class="hljs-keyword">int</span>[]&gt; spaces = <span class="hljs-keyword">new</span> ArrayList&lt;<span class="hljs-keyword">int</span>[]&gt;();<span class="hljs-comment">//用于表示空格</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> pos)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(pos == spaces.size())
+        &#123;
+            succ = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-keyword">int</span> x = spaces.get(pos)[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> y = spaces.get(pos)[<span class="hljs-number">1</span>];
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> n = <span class="hljs-number">0</span>;n &lt; <span class="hljs-number">9</span> ;  n++ )
+            <span class="hljs-keyword">if</span>(!line[x][n]&amp;&amp;!column[y][n]&amp;&amp;!block[x/<span class="hljs-number">3</span>*<span class="hljs-number">3</span>+y/<span class="hljs-number">3</span>][n]) &#123;
+                board[x][y] = (<span class="hljs-keyword">char</span>)(n + <span class="hljs-string">&#x27;1&#x27;</span>);
+                line[x][n] = column[y][n] = block[x/<span class="hljs-number">3</span>*<span class="hljs-number">3</span>+y/<span class="hljs-number">3</span>][n] = <span class="hljs-literal">true</span>;
+                backtrack(board, pos+<span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span>(succ) <span class="hljs-keyword">return</span>;
+                line[x][n] = column[y][n] = block[x/<span class="hljs-number">3</span>*<span class="hljs-number">3</span>+y/<span class="hljs-number">3</span>][n] = <span class="hljs-literal">false</span>;
+
+            &#125;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">solveSudoku</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board)</span> </span>&#123;
+    <span class="hljs-comment">//遍历棋盘，如果遇到&#x27;.&#x27;则按照1-9填充，直到下一个数字无法被填充为止，进行回溯</span>
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>;i++)
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; <span class="hljs-number">9</span>;j++)
+                <span class="hljs-keyword">if</span>(board[i][j]&gt;=<span class="hljs-string">&#x27;1&#x27;</span>&amp;&amp;board[i][j]&lt;=<span class="hljs-string">&#x27;9&#x27;</span>)
+                &#123;
+                    line[i][(<span class="hljs-keyword">int</span>)(board[i][j]-<span class="hljs-string">&#x27;1&#x27;</span>)] = column[j][(<span class="hljs-keyword">int</span>)(board[i][j]-<span class="hljs-string">&#x27;1&#x27;</span>)]
+                            = block[i/<span class="hljs-number">3</span>*<span class="hljs-number">3</span>+j/<span class="hljs-number">3</span>][(<span class="hljs-keyword">int</span>)(board[i][j]-<span class="hljs-string">&#x27;1&#x27;</span>)] = <span class="hljs-literal">true</span>;
+                &#125;
+                <span class="hljs-keyword">else</span>
+                  spaces.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]&#123;i,j&#125;);<span class="hljs-comment">//遇到&#x27;.&#x27;则将其坐标加入空格数组</span>
+        backtrack(board,<span class="hljs-number">0</span>);
+    &#125;
+    <span class="hljs-comment">// public static void main(String args[])</span>
+    <span class="hljs-comment">// &#123;</span>
+    <span class="hljs-comment">//     char[][] board =&#123;&#123;&#x27;5&#x27;,&#x27;1&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;2&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;4&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;8&#x27;,&#x27;5&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;2&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;3&#x27;,&#x27;.&#x27;,&#x27;8&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;7&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;9&#x27;,&#x27;.&#x27;,&#x27;1&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;.&#x27;,&#x27;9&#x27;,&#x27;1&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;4&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;.&#x27;,&#x27;.&#x27;,&#x27;7&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;9&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;6&#x27;,&#x27;2&#x27;,&#x27;.&#x27;,&#x27;3&#x27;,&#x27;.&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;4&#x27;,&#x27;8&#x27;,&#x27;6&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;&#125;,</span>
+    <span class="hljs-comment">//                     &#123;&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;1&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;,&#x27;.&#x27;&#125;&#125;;</span>
+    <span class="hljs-comment">//     Solution s = new Solution();</span>
+    <span class="hljs-comment">//     s.solveSudoku(board);</span>
+    <span class="hljs-comment">// &#125;</span>
+&#125;</code></pre>
+<p><strong>2. 位运算</strong></p>
+<p>我们使用长度为9的数组表示每个数字是否出现过。我们同样也可以借助位运算，仅使用一个整数表示每个数字是否出现过。</p>
+<p>具体地，数$b$ 的二进制表示的第$i$位（从低到高，最低位为第$0$位），当且仅当数字$i+1$已经出现过。例如当 b 的二进制表示为 $(011000100)_2$ 时，就表示数字 3，7，8 已经出现过。</p>
+<p>位运算有一些基础的使用技巧。下面列举了所有在代码中使用到的技巧：</p>
+<ul>
+<li><p>对于第$i$行第$j$列的位置，$line[i]|column[j]|block[i/3*3+j/3]$中第$k$位为1，表示该位置不能填入数字$k+1$.我们先与上$(11111111)_2=(1FF)_{16}$消除高位的影响，然后对其取反，然后枚举。因为是需要9个bit状态，所以是左移九位。</p>
+</li>
+<li><p>我们可以使用按位异或运算$ \wedge$, 与 $1&lt;&lt;i$异或即可。</p>
+</li>
+<li><p>我们可以用 $b \&amp; (−b) $得到 b 二进制表示中最低位的 1，这是因为 $(−b)$ 在计算机中以补码的形式存储，它等于 $\sim b + 1$。$b$ 如果和 $∼b$ 进行按位与运算，那么会得到 0，但是当 $\sim b$ 增加 1 之后，最低位的连续的 1 都变为 0，而最低位的 0 变为 1，对应到 $b$ 中即为最低位的 1，因此当 $b$ 和 $∼b+1$ 进行按位与运算时，只有最低位的 1 会被保留；</p>
+</li>
+<li><p>我们可以用$b$与最低位的1按位异或，就可以将其从$b$中去除，这样就可以枚举下一个1。同样的，我们可以用$b\&amp;(b-1)$达到同样的效果，这被称为<strong>Brian kernighan算法</strong>。</p>
+<p>​    </p>
+</li>
+</ul>
+<p><strong>代码</strong></p>
+<pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] line = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">9</span>];<span class="hljs-comment">//存放二进制</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] column = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">9</span>];<span class="hljs-comment">//列号和具体数字</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span>[] block = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[<span class="hljs-number">9</span>];<span class="hljs-comment">//第几个方块（3*x/3+y/3），具体数字</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> succ = <span class="hljs-keyword">false</span>;<span class="hljs-comment">//是否成功填完</span>
+    <span class="hljs-keyword">private</span> List&lt;<span class="hljs-keyword">int</span>[]&gt; spaces = <span class="hljs-keyword">new</span> ArrayList&lt;<span class="hljs-keyword">int</span>[]&gt;();<span class="hljs-comment">//用于表示空格</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board, <span class="hljs-keyword">int</span> pos)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(pos == spaces.size())
+        &#123;
+            succ = <span class="hljs-keyword">true</span>;
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-keyword">int</span> x = spaces.get(pos)[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> y = spaces.get(pos)[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">int</span> mask = ~(line[x]|column[y]|block[x/<span class="hljs-number">3</span>*<span class="hljs-number">3</span>+y/<span class="hljs-number">3</span>])&amp;<span class="hljs-number">0x1ff</span>;
+        <span class="hljs-keyword">for</span>(;mask != <span class="hljs-number">0</span>; mask&amp;=(mask-<span class="hljs-number">1</span>)) &#123; <span class="hljs-comment">//遍历每个1</span>
+            <span class="hljs-keyword">int</span> digit = mask&amp;(-mask);<span class="hljs-comment">//表示最低位的1</span>
+            <span class="hljs-keyword">int</span> shift = Integer.bitCount(digit-<span class="hljs-number">1</span>);<span class="hljs-comment">//比如 digit = 4 是2的2次方 (4-1).bitcount =  3, 3-1 = 2</span>
+            board[x][y] = (<span class="hljs-keyword">char</span>) (shift + <span class="hljs-string">&#x27;1&#x27;</span>);
+            flip(x, y, shift);<span class="hljs-comment">//翻转</span>
+            backtrack(board, pos + <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (succ) <span class="hljs-keyword">return</span>;
+            flip(x, y, shift);<span class="hljs-comment">//翻转恢复</span>
+        &#125;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">solveSudoku</span><span class="hljs-params">(<span class="hljs-keyword">char</span>[][] board)</span> </span>&#123;
+    <span class="hljs-comment">//遍历棋盘，如果遇到&#x27;.&#x27;则按照1-9填充，直到下一个数字无法被填充为止，进行回溯</span>
+<span class="hljs-comment">//    List&lt;List&lt;Integer&gt;&gt; a = new ArrayList&lt;&gt;();</span>
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">9</span>;i++)
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; <span class="hljs-number">9</span>;j++)
+                <span class="hljs-keyword">if</span>(board[i][j]&gt;=<span class="hljs-string">&#x27;1&#x27;</span>&amp;&amp;board[i][j]&lt;=<span class="hljs-string">&#x27;9&#x27;</span>)
+                &#123;
+                    <span class="hljs-keyword">int</span> shift = (<span class="hljs-keyword">int</span>)(board[i][j]-<span class="hljs-string">&#x27;1&#x27;</span>);
+                    flip(i,j,shift);
+                &#125;
+                <span class="hljs-keyword">else</span>
+                  spaces.add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]&#123;i,j&#125;);<span class="hljs-comment">//遇到&#x27;.&#x27;则将其坐标加入空格数组</span>
+        backtrack(board,<span class="hljs-number">0</span>);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">flip</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span> shift)</span></span>
+<span class="hljs-function">    </span>&#123;
+        line[i] ^= (<span class="hljs-number">1</span>&lt;&lt;shift);
+        column[j] ^= (<span class="hljs-number">1</span>&lt;&lt;shift);
+        block[i/<span class="hljs-number">3</span>*<span class="hljs-number">3</span>+j/<span class="hljs-number">3</span>] ^= (<span class="hljs-number">1</span>&lt;&lt;shift);
+    &#125;
+&#125;</code></pre>
+<hr>
+<h2 id="51-N皇后"><a href="#51-N皇后" class="headerlink" title="51. N皇后"></a>51. N皇后</h2><p>n 皇后问题研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/8-queens.png" srcset="/img/loading.gif" alt="img"></p>
+<p>上图为 8 皇后问题的一种解法。</p>
+<p>给定一个整数 n，返回所有不同的 n 皇后问题的解决方案。</p>
+<p>每一种解法包含一个明确的 n 皇后问题的棋子放置方案，该方案中 ‘Q’ 和 ‘.’ 分别代表了皇后和空位。</p>
+<p>示例：</p>
+<pre><code class="hljs awk">输入：<span class="hljs-number">4</span>
+输出：[
+ [<span class="hljs-string">&quot;.Q..&quot;</span>,  <span class="hljs-regexp">//</span> 解法 <span class="hljs-number">1</span>
+  <span class="hljs-string">&quot;...Q&quot;</span>,
+  <span class="hljs-string">&quot;Q...&quot;</span>,
+  <span class="hljs-string">&quot;..Q.&quot;</span>],
+
+ [<span class="hljs-string">&quot;..Q.&quot;</span>,  <span class="hljs-regexp">//</span> 解法 <span class="hljs-number">2</span>
+  <span class="hljs-string">&quot;Q...&quot;</span>,
+  <span class="hljs-string">&quot;...Q&quot;</span>,
+  <span class="hljs-string">&quot;.Q..&quot;</span>]
+]
+解释: <span class="hljs-number">4</span> 皇后问题存在两个不同的解法。</code></pre>
+<p>提示：</p>
+<p>皇后彼此不能相互攻击，也就是说：任何两个皇后都不能处于同一条横行、纵行或斜线上。</p>
+<hr>
+<p>学会使用编码，使访问指定元素的时间复杂度为$O(1)$</p>
+<p><strong>方法一：基于集合的回溯</strong><br>为了判断一个位置所在的列和两条斜线上是否已经有皇后，使用三个集合$ columns、diagonals_1 $ 和 $\textit{diagonals}_2$ 分别记录每一列以及两个方向的每条斜线上是否有皇后。</p>
+<p>列的表示法很直观，一共有 N 列，每一列的下标范围从 0 到 N-1，使用列的下标即可明确表示每一列。</p>
+<p>如何表示两个方向的斜线呢？对于每个方向的斜线，需要找到斜线上的每个位置的行下标与列下标之间的关系。</p>
+<p><img src="https://assets.leetcode-cn.com/solution-static/51/1.png" srcset="/img/loading.gif" alt="fig1"></p>
+<p>方向一的斜线为从左上到右下方向，同一条斜线上的每个位置满足行下标与列下标之差相等，例如 (0,0)和 (3,3)在同一条方向一的斜线上。因此使用行下标与列下标之差即可明确表示每一条方向一的斜线。</p>
+<p><img src="https://assets.leetcode-cn.com/solution-static/51/2.png" srcset="/img/loading.gif" alt="fig2"></p>
+<p>方向二的斜线为从右上到左下方向，同一条斜线上的每个位置满足行下标与列下标之和相等，例如 (3,0) 和 (1,2) 在同一条方向二的斜线上。因此使用行下标与列下标之和即可明确表示每一条方向二的斜线。</p>
+<p>每次放置皇后时，对于每个位置判断其是否在三个集合中，如果三个集合都不包含当前位置，则当前位置是可以放置皇后的位置。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt; res;
+    <span class="hljs-keyword">int</span> n;
+    <span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">int</span>&gt; col_group, diag1, diag2;<span class="hljs-comment">//列，以及两条斜线，diag1表示(y-x)，而diag2表示(x+y)</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt; &amp;board, <span class="hljs-keyword">int</span> row, <span class="hljs-keyword">int</span> i)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(i==n) res.emplace_back(board);
+        <span class="hljs-comment">//将斜线上元素加入不可访问列表</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> y = <span class="hljs-number">0</span>; y &lt; n;y++)
+        <span class="hljs-keyword">if</span> (!col_group.count(y)&amp;&amp;!diag1.count(y-row)&amp;&amp;!diag2.count(row+y))
+        &#123;
+            board[row][y] = <span class="hljs-string">&#x27;Q&#x27;</span>;
+            col_group.insert(y);
+            diag1.insert(y-row);
+            diag2.insert(y+row);
+            backtrack(board,row+<span class="hljs-number">1</span>,i+<span class="hljs-number">1</span>);
+            board[row][y] = <span class="hljs-string">&#x27;.&#x27;</span>;
+            col_group.erase(y);
+            diag1.erase(y-row);
+            diag2.erase(y+row);
+        &#125;
+
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt; <span class="hljs-title">solveNQueens</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;
+       <span class="hljs-keyword">if</span>(n==<span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> &#123;&#123;&#125;&#125;;
+       <span class="hljs-keyword">if</span>(n==<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> &#123;&#123;<span class="hljs-string">&quot;Q&quot;</span>&#125;&#125;;
+       <span class="hljs-keyword">if</span>(n&lt;=<span class="hljs-number">3</span>) <span class="hljs-keyword">return</span> &#123;&#125;;
+       <span class="hljs-keyword">this</span>-&gt;n = n;
+       <span class="hljs-comment">//基本思路，回溯法</span>
+       <span class="hljs-comment">//我们依次安排N个皇后的位置</span>
+       <span class="hljs-comment">//如果不满足题意则回溯</span>
+       <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt; <span class="hljs-title">board</span><span class="hljs-params">(n,<span class="hljs-built_in">string</span>(n,<span class="hljs-string">&#x27;.&#x27;</span>))</span></span>;
+       backtrack(board,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>);
+       <span class="hljs-keyword">return</span> res; 
+
+    &#125;
+&#125;;</code></pre>
+<hr>
+<p>Bibliography</p>
+<blockquote>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://deepmind.com/research/case-studies/alphago-the-story-so-far">https://deepmind.com/research/case-studies/alphago-the-story-so-far</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/阿尔法围棋/19319610?fromtitle=AlphaGo&amp;fromid=19315265&amp;fr=aladdin">AlphaGo百度百科</a></p>
+</li>
+</ol>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%9E%E6%BA%AF%E6%B3%95/">回溯法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/04/2020-08-4-ML2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习II 模型评估与选择</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/01/2020-8-1-common-way-solve-big-problem/">
+                        <span class="hidden-mobile">解空间极大问题通用策略</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "抛砖引玉析回溯&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

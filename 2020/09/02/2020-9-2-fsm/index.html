@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>貌似很难懂的DSA是什么？ - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-02 00:00" pubdate>
+        2020年9月2日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">貌似很难懂的DSA是什么？</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="什么是确定有限状态自动机（Deterministic-State-Automata）？"><a href="#什么是确定有限状态自动机（Deterministic-State-Automata）？" class="headerlink" title="什么是确定有限状态自动机（Deterministic State Automata）？"></a>什么是确定有限状态自动机（Deterministic State Automata）？</h1><p>确定有限状态自动机（以下简称「自动机」）是一类计算模型。它包含一系列状态，这些状态中：</p>
+<ul>
+<li>有一个特殊的状态，被称作「初始状态」。</li>
+<li>还有一系列状态被称为「接受状态」，它们组成了一个特殊的集合。其中，一个状态可能既是「初始状态」，也是「接受状态」。</li>
+</ul>
+<p>起初，这个自动机处于「初始状态」。随后，它顺序地读取字符串中的每一个字符，并根据当前状态和读入的字符，按照某个事先约定好的「转移规则」，从当前状态转移到下一个状态；当状态转移完成后，它就读取下一个字符。当字符串全部读取完毕后，如果自动机处于某个「接受状态」，则判定该字符串「被接受」；否则，判定该字符串「被拒绝」。</p>
+<p>一个自动机，总能够回答某种形式的「对于给定的输入字符串 S，判断其是否满足条件 P」的问题。在本题中，条件 P 即为「构成合法的表示数值的字符串」。</p>
+<p>自动机驱动的编程，可以被看做一种暴力枚举方法的延伸：它穷尽了在任何一种情况下，对应任何的输入，需要做的事情。</p>
+<p>自动机在计算机科学领域有着广泛的应用。在算法领域，它与大名鼎鼎的字符串查找算法「KMP」算法有着密切的关联；在工程领域，它是实现「正则表达式」的基础。</p>
+<hr>
+<p><strong>例题：</strong></p>
+<ul>
+<li><ol>
+<li><a href="">有效的数字</a>(Hard)</li>
+</ol>
+</li>
+<li>剑指Offer 20. <a href="">表示数值的字符串</a>(Medium)</li>
+</ul>
+<hr>
+<p>以 剑指Offer 20. <a href="">表示数值的字符串</a>(Medium) 为例。</p>
+<blockquote>
+<p> 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串”+100”、”5e2”、”-123”、”3.1416”、”-1E-16”、”0123”都表示数值，但”12e”、”1a3.14”、”1.2.3”、”+-5”及”12e+5.4”都不是。</p>
+</blockquote>
+<hr>
+<p><strong>思路与算法</strong></p>
+<p>根据上面的描述，现在可以定义自动机的「状态集合」了。那么怎么挖掘出所有可能的状态呢？一个常用的技巧是，用「当前处理到字符串的哪个部分」当作状态的表述。根据这一技巧，不难挖掘出所有状态：</p>
+<ol>
+<li>起始的空格</li>
+<li>符号位</li>
+<li>整数部分</li>
+<li>左侧有整数的小数点</li>
+<li>左侧无整数的小数点</li>
+<li>小数部分</li>
+<li>字符$E$</li>
+<li>指数部分的符号位</li>
+<li>指数的整数部分</li>
+<li>结束的空格</li>
+</ol>
+<p>下一步是找出「初始状态」和「接受状态」的集合。根据题意，「初始状态」应当为状态 1，而「接受状态」的集合则为状态 3、状态 4、状态 6、状态 9 以及状态 10。换言之，字符串的末尾要么是空格，要么是数字，要么是小数点，但前提是小数点的前面有数字。</p>
+<p>最后，需要定义「转移规则」。结合数值字符串应当具备的格式，将自动机转移的过程以图解的方式表示出来：</p>
+<p><img src="E:\Github pages\saasproj.github.io\_posts\img\image-fsa.png" srcset="/img/loading.gif" alt="image-20200902111512582"></p>
+<p>在实际代码中，我们需要处理转移失败的情况。例如当位于状态 1（起始空格）时，没有对应字符 \text{e}e 的状态。为了处理这种情况，我们可以创建一个特殊的拒绝状态。如果当前状态下没有对应读入字符的「转移规则」，我们就转移到这个特殊的拒绝状态。一旦自动机转移到这个特殊状态，我们就可以立即判定该字符串不「被接受」。</p>
+<hr>
+<p><strong>代码</strong>：</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">enum</span> state
+    &#123;
+        STATE_INIT,
+        <span class="hljs-comment">// STATE_SPACE,</span>
+        STATE_SIGN,
+        STATE_INTEGER,
+        STATE_POINT_INT,
+        STATE_POINT_NOT_INT,
+        STATE_DECIMAL,
+        STATE_EXP,
+        STATE_EXP_SIGN,
+        STATE_EXP_INT,
+        STATE_END,
+    &#125;;
+    <span class="hljs-keyword">enum</span> charType
+    &#123;
+        CHAR_NUM,
+        CHAR_SPACE,
+        CHAR_POINT,
+        CHAR_EXP,
+        CHAR_SIGN,
+        CHAR_INVALID,
+    &#125;;
+    <span class="hljs-function">charType <span class="hljs-title">getCharType</span><span class="hljs-params">(<span class="hljs-keyword">char</span> ch)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(ch&gt;=<span class="hljs-string">&#x27;0&#x27;</span>&amp;&amp;ch&lt;=<span class="hljs-string">&#x27;9&#x27;</span>) <span class="hljs-keyword">return</span> CHAR_NUM;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch == <span class="hljs-string">&#x27; &#x27;</span>) <span class="hljs-keyword">return</span> CHAR_SPACE;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ch == <span class="hljs-string">&#x27;.&#x27;</span>) <span class="hljs-keyword">return</span> CHAR_POINT;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ch == <span class="hljs-string">&#x27;E&#x27;</span>||ch == <span class="hljs-string">&#x27;e&#x27;</span>) <span class="hljs-keyword">return</span> CHAR_EXP;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ch==<span class="hljs-string">&#x27;+&#x27;</span>||ch==<span class="hljs-string">&#x27;-&#x27;</span>) <span class="hljs-keyword">return</span> CHAR_SIGN;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> CHAR_INVALID;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isNumber</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!s.size()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">int</span> len = s.length();
+        state sta = STATE_INIT;
+        <span class="hljs-comment">//用哈希表存储状态转移方程</span>
+        <span class="hljs-built_in">unordered_map</span>&lt;state,<span class="hljs-built_in">unordered_map</span>&lt;charType,state&gt;&gt; transfer&#123;
+            &#123;
+                STATE_INIT, &#123;&#123;CHAR_SPACE,STATE_INIT&#125;,
+                            &#123;CHAR_SIGN, STATE_SIGN&#125;,
+                            &#123;CHAR_NUM, STATE_INTEGER&#125;,
+                            &#123;CHAR_POINT,STATE_POINT_NOT_INT&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_SIGN,&#123;&#123;CHAR_NUM, STATE_INTEGER&#125;,
+                           &#123;CHAR_POINT, STATE_POINT_NOT_INT&#125;,
+            &#125;&#125;,
+            &#123;
+                STATE_DECIMAL,  &#123;&#123;CHAR_NUM, STATE_DECIMAL&#125;,
+                                &#123;CHAR_EXP, STATE_EXP&#125;,
+                                &#123;CHAR_SPACE, STATE_END&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_INTEGER,  &#123;&#123;CHAR_NUM, STATE_INTEGER&#125;,
+                                &#123;CHAR_EXP,STATE_EXP&#125;,
+                                &#123;CHAR_POINT,STATE_POINT_INT&#125;,
+                                &#123;CHAR_SPACE,STATE_END&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_POINT_NOT_INT,&#123;&#123;CHAR_NUM, STATE_DECIMAL&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_POINT_INT,&#123;&#123;CHAR_SPACE,STATE_END&#125;,
+                                &#123;CHAR_NUM,STATE_DECIMAL&#125;,
+                                &#123;CHAR_EXP,STATE_EXP&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_EXP,  &#123;&#123;CHAR_SIGN, STATE_EXP_SIGN&#125;,
+                            &#123;CHAR_NUM, STATE_EXP_INT&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_EXP_SIGN,&#123;&#123;CHAR_NUM, STATE_EXP_INT&#125;
+            &#125;&#125;,
+            &#123;
+                STATE_EXP_INT,&#123;&#123;CHAR_NUM,STATE_EXP_INT&#125;,
+                                &#123;CHAR_SPACE,STATE_END&#125;&#125;
+            &#125;,
+            &#123;
+                STATE_END,&#123;&#123;CHAR_SPACE,STATE_END&#125;,&#125;
+            &#125;
+        &#125;;
+    
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++)
+        &#123;
+            charType ct = getCharType(s[i]);
+            <span class="hljs-comment">//如果是非法状态，直接返回false</span>
+        
+            <span class="hljs-keyword">if</span>(!transfer[sta].count(ct)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+            sta = transfer[sta][ct];
+            
+        &#125; 
+        <span class="hljs-keyword">return</span> sta == STATE_END || sta == STATE_INTEGER || sta == STATE_POINT_INT || sta == STATE_DECIMAL|| sta == STATE_EXP_INT;
+    &#125;
+&#125;;</code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E7%8A%B6%E6%80%81%E6%9C%BA/">有限自动状态机</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/02/2020-8-25-math/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数学和信号应用于解题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/30/2020-8-30-prefix_sum/">
+                        <span class="hidden-mobile">神奇的前缀和</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "貌似很难懂的DSA是什么？&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

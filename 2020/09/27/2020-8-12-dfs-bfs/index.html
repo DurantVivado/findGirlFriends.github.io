@@ -1,0 +1,641 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>双胞胎DFS与BFS - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-27 00:00" pubdate>
+        2020年9月27日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">双胞胎DFS与BFS</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="专题-DFS-amp-BFS"><a href="#专题-DFS-amp-BFS" class="headerlink" title="专题:DFS&amp;BFS"></a>专题:DFS&amp;BFS</h1><blockquote>
+<p> DFS:深度优先搜索，BFS：广度优先搜索，是最频繁被考察的算法知识点之一。我们来找一些例题专门研究一下。</p>
+</blockquote>
+<p>二叉树里面的三种遍历既可以用DFS（递归写法），也可以用BFS（迭代+栈），而层序遍历对应的就是BFS。</p>
+<p>在图论中，DFS是万金油算法，其衍生的如Dijisktra(优先队列)，SPFA算法是<strong>最短路</strong>的主流算法。</p>
+<p>下面介绍一类二维矩阵中典型的「岛屿问题」，来加深理解，在整体DFS框架中又隐藏一些彩蛋，加以利用的话可以极大的优化算法。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-islands/">L200. 岛屿数量</a> （Easy）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/surrounded-regions/">L130.被围绕的区域 (Medium)</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/island-perimeter/">463. 岛屿的周长</a> （Easy）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/max-area-of-island/">695. 岛屿的最大面积</a> （Medium）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/making-a-large-island/">827. 最大人工岛</a> （Hard）</li>
+</ul>
+<hr>
+<h2 id="1-被围绕的区域"><a href="#1-被围绕的区域" class="headerlink" title="1.被围绕的区域"></a>1.被围绕的区域</h2><p>给定一个二维的矩阵，包含 ‘X’ 和 ‘O’（字母 O）。</p>
+<p>找到所有被 ‘X’ 围绕的区域，并将这些区域里所有的 ‘O’ 用 ‘X’ 填充。</p>
+<p>示例:</p>
+<pre><code class="hljs sas"><span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span>
+<span class="hljs-meta">X</span> O O <span class="hljs-meta">X</span>
+<span class="hljs-meta">X</span> <span class="hljs-meta">X</span> O <span class="hljs-meta">X</span>
+<span class="hljs-meta">X</span> O <span class="hljs-meta">X</span> <span class="hljs-meta">X</span></code></pre>
+<p>运行你的函数后，矩阵变为：</p>
+<pre><code class="hljs sas"><span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span>
+<span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span>
+<span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span> <span class="hljs-meta">X</span>
+<span class="hljs-meta">X</span> O <span class="hljs-meta">X</span> <span class="hljs-meta">X</span></code></pre>
+<p><strong>解释:</strong></p>
+<p>被围绕的区间不会存在于边界上，换句话说，任何边界上的 ‘O’ 都不会被填充为 ‘X’。 任何不在边界上，或不与边界上的 ‘O’ 相连的 ‘O’ 最终都会被填充为 ‘X’。如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。</p>
+<hr>
+<p><strong>思路</strong>：常规的想法是在矩阵中找到所有湖然后判断其是否与边界0相连，显然，这不是一个很好的注意，有可能一开碰到边界，也有可能最后找到边界，也有可能中间碰到边界。</p>
+<p>所以此时需要换一种思路，我们找到一个「DFS触发条件」，以减少任务量，一种思路是从四个边界出发，如果为<code>&#39;O&#39;</code>，则进入DFS，将所有的<code>&#39;O&#39;</code>改为<code>&#39;A&#39;</code>，之后遍历完之后，将所有剩余的<code>&#39;O&#39;</code>改为<code>&#39;X&#39;</code>即可。</p>
+<h2 id="2-岛屿的数量"><a href="#2-岛屿的数量" class="headerlink" title="2. 岛屿的数量"></a>2. 岛屿的数量</h2><p>给你一个由 ‘1’（陆地）和 ‘0’（水）组成的的二维网格，请你计算网格中岛屿的数量。</p>
+<p>岛屿总是被水包围，并且每座岛屿只能由水平方向或竖直方向上相邻的陆地连接形成。</p>
+<p>此外，你可以假设该网格的四条边均被水包围。</p>
+<p>示例 1:</p>
+<pre><code class="hljs prolog">[
+[<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>],
+[<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>],
+[<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>],
+[<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>]
+]
+输出: <span class="hljs-number">1</span></code></pre>
+<p>示例 2:</p>
+<pre><code class="hljs prolog">输入:
+[
+[<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>],
+[<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>],
+[<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>],
+[<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;0&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>,<span class="hljs-string">&#x27;1&#x27;</span>]
+]
+输出: <span class="hljs-number">3</span></code></pre>
+<p>解释: 每座岛屿只能由水平和/或竖直方向上相邻的陆地连接而成。</p>
+<hr>
+<p><strong>思路：</strong>同样地，我们判断一个岛屿与哪些1相连是很困难的，因此需要转换思路，我们把「DFS触发条件」设定为<code>grid[x][y]==&#39;1&#39;</code>，此时岛屿数量加1，把遍历过的点改为0.即可。</p>
+<p><strong>时间复杂度：</strong>$O(N×M)$，$N,M$分别为矩阵的大小。</p>
+<p><strong>空间复杂度：</strong>$O(N×M)$，$N,M$分别为矩阵的大小。在最坏情况下，整个网格均为陆地，深度优先搜索的深度达到 $M×N$。</p>
+<h2 id="3-最大人工岛（Hard）"><a href="#3-最大人工岛（Hard）" class="headerlink" title="3. 最大人工岛（Hard）"></a>3. 最大人工岛（Hard）</h2><p>在二维地图上， 0代表海洋， 1代表陆地，我们最多只能将一格 0 海洋变成 1变成陆地。</p>
+<p>进行填海之后，地图上最大的岛屿面积是多少？（上、下、左、右四个方向相连的 1 可形成岛屿）</p>
+<p>示例 1:</p>
+<pre><code class="hljs angelscript">输入: [[<span class="hljs-number">1</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>]]
+输出: <span class="hljs-number">3</span>
+解释: 将一格<span class="hljs-number">0</span>变成<span class="hljs-number">1</span>，最终连通两个小岛得到面积为 <span class="hljs-number">3</span> 的岛屿。</code></pre>
+<p>示例 2:</p>
+<pre><code class="hljs angelscript">输入: [[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>]]
+输出: <span class="hljs-number">4</span>
+解释: 将一格<span class="hljs-number">0</span>变成<span class="hljs-number">1</span>，岛屿的面积扩大为 <span class="hljs-number">4</span>。</code></pre>
+<p>示例 3:</p>
+<pre><code class="hljs angelscript">输入: [[<span class="hljs-number">1</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]]
+输出: <span class="hljs-number">4</span>
+解释: 没有<span class="hljs-number">0</span>可以让我们变成<span class="hljs-number">1</span>，面积依然为 <span class="hljs-number">4</span>。</code></pre>
+<p>说明:</p>
+<pre><code class="hljs basic"><span class="hljs-symbol">1 </span>&lt;= grid.length = grid[<span class="hljs-number">0</span>].length &lt;= <span class="hljs-number">50</span>
+<span class="hljs-symbol">0 </span>&lt;= grid[i][j] &lt;= <span class="hljs-number">1</span></code></pre>
+<hr>
+<p>在解这道题之前，我们需要想到一些边界情况;</p>
+<ol>
+<li>全为陆地，则无法填海，<code>maxArea = m*n</code>,m,n分别为地图横纵尺寸。</li>
+<li>全为海洋，则仍可以填岛，<code>maxArea = 1</code>.</li>
+<li>只有一座连通岛，那么此时填充的作用仅仅是扩大面积而不是连通相邻的岛，<code>maxArea = maxArea+1</code>.</li>
+</ol>
+<p>那么如何填充使得面积最大，这个通过题目的简单例子是无法感受到的，比如下面这种情况</p>
+<script type="math/tex; mode=display">
+[[0,0,1,0,0,0,0,1,0,0,0,0,0],\\
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],\\
+ [0,1,1,0,1,0,0,0,0,0,0,0,0],\\
+ [0,1,0,0,1,1,0,0,1,0,1,0,0],\\
+ [0,1,0,0,1,1,0,0,1,1,1,0,0],\\
+ [0,0,0,0,0,0,0,0,0,@,*,0,0],\\
+ [0,0,0,0,0,0,0,1,1,1,0,0,0],\\
+ [0,0,0,0,0,0,0,1,1,0,0,0,0]]\\</script><p>（1）<code>@=0,*=0</code>,此时可以把@变为1，最大面积为<code>5+5+1=11</code>。</p>
+<p>（2）<code>@=0,*=1</code>,此时可以把@变为1或者*下方的0变为1，最大面积为<code>6+5+1=12</code>。</p>
+<p><strong>思路</strong>：把连通岛编号<code>index(&gt;=2)</code>。统计每个人工岛的最大面积（通过dfs）。然后再遍历地图，把所有为<code>0</code>的地方，<u>研究其是否连接<em>至少</em>两个岛，即上下左右方向链接不同<code>index</code>的岛屿。</u></p>
+<p>这样的话，我们就能兼顾所有情况。C++代码如下。</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> m,n,maxArea,index;
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; base_area;<span class="hljs-comment">//基础面积哈希表</span>
+        
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; d = &#123;&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;,&#123;<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>&#125;&#125;;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">outRange</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> (x&gt;=m||y&gt;=n||x&lt;<span class="hljs-number">0</span>||y&lt;<span class="hljs-number">0</span>) ;<span class="hljs-comment">//越界检查</span>
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">connect</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid, <span class="hljs-keyword">int</span> &amp;area)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//找到至少两个index不相等的岛屿，并统计它们的面积</span>
+        <span class="hljs-keyword">int</span> base_index = <span class="hljs-number">0</span>;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">temp</span><span class="hljs-params">(<span class="hljs-number">4</span>)</span></span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(!outRange(x+d[i][<span class="hljs-number">0</span>],y+d[i][<span class="hljs-number">1</span>])&amp;&amp;grid[x+d[i][<span class="hljs-number">0</span>]][y+d[i][<span class="hljs-number">1</span>]]) 
+            &#123;
+                base_index = grid[x+d[i][<span class="hljs-number">0</span>]][y+d[i][<span class="hljs-number">1</span>]];
+                <span class="hljs-keyword">if</span>(!count(temp.begin(),temp.end(),base_index))area += base_area[base_index];
+                temp[i] = base_index;
+            &#125;
+        &#125;                        
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid, <span class="hljs-keyword">int</span> &amp;area)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-comment">// cout&lt;&lt;&quot;x:&quot;&lt;&lt;x&lt;&lt;&quot;,y:&quot;&lt;&lt;y&lt;&lt;endl;</span>
+        <span class="hljs-keyword">if</span>(outRange(x,y)|| grid[x][y]!=<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span>;
+        grid[x][y] = index;<span class="hljs-comment">//已经走过的陆地标记为index</span>
+        area+=<span class="hljs-number">1</span>;
+        dfs(x+<span class="hljs-number">1</span>,y,grid,area); 
+        dfs(x<span class="hljs-number">-1</span>,y,grid,area); 
+        dfs(x,y+<span class="hljs-number">1</span>,grid,area); 
+        dfs(x,y<span class="hljs-number">-1</span>,grid,area); 
+        
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">largestIsland</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!grid.size()||!grid[<span class="hljs-number">0</span>].size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        m = grid.size();
+        n = grid[<span class="hljs-number">0</span>].size();
+        maxArea = <span class="hljs-number">0</span>;
+        index = <span class="hljs-number">2</span>;
+        <span class="hljs-comment">//1.研究基础未填岛情况，把各个岛屿的面积保存再哈希表中</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; m;i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; n;j++)
+        <span class="hljs-keyword">if</span>(grid[i][j]==<span class="hljs-number">1</span>)
+        &#123;
+            <span class="hljs-keyword">int</span> area = <span class="hljs-number">0</span>;
+            dfs(i,j,grid,area);
+            base_area[index] = area;
+            <span class="hljs-built_in">cout</span>&lt;&lt;index&lt;&lt;<span class="hljs-string">&quot;,&quot;</span>&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot;,&quot;</span>&lt;&lt;j&lt;&lt;<span class="hljs-string">&quot;,area:&quot;</span>&lt;&lt;base_area[index]&lt;&lt;<span class="hljs-built_in">endl</span>;
+            index++;   
+            maxArea = max(maxArea,area);
+        &#125;
+        <span class="hljs-comment">//2.研究填岛情况，遍历所有的0</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; m;i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; n;j++)
+        <span class="hljs-keyword">if</span>(grid[i][j]==<span class="hljs-number">0</span>)
+        &#123;<span class="hljs-comment">//如果&lt;u&gt;研究其是否连接*至少*两个岛，即上下左右方向链接不同`index`的岛屿</span>
+            <span class="hljs-keyword">int</span> area = <span class="hljs-number">0</span>;
+            connect(i,j,grid,area);
+            <span class="hljs-built_in">cout</span>&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot;,&quot;</span>&lt;&lt;j&lt;&lt;<span class="hljs-string">&quot;,area:&quot;</span>&lt;&lt;area&lt;&lt;<span class="hljs-built_in">endl</span>;
+            maxArea = max(area,maxArea);
+        &#125;
+        <span class="hljs-comment">//研究几种需要填岛的特殊情况</span>
+        <span class="hljs-comment">//1.没有陆地 maxArea==0</span>
+        <span class="hljs-comment">//2.最大面积岛屿旁边没有相邻岛maxArea!=0, max_fillArea==0</span>
+        <span class="hljs-keyword">if</span>(maxArea==(m*n)) <span class="hljs-keyword">return</span> m*n;
+        <span class="hljs-keyword">return</span> maxArea+<span class="hljs-number">1</span>;<span class="hljs-comment">//没有海洋或没有岛</span>
+    &#125;
+&#125;;</code></pre>
+<p>时间和空间可以根据代码进行分析。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
+                    
+                      <a class="hover-with-bg" href="/tags/DFS/">DFS</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/27/ML4_DecisionTree/">
+                        <span class="hidden-mobile">机器学习算法I 决策树</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "双胞胎DFS与BFS&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

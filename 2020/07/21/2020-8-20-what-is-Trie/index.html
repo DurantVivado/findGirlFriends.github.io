@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>Google划词搜索的秘密 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-21 00:00" pubdate>
+        2020年7月21日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      48
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Google划词搜索的秘密</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="什么是前缀树Trie和前缀和？如何实现？"><a href="#什么是前缀树Trie和前缀和？如何实现？" class="headerlink" title="什么是前缀树Trie和前缀和？如何实现？"></a>什么是前缀树Trie和前缀和？如何实现？</h1><blockquote>
+<p>前缀树又名<strong>Tries树</strong>、<strong>字典</strong>树、单词查找树等，常用于快速检索，大量字符串的排序和统计等。</p>
+<p>LC208.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-trie-prefix-tree/">实现前缀树</a> - 制作板子</p>
+<p>LC336.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/palindrome-pairs/">回文对</a> - 结合回文</p>
+<p>LC212.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-search-ii/">单词搜索 II </a>- 类似 Boggle 的游戏。</p>
+</blockquote>
+<p><strong>三个基本性质</strong></p>
+<ol>
+<li>根节点不包含字符，除根节点外每个节点只包含一个字符</li>
+<li>从根节点到某个节点，路径上所有的字符连在一起，就是这个节点所对应的字符串</li>
+<li>每个节点的子节点所包含的字符都不同</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/1038472-736d2bc3ddd4b1cc.png?imageMogr2/auto-orient/strip" srcset="/img/loading.gif" alt="Trie"></p>
+<p><strong>应用场景</strong>：</p>
+<p>1.自动补全</p>
+<p><img src="https://pic.leetcode-cn.com/963cd3fc83e9618aba9cb78365c8a5bf6b7cef8967da0d204dede7844f6738f2-file_1562596867150" srcset="/img/loading.gif" alt="自动补全"></p>
+<p align="center" style="font:italic;color:gray"><i>图1. 谷歌的搜索建议</i></p>
+
+<ol>
+<li>拼写检查</li>
+</ol>
+<p><img src="https://pic.leetcode-cn.com/4d18efbdd4d51ae3935b42cd59b11d66fb62f1586b9638f9499d2a18fa8919d0-image.png" srcset="/img/loading.gif" alt="image.png"></p>
+<p align="center" style="font:italic;color:gray"><i>图2. 拼写检查</i></p>
+
+<p>3.IP路由（最长前缀匹配）</p>
+<p><img src="https://pic.leetcode-cn.com/e3f22b3ab2df82e6c0a7880996749b5e62707e9ef925876e583d666343644526-file_1562596867150" srcset="/img/loading.gif" alt="无效的图片地址"></p>
+<p align="center"><i>图 3. 使用Trie树的最长前缀匹配算法，Internet 协议（IP）路由中利用转发表选择路径。</i></p>
+
+<ol>
+<li>T9打字预测</li>
+<li>Boggle单词游戏</li>
+</ol>
+<p>还有现成的高效结构如哈希表和平衡树，但为什么我们还要用前缀树呢，因为它有如下优势：</p>
+<ul>
+<li>找到具有同一前缀的全部键值</li>
+<li>按词典枚举字符串的数据集</li>
+</ul>
+<p>Trie相比于哈希表的另一个优势是，随着哈希表长度增加，会出现大量冲突，时间复杂度可能会增加到$O(N)$. trie树子存储多个具有相同前缀的键时所用空间较少。因此前缀树只需要$O(m)$的空间，m为键长度。而在平衡树中需要$O(m\log n)$。</p>
+<h2 id="设计Trie树"><a href="#设计Trie树" class="headerlink" title="设计Trie树"></a><strong>设计Trie树</strong></h2><p><strong>初始化</strong></p>
+<p>我们设计一个Trie节点<code>node</code>具有如下属性：</p>
+<ul>
+<li>子树数组：因为字母表长度为26，所以数组长度为26；</li>
+<li>结束标记，bool型表示，比如”apple”和”app”,后者是前者一个前缀，所以需要结束标记。</li>
+</ul>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Trie</span> &#123;</span>
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-comment">/** Initialize your data structure here. */</span>
+    <span class="hljs-keyword">bool</span> isEnd;
+    Trie* next[<span class="hljs-number">26</span>];
+<span class="hljs-keyword">public</span>:
+    Trie()
+    &#123;
+		isEnd = <span class="hljs-literal">false</span>;
+        <span class="hljs-built_in">memset</span>(next,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(next));
+    &#125;
+&#125;;</code></pre>
+<p><strong>插入键值</strong></p>
+<p>我们从字符串头开始，如果字符<code>s[i]</code>存在于当前节点的子树数组中，那么我们直接递归进入该节点，否则我们创造新节点，再进入。</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word)</span></span>
+<span class="hljs-function"></span>&#123;
+    Trie *node = <span class="hljs-keyword">this</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
+    &#123;
+        <span class="hljs-keyword">if</span>(node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>]==<span class="hljs-literal">NULL</span>)
+        node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-keyword">new</span> Trie(c);
+        node = node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>];
+    &#125;
+&#125;</code></pre>
+<p>注意这里我们把this作为根节点。所以每次new一个node都会产生一个根节点。  </p>
+<ul>
+<li>时间复杂度：$O(m)$，其中 $m$ 为键长。在算法的每次迭代中，我们要么检查要么创建一个节点，直到到达键尾。只需要 $m$ 次操作。</li>
+</ul>
+<ul>
+<li>空间复杂度：$O(m)$。最坏的情况下，新插入的键和 Trie 树中已有的键没有公共前缀。此时需要添加 $m$ 个结点，使用 $O(m)$ 空间。</li>
+</ul>
+<p><strong>查找键值</strong></p>
+<p>每个键在 trie 中表示为从根到内部节点或叶的路径。我们用第一个键字符从根开始。检查当前节点中与键字符对应的链接。有两种情况：</p>
+<p>存在链接。我们移动到该链接后面路径中的下一个节点，并继续搜索下一个键字符。<br>不存在链接。若已无键字符，且当前结点标记为 End，则返回 true。否则有两种可能，均返回 false :<br>还有键字符剩余，但无法跟随 Trie 树的键路径，找不到键。<br>没有键字符剩余，但当前结点没有标记为 End。也就是说，待查找键只是Trie树中另一个键的前缀。</p>
+<pre><code class="hljs C++">  
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+	Trie* node = <span class="hljs-keyword">this</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
+    &#123;
+        node = node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>];
+        <span class="hljs-keyword">if</span>(node==<span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> node-&gt;isEnd;
+&#125;</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度 : $O(m)$。算法的每一步均搜索下一个键字符。最坏的情况下需要 $m$ 次操作。</li>
+<li>空间复杂度 : $O(1)$。</li>
+</ul>
+<p><strong>查找 Trie 树中的键前缀</strong><br>该方法与在 Trie 树中搜索键时使用的方法非常相似。我们从根遍历 Trie 树，直到键前缀中没有字符，或者无法用当前的键字符继续 Trie 中的路径。与上面提到的“搜索键”算法唯一的区别是，到达键前缀的末尾时，总是返回 true。我们不需要考虑当前 Trie 节点是否用 “End” 标记，因为我们搜索的是键的前缀，而不是整个键。</p>
+<pre><code class="hljs C++"><span class="hljs-keyword">bool</span> startWith&#123;
+   <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+   Trie* node = <span class="hljs-keyword">this</span>;
+   <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
+   &#123;
+   node = node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>];
+   <span class="hljs-keyword">if</span>(node==<span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+   &#125;
+   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  &#125;</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度 : $O(m)$。算法的每一步均搜索下一个键字符。最坏的情况下需要 $m$ 次操作。</li>
+<li>空间复杂度 : $O(1)$。</li>
+</ul>
+<hr>
+<h2 id="336-回文对"><a href="#336-回文对" class="headerlink" title="336. 回文对"></a>336. 回文对</h2><p>给定一组 互不相同 的单词， 找出所有不同 的索引对(i, j)，使得列表中的两个单词， words[i] + words[j] ，可拼接成回文串。</p>
+<p>示例 1：</p>
+<pre><code class="hljs lsl">输入：[<span class="hljs-string">&quot;abcd&quot;</span>,<span class="hljs-string">&quot;dcba&quot;</span>,<span class="hljs-string">&quot;lls&quot;</span>,<span class="hljs-string">&quot;s&quot;</span>,<span class="hljs-string">&quot;sssll&quot;</span>]
+输出：[[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>]] 
+解释：可拼接成的回文串为 [<span class="hljs-string">&quot;dcbaabcd&quot;</span>,<span class="hljs-string">&quot;abcddcba&quot;</span>,<span class="hljs-string">&quot;slls&quot;</span>,<span class="hljs-string">&quot;llssssll&quot;</span>]</code></pre>
+<p>示例 2：</p>
+<pre><code class="hljs lua">输入：[<span class="hljs-string">&quot;bat&quot;</span>,<span class="hljs-string">&quot;tab&quot;</span>,<span class="hljs-string">&quot;cat&quot;</span>]
+输出：<span class="hljs-string">[[0,1],[1,0]]</span> 
+解释：可拼接成的回文串为 [<span class="hljs-string">&quot;battab&quot;</span>,<span class="hljs-string">&quot;tabbat&quot;</span>]</code></pre>
+<hr>
+<p>假设存在两个字符串$s1和s2$, $s1+s2$是一个回文串，记它们的长度分别为$len1和len2$.分情况进行讨论：</p>
+<ol>
+<li>$len1==len2$，此时$s1$是$s2$的翻转。</li>
+<li>$len1&gt;len2$，此时仍然可以在$s1$找到一个前缀$s1’==s2$.</li>
+<li>$len2&lt;len1$，同上。</li>
+</ol>
+<p><strong>注意</strong>：空串也是回文串。比如$s1=”aa”,s2=””$.</p>
+<p>要实现这些操作，我们只需要设计一种能够在一系列字符串中查询「某个字符串的子串的翻转」是否存在的数据结构，有两种实现方法：</p>
+<ol>
+<li>我们可以使用字典树存储所有的字符串。在进行查询时，我们将待查询的子串<strong>逆序</strong>地在字典树上进行遍历，即可判断其是否存在。</li>
+<li>我们可以使用哈希表存储所有字符串的翻转。在进行查询时，我们判断查询串是否在哈希表中出现，就可以判断其翻转子串是否存在。</li>
+</ol>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Trie</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">/** Initialize your data structure here. */</span>
+    <span class="hljs-built_in">vector</span>&lt;Trie*&gt; child;
+    <span class="hljs-keyword">bool</span> end;<span class="hljs-comment">//结束的标志，表示在该节点结束</span>
+    <span class="hljs-keyword">int</span> index;<span class="hljs-comment">//该字符的下标，与end对应，默认-1，表示不存在</span>
+    <span class="hljs-keyword">char</span> val; 
+    Trie() &#123;
+        val = <span class="hljs-string">&#x27; &#x27;</span>;
+        end = <span class="hljs-literal">false</span>;
+        index = <span class="hljs-number">-1</span>;
+        child.resize(<span class="hljs-number">26</span>);
+    &#125;
+    Trie(<span class="hljs-keyword">char</span> c) &#123;
+        val = c;
+        end = <span class="hljs-literal">false</span>;
+        index = <span class="hljs-number">-1</span>;
+        child.resize(<span class="hljs-number">26</span>);
+    &#125;
+    
+    <span class="hljs-keyword">void</span> _insert(Trie* node, <span class="hljs-built_in">string</span> word, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> index)
+    &#123;
+        <span class="hljs-keyword">if</span>(i&gt;=word.size()) 
+        &#123;
+            node-&gt;end = <span class="hljs-literal">true</span>;
+            node-&gt;index = index;
+            <span class="hljs-keyword">return</span>;
+        &#125;   
+        <span class="hljs-keyword">auto</span> &amp;n = node-&gt;child[(<span class="hljs-keyword">int</span>)(word[i]-<span class="hljs-string">&#x27;a&#x27;</span>)];
+         n = (n == <span class="hljs-literal">nullptr</span>)?<span class="hljs-keyword">new</span> Trie(word[i]):n;
+        _insert(n,word,i+<span class="hljs-number">1</span>,index);
+    &#125;
+    <span class="hljs-comment">/** Inserts a word into the trie. */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word, <span class="hljs-keyword">int</span> index)</span> </span>&#123;
+        <span class="hljs-comment">//root does not save char</span>
+        <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span>;
+        _insert(<span class="hljs-keyword">this</span>,word,<span class="hljs-number">0</span>,index);
+    &#125;
+    <span class="hljs-comment">/** Returns if the word is in the trie. */</span>
+    <span class="hljs-keyword">void</span> _search(<span class="hljs-built_in">string</span> mode, Trie *node, <span class="hljs-built_in">string</span> s, <span class="hljs-keyword">int</span> i,<span class="hljs-keyword">bool</span> &amp;isExist,<span class="hljs-keyword">int</span> &amp;index)
+    &#123;<span class="hljs-comment">//递归搜索，s为字符串，i为编号</span>
+      <span class="hljs-comment">// 上一个字符搜索到了才进行下一次搜索</span>
+       <span class="hljs-keyword">if</span>(i&lt;s.size()&amp;&amp;node-&gt;child[(<span class="hljs-keyword">int</span>)(s[i]-<span class="hljs-string">&#x27;a&#x27;</span>)] &amp;&amp;node-&gt;child[(<span class="hljs-keyword">int</span>)(s[i]-<span class="hljs-string">&#x27;a&#x27;</span>)]-&gt;val==s[i]&amp;&amp;!isExist) 
+        _search(mode,node-&gt;child[(<span class="hljs-keyword">int</span>)(s[i]-<span class="hljs-string">&#x27;a&#x27;</span>)],s,i+<span class="hljs-number">1</span>,isExist,index);
+        <span class="hljs-keyword">if</span>(!isExist)
+        <span class="hljs-keyword">if</span>(mode == <span class="hljs-string">&quot;search&quot;</span>) isExist = (i==s.size()&amp;&amp;node-&gt;end);
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(mode == <span class="hljs-string">&quot;prefix&quot;</span>) isExist = (i==s.size());
+        <span class="hljs-keyword">if</span>(isExist&amp;&amp;index==<span class="hljs-number">-1</span>) 
+        index = node-&gt;index;
+        
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">bool</span> isExist = <span class="hljs-literal">false</span>; <span class="hljs-keyword">int</span> i = <span class="hljs-number">-1</span>;
+        _search(<span class="hljs-string">&quot;search&quot;</span>,<span class="hljs-keyword">this</span>,word,<span class="hljs-number">0</span>,isExist,i);
+        <span class="hljs-keyword">return</span> i;
+    &#125;
+    
+    <span class="hljs-comment">/** Returns if there is any word in the trie that starts with the given prefix. */</span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">startsWith</span><span class="hljs-params">(<span class="hljs-built_in">string</span> prefix)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">bool</span> isExist = <span class="hljs-literal">false</span>;<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        _search(<span class="hljs-string">&quot;prefix&quot;</span>,<span class="hljs-keyword">this</span>,prefix,<span class="hljs-number">0</span>,isExist,i);
+        <span class="hljs-keyword">return</span> isExist;
+    &#125;
+ 
+&#125;;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span></span>
+<span class="hljs-class">&#123;</span><span class="hljs-comment">//字典树版本</span>
+    <span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isPalindrome</span><span class="hljs-params">(<span class="hljs-built_in">string</span> &amp;a,<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">int</span> n = right - left + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i&lt; n/<span class="hljs-number">2</span>;i++)
+        <span class="hljs-keyword">if</span>(a[i+left]!=a[right-i]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">palindromePairs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&amp; words)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!words.size()) <span class="hljs-keyword">return</span> &#123;&#125;;
+        Trie  tr;
+        <span class="hljs-comment">//将所有单词加入前缀树中</span>
+        <span class="hljs-keyword">int</span> n = words.size();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n;i++)
+         tr.insert(words[i],i);
+        <span class="hljs-comment">//遍历任意两个字符串</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        &#123;
+            <span class="hljs-keyword">int</span> m = words[i].size();
+            <span class="hljs-built_in">string</span> sub = words[i];
+            reverse(sub.begin(),sub.end());
+            <span class="hljs-keyword">int</span> index = tr.search(sub);
+            <span class="hljs-keyword">if</span>(index!=<span class="hljs-number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;i,index&#125;);
+            <span class="hljs-keyword">if</span>(isPalindrome(words[i],<span class="hljs-number">0</span>,m<span class="hljs-number">-1</span>)) 
+            &#123;
+                <span class="hljs-keyword">int</span> index = tr.search(<span class="hljs-string">&quot;&quot;</span>);
+                <span class="hljs-keyword">if</span>(index!=<span class="hljs-number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;index,i&#125;);
+            &#125;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; m;j++)
+            &#123;
+                
+                <span class="hljs-keyword">if</span>(j&amp;&amp;isPalindrome(words[i],<span class="hljs-number">0</span>,j<span class="hljs-number">-1</span>))
+                &#123;
+                    <span class="hljs-built_in">string</span> sub = words[i].substr(j,m-j);
+                    reverse(sub.begin(),sub.end());
+                    <span class="hljs-keyword">int</span> index = tr.search(sub);
+                    <span class="hljs-keyword">if</span>(index!=<span class="hljs-number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;index,i&#125;);
+                &#125;
+                <span class="hljs-keyword">if</span>(isPalindrome(words[i],j,m<span class="hljs-number">-1</span>))
+                &#123;
+                    <span class="hljs-built_in">string</span> sub = words[i].substr(<span class="hljs-number">0</span>,j);
+                    reverse(sub.begin(),sub.end());
+                    <span class="hljs-keyword">int</span> index = tr.search(sub);
+                    <span class="hljs-keyword">if</span>(index!=<span class="hljs-number">-1</span>&amp;&amp;index!=i) res.push_back(&#123;i,index&#125;);
+                &#125;
+                
+            &#125;
+
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+        
+    &#125;
+
+&#125;;</code></pre>
+<p>时间复杂度: $O(N*M^2)$, $N$为字符数组总长度，$M$为字符串平均长度。</p>
+<p>空间复杂度: $O(N*M)$。实际上由于字符前缀重合，用不到这么多空间。</p>
+<hr>
+<h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><ul>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">和为k的子数组</a>(Medium)</li>
+</ol>
+</li>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">每个元音包含最长的子字符串</a>(Medium)</li>
+</ol>
+</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/">1248. 统计「优美子数组」</a></li>
+</ul>
+<hr>
+<h2 id="560-和为k的子数组-Medium"><a href="#560-和为k的子数组-Medium" class="headerlink" title="560.和为k的子数组(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">560.和为k的子数组</a>(Medium)</strong></h2><p>给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。</p>
+<p>示例 1 :</p>
+<p>输入:nums = [1,1,1], k = 2<br>输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。<br>说明 :</p>
+<p>数组的长度为 [1, 20,000]。<br>数组中元素的范围是 [-1000, 1000] ，且整数 k 的范围是 [-1e7, 1e7]。</p>
+<hr>
+<p>定义$pre[i]$表示$[0…i]$所有数之和,那么范围$[j-i]$可以表示为: $pre[i]-pre[j-1]$,  且$pre[i] = pre[i-1] + nums[i]$ , 问题转化为,</p>
+<p>找到有多少个区间,满足$pre[i]-pre[j-1]==k$. 所以我们考虑以 $i$ 结尾的和为 $k$ 的连续子数组个数时只要统计有多少个前缀和为 $\textit{pre}[i]-k$的 $\textit{pre}[j]$ 即可。我们建立哈希表 $\textit{mp}$，以和为键，出现次数为对应的值，记录 $\textit{pre}[i]$ 出现的次数，从左往右边更新 $\textit{mp}$边计算答案，那么以 $i$ 结尾的答案 $\textit{mp}[\textit{pre}[i]-k]$ 即可在 $O(1)$ 时间内得到。最后的答案即为所有下标结尾的和为 $k$ 的子数组个数之和。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> res;
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">subarraySum</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!nums.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-comment">//数组长度和k都非常大，因此要尽量在线性时间复杂度解决</span>
+        <span class="hljs-comment">//我们尝试动态规划解决,</span>
+        <span class="hljs-keyword">int</span> n = nums.size();
+        <span class="hljs-keyword">if</span>(n==<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>]==k;
+        res = <span class="hljs-number">0</span>;
+        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; memo;<span class="hljs-comment">//记录和的个数</span>
+        <span class="hljs-keyword">int</span> pre = <span class="hljs-number">0</span>;
+        memo[<span class="hljs-number">0</span>]++;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n;i++)
+        &#123;
+            <span class="hljs-comment">// cout&lt;&lt;i&lt;&lt;&quot;,&quot;&lt;&lt;pre&lt;&lt;endl;</span>
+            pre = pre + nums[i];
+            
+            <span class="hljs-keyword">if</span>(memo.count(pre-k))
+            res += memo[pre-k];
+            memo[pre]++;
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<hr>
+<h2 id="1371-每个元音包含最长的子字符串-Medium"><a href="#1371-每个元音包含最长的子字符串-Medium" class="headerlink" title="1371,每个元音包含最长的子字符串(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">1371,每个元音包含最长的子字符串</a>(Medium)</h2><p>给你一个字符串 s ，请你返回满足以下条件的最长子字符串的长度：每个元音字母，即 ‘a’，’e’，’i’，’o’，’u’ ，在子字符串中都恰好出现了偶数次。</p>
+<p>示例 1：</p>
+<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;eleetminicoworoep&quot;</span>
+输出：<span class="hljs-number">13</span>
+解释：最长子字符串是 <span class="hljs-string">&quot;leetminicowor&quot;</span> ，它包含 e，i，o 各 <span class="hljs-number">2</span> 个，以及 <span class="hljs-number">0</span> 个 a，u 。
+</code></pre>
+<p>示例 2：</p>
+<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;leetcodeisgreat&quot;</span>
+输出：<span class="hljs-number">5</span>
+解释：最长子字符串是 <span class="hljs-string">&quot;leetc&quot;</span> ，其中包含 <span class="hljs-number">2</span> 个 e 。
+</code></pre>
+<p>示例 3：</p>
+<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;bcbcbc&quot;</span>
+输出：<span class="hljs-number">6</span>
+解释：这个示例中，字符串 <span class="hljs-string">&quot;bcbcbc&quot;</span> 本身就是最长的，因为所有的元音 a，e，i，o，u 都出现了 <span class="hljs-number">0</span> 次。
+</code></pre>
+<p>提示：</p>
+<p><code>1 &lt;= s.length &lt;= 5 x 10^5
+s 只包含小写英文字母。</code></p>
+<p>定义$pre[i][k]$表示前$i$个字母，第$k$个元音字母总出现的次数。那么在$[i-1,j-1]$区间内，元音字母出现次数为$pre[j][k]-pre[i][k]$，在$O(1)$时间内得到第$k$个元音字母出现的次数。</p>
+<p>同时我们要考虑避免枚举所有的$i$，计算以它结尾的满足条件的最长子字符串长度，我们要找到最小$i$使得$pre[j][k]-pre[i][k]$均为偶数。 我们需要利用【所有元音出现偶数次】这个条件，对于满足条件的子串而言，$pre[i][k]$和$pre[j][k]$的奇偶性一定相同，因为偶数一定是奇数+奇数，或者偶数+偶数组成。所以我们可以把$pre[i][k]$改为表示$[0,i-1]$的<strong>元音奇偶性</strong>。</p>
+<p>此外我们还需要进行「状态压缩」：</p>
+<pre><code class="hljs dts">&#123;
+<span class="hljs-symbol">  a:</span> cnta, <span class="hljs-comment">// a 出现次数的奇偶性</span>
+<span class="hljs-symbol">  e:</span> cnte, <span class="hljs-comment">// e 出现次数的奇偶性</span>
+<span class="hljs-symbol">  i:</span> cnti, <span class="hljs-comment">// i 出现次数的奇偶性</span>
+<span class="hljs-symbol">  o:</span> cnto, <span class="hljs-comment">// o 出现次数的奇偶性</span>
+<span class="hljs-symbol">  u:</span> cntu  <span class="hljs-comment">// u 出现次数的奇偶性</span>
+&#125;
+</code></pre>
+<p>我们可以用二进制表示这些奇偶。</p>
+<p>举一个例子，假如到第 $i $个位置，<code>u o i e a</code>出现的奇偶性分别为 <code>1 1 0 0 1</code>，那么我们就可以将其压成一个二进制数 $(11001)_2=(25)_{10}$ 作为它的状态。</p>
+<p><strong>代码：</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">findTheLongestSubstring</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!s.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> n = s.size(), res = <span class="hljs-number">0</span>, status = <span class="hljs-number">0</span>;
+        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>,<span class="hljs-keyword">int</span>&gt; vowel&#123;
+            &#123;<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-string">&#x27;i&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">2</span>&#125;,&#123;<span class="hljs-string">&#x27;o&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">3</span>&#125;,&#123;<span class="hljs-string">&#x27;u&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>&#125;
+        &#125;;
+        <span class="hljs-comment">// 我们用pre[status]表示status状态对应的位置i，不断更新</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">pre</span><span class="hljs-params">(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>,<span class="hljs-number">-1</span>)</span></span>;<span class="hljs-comment">//初始均为偶</span>
+        pre[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;<span class="hljs-comment">//初始状态，所有元音为偶数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(vowel.count(s[i<span class="hljs-number">-1</span>]))
+            status ^= vowel[s[i<span class="hljs-number">-1</span>]];
+            
+            <span class="hljs-keyword">if</span>(~pre[status]) res = max(res,i - pre[status]); <span class="hljs-comment">//pre[status]!=-1</span>
+            <span class="hljs-keyword">else</span> 
+            &#123;
+                pre[status] = i ;
+            &#125;
+        
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<blockquote>
+<p>注意 18行的 ~pre[status]表示<strong>按位取反</strong>，包含了符号位，所以只有pre[status]不为-1，才为True。</p>
+<p>$ \text{~} 0 = -1$， </p>
+</blockquote>
+<p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
+<p>空间复杂度: $O(1)$.</p>
+<h2 id="扩展：删除元素"><a href="#扩展：删除元素" class="headerlink" title="扩展：删除元素"></a>扩展：删除元素</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA">https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B1%BB%E6%A0%91%E7%BB%93%E6%9E%84/">类树结构</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Markdown那些不为人知的酷炫特效</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
+                        <span class="hidden-mobile">动态规划</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Google划词搜索的秘密&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>爸爸再也不想做图类题目了 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-21 00:00" pubdate>
+        2020年7月21日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">爸爸再也不想做图类题目了</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="图的表示和图算法"><a href="#图的表示和图算法" class="headerlink" title="图的表示和图算法"></a>图的表示和图算法</h1><ul>
+<li><del>DFS&amp;BFS</del>(在相应专题讲)</li>
+<li>Dijkstra</li>
+<li>Floyd算法</li>
+<li>Bellman-Ford算法</li>
+<li>SPFA算法</li>
+</ul>
+<h2 id="1-邻接矩阵表示法"><a href="#1-邻接矩阵表示法" class="headerlink" title="1.邻接矩阵表示法"></a>1.邻接矩阵表示法</h2><p>如图：</p>
+<p> <img src="https://pic002.cnblogs.com/images/2011/295488/2011050620274397.png" srcset="/img/loading.gif" alt="img"><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620285367.png" srcset="/img/loading.gif" alt="img"></p>
+<p>　　也就是说，如果两节点之间有一条弧，则邻接矩阵中对应的元素为1；否则为0。可以看出，这种表示法非常简单、直接。但是，在邻接矩阵的所有元素中，只有少量为非零元。如果网络比较稀疏，这种表示法浪费大量的存储空间，从而增加了在网络中查找弧的时间。</p>
+<p>　　同样，对于网络中的权，也可以用类似邻接矩阵的 矩阵表示。只是此时一条弧所对应的元素不再是1，而是相应的权而已。如果网络中每条弧赋有多种权，则可以用多个矩阵表示这些权。</p>
+<h2 id="2-关联矩阵表示法"><a href="#2-关联矩阵表示法" class="headerlink" title="2. 关联矩阵表示法"></a>2. 关联矩阵表示法</h2><p><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620274397.png" srcset="/img/loading.gif" alt="img"><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620305033.png" srcset="/img/loading.gif" alt="img"></p>
+<p>　　也就是说，在关联矩阵中，<u>每行对应于图的一个节点，每列对应于图的一条弧</u>。如果一个节点是一条弧的起点，则关联矩阵中对应的元素为1；如果一个节点是一条弧的终点，则关联矩阵中对应的元素为 -1；如果一个节点与一条弧不关联，则关联矩阵中对应的元素为0。对于简单图，关联矩阵每列只含有两个非零元（一个 1，一个-1）可以看出，这种表示法也非常简单、直接。但是，在关联矩阵的所有$mn$ 个元素中，只有 $2m$个为非零元。如果网络比较稀疏，这种表示法也会浪费大量的存储空间。但由于关联矩阵有许多特别重要的理论性质，因此它在网络优化中是非常重要的概念。</p>
+<p>　　同样，对于网络中的权，也可以通过对关联矩阵的扩展来表示。例如，如果网络中每条弧有一个权，我们可以把关联矩阵增加一行，把每一条弧所对应的权存储在增加的行中。如果网络中每条弧赋有多个权，我们可以把关联矩阵增加相应的行数，把每一条弧所对应的权存储在增加的行中。</p>
+<h2 id="3-弧表示法"><a href="#3-弧表示法" class="headerlink" title="3.弧表示法"></a>3.弧表示法</h2><p><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620274397.png" srcset="/img/loading.gif" alt="img"><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620342548.png" srcset="/img/loading.gif" alt="img"></p>
+<p>例如，例7所示的图，假设弧$(1,2)，(1,3)，(2,4)，(3,2)，(4,3)，(4,5)，(5,3)和(5,4)$上的权分别为$8，9，6，4，0，3，6和7$，则弧表表示如上：</p>
+<p>为了便于检索，一般按照起点、终点的字典序顺序存储弧表，如上面的弧表就是按照这样的顺序存储的。</p>
+<h2 id="4-邻接表表示法"><a href="#4-邻接表表示法" class="headerlink" title="4. 邻接表表示法"></a>4. 邻接表表示法</h2><p>　　邻接表表示法将图以邻接表（adjacency lists）的形式存储在计算机中。所谓图的邻接表，也就是图的所有节点的邻接表的集合；而对每个节点，它的邻接表就是它的所有出弧。邻接表表示法就是对图的每个节点，用一个单向链表列出从该节点出发的所有弧，链表中每个单元对应于一条出弧。为了记录弧上的权，链表中每个单元除列出弧的另一个端点外，还可以包含弧上的权等作为数据域。图的整个邻接表可以用一个指针数组表示。例如，例7所示的图，邻接表表示为</p>
+<p><img src=".\img\weighed_graph.png" srcset="/img/loading.gif" alt="img"><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620362625.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="5-星形表示法"><a href="#5-星形表示法" class="headerlink" title="5.星形表示法"></a>5.星形表示法</h2><p>星形（star）表示法的思想与邻接表表示法的思想有一定的相似之处。对每个节点，它也是记录从该节点出发的所有弧，但它不是采用单向链表而是采用一个单一的数组表示。也就是说，在该数组中首先存放从节点1出发的所有弧，然后接着存放从节点2出发的所有孤，依此类推，最后存放从节点 出发的所有孤。对每条弧，要依次存放其起点、终点、权的数值等有关信息。这实际上相当于对所有弧给出了一个顺序和编号，只是从同一节点出发的弧的顺序可以任意排列。此外，为了能够快速检索从每个节点出发的所有弧，我们一般还用一个数组记录每个节点出发的弧的起始地址（即弧的编号）。在这种表示法中，可以快速检索从每个节点出发的所有弧，这种星形表示法称为前向星形（forward star）表示法。</p>
+<p>例如，在例7所示的图中，仍然假设弧（1,2），（l,3），（2,4），（3,2），（4,3），（4,5），（5,3）和（5,4）上的权分别为8，9，6，4，0，3，6和7。此时该网络图可以用前向星形表示法表示如下：</p>
+<p><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620274397.png" srcset="/img/loading.gif" alt="img"><img src="https://pic002.cnblogs.com/images/2011/295488/2011050620394337.png" srcset="/img/loading.gif" alt="img"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">邻接矩阵（暴力）</th>
+<th style="text-align:center">邻接表（类似链表）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>使用范围</strong></td>
+<td style="text-align:center">稠密图</td>
+<td style="text-align:center">主要是稀疏图</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>空间耗费</strong></td>
+<td style="text-align:center">$n^2$（ n<em>n</em>为点个数）</td>
+<td style="text-align:center">理论上是 $e$（ $e$为边条数）</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>实现方式</strong></td>
+<td style="text-align:center">二维数组</td>
+<td style="text-align:center">数组模拟链表、 $vector$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h1 id="Dijsktra算法"><a href="#Dijsktra算法" class="headerlink" title="Dijsktra算法"></a>Dijsktra算法</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/FrozaFerrari/xue-tu-lun-ni-zhen-di-liao-xie-zui-duan-lu-ma-post">米奇妙妙屋</a></p>
+</blockquote>
+<p>先用邻接矩阵存储数据，考虑采用一个二重循环，每次寻找出距离集合最近的一个点，然后数组标记它已经加入集合，然后在用当前点对不在集合中的点进行松弛，进行 <em>n</em> 次，整个操作就完成了,注意起点对应的最小距离是0.</p>
+<p><strong>cpp代码</strong></p>
+<p>数据预处理</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span></span>
+<span class="hljs-class">&#123;</span>
+<span class="hljs-keyword">public</span>:
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">pair</span>&lt;weight_type, <span class="hljs-keyword">int</span>&gt;&gt; e[<span class="hljs-number">10005</span>];<span class="hljs-comment">//这个vector的元素类型为&lt;weight_type,int&gt;,第一个存储到当前点的权重，第二个存储顶点，长度为10005</span>
+<span class="hljs-keyword">bool</span> visited[<span class="hljs-number">10005</span>];<span class="hljs-comment">//表示当前点是否被访问,为什么是10005因为题目要求2 &lt;= n &lt;= 10^4</span>
+<span class="hljs-keyword">int</span> edge_len;<span class="hljs-comment">//边的个数</span>
+<span class="hljs-keyword">int</span> vetice_num;<span class="hljs-comment">//顶点个数</span>
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; vetice;<span class="hljs-comment">//包含所有顶点的vector  </span>
+<span class="hljs-keyword">int</span> n;<span class="hljs-comment">// 顶点个数</span>
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; edges;<span class="hljs-comment">//边数组</span>
+<span class="hljs-built_in">vector</span>&lt;weight_type&gt; weight;<span class="hljs-comment">//权重数组，和边数组对应</span>
+<span class="hljs-comment">//**重要，初始化图，根据题目修改相应入口参数</span>
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * @description: 初始化图</span>
+<span class="hljs-comment"> * @param &#123;type&#125; //n为顶点的个数，edges为边个数，s为对应权重，start为起点，end为终点,direct是true为双向,false为单向</span>
+<span class="hljs-comment"> * @return &#123;type&#125; Null</span>
+<span class="hljs-comment"> * @author: Durant Thorvals</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init_graph</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; edges, <span class="hljs-built_in">vector</span>&lt;weight_type&gt;&amp; s, <span class="hljs-keyword">bool</span> direct)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">this</span>-&gt;n = n;
+    <span class="hljs-keyword">this</span>-&gt;edges = edges;
+    <span class="hljs-keyword">this</span>-&gt;weight = s;
+    edge_len = edges.size();<span class="hljs-comment">//边的个数</span>
+    vetice_num = n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i&lt;edge_len;i++)
+    &#123;
+        e[edges[i][<span class="hljs-number">0</span>]].push_back(&#123;s[i],edges[i][<span class="hljs-number">1</span>]&#125;);
+        <span class="hljs-keyword">if</span>(direct) e[edges[i][<span class="hljs-number">1</span>]].push_back(&#123;s[i],edges[i][<span class="hljs-number">0</span>]&#125;);<span class="hljs-comment">//因为是双向的，所以要再加一条相反的边     </span>
+    &#125;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; edge_len;i++)
+    &#123;
+            <span class="hljs-keyword">if</span>(!count(vetice.begin(),vetice.end(),edges[i][<span class="hljs-number">0</span>])) vetice.push_back(edges[i][<span class="hljs-number">0</span>]);
+            <span class="hljs-keyword">if</span>(!count(vetice.begin(),vetice.end(),edges[i][<span class="hljs-number">1</span>])) vetice.push_back(edges[i][<span class="hljs-number">1</span>]);
+    &#125;
+
+&#125;
+&#125;</code></pre>
+<pre><code class="hljs cpp"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">cmp</span></span>
+<span class="hljs-class">&#123;</span>
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(T <span class="hljs-keyword">const</span> &amp;left, T <span class="hljs-keyword">const</span> &amp;right)</span></span>
+<span class="hljs-function">    </span>&#123;
+    <span class="hljs-comment">// 以y比较。输出结果为y较大的在前y相同时，先进入队列的元素在前。</span>
+        <span class="hljs-keyword">return</span> (left.first &gt; right.first); <span class="hljs-comment">// left.first在后面，顶部元素first最大</span>
+    &#125;
+&#125;;
+<span class="hljs-keyword">typedef</span> <span class="hljs-built_in">pair</span>&lt;weight_type,<span class="hljs-keyword">int</span>&gt; data;
+<span class="hljs-function">weight_type <span class="hljs-title">dijkstra</span><span class="hljs-params">( <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> end)</span> </span>&#123;
+<span class="hljs-comment">//不能处理带负权的边</span>
+    <span class="hljs-keyword">if</span>(start == end ) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-comment">//优先队列是按照pair的第一个元素进行排序</span>
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;weight_type&gt; <span class="hljs-title">minDis</span><span class="hljs-params">(vetice_num,INT32_MAX)</span></span>;<span class="hljs-comment">//与e不同的是，存储的是最大的权重</span>
+    <span class="hljs-built_in">priority_queue</span>&lt;data,<span class="hljs-built_in">vector</span>&lt;data&gt;,cmp&lt;data&gt;&gt; pq;<span class="hljs-comment">//用一个优先队列，顶部是权重最小的，这样可以把时间复杂度降低至O((e+n)logn)</span>
+    
+    pq.push(&#123;<span class="hljs-number">0</span>,start&#125;);<span class="hljs-comment">//相乘值从1.0开始, 如果是cost从0开始</span>
+    minDis[start] = <span class="hljs-number">0</span>;<span class="hljs-comment">//同上</span>
+    <span class="hljs-keyword">while</span>(!pq.empty()&amp;&amp;pq.top().second!=end)<span class="hljs-comment">//队列不为空</span>
+    &#123;
+        <span class="hljs-keyword">auto</span> cur  = pq.top().second;<span class="hljs-comment">//w表示权重，v表示节点</span>
+        pq.pop();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> t:e[cur])<span class="hljs-comment">//搜寻与当前节点k相邻的所有节点</span>
+        &#123;
+            <span class="hljs-keyword">int</span> dis = t.first;
+            <span class="hljs-keyword">int</span> nextnode = t.second;
+            <span class="hljs-keyword">if</span>((minDis[cur] + dis) &lt; minDis[nextnode])
+           &#123; 
+                minDis[nextnode] = minDis[cur] + dis;  
+                pq.push(&#123;minDis[nextnode],nextnode&#125;);<span class="hljs-comment">//则加入到优先队列之中</span>
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> minDis[end]==INT32_MIN?<span class="hljs-number">-1</span>:minDis[end];
+    &#125;</code></pre>
+<p>当然也可以采用匿名函数, 这样的话将减少优先队列空间占用。</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> cmp = [&amp;minDis](<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span>&amp;left, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span>&amp; right)&#123;
+      <span class="hljs-keyword">return</span> minDis[left] &gt; minDis[right];
+&#125;;
+<span class="hljs-built_in">priority_queue</span>&lt;<span class="hljs-keyword">int</span>, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;, <span class="hljs-keyword">decltype</span>(cmp)&gt;pq(cmp);</code></pre>
+<p>Java</p>
+<pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> INF = <span class="hljs-number">0x3f3f3f3f</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> INTL = <span class="hljs-number">0x3f3f3f3f_3f3f3f3fl</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> UNABLE2REACH = -<span class="hljs-number">1</span>;
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * A simple implementation of Dijkstra algorithm.</span>
+<span class="hljs-comment"> * Time complexity: O(VlogV+E), where E is the number of edges, and V denotes the number of vertices.</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> verticesCnt the number of vertices in the graph</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> graph every 1D array should be &#123;from, to, weight&#125; with no duplicated or negative-weighted edge</span>
+<span class="hljs-comment"> *              the from and to values should be in the range [0, verticesCnt)</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> src the source node of Dijkstra algorithm</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> des the destination node of Dijkstra algorithm</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span> the minimal cost from src to des</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">Dijkstra</span><span class="hljs-params">(<span class="hljs-keyword">int</span> verticesCnt, <span class="hljs-keyword">int</span>[][] graph, <span class="hljs-keyword">int</span> src, <span class="hljs-keyword">int</span> des)</span> </span>&#123;
+
+<span class="hljs-keyword">if</span>(src == des) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+<span class="hljs-comment">//preprocessing the graph</span>
+List&lt;<span class="hljs-keyword">int</span>[]&gt;[] edges = <span class="hljs-keyword">new</span> List[verticesCnt];
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; verticesCnt;i++)
+&#123;
+    edges[i] = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+&#125;
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span>[] edge:graph)
+&#123;
+    <span class="hljs-keyword">int</span> from = edge[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">int</span> to = edge[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">int</span> cost = edge[<span class="hljs-number">2</span>];
+
+    edges[from].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]&#123;to,cost&#125;);<span class="hljs-comment">//&#123;from:&#123;to,cost&#125;&#125;</span>
+    edges[to].add(<span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]&#123;from,cost&#125;);
+&#125;
+<span class="hljs-keyword">int</span>[] minDis = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[verticesCnt];
+Arrays.fill(minDis,INF);
+minDis[src] = <span class="hljs-number">0</span>;
+PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(
+        <span class="hljs-keyword">new</span> Comparator&lt;Integer&gt;() &#123;
+            <span class="hljs-meta">@Override</span>
+            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Integer o1, Integer o2)</span> </span>&#123;
+                <span class="hljs-keyword">return</span> Integer.compare(minDis[o1],minDis[o2]);
+            &#125;
+        &#125;
+);
+pq.offer(src);<span class="hljs-comment">//压入队列</span>
+<span class="hljs-keyword">while</span>(!pq.isEmpty()&amp;&amp;pq.peek()!=des)
+&#123;
+    <span class="hljs-keyword">int</span> cur = pq.poll();<span class="hljs-comment">//取顶元素并弹队列</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span>[] next:edges[cur])
+    &#123;
+        <span class="hljs-keyword">int</span> nextnode = next[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">int</span> dis = next[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span>( (dis + minDis[cur]) &lt; minDis[nextnode])
+        &#123;
+            minDis[nextnode] = dis + minDis[cur];
+            pq.offer(nextnode);
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-keyword">return</span> (minDis[des] == INF)? UNABLE2REACH:minDis[des];
+&#125;
+</code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Dijkstra/">Dijkstra</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/25/2020-07-27-backpack-problem/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">做一只可爱的小🐖背包 Cover「背包九讲」</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-08-19-manacher/">
+                        <span class="hidden-mobile">东方不败->回文问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "爸爸再也不想做图类题目了&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

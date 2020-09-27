@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>一句能打败99.99999%的程序员的位操作代码 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-23 00:00" pubdate>
+        2020年8月23日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">一句能打败99.99999%的程序员的位操作代码</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="专题：位操作"><a href="#专题：位操作" class="headerlink" title="专题：位操作"></a>专题：位操作</h1><blockquote>
+<p>位操作是一种很神奇的操作，真的很神奇————Tiancheng Lou</p>
+</blockquote>
+<p>位操作包括：</p>
+<ul>
+<li><p>¬ 取反（NOT）</p>
+</li>
+<li><p>∩ 按位或（OR）</p>
+</li>
+<li><p>⊕ 按位异或（XOR）</p>
+</li>
+<li><p>∪ 按位与（AND）</p>
+</li>
+<li><p><strong>移位</strong></p>
+<ul>
+<li><p>移位是一个二元运算符，用来将一个二进制数中的每一位全部都向一个方向移动指定位，溢出的部分将被舍弃，而空缺的部分填入一定的值。移位又分为</p>
+<ul>
+<li><p>算术移位：在位移运算符之前的数是<u><strong>有符号</strong></u>数，编译产生的汇编指令是算术位移，<code>&lt;&lt;</code>和<code>&gt;&gt;</code>。</p>
+</li>
+<li><p>逻辑移位：在位移运算符（&gt;&gt;和&lt;&lt;）之前的数是<strong><u>无符号</u></strong>数，编译产生的汇编指令是逻辑位移，<code>&gt;&gt;&gt;</code>及<code>&lt;&lt;&lt;</code>。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>题目</strong></p>
+<p>201 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/">数字范围按位与</a></p>
+<p>461 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hamming-distance/">汉明距离</a></p>
+<p>338 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/counting-bits">比特位计数</a>（Medium）</p>
+<ol>
+<li>解数独</li>
+</ol>
+<p>树状数组 的LowBit操作</p>
+<p>….</p>
+<hr>
+<p>我们使用长度为9的数组表示每个数字是否出现过。我们同样也可以借助位运算，仅使用一个整数表示每个数字是否出现过。</p>
+<p>具体地，数$b$ 的二进制表示的第$i$位（从低到高，最低位为第$0$位），当且仅当数字$i+1$已经出现过。例如当 b 的二进制表示为 $(011000100)_2$ 时，就表示数字 3，7，8 已经出现过。</p>
+<p>位运算有一些基础的使用技巧。下面列举了所有在代码中使用到的技巧：</p>
+<ul>
+<li><p>某个数中第$k$位为1，表示该位置不能填入数字$k+1$.我们先与上$(11111111)_2=(1FF)_{16}$消除高位的影响，然后对其取反，然后枚举。因为是需要9个bit状态，所以是左移九位。</p>
+</li>
+<li><p>我们可以使用按位异或运算$ \wedge$, 与 $1&lt;&lt;i$异或即可。</p>
+</li>
+<li><p>我们可以用 $b \&amp; (−b) $得到 b 二进制表示中最低位的 1，这是因为 $(−b)$ 在计算机中以补码的形式存储，它等于 $\sim b + 1$。$b$ 如果和 $∼b$ 进行按位与运算，那么会得到 0，但是当 $\sim b$ 增加 1 之后，最低位的连续的 1 都变为 0，而最低位的 0 变为 1，对应到 $b$ 中即为最低位的 1，因此当 $b$ 和 $∼b+1$ 进行按位与运算时，只有最低位的 1 会被保留；</p>
+</li>
+<li><p>我们可以用$b$与最低位的1按位异或，就可以将其从$b$中去除，这样就可以枚举下一个1。同样的，我们可以用$b\&amp;(b-1)$达到同样的效果，这被称为<strong>Brian kernighan算法</strong>。</p>
+<p>具体应用见$\lfloor$回溯算法$\rceil$    </p>
+</li>
+</ul>
+<hr>
+<p>大多数编程语言中，都存在各种内置计算等于 1 的位数函数。如果这是一个项目中的问题，应该直接使用内置函数，而不是重复造轮子。</p>
+<pre><code class="hljs python">bin(x ^ y).count(<span class="hljs-string">&#x27;1&#x27;</span>)</code></pre>
+<pre><code class="hljs C++">binset&lt;<span class="hljs-number">32</span>&gt;(x^y).count();</code></pre>
+<pre><code class="hljs java">Integer.bitCount(x ^ y);</code></pre>
+<p><strong>Brian kernighan算法</strong></p>
+<p>该算法的关键在于我们每次对$number$和$number-1$之间进行按位与操作后，$number$中最右边的1会变成0。</p>
+<script type="math/tex; mode=display">
+n\&(n-1)</script><p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(\log n)$。和位移方法类似，算法的时间复杂度取决于 $m$ 和 $n$ 二进制展开的位数。尽管和位移方法具有相同的渐近复杂度，但 Brian Kernighan 的算法需要的迭代次数会更少，因为它跳过了两个数字之间的所有零位。</li>
+<li>空间复杂度：$O(1)$。我们只需要常数空间存放若干变量。</li>
+</ul>
+<p><strong>Hamming距离</strong></p>
+<blockquote>
+<p>461 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hamming-distance/">汉明距离</a></p>
+</blockquote>
+<p>汉明距离广泛应用于多个领域。在编码理论中用于错误检测，在信息论中量化字符串之间的差异。</p>
+<p>两个整数之间的汉明距离是对应位置上数字不同的位数。</p>
+<p><img src="https://pic.leetcode-cn.com/Figures/461/461_XOR.png" srcset="/img/loading.gif" alt="img"></p>
+<p>根据以上定义，提出一种 XOR 的位运算，当且仅当输入位不同时输出为 1。</p>
+<blockquote>
+<p> 计算 x 和 y 之间的汉明距离，可以先计算 x XOR y，然后统计结果中等于 1 的位数。</p>
+</blockquote>
+<p>现在，原始问题转换为位计数问题。位计数有多种思路，将在下面的方法中介绍。</p>
+<p><strong>布赖恩·克尼根算法</strong><br>思路</p>
+<blockquote>
+<p> 是否可以像人类直观的计数比特为 1 的位数，跳过两个 1 之间的 0。例如：10001000。</p>
+</blockquote>
+<p>上面例子中，遇到最右边的 1 后，如果可以跳过中间的 0，直接跳到下一个 1，效率会高很多。</p>
+<p>这是布赖恩·克尼根位计数算法的基本思想。该算法使用特定比特位和算术运算移除等于 1 的最右比特位。</p>
+<blockquote>
+<p> 当我们在 number 和 number-1 上做 AND 位运算时，原数字 number 的最右边等于 1 的比特会被移除。</p>
+</blockquote>
+<p>基于以上思路，通过 2 次迭代就可以知道 10001000 中 1 的位数，而不需要 8 次。</p>
+<pre><code class="hljs Python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hammingDistance</span>(<span class="hljs-params">self, x, y</span>):</span>
+        xor = x ^ y
+        distance = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> xor:
+            distance += <span class="hljs-number">1</span>
+
+            <span class="hljs-comment"># remove the rightmost bit of &#x27;1&#x27;</span>
+
+​            xor = xor &amp; (xor - <span class="hljs-number">1</span>)
+​        <span class="hljs-keyword">return</span> distance</code></pre>
+<p>注意：该算法发布在 1988 年 《C 语言编程第二版》的练习中（由 Brian W. Kernighan 和 Dennis M. Ritchie 编写），但是 Donald Knuth 在 2006 年 4 月 19 日指出，该方法第一次是由 Peter Wegner 在 1960 年的 CACM3 上出版。顺便说一句，可以在上述书籍中找到更多位操作的技巧。</p>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li><p>时间复杂度：$O(1)$。与移位方法相似，由于整数的位数恒定，因此具有恒定的时间复杂度。但是该方法需要的迭代操作更少。</p>
+</li>
+<li><p>空间复杂度：$O(1)$，与输入无关，使用恒定大小的空间。</p>
+</li>
+</ul>
+<p><strong>动态规划</strong>+<strong>最高有效位</strong></p>
+<p>有一些位操作题目用动态规划解也十分方便和快速。</p>
+<p>比如 338 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/counting-bits">比特位计数</a>（Medium）</p>
+<blockquote>
+<p>给定一个非负整数 <strong>num</strong>。对于 <strong>0 ≤ i ≤ num</strong> 范围中的每个数字 <strong>i</strong> ，计算其二进制数中的 1 的数目并将它们作为数组返回。</p>
+</blockquote>
+<p>假设有一个整数：</p>
+<p>$x = (1001011101)_2 = (605)_{10}<br>    $</p>
+<p>我们已经计算了从 $0$到 $x - 1$ 的全部结果。</p>
+<p>我们知道，$x$与 我们计算过的一个数只有一位之差:</p>
+<p>$x’ = (1011101)_2 = (93)_{10}$<br>它们只在最高有效位上不同。</p>
+<p>让我们以二进制形式检查 $[0, 3]$ 的范围：</p>
+<script type="math/tex; mode=display">
+0 = (00)\\
+1 = (01)\\
+2 = (10)\\
+3 = (11)</script><p>可以看出， 2 和 3 的二进制形式可以通过给 0 和 1 的二进制形式在前面加上 1 来得到。因此，它们的 pop_count 只相差 1。</p>
+<p>类似的，我们可以使用 $[0, 3]$ 作为蓝本来得到 $[4, 7]$。</p>
+<p>总之，对于pop count $P(x)$，我们有以下的状态转移函数：</p>
+<script type="math/tex; mode=display">
+P(x + b) = P(x) + 1, b = 2^m > x</script><p>有了状态转移函数，我们可以利用动态规划从 0 开始生成所有结果。</p>
+<p><strong>动态规划 + 最低有效位</strong></p>
+<p>遵循上一方法的相同原则，我们还可以通过最低有效位来获得状态转移函数。</p>
+<p>观察$x$ 和 $x’ = x / 2$的关系：</p>
+<p>$x = (1001011101)_2 = (605)_{10}$</p>
+<p>$x’ = (100101110)_2 = (302)_{10}$<br>可以发现 $x’$与 $x$ 只有一位不同，这是因为$x’$  可以看做 xx 移除最低有效位的结果。</p>
+<p>这样，我们就有了下面的状态转移函数：</p>
+<script type="math/tex; mode=display">
+P(x) = P(x >> 1) + (x \mod 2)</script>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/23/2020-08-23-ML3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">机器学习I 线性模型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/14/2020-8-14-what-is-UnionSet/">
+                        <span class="hidden-mobile">优雅而巧妙的并查集</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "一句能打败99.99999%的程序员的位操作代码&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

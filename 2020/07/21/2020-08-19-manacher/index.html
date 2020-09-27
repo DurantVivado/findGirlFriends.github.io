@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>东方不败-&gt;回文问题 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-21 00:00" pubdate>
+        2020年7月21日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">东方不败-&gt;回文问题</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="回文问题"><a href="#回文问题" class="headerlink" title="回文问题"></a>回文问题</h1><blockquote>
+<p>直觉上：回文≈难题，LC上的回文难题, 但是总不能指望面试/周赛出中等题吧?</p>
+</blockquote>
+<ul>
+<li><ol>
+<li>回文对</li>
+</ol>
+</li>
+<li><p>214.最短回文串</p>
+</li>
+<li><ol>
+<li>分割回文串</li>
+</ol>
+</li>
+<li><ol>
+<li>统计不同的回文子序列</li>
+</ol>
+</li>
+<li><ol>
+<li>超级回文数</li>
+</ol>
+</li>
+<li><ol>
+<li>段式回文</li>
+</ol>
+</li>
+<li>…</li>
+</ul>
+<h2 id="1-线性时间内解决回文串问题——Manacher算法-竞赛难度"><a href="#1-线性时间内解决回文串问题——Manacher算法-竞赛难度" class="headerlink" title="1. 线性时间内解决回文串问题——Manacher算法 {竞赛难度}"></a>1. 线性时间内解决回文串问题——Manacher算法 {竞赛难度}</h2><p>Manacher 算法是在<strong>线性时间</strong>!内求解最长回文子串的算法。在本题中，我们要求解回文串的个数，为什么也能使用 Manacher 算法呢？这里我们就需要理解一下 Manacher 的基本原理。</p>
+<p>Manacher 算法的处理方式是在所有的相邻字符中间插入 $#$，比如 $abaaabaa$ 会被处理成 $#a#b#a#a#a#b#a#a#$，这样可以保证所有找到的回文串都是奇数长度的(因为$n+n+1=2n+1$)，以任意一个字符为回文中心，既可以包含原来的奇数长度的情况，也可以包含原来偶数长度的情况。假设原字符串为 $S$，经过这个处理之后的字符串为 $s$。</p>
+<p>我们用 $f(i)$ 来表示以 $s$ 的第 $i$ 位为回文中心，可以拓展出的最大回文半径，那么 $f(i) - 1$ 就是以 $i$为中心的最大回文串长度 （想一想为什么）。</p>
+<p>Manacher 算法依旧需要枚举 $s$ 的每一个位置并先假设它是回文中心，但是它会利用已经计算出来的状态来更新 $f(i)$，而不是向「中心拓展」一样盲目地拓展。具体地说，假设我们已经计算好了 $[1, i - 1] $区间内所有点的 $f$（即我们知道 $[1, i - 1] $这些点作为回文中心时候的最大半径）， 那么我们也就知道了 $[1, i - 1]$ 拓展出的回文达到最大半径时的回文右端点。例如 $i = 4$的时候 $f(i) = 5$，说明以第 4 个元素为回文中心，最大能拓展到的回文半径是 5，此时右端点为 $4 + 5 - 1 = 8$。所以当我们知道一个 $i$ 对应的 $f(i)$ 的时候，我们就可以很容易得到它的右端点为 $i + f(i) - 1$。</p>
+<p>Manacher 算法如何通过已经计算出的状态来更新 $f(i)$ 呢？Manacher 算法要求我们维护「当前最大的回文的右端点 $r_m$」以及这个回文右端点对应的回文中心 $i_m$ 。我们需要顺序遍历 $s$，假设当前遍历的下标为 $i$。我们知道在求解 $f(i)$ 之前我们应当已经得到了从 $[1, i - 1]$ 所有的 $f$，并且当前已经有了一个最大回文右端点 $r_m$ 以及它对应的回文中心 $i_m$。</p>
+<p><strong>初始化 $f(i)$</strong></p>
+<ul>
+<li>如果 $i \leq r_m$，说明 $i$ 被包含在当前最大回文子串内，假设 $j$ 是 $i $关于这个最大回文的回文中心 $i_m$的对称位置（即 $j + i = 2 \times i_m$），我们可以得到 $f(i)$ 至少等于 $\min\{f(j), r_m - i + 1\}$。这里将 $f(j)$ 和 $r_m - i + 1$取小，是先要保证这个回文串在当前最大回文串内。（思考：为什么 $f(j)$ 有可能大于 $r_m - i + 1$？）如果 $i &gt; r_m$，那就先初始化 $f(i) = 1$。</li>
+</ul>
+<p><strong>中心拓展</strong></p>
+<ul>
+<li>做完初始化之后，我们可以保证此时的$s[i + f(i) - 1] = s[i - f(i) + 1]$，要继续拓展这个区间，我们就要继续判断 $s[i + f(i)]$和 $s[i - f(i)]$是否相等，如果相等将 $f(i)$自增；这样循环直到 $s[i + f(i)] \neq s[i - f(i)]$，以此类推。我们可以看出循环每次结束时都能保证$ s[i + f(i) - 1] = s[i - f(i) + 1]$，而循环继续（即可拓展的条件）一定是 $s[i + f(i)] = s[i - f(i)]$。 这个时候我们需要注意的是不能让下标越界，有一个很简单的办法，就是在开头加一个 $\$$，并在结尾加一个 $!$，这样开头和结尾的两个字符一定不相等，循环就可以在这里终止。<br>这样我们可以得到 $s$ 所有点为中心的最大回文半径，也就能够得到 $S$ 中所有可能的回文中心的的最大回文半径，把它们累加就可以得到答案。</li>
+</ul>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">countSubstrings</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = s.size();
+        <span class="hljs-built_in">string</span> t = <span class="hljs-string">&quot;$#&quot;</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> &amp;c: s) &#123;
+            t += c;
+            t += <span class="hljs-string">&#x27;#&#x27;</span>;
+        &#125;
+        n = t.size();
+        t += <span class="hljs-string">&#x27;!&#x27;</span>;
+
+        <span class="hljs-keyword">auto</span> f = <span class="hljs-built_in">vector</span> &lt;<span class="hljs-keyword">int</span>&gt; (n);
+        <span class="hljs-keyword">int</span> iMax = <span class="hljs-number">0</span>, rMax = <span class="hljs-number">0</span>, ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; ++i) &#123;
+            <span class="hljs-comment">// 初始化 f[i]</span>
+            f[i] = (i &lt;= rMax) ? min(rMax - i + <span class="hljs-number">1</span>, f[<span class="hljs-number">2</span> * iMax - i]) : <span class="hljs-number">1</span>;
+            <span class="hljs-comment">// 中心拓展</span>
+            <span class="hljs-keyword">while</span> (t[i + f[i]] == t[i - f[i]]) ++f[i];
+            <span class="hljs-comment">// 动态维护 iMax 和 rMax</span>
+            <span class="hljs-keyword">if</span> (i + f[i] - <span class="hljs-number">1</span> &gt; rMax) &#123;
+                iMax = i;
+                rMax = i + f[i] - <span class="hljs-number">1</span>;
+            &#125;
+            <span class="hljs-comment">// 统计答案, 当前贡献为 (f[i] - 1) / 2 上取整</span>
+            ans += (f[i] / <span class="hljs-number">2</span>);
+        &#125;
+
+        <span class="hljs-keyword">return</span> ans;
+    &#125;
+&#125;;</code></pre>
+<h2 id="2-Rabin-Karp编码"><a href="#2-Rabin-Karp编码" class="headerlink" title="2. Rabin-Karp编码"></a>2. Rabin-Karp编码</h2><hr>
+<h4 id="214-最短回文串"><a href="#214-最短回文串" class="headerlink" title="214. 最短回文串"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-palindrome/">214. 最短回文串</a></h4><p>给定一个字符串 <strong><em>s</em></strong>，你可以通过在字符串<strong>前面</strong>添加字符将其转换为回文串。找到并返回可以用这种方式转换的最短回文串。</p>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs 1c">输入: <span class="hljs-string">&quot;aacecaaa&quot;</span>
+输出: <span class="hljs-string">&quot;aaacecaaa&quot;</span></code></pre>
+<p><strong>示例 2:</strong></p>
+<pre><code class="hljs 1c">输入: <span class="hljs-string">&quot;abcd&quot;</span>
+输出: <span class="hljs-string">&quot;dcbabcd&quot;</span></code></pre>
+<hr>
+<p>我们可以用Rabin-Karp编码判断一个子集是否为回文串, 设$ASCII(i)$表示字符的ascii码.</p>
+<p>$base$可以取比整个字符集大的素数, $mod$可以取一个很大的幂加上一个素数,比如$10^5+7$. $f(i)和\hat{f(i)}$分别表示字符串编码和对应的回文串编码.</p>
+<script type="math/tex; mode=display">
+f(i) = f(i-1)*base\% mod + s[i]\\
+\hat{f(i)} = (\hat{f(i-1)} +s[i]*base^i)\%mod</script><p>由于题目只要求在字符串前加字符,因此可以判断$s$中最长回文前缀,</p>
+<p>代码如下:</p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">string</span> <span class="hljs-title">shortestPalindrome</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!s.size()) <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
+        <span class="hljs-comment">//思路，回文数判断：Manacher算法</span>
+        <span class="hljs-comment">//反过来思考：去掉最少几个字符它将称为回文数</span>
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>, right = <span class="hljs-number">0</span>, mul = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">int</span> base = <span class="hljs-number">157</span>, mod = <span class="hljs-number">1E5</span>+<span class="hljs-number">7</span>;
+        <span class="hljs-keyword">int</span>  loc = <span class="hljs-number">1</span>; 
+        <span class="hljs-keyword">int</span> n = s.size();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        &#123;
+            left = (<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>)left*base%mod + (<span class="hljs-keyword">int</span>)s[i];
+            right = (right+ (<span class="hljs-keyword">int</span>)s[i]*mul)%mod;
+            <span class="hljs-keyword">if</span>(left == right) 
+            &#123;
+                loc = i;
+            &#125;
+            mul = (mul*base)%mod; 
+        &#125;
+        <span class="hljs-built_in">string</span> add = (loc==n<span class="hljs-number">-1</span>)?<span class="hljs-string">&quot;&quot;</span>:s.substr(loc,n-loc);
+        reverse(add.begin(),add.end());
+        <span class="hljs-keyword">return</span> (add+s);
+    &#125;
+&#125;;</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间复杂度：$O(|s|)$。</li>
+<li>空间复杂度：$O(1)$。</li>
+</ul>
+<hr>
+<h2 id="336-回文对"><a href="#336-回文对" class="headerlink" title="336. 回文对"></a>336. 回文对</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%9B%9E%E6%96%87/">回文</a>
+                    
+                      <a class="hover-with-bg" href="/tags/manacher%E7%AE%97%E6%B3%95/">manacher算法</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-08-1-representation_of_graph/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">爸爸再也不想做图类题目了</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+                        <span class="hidden-mobile">解华容道</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "东方不败->回文问题&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -1,0 +1,624 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>红尘客栈之单调栈 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-07-21 00:00" pubdate>
+        2020年7月21日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">红尘客栈之单调栈</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="炫酷skr的单调栈"><a href="#炫酷skr的单调栈" class="headerlink" title="炫酷skr的单调栈"></a>炫酷skr的单调栈</h1><ul>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/">柱状图中最大矩形（Hard）</a></li>
+</ol>
+</li>
+<li>85.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximal-rectangle/">求最大矩形(Hard)</a></li>
+<li>739.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/daily-temperatures/">每日温度(Medium)</a></li>
+<li>多重背包问题III【详见背包九讲】</li>
+</ul>
+<p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
+<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
+<pre><code>                                                                                   ![img](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram.png)
+</code></pre><p>以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。</p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/10/12/histogram_area.png" srcset="/img/loading.gif" alt="img"></p>
+<p>图中阴影部分为所能勾勒出的最大矩形面积，其面积为 10 个单位。</p>
+<p><strong>示例:</strong></p>
+<pre><code class="hljs angelscript">输入: [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+输出: <span class="hljs-number">10</span></code></pre>
+<hr>
+<p>这道题无论是暴力还是枚举均会超时（时间复杂度$O(N^2)$），最初的想法是用一个哈希表存<code>heights</code>中每一个高度「最长的横向距离」，最大面积等于<code>max(maxArea,heights[i]×len)</code>后来发现过于麻烦。但是直觉告诉我这是可行的，题解采用单调栈也验证了我的想法。</p>
+<p>有一个<em>事实</em>需要注意：</p>
+<ul>
+<li>若后一个高度小于前一个高度，那么前一个高度将不会对后续的求最大面积操作产生影响。</li>
+</ul>
+<p>我们需要对$i$左右进行扩展，我们需要找到<strong>左右两侧最近且高度小于$h$的柱子，这和接雨水那一题非常相似</strong>。以</p>
+<p>$[6,7,5,2,4,5,9,3]$为例，</p>
+<ol>
+<li>将6入栈，6左侧为哨兵，位置-1；</li>
+<li>将7入栈，由于7&gt;6，故7不会被移除；</li>
+<li>将5入栈，由于7&gt;5且6&gt;5，故6，7会被移除。此时栈为空，5左侧为哨兵，位置-1.</li>
+<li>将2入栈，由于2&lt;5，5会被移除，2左侧为哨兵-1.</li>
+<li>将4入栈</li>
+<li>将5入栈</li>
+<li>将9入栈</li>
+<li>不断出栈直到遇到2&lt;3</li>
+</ol>
+<script type="math/tex; mode=display">
+\begin{array}\\
+1.[6(0)]\\
+2.[6(0),7(1)]\\
+3.[5(2)]\\
+4.[2(3)]\\
+5.[2(3),4(4)]\\
+6.[2(3),4(4),5(5)]\\
+7.[2(3),4(4),5(5),9(6)]\\
+8.[2(3),3(7)]
+\end{array}</script><p>这样以来我们得到左侧柱子的编号为$[-1,0,-1,-1,3,4,5,3]$，同样地，我们可以得到右侧柱子的编号$[2,2,3,8,7,7,7,8]$。  因而根据$(l_height-r_height-1)*height[i]$得到最大面积。</p>
+<p>代码如下：</p>
+<p>​     </p>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; heights)</span> </span>&#123;
+     <span class="hljs-keyword">if</span>(!heights.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+     <span class="hljs-keyword">int</span> n = heights.size();
+     <span class="hljs-keyword">int</span> maxArea = INT32_MIN;
+    <span class="hljs-comment">//采用单调栈的思想，分别找到i左右两侧最近且高度小于h的柱子</span>
+    vector&lt;int&gt; lbound(n,0),rbound(n,0);
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt; lstack,rstack;<span class="hljs-comment">//存放高度位置和下标</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n;i++)
+    &#123;
+        <span class="hljs-keyword">if</span>(lstack.empty()) lbound[i] = <span class="hljs-number">-1</span>;<span class="hljs-comment">//哨兵 </span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(heights[i] &gt; lstack.back().first) 
+        &#123;
+            lbound[i] = lstack.back().second;
+        &#125;<span class="hljs-keyword">else</span>
+        &#123;
+            <span class="hljs-keyword">while</span>(!lstack.empty()&amp;&amp;heights[i]&lt;=lstack.back().first)lstack.pop_back();
+            <span class="hljs-keyword">if</span>(lstack.empty()) lbound[i] = <span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">else</span> lbound[i] = lstack.back().second;
+        &#125;
+        lstack.push_back(&#123;heights[i],i&#125;);
+        
+    &#125;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = n<span class="hljs-number">-1</span>; j &gt;= <span class="hljs-number">0</span>;j--)
+    &#123;
+        <span class="hljs-keyword">if</span>(rstack.empty()) rbound[j] = n;<span class="hljs-comment">//哨兵 </span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(heights[j] &gt; rstack.back().first) 
+        &#123;
+            rbound[j] = rstack.back().second;
+        &#125;<span class="hljs-keyword">else</span>
+        &#123;
+            <span class="hljs-keyword">while</span>(!rstack.empty()&amp;&amp;heights[j]&lt;=rstack.back().first) rstack.pop_back();
+            <span class="hljs-keyword">if</span>(rstack.empty()) rbound[j] = n;
+            <span class="hljs-keyword">else</span> rbound[j] = rstack.back().second;
+        &#125;
+        rstack.push_back(&#123;heights[j],j&#125;);
+        
+    &#125;
+    <span class="hljs-comment">// for(auto &amp;c:lbound)</span>
+    <span class="hljs-comment">// printf(&quot;%d,&quot;,c);</span>
+    <span class="hljs-comment">// printf(&quot;\n&quot;);</span>
+    <span class="hljs-comment">// for(auto &amp;c:rbound)</span>
+    <span class="hljs-comment">// printf(&quot;%d,&quot;,c);</span>
+    <span class="hljs-comment">// printf(&quot;\n&quot;);</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> c = <span class="hljs-number">0</span>; c &lt; n;c++)
+    &#123;
+        <span class="hljs-keyword">if</span>(lbound[c]==<span class="hljs-number">-1</span>) maxArea = max(maxArea,rbound[c]*heights[c]);
+        <span class="hljs-keyword">else</span> maxArea = max(maxArea,(rbound[c]-lbound[c]<span class="hljs-number">-1</span>)*heights[c]);
+    &#125;
+    <span class="hljs-keyword">return</span> maxArea&lt;<span class="hljs-number">0</span>?<span class="hljs-number">0</span>:maxArea;
+    &#125;
+&#125;;
+</code></pre>
+<p>时间复杂度：$O(2N)$</p>
+<p>空间复杂度: $O(4N)$，左右边界以及栈</p>
+<p>但是此代码可以简化，把寻找左边界和寻找右边界放在一次迭代中完成。</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; heights)</span> </span>&#123;
+           <span class="hljs-comment">//84求柱状图的最大矩形，O(N)</span>
+           <span class="hljs-keyword">int</span> n = heights.size();
+           vector&lt;int&gt; left(n), right(n, n);
+           <span class="hljs-comment">//左右边界数组，维护每个矩形的最大左右宽度</span>
+           <span class="hljs-built_in">stack</span>&lt;<span class="hljs-keyword">int</span>&gt; mono_stack;<span class="hljs-comment">//单调栈</span>
+           <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;
+
+               <span class="hljs-keyword">while</span> (!mono_stack.empty() &amp;&amp; heights[mono_stack.top()] &gt;= heights[i]) &#123;
+                   right[mono_stack.top()] = i;
+                   mono_stack.pop();
+               &#125;
+               left[i] = (mono_stack.empty() ? <span class="hljs-number">-1</span> : mono_stack.top());
+               mono_stack.push(i);
+           &#125;
+           
+           <span class="hljs-keyword">int</span> ans = <span class="hljs-number">0</span>;
+           <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;
+               ans = max(ans, (right[i] - left[i] - <span class="hljs-number">1</span>) * heights[i]);<span class="hljs-comment">//计算最大面积</span>
+           &#125;
+           <span class="hljs-keyword">return</span> ans;
+       &#125;</code></pre>
+<p>可能看代码有些复杂，我们制作一个动画方便理解：</p>
+<p>[动画正在制作之中。。。]</p>
+<hr>
+<h2 id="739-每日温度"><a href="#739-每日温度" class="headerlink" title="739.每日温度"></a>739.每日温度</h2><p>请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替。</p>
+<p>例如，给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]。</p>
+<p>提示：气温 列表长度的范围是 [1, 30000]。每个气温的值的均为华氏度，都是在 [30, 100] 范围内的整数。</p>
+<hr>
+<p>可以维护一个存储下标的单调栈，从栈底到栈顶的下标对应的温度列表中的温度依次递减。如果一个下标在单调栈里，则表示尚未找到下一次温度更高的下标。</p>
+<p>正向遍历温度列表。对于温度列表中的每个元素 T[i]，如果栈为空，则直接将 i 进栈，如果栈不为空，则比较栈顶元素 prevIndex 对应的温度 T[prevIndex] 和当前温度 T[i]，如果 T[i] &gt; T[prevIndex]，则将 prevIndex 移除，并将 prevIndex 对应的等待天数赋为 i - prevIndex，重复上述操作直到栈为空或者栈顶元素对应的温度小于等于当前温度，然后将 i 进栈。</p>
+<p>为什么可以在弹栈的时候更新 ans[prevIndex] 呢？因为在这种情况下，即将进栈的 i 对应的 T[i] 一定是 T[prevIndex] 右边第一个比它大的元素，试想如果 prevIndex 和 i 有比它大的元素，假设下标为 j，那么 prevIndex 一定会在下标 j 的那一轮被弹掉。</p>
+<p>由于单调栈满足从栈底到栈顶元素对应的温度递减，因此每次有元素进栈时，会将温度更低的元素全部移除，并更新出栈元素对应的等待天数，这样可以确保等待天数一定是最小的。</p>
+<ul>
+<li><p><strong>时间复杂度</strong>：$O(n)$，其中 n是温度列表的长度。正向遍历温度列表一遍，对于温度列表中的每个下标，最多有一次进栈和出栈的操作。</p>
+</li>
+<li><p><strong>空间复杂度</strong>：$O(n)$，其中 n 是温度列表的长度。需要维护一个单调栈存储温度列表中的下标。</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8D%95%E8%B0%83%E6%A0%88/">单调栈</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-8-1-sliding-windows/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">滑动窗口，滑动的艺术</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/21/2020-8-29-KMP/">
+                        <span class="hidden-mobile">臭名昭著的KMP算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "红尘客栈之单调栈&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

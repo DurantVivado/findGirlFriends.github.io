@@ -1,108 +1,202 @@
+
+
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>优雅而巧妙的并查集 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
   
 
   
-  <title>什么是并查集 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="什么是并查集（UnionSet） 最长连续序列  被围绕的区域  岛屿的数量  二维网格中探测环  除法求值（带权值）              冗余连接（无向图）  冗余连接II(Hard)（有向图）  朋友圈(DFS,BFS,UnionSet均可以做,DFS,BFS更优)  句子相似性2(VIP)  等式方程可满足性  连通网络操作次数  按公因数计算最大组件大小（hard）  情侣牵手（Ha">
-<meta property="og:type" content="article">
-<meta property="og:title" content="什么是并查集">
-<meta property="og:url" content="http://example.com/2020/08/14/2020-8-14-what-is-UnionSet/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="什么是并查集（UnionSet） 最长连续序列  被围绕的区域  岛屿的数量  二维网格中探测环  除法求值（带权值）              冗余连接（无向图）  冗余连接II(Hard)（有向图）  朋友圈(DFS,BFS,UnionSet均可以做,DFS,BFS更优)  句子相似性2(VIP)  等式方程可满足性  连通网络操作次数  按公因数计算最大组件大小（hard）  情侣牵手（Ha">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://picb.zhimg.com/80/v2-cca3ddf5806a221201ed78caf1d27041_720w.jpg">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-d3ff42bb79a6bc751f47daf3fc70e0d9_720w.jpg">
-<meta property="og:image" content="https://picb.zhimg.com/80/v2-de356190829600f438058e8615c7a5ac_720w.jpg">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-a829932f008f000440942cb8df393662_720w.jpg">
-<meta property="og:image" content="https://pic.leetcode-cn.com/369467f220fbe37910fde8f354f59884f487210dc77a7d8bf6fd4edb467bdf6b-image.png">
-<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/08/22/5482e1.png">
-<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/08/22/5482e11.png">
-<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex1.png">
-<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex2.png">
-<meta property="og:image" content="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex3.png">
-<meta property="og:image" content="https://pic.leetcode-cn.com/ca07130ef4f7e002de91efa0b9962cbf18d8277ffa7f744023c4f64c16d78cb4-952-1.png">
-<meta property="article:published_time" content="2020-08-14T02:23:45.000Z">
-<meta property="article:modified_time" content="2020-09-20T03:45:32.871Z">
-<meta property="article:author" content="John Doe">
-<meta property="article:tag" content="并查集">
-<meta property="article:tag" content="被Oiers视作优雅的算法">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://picb.zhimg.com/80/v2-cca3ddf5806a221201ed78caf1d27041_720w.jpg">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
 <meta name="generator" content="Hexo 5.2.0"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <a class="main-nav-link" href="/">Home</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
-      </nav>
-      <nav id="sub-nav">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
     </div>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-2020-8-14-what-is-UnionSet" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/08/14/2020-8-14-what-is-UnionSet/" class="article-date">
-  <time datetime="2020-08-14T02:23:45.000Z" itemprop="datePublished">2020-08-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
   
-    <h1 class="article-title" itemprop="name">
-      什么是并查集
-    </h1>
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-14 00:00" pubdate>
+        2020年8月14日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.6k 字
+    </span>
   
 
-      </header>
+  
     
-    <div class="article-entry" itemprop="articleBody">
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
       
-        <h1 id="什么是并查集（UnionSet）"><a href="#什么是并查集（UnionSet）" class="headerlink" title="什么是并查集（UnionSet）"></a>什么是并查集（UnionSet）</h1><ol>
+      
+      59
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">优雅而巧妙的并查集</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="什么是并查集（UnionSet）"><a href="#什么是并查集（UnionSet）" class="headerlink" title="什么是并查集（UnionSet）"></a>什么是并查集（UnionSet）</h1><ol>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-consecutive-sequence/">最长连续序列</a></p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/surrounded-regions/">被围绕的区域</a></p>
@@ -129,8 +223,7 @@
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/couples-holding-hands/">情侣牵手</a>（Hard）</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/accounts-merge/">账户合并</a></p>
-</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/accounts-merge/">账户合并</a></li>
 </ol>
 <blockquote>
 <p>参考资料：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93647900">知乎传送门</a></p>
@@ -149,47 +242,77 @@
 <li><code>Union(int m, int n)</code>:合并$m,n$两个点所在的连通区域。</li>
 </ul>
 <p><strong>初始化</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> fa[MAXN];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">init</span> <span class="params">(<span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n;i++)</span><br><span class="line">        fa[i] = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-keyword">int</span> fa[MAXN];
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> n )</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n;i++)
+        fa[i] = i;
+&#125;</code></pre>
 <p><strong>查询</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(fa[x]==x)</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="keyword">return</span> find(fa[x]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(fa[x]==x)
+        <span class="hljs-keyword">return</span> x;
+    <span class="hljs-keyword">else</span> 
+        <span class="hljs-keyword">return</span> find(fa[x]);
+&#125;
+</code></pre>
 <p>一层一层访问父节点，直至根节点（根节点的标志就是父节点是本身）。要判断两个元素是否属于同一个集合，只需要看它们的根节点是否相同即可。</p>
 <p><strong>合并</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	fa[find(i)] = find(j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function"></span>&#123;
+	fa[find(i)] = find(j);
+&#125;</code></pre>
 <p>合并操作也是很简单的，先找到两个集合的代表元素，然后将前者的父节点设为后者即可。当然也可以将后者的父节点设为前者.</p>
 <p><strong>更新</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">	<span class="keyword">if</span>(fa[i] != i) fa[i] = find(fa[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+	<span class="hljs-keyword">if</span>(fa[i] != i) fa[i] = find(fa[i]);
+&#125;</code></pre>
 <p>一般在对所有节点merge之后需要整体更新，避免漏掉连通分支。</p>
 <hr>
 <p>初级并查集效率较低，我们需要进行<strong>路径压缩</strong>。</p>
 <p>我们添加元素可能会形成长链，想要从底部寻找根节点会越来越难。路径压缩是这样一种算法，每个元素到根节点的路径尽可能短。</p>
 <p>我们可以在查找的过程中，<u>把沿途每个节点的父节点都设为根节点</u>。</p>
 <p><strong>路径压缩后合并</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x==find(x)? x : (fa[x] = find(fa[x]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="https://picb.zhimg.com/80/v2-cca3ddf5806a221201ed78caf1d27041_720w.jpg" alt="img"></p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> x==find(x)? x : (fa[x] = find(fa[x]));
+&#125;</code></pre>
 <p>我们得到的并查集是这样的，很像一棵二叉树。</p>
 <p><strong>按秩合并</strong></p>
 <p>按路径压缩后的并查集结构仍是毕竟复杂的，比如现在我们有一棵较复杂的树，与一个单元素进行合并：</p>
-<p><img src="https://pic2.zhimg.com/80/v2-d3ff42bb79a6bc751f47daf3fc70e0d9_720w.jpg" alt="img"></p>
+<p><img src="/img/dsu_1.jpg" srcset="/img/loading.gif" alt=""></p>
 <p>那么是把7作为8的父节点好呢，还是8作为7父节点好呢：</p>
 <p>当然是前者，因为后者会使树的深度加深。所以要<strong>把简单树往复杂树上合并。</strong></p>
 <p>我们用于一个数组<code>rank[]</code>记录每个根节点对应树的深度。一开始，所有节点的秩设为1.合并时比较两个根节点，把秩小的往秩的根节点合并。</p>
 <p><strong>初始化（按秩合并）</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt;= n;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        fa[i] = i;</span><br><span class="line">        rank[i] = <span class="number">1</span>;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;= n;i++) 
+    &#123;
+        fa[i] = i;
+        rank[i] = <span class="hljs-number">1</span>;
+    &#125; 
+&#125;</code></pre>
 <p><strong>合并（按秩合并）</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = find(i),y = find(j);</span><br><span class="line">    <span class="keyword">if</span>(rank[x] &lt;= rank[y]) </span><br><span class="line">        fa[x] = y;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        fa[y] = x;</span><br><span class="line">    <span class="keyword">if</span>(rank[x]==rank[y]&amp;&amp;x!=y)</span><br><span class="line">    &#123;<span class="comment">//如果秩相同，则新节点深度++</span></span><br><span class="line">        rank[y]++;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">int</span> x = find(i),y = find(j);
+    <span class="hljs-keyword">if</span>(rank[x] &lt;= rank[y]) 
+        fa[x] = y;
+    <span class="hljs-keyword">else</span> 
+        fa[y] = x;
+    <span class="hljs-keyword">if</span>(rank[x]==rank[y]&amp;&amp;x!=y)
+    &#123;<span class="hljs-comment">//如果秩相同，则新节点深度++</span>
+        rank[y]++;
+    &#125;   
+&#125;</code></pre>
 <p>为什么根秩相同，深度要加1呢，如下图，我们有两个秩均为2 的树，现在要合并。</p>
-<p><img src="https://picb.zhimg.com/80/v2-de356190829600f438058e8615c7a5ac_720w.jpg" alt="img"></p>
+<p><img src="/img/dsu_2.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;" /></p>
 <p>我们把2的父节点设为5，这里深度加1，同样另一种合并方式也会使深度加1.</p>
-<p><img src="https://pic2.zhimg.com/80/v2-a829932f008f000440942cb8df393662_720w.jpg" alt="img"></p>
+<p><img src="\img\dsu_3.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;" /></p>
 <h2 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h2><p>1、解决的是两个顶点是否连通的问题，可以用于检测图中是否存在环；</p>
 <p>2、代表元法：采用 parent 数组实现，以每个结点的根结点作为代表元；</p>
 <p>3、并查集的优化有两种策略：</p>
@@ -199,7 +322,7 @@
 <li>「隔代压缩」性能比较高，虽然压缩不完全，不过多次执行「隔代压缩」也能达到「完全压缩」的效果，我本人比较偏向使用「隔代压缩」的写法。</li>
 <li>「完全压缩」需要借助系统栈，使用递归的写法。或者先找到当前结点的根结点，然后把沿途上所有的结点都指向根结点，得遍历两次。</li>
 </ul>
-<p><img src="https://pic.leetcode-cn.com/369467f220fbe37910fde8f354f59884f487210dc77a7d8bf6fd4edb467bdf6b-image.png" alt="image.png"></p>
+<p><img src="\img\dsu_3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>（2）按秩合并。</p>
 <p>秩也有两种含义：</p>
 <p>秩表示以当前结点为根结点的子树结点总数，即这里的「秩」表示 size 含义；<br>秩表示以当前结点为根结点的子树的高度，即这里的「秩」表示 rank 含义（更合理，因为查询时候的时间性能主要决定于树的高度）。<br>4、如果同时使用「路径压缩」与「按秩合并」，这里的「秩」就失去了它的定义，但即使秩表示的含义不准确，也能够作为合并时候很好的「参考」。在这种情况下，并查集的查询与合并的时间复杂度可以达到接近 $O(1)$。</p>
@@ -210,16 +333,67 @@
 <p>同时，你也不能回到上一次移动时所在的格子。比方说，环 <code>(1, 1) -&gt; (1, 2) -&gt; (1, 1)</code> 是不合法的，因为从 <code>(1, 2)</code> 移动到 <code>(1, 1)</code> 回到了上一次移动时的格子。</p>
 <p>如果 <code>grid</code> 中有相同值形成的环，请你返回 <code>true</code> ，否则返回 <code>false</code> 。</p>
 <p><strong>示例 1：</strong></p>
-<p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/08/22/5482e1.png" alt="img"></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：grid &#x3D; [[&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;],[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;a&quot;],[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;a&quot;],[&quot;a&quot;,&quot;a&quot;,&quot;a&quot;,&quot;a&quot;]]</span><br><span class="line">输出：true</span><br><span class="line">解释：如下图所示，有 2 个用不同颜色标出来的环：</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/08/22/5482e11.png" alt="img"> </p>
+<p><strong><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/08/22/5482e1.png" srcset="/img/loading.gif" alt="img"></strong></p>
+<pre><code class="hljs smalltalk">输入：grid = [[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>],[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>],[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>],[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>]]
+输出：<span class="hljs-keyword">true</span>
+解释：如下图所示，有 <span class="hljs-number">2</span> 个用不同颜色标出来的环：</code></pre>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/08/22/5482e11.png" srcset="/img/loading.gif" alt="img"> </p>
 <hr>
 <p>利用并查集的思想，相同的字母可以形成一个连通区域，从左上角开始，遇到相同字母则进行合并，合并时若发现$x$和$y$与$parent$相同，即形成环。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">250100</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> p[N];</span><br><span class="line">    <span class="keyword">int</span> cnt[N];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (p[x] != x) &#123;</span><br><span class="line">            x = find(p[x]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> p[x];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">merget</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (find(a) != find(b)) &#123;</span><br><span class="line">            cnt[find(b)] += cnt[find(a)];</span><br><span class="line">            p[find(a)] = find(b);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i) &#123;</span><br><span class="line">            p[i] = i;</span><br><span class="line">            cnt[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">containsCycle</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = grid.size();</span><br><span class="line">        <span class="keyword">int</span> m = grid[<span class="number">0</span>].size();</span><br><span class="line">        init();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; m; ++j) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i + <span class="number">1</span>&lt; n &amp;&amp; grid[i][j] == grid[i + <span class="number">1</span>][j]) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (find(i * m + j) == find((i + <span class="number">1</span>) * m + j)) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        p[find(i * m + j)] = find((i + <span class="number">1</span>) * m + j);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (j+<span class="number">1</span> &lt; m &amp;&amp; grid[i][j] == grid[i][j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (find(i * m + j) == find(i * m + j + <span class="number">1</span>)) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        p[find(i * m + j)] = find(i * m + j + <span class="number">1</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N = <span class="hljs-number">250100</span>;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> p[N];
+    <span class="hljs-keyword">int</span> cnt[N];
 
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (p[x] != x) &#123;
+            x = find(p[x]);
+        &#125;
+        <span class="hljs-keyword">return</span> p[x];
+    &#125;
 
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merget</span><span class="hljs-params">(<span class="hljs-keyword">int</span> a, <span class="hljs-keyword">int</span> b)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (find(a) != find(b)) &#123;
+            cnt[find(b)] += cnt[find(a)];
+            p[find(a)] = find(b);
+        &#125;
+    &#125;
 
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; N; ++i) &#123;
+            p[i] = i;
+            cnt[i] = <span class="hljs-number">1</span>;
+        &#125;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">containsCycle</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt;&amp; grid)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = grid.size();
+        <span class="hljs-keyword">int</span> m = grid[<span class="hljs-number">0</span>].size();
+        init();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) &#123;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; m; ++j) &#123;
+                <span class="hljs-keyword">if</span> (i + <span class="hljs-number">1</span>&lt; n &amp;&amp; grid[i][j] == grid[i + <span class="hljs-number">1</span>][j]) &#123;
+                    <span class="hljs-keyword">if</span> (find(i * m + j) == find((i + <span class="hljs-number">1</span>) * m + j)) &#123;
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        p[find(i * m + j)] = find((i + <span class="hljs-number">1</span>) * m + j);
+                    &#125;
+                &#125;
+                <span class="hljs-keyword">if</span> (j+<span class="hljs-number">1</span> &lt; m &amp;&amp; grid[i][j] == grid[i][j + <span class="hljs-number">1</span>]) &#123;
+                    <span class="hljs-keyword">if</span> (find(i * m + j) == find(i * m + j + <span class="hljs-number">1</span>)) &#123;
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        p[find(i * m + j)] = find(i * m + j + <span class="hljs-number">1</span>);
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+&#125;;
+</code></pre>
 <h2 id="685-冗余连接II"><a href="#685-冗余连接II" class="headerlink" title="685. 冗余连接II"></a>685. 冗余连接II</h2><p>在一棵树中，边的数量比节点的数量少 1。如果一棵树有 N 个节点，则这棵树有 N-1 条边。这道题中的图在树的基础上多了一条附加的边，因此边的数量也是 N。</p>
 <p>树中的每个节点都有一个父节点，除了根节点没有父节点。在多了一条附加的边之后，可能有以下两种情况：</p>
 <ul>
@@ -242,35 +416,149 @@
 <li><p>如果没有导致环路的边，则附加的边是后被访问到的指向 v 的边，因此附加的边是 $[u,v]$。</p>
 </li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; fa;</span><br><span class="line">    <span class="keyword">int</span> conflict;<span class="comment">//记录具有多个父节点的边编号</span></span><br><span class="line">    <span class="keyword">int</span> loop;<span class="comment">//记录生成环路的边编号</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">            fa.emplace_back(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( x == fa[x])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125;</span><br><span class="line">        fa[x] = find(fa[x]);</span><br><span class="line">        <span class="keyword">return</span> fa[x];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">findRedundantDirectedConnection</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; edges)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//思路：并查集</span></span><br><span class="line">        <span class="comment">//此题与全连接I的区别是，无向图变为有向图</span></span><br><span class="line">        <span class="keyword">int</span> n = edges.size();</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">parent</span><span class="params">(n+<span class="number">1</span>)</span></span>; <span class="comment">//专门用于保存父节点，与并查集无关</span></span><br><span class="line">        init(n+<span class="number">1</span>);</span><br><span class="line">        conflict = loop = <span class="number">-1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">        &#123;<span class="comment">//u -&gt; v</span></span><br><span class="line">            <span class="keyword">int</span> u = edges[i][<span class="number">0</span>], v = edges[i][<span class="number">1</span>]; </span><br><span class="line">            <span class="keyword">int</span> pu = find(u), pv = find(v);            </span><br><span class="line">            <span class="keyword">if</span>(pv!=v) <span class="comment">// 说明 e[1]已经有父节点，存在冲突</span></span><br><span class="line">                conflict = i;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                parent[v] = u;</span><br><span class="line">                <span class="keyword">if</span>(pv == pu)<span class="comment">//表示有环</span></span><br><span class="line">                &#123;</span><br><span class="line">                    loop = i;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> fa[pv] = pu;</span><br><span class="line">            </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;conf:%d,loop:%d\n&quot;</span>,conflict,loop);</span><br><span class="line">        <span class="comment">//接下来需要判断哪个边导致了冗余</span></span><br><span class="line">        <span class="keyword">if</span>(conflict&lt;<span class="number">0</span>)<span class="comment">//说明没有冲突，附加的边为环路最后出现的边</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> edges[loop];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="comment">//若存在冲突，</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(loop &lt; <span class="number">0</span>)<span class="comment">//没有环	</span></span><br><span class="line">            <span class="keyword">return</span> edges[conflict];</span><br><span class="line">            <span class="keyword">else</span> <span class="comment">//既有冲突也有环，则不可能是冲突的那一条边</span></span><br><span class="line">            <span class="keyword">return</span> &#123;parent[edges[conflict][<span class="number">1</span>]],edges[conflict][<span class="number">1</span>]&#125;;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="number">-1</span>,<span class="number">-1</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fa;
+    <span class="hljs-keyword">int</span> conflict;<span class="hljs-comment">//记录具有多个父节点的边编号</span>
+    <span class="hljs-keyword">int</span> loop;<span class="hljs-comment">//记录生成环路的边编号</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+            fa.emplace_back(i);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>( x == fa[x])
+        &#123;
+            <span class="hljs-keyword">return</span> x;
+        &#125;
+        fa[x] = find(fa[x]);
+        <span class="hljs-keyword">return</span> fa[x];
+    &#125;
+    
 
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">findRedundantDirectedConnection</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; edges)</span> </span>&#123;
+        <span class="hljs-comment">//思路：并查集</span>
+        <span class="hljs-comment">//此题与全连接I的区别是，无向图变为有向图</span>
+        <span class="hljs-keyword">int</span> n = edges.size();
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">parent</span><span class="hljs-params">(n+<span class="hljs-number">1</span>)</span></span>; <span class="hljs-comment">//专门用于保存父节点，与并查集无关</span>
+        init(n+<span class="hljs-number">1</span>);
+        conflict = loop = <span class="hljs-number">-1</span>;
+        
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        &#123;<span class="hljs-comment">//u -&gt; v</span>
+            <span class="hljs-keyword">int</span> u = edges[i][<span class="hljs-number">0</span>], v = edges[i][<span class="hljs-number">1</span>]; 
+            <span class="hljs-keyword">int</span> pu = find(u), pv = find(v);            
+            <span class="hljs-keyword">if</span>(pv!=v) <span class="hljs-comment">// 说明 e[1]已经有父节点，存在冲突</span>
+                conflict = i;
+            <span class="hljs-keyword">else</span> 
+            &#123;
+                parent[v] = u;
+                <span class="hljs-keyword">if</span>(pv == pu)<span class="hljs-comment">//表示有环</span>
+                &#123;
+                    loop = i;
+                &#125;
+                <span class="hljs-keyword">else</span> fa[pv] = pu;
+            
+            &#125;
+        &#125;
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;conf:%d,loop:%d\n&quot;</span>,conflict,loop);
+        <span class="hljs-comment">//接下来需要判断哪个边导致了冗余</span>
+        <span class="hljs-keyword">if</span>(conflict&lt;<span class="hljs-number">0</span>)<span class="hljs-comment">//说明没有冲突，附加的边为环路最后出现的边</span>
+        &#123;
+            <span class="hljs-keyword">return</span> edges[loop];
+        &#125;
+        <span class="hljs-keyword">else</span> <span class="hljs-comment">//若存在冲突，</span>
+        &#123;
+            <span class="hljs-keyword">if</span>(loop &lt; <span class="hljs-number">0</span>)<span class="hljs-comment">//没有环	</span>
+            <span class="hljs-keyword">return</span> edges[conflict];
+            <span class="hljs-keyword">else</span> <span class="hljs-comment">//既有冲突也有环，则不可能是冲突的那一条边</span>
+            <span class="hljs-keyword">return</span> &#123;parent[edges[conflict][<span class="hljs-number">1</span>]],edges[conflict][<span class="hljs-number">1</span>]&#125;;
+
+        &#125;
+
+        <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>&#125;;
+    &#125;
+&#125;;
+</code></pre>
 <p>时间复杂度: $O(N \log N)$</p>
 <p>空间复杂度：$O(N)$</p>
 <hr>
 <h2 id="952-按公因式计算最大组件的大小"><a href="#952-按公因式计算最大组件的大小" class="headerlink" title="952.按公因式计算最大组件的大小"></a>952.按公因式计算最大组件的大小</h2><p>给定一个由不同正整数的组成的非空数组 A，考虑下面的图：</p>
-<p>有 <code>A.length</code> 个节点，按从 <code>A[0] </code>到 <code>A[A.length - 1]</code> 标记；<br>只有当 <code>A[i]</code> 和 <code>A[j]</code> 共用一个大于 1 的公因数时，<code>A[i]</code> 和 <code>A[j] </code>之间才有一条边。<br>返回图中最大连通组件的大小。</p>
+<p>有 <code>A.length</code> 个节点，按从 <code>A[0]</code>到 <code>A[A.length - 1]</code> 标记；<br>只有当 <code>A[i]</code> 和 <code>A[j]</code> 共用一个大于 1 的公因数时，<code>A[i]</code> 和 <code>A[j]</code>之间才有一条边。<br>返回图中最大连通组件的大小。</p>
 <p>示例 1：</p>
 <p>输入：[4,6,15,35]<br>输出：4</p>
-<img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex1.png" alt="img" style="zoom:33%;" />
-
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex1.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;" /></p>
 <p>示例 2：</p>
 <p>输入：[20,50,9,63]<br>输出：2</p>
-<img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex2.png" alt="img" style="zoom:33%;" />
-
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex2.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;" /></p>
 <p>示例 3：</p>
 <p>输入：[2,3,6,7,4,12,21,39]<br>输出：8</p>
-<img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex3.png" alt="img" style="zoom:33%;" />
-
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/01/ex3.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;" /></p>
 <p>提示：</p>
-<p><code>1 &lt;= A.length &lt;= 20000 1 &lt;= A[i] &lt;= 100000</code></p>
+<p><code>1 &lt;= A.length &lt;= 20000
+1 &lt;= A[i] &lt;= 100000</code></p>
 <hr>
 <p>按照并查集的思路求解</p>
 <p>设$W = max(A[i]), R = \sqrt{W}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+A.length$个不同的质因数。质因数为本身的最多$A.length$个，非本身的质因数一定比$R$小，最多$R$个。</p>
 <p>我们可以提取$A$中每个数的质因数，对每个质因数建立索引，然后利用并查集。</p>
-<p><img src="https://pic.leetcode-cn.com/ca07130ef4f7e002de91efa0b9962cbf18d8277ffa7f744023c4f64c16d78cb4-952-1.png" alt="952-1.png"></p>
+<p><img src=".\img\dsu_4.png" srcset="/img/loading.gif" alt="952-1.png"></p>
 <p><strong>代码</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; fa;</span><br><span class="line">    <span class="keyword">int</span> res;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">            fa.emplace_back(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;<span class="comment">//路径压缩</span></span><br><span class="line">        <span class="keyword">while</span>(x != fa[x])</span><br><span class="line">        &#123;</span><br><span class="line">            fa[x] = fa[fa[x]];</span><br><span class="line">            x = fa[x];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> fa[x];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = find(i), y = find(j);</span><br><span class="line">        fa[x] = y;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">largestComponentSize</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; A)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = A.size();</span><br><span class="line">    <span class="comment">//这题是并查集的经典应用</span></span><br><span class="line">    <span class="comment">//因为A的长度很大，不能采用双重循环遍历</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; factor[n];<span class="comment">//质因数索引</span></span><br><span class="line">    <span class="keyword">int</span> maxVal = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;a :A) maxVal = max(maxVal,a);</span><br><span class="line">    init(maxVal+<span class="number">1</span>);</span><br><span class="line">    res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;a:A)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">double</span> r = <span class="built_in">sqrt</span>(a);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>;i &lt;= r; i++)</span><br><span class="line">        <span class="keyword">if</span>(a%i==<span class="number">0</span>) </span><br><span class="line">        &#123;</span><br><span class="line">            merge(a,i);</span><br><span class="line">            merge(a,a/i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将A中的数映射为代表元,看那一些出现过</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">cnt</span><span class="params">(maxVal+<span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cnt [find(A[i])]++;</span><br><span class="line">        res = max(res, cnt [find(A[i])]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;; </span><br></pre></td></tr></table></figure>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fa;
+    <span class="hljs-keyword">int</span> res;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+            fa.emplace_back(i);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//路径压缩</span>
+        <span class="hljs-keyword">while</span>(x != fa[x])
+        &#123;
+            fa[x] = fa[fa[x]];
+            x = fa[x];
+        &#125;
+        <span class="hljs-keyword">return</span> fa[x];
 
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">int</span> x = find(i), y = find(j);
+        fa[x] = y;
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">largestComponentSize</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; A)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> n = A.size();
+    <span class="hljs-comment">//这题是并查集的经典应用</span>
+    <span class="hljs-comment">//因为A的长度很大，不能采用双重循环遍历</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; factor[n];<span class="hljs-comment">//质因数索引</span>
+    <span class="hljs-keyword">int</span> maxVal = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;a :A) maxVal = max(maxVal,a);
+    init(maxVal+<span class="hljs-number">1</span>);
+    res = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;a:A)
+    &#123;
+        <span class="hljs-keyword">double</span> r = <span class="hljs-built_in">sqrt</span>(a);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>;i &lt;= r; i++)
+        <span class="hljs-keyword">if</span>(a%i==<span class="hljs-number">0</span>) 
+        &#123;
+            merge(a,i);
+            merge(a,a/i);
+        &#125;
+    &#125;
+    <span class="hljs-comment">//将A中的数映射为代表元,看那一些出现过</span>
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">cnt</span><span class="hljs-params">(maxVal+<span class="hljs-number">1</span>)</span></span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+    &#123;
+        cnt [find(A[i])]++;
+        res = max(res, cnt [find(A[i])]);
+    &#125;
+    <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
 <p>时间复杂度：$O(N \sqrt{W})$，其中 $N$ 是 A 的长度，$W = \max(A[i])$。</p>
 <p>空间复杂度： $O(M)$, 分别用了$fa$和$cnt$数组，$M$表示数组最大值。</p>
 <hr>
@@ -278,11 +566,13 @@
 <p>人和座位用 <code>0</code> 到 <code>2N-1</code> 的整数表示，情侣们按顺序编号，第一对是 <code>(0, 1)</code>，第二对是 <code>(2, 3)</code>，以此类推，最后一对是 <code>(2N-2, 2N-1)</code>。</p>
 <p>这些情侣的初始座位 <code>row[i]</code> 是由最初始坐在第 i 个座位上的人决定的。</p>
 <p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: row &#x3D; [0, 2, 1, 3]</span><br><span class="line">输出: 1</span><br><span class="line">解释: 我们只需要交换row[1]和row[2]的位置即可。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入: row = [<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]
+输出: <span class="hljs-number">1</span>
+解释: 我们只需要交换row[<span class="hljs-number">1</span>]和row[<span class="hljs-number">2</span>]的位置即可。</code></pre>
 <p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: row &#x3D; [3, 2, 0, 1]</span><br><span class="line">输出: 0</span><br><span class="line">解释: 无需交换座位，所有的情侣都已经可以手牵手了。</span><br></pre></td></tr></table></figure>
-
+<pre><code class="hljs angelscript">输入: row = [<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]
+输出: <span class="hljs-number">0</span>
+解释: 无需交换座位，所有的情侣都已经可以手牵手了。</code></pre>
 <p><strong>说明:</strong></p>
 <ol>
 <li><code>len(row)</code> 是偶数且数值在 <code>[4, 60]</code>范围内。</li>
@@ -294,11 +584,47 @@
 </ol>
 <p>我们考虑每队情侣都由奇数编号和偶数编号组成，因为情侣数量有限，我们可以遍历所有情侣中编号为偶数的<code>1,2,4,6...2*N</code>， 对相应的奇数情侣交换，每交换一次则<code>res++</code>。具体地，如果偶数情侣位于偶数位置$i$，则奇数情侣位置一定是$i+1$, 否则，奇数情侣位置为$i-1$。</p>
 <p><strong>代码</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span>  Map&lt;Integer,Integer&gt; memo = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();<span class="comment">//记录数字的位置</span></span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] row, <span class="keyword">int</span> i, <span class="keyword">int</span> direct)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp, temp2;</span><br><span class="line">        temp = memo.get(i+<span class="number">1</span>);</span><br><span class="line">        memo.put(row[memo.get(i)+direct],temp);</span><br><span class="line">        memo.put(i+<span class="number">1</span>,memo.get(i)+direct);</span><br><span class="line">        temp2 = row[temp];</span><br><span class="line">        row[temp] = row[memo.get(i)+direct] ;</span><br><span class="line">        row[memo.get(i)+direct] = temp2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">minSwapsCouples</span><span class="params">(<span class="keyword">int</span>[] row)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> n = row.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; n;i++) memo.put(row[i],i);</span><br><span class="line">        <span class="comment">//我们只移动奇数，如果偶数位置是偶数，那么相邻奇数位置在右边，否则在左边</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i += <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(memo.get(i) %<span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span>(memo.get(i+<span class="number">1</span>) == memo.get(i)+<span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">                swap(row,i,<span class="number">1</span>);</span><br><span class="line">                res ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(memo.get(i+<span class="number">1</span>) == memo.get(i)-<span class="number">1</span>) <span class="keyword">continue</span>;</span><br><span class="line">                swap(row,i,-<span class="number">1</span>);</span><br><span class="line">                res ++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-keyword">private</span>  Map&lt;Integer,Integer&gt; memo = <span class="hljs-keyword">new</span> HashMap&lt;Integer, Integer&gt;();<span class="hljs-comment">//记录数字的位置</span>
+   
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">swap</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] row, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> direct)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">int</span> temp, temp2;
+        temp = memo.get(i+<span class="hljs-number">1</span>);
+        memo.put(row[memo.get(i)+direct],temp);
+        memo.put(i+<span class="hljs-number">1</span>,memo.get(i)+direct);
+        temp2 = row[temp];
+        row[temp] = row[memo.get(i)+direct] ;
+        row[memo.get(i)+direct] = temp2;
+    &#125;
 
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">minSwapsCouples</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] row)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> n = row.length;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++) memo.put(row[i],i);
+        <span class="hljs-comment">//我们只移动奇数，如果偶数位置是偶数，那么相邻奇数位置在右边，否则在左边</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n;i += <span class="hljs-number">2</span>)
+        &#123;
+            <span class="hljs-keyword">if</span>(memo.get(i) %<span class="hljs-number">2</span> == <span class="hljs-number">0</span>) &#123;
+                <span class="hljs-keyword">if</span>(memo.get(i+<span class="hljs-number">1</span>) == memo.get(i)+<span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>;
+                swap(row,i,<span class="hljs-number">1</span>);
+                res ++;
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                <span class="hljs-keyword">if</span>(memo.get(i+<span class="hljs-number">1</span>) == memo.get(i)-<span class="hljs-number">1</span>) <span class="hljs-keyword">continue</span>;
+                swap(row,i,-<span class="hljs-number">1</span>);
+                res ++;
+            &#125;
+        &#125;
+
+        <span class="hljs-keyword">return</span> res;
+
+    &#125;
+&#125;</code></pre>
 <p><strong>时间复杂度</strong>:$O(N)$.</p>
 <p>空间复杂度:$O(N)$,使用了一个长度为$N$哈希表。</p>
-<ol start="2">
+<ol>
 <li><strong>并查集</strong></li>
 </ol>
 <p>我们重点放在并查集解法上。</p>
@@ -307,149 +633,320 @@
 <p>所以问题转化成$N$对情侣中，有几个这样的错误环。我们可以使用并查集来处理，每次遍历相邻的两个位置，如果他们本来就是情侣，他们处于大小为1的错误环中，只需要交换0次。如果不是情侣，说明他们两对处在同一个错误环中，我们将他们合并（union），将所有的错坐情侣合并和后，答案就是情侣对 - 环个数。<br>这也说明，最差的情况就是所有N对情侣都在一个环中，这时候我们需要$N - 1$调换。<br>最好情况每对情侣已经坐好了，已经有N个大小为1的环，这时候我们需要$N - N$次调换。</p>
 </blockquote>
 <p><strong>代码</strong></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; fa,rank;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getfa</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(x != fa[x]) fa[x] = getfa(fa[x]);</span><br><span class="line">        <span class="keyword">return</span> fa[x];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">uni</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y )</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> fx = getfa(x),fy = getfa(y);</span><br><span class="line">        <span class="keyword">if</span>(fx != fy)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(rank[fx] &lt; rank[fy])</span><br><span class="line">            &#123;</span><br><span class="line">                fa[fx] = fy;</span><br><span class="line">                rank[fy] += rank[fx];</span><br><span class="line">            &#125;<span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                fa[fy] = fx;</span><br><span class="line">                rank[fx] += rank[fy];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">minSwapsCouples</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; row)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = row.size(),m = n / <span class="number">2</span>,res = <span class="number">0</span>,circle = <span class="number">0</span>;</span><br><span class="line">        fa = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(m,<span class="number">0</span>),rank = <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(m,<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; m ; i ++) fa[i] = i;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; n ; i += <span class="number">2</span>)</span><br><span class="line">            uni(row[i] / <span class="number">2</span>,row[i + <span class="number">1</span>] / <span class="number">2</span>);<span class="comment">//本来是情侣的话，两者肯定相等，不会合并</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m ; i ++)</span><br><span class="line">            <span class="keyword">if</span>(i == getfa(i))</span><br><span class="line">                circle ++;</span><br><span class="line">        <span class="keyword">return</span> m - circle;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fa,rank;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getfa</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(x != fa[x]) fa[x] = getfa(fa[x]);
+        <span class="hljs-keyword">return</span> fa[x];
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">uni</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x,<span class="hljs-keyword">int</span> y )</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">int</span> fx = getfa(x),fy = getfa(y);
+        <span class="hljs-keyword">if</span>(fx != fy)
+        &#123;
+            <span class="hljs-keyword">if</span>(rank[fx] &lt; rank[fy])
+            &#123;
+                fa[fx] = fy;
+                rank[fy] += rank[fx];
+            &#125;<span class="hljs-keyword">else</span>
+            &#123;
+                fa[fy] = fx;
+                rank[fx] += rank[fy];
+            &#125;
+        &#125;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minSwapsCouples</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; row)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = row.size(),m = n / <span class="hljs-number">2</span>,res = <span class="hljs-number">0</span>,circle = <span class="hljs-number">0</span>;
+        fa = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(m,<span class="hljs-number">0</span>),rank = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(m,<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt; m ; i ++) fa[i] = i;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ; i &lt; n ; i += <span class="hljs-number">2</span>)
+            uni(row[i] / <span class="hljs-number">2</span>,row[i + <span class="hljs-number">1</span>] / <span class="hljs-number">2</span>);<span class="hljs-comment">//本来是情侣的话，两者肯定相等，不会合并</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; m ; i ++)
+            <span class="hljs-keyword">if</span>(i == getfa(i))
+                circle ++;
+        <span class="hljs-keyword">return</span> m - circle;
+    &#125;
+&#125;;
+</code></pre>
 
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/08/23/2020-8-23-bitoperation/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一句能打败99.99999%的程序员的位操作代码</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/10/2020-9-12-minimal-Spanning-tree/">
+                        <span class="hidden-mobile">专题:DFS&BFS</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/08/14/2020-8-14-what-is-UnionSet/" data-id="ckfj5lo78001t3osc8e7n61xk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2020/08/14/2020-8-17-recognition-monostack/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          初认识-单调栈
-        
+            
+          </article>
+        </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
     </a>
   
-  
-    <a href="/2020/08/14/2020-8-20-what-is-Trie/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">什么是前缀树</div>
-    </a>
-  
-</nav>
 
   
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS-BFS/" rel="tag">DFS&BFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MST/" rel="tag">MST</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" rel="tag">前缀树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E8%AE%BA/" rel="tag">图论</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" rel="tag">多指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" rel="tag">实用用技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" rel="tag">平衡树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="tag">并查集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" rel="tag">我吐🤮了</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" rel="tag">算法 - 滑动窗口</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">经典数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" rel="tag">被Oiers视作优雅的算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" rel="tag">通用策略</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag">面试基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">高级数据结构</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 16.67px;">C++</a> <a href="/tags/DFS-BFS/" style="font-size: 10px;">DFS&BFS</a> <a href="/tags/MST/" style="font-size: 10px;">MST</a> <a href="/tags/%E5%89%8D%E7%BC%80%E6%A0%91/" style="font-size: 10px;">前缀树</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 10px;">动态规划</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/" style="font-size: 10px;">多指针</a> <a href="/tags/%E5%AE%9E%E7%94%A8%E7%94%A8%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">实用用技巧</a> <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/" style="font-size: 13.33px;">平衡树</a> <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/" style="font-size: 10px;">并查集</a> <a href="/tags/%E6%88%91%E5%90%90%F0%9F%A4%AE%E4%BA%86/" style="font-size: 10px;">我吐🤮了</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 13.33px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/" style="font-size: 10px;">算法 - 滑动窗口</a> <a href="/tags/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 16.67px;">经典数据结构</a> <a href="/tags/%E8%A2%ABOiers%E8%A7%86%E4%BD%9C%E4%BC%98%E9%9B%85%E7%9A%84%E7%AE%97%E6%B3%95/" style="font-size: 10px;">被Oiers视作优雅的算法</a> <a href="/tags/%E9%80%9A%E7%94%A8%E7%AD%96%E7%95%A5/" style="font-size: 10px;">通用策略</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">面试基础</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">高级数据结构</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/09/23/2020-8=23-string/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/2020-8-30-prefix_sum/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/2020-9-2-fsm/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/Curriculum%20Selection/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/09/23/CS_heap_stack/">(no title)</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
     </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
   </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
   
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
 
   
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
 
 
 
 
-<script src="/js/script.js"></script>
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "优雅而巧妙的并查集&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
 
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>
