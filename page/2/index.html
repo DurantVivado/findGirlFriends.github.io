@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
 
 
@@ -188,6 +188,65 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/08/27/2020-8-27-some_tricks/">图论之求解欧拉通路</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/27/2020-8-27-some_tricks/">
+          
+          
+            
+          
+          图论：求解欧拉通路问题
+753.破解保险箱(Hard)
+332.重新安排行程(Medium)
+
+这类问题在实际生活中经常出现，大致可以抽象为：
+
+给定一个 n 个点 m 条边的图，要求从指定的顶点出发，经过所有的边恰好一次（可以理解为给定起点的「一笔画」问题），使得路径的字典序最小。
+
+这种「一笔画」问题与欧拉图或者半欧拉图有着紧密的联系，下面给出定义：
+
+通过图中所有边恰好一次且行遍所有顶点的通
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-27 00:00" pubdate>
+              2020-08-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
+            
+              <a href="/tags/%E6%B1%82%E8%A7%A3%E6%AC%A7%E6%8B%89%E9%80%9A%E8%B7%AF/">求解欧拉通路</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/08/26/2020-8-26-lotus/">买股票问题</a>
       </h1>
 
@@ -237,9 +296,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/LeetCode%E7%BB%8F%E5%85%B8/">LeetCode经典</a>
-            
               <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+            
+              <a href="/tags/LeetCode%E7%BB%8F%E5%85%B8/">LeetCode经典</a>
             
               <a href="/tags/%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E7%8A%B6%E6%80%81%E6%9C%BA/">有限自动状态机</a>
             
@@ -435,56 +494,6 @@ f(x)=w^Tx+b其中$w$称为权重向量，$b$称为偏置。我们可以利用均
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/08/10/2020-9-12-minimal-Spanning-tree/">专题:DFS&amp;BFS</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/08/10/2020-9-12-minimal-Spanning-tree/">
-          
-          
-            
-          
-          最小生成树的两种方法（Kruskal算法和Prim算法）
-
-
-连接所有点最小费用
-
-
-
-
-最小生成树（$Minimal  Spanning  Tree,MST$）：有 n 个结点的连通图的生成树是原图的极小连通子图，且包含原图中的所有 n 个结点，并且有保持图连通的最少的边。比较常用的有两种算法：$Kruskal$算法和$Prim$算法。
-
-Kruskal 算法被称为“加边法”，初始最小生成树的边
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-10 13:23" pubdate>
-              2020-08-10
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MST/">MST</a>
             
           </div>
         
@@ -991,23 +1000,6 @@ struct pair_hash//没这个pair 就不能在unorder——map快乐的玩耍了
 
 
 
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>
