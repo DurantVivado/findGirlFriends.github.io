@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
 
 
 
@@ -262,6 +262,64 @@ I. 0-1背包问题
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/07/21/2020-08-1-representation_of_graph/">爸爸再也不想做图类题目了</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-08-1-representation_of_graph/">
+          
+          
+            
+          
+          图的表示和图算法
+DFS&amp;BFS(在相应专题讲)
+Dijkstra
+Floyd算法
+Bellman-Ford算法
+SPFA算法
+
+1.邻接矩阵表示法如图：
+ 
+　　也就是说，如果两节点之间有一条弧，则邻接矩阵中对应的元素为1；否则为0。可以看出，这种表示法非常简单、直接。但是，在邻接矩阵的所有元素中，只有少量为非零元。如果网络比较稀疏，这种表示法浪费大量的存储空间，从而增加了在网络中查找弧
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
+            
+              <a href="/tags/Dijkstra/">Dijkstra</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/07/21/2020-08-19-manacher/">东方不败-&gt;回文问题</a>
       </h1>
 
@@ -341,25 +399,26 @@ I. 0-1背包问题
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/21/2020-08-1-representation_of_graph/">爸爸再也不想做图类题目了</a>
+        <a href="/2020/07/21/2020-7-28-HuaRongDao/">解华容道</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/21/2020-08-1-representation_of_graph/">
+        <a href="/2020/07/21/2020-7-28-HuaRongDao/">
           
           
             
           
-          图的表示和图算法
-DFS&amp;BFS(在相应专题讲)
-Dijkstra
-Floyd算法
-Bellman-Ford算法
-SPFA算法
+          解华容道问题状态空间表示法及搜索策略华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.
 
-1.邻接矩阵表示法如图：
- 
-　　也就是说，如果两节点之间有一条弧，则邻接矩阵中对应的元素为1；否则为0。可以看出，这种表示法非常简单、直接。但是，在邻接矩阵的所有元素中，只有少量为非零元。如果网络比较稀疏，这种表示法浪费大量的存储空间，从而增加了在网络中查找弧
+
+我们不妨从简单问题出发，考虑一个3x3的华容道问题。
+
+在搜索时需要解决的基本问题：
+
+搜索过程能否一定能找到一个解
+找到一个解，是否为最优解
+时间与空间复杂度如何
+搜索过程是否终止运行或者陷入一个死循
         </a>
       </p>
 
@@ -384,9 +443,7 @@ SPFA算法
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
-            
-              <a href="/tags/Dijkstra/">Dijkstra</a>
+              <a href="/tags/%E6%B8%B8%E6%88%8F/">游戏</a>
             
           </div>
         
@@ -449,63 +506,6 @@ Floyd判圈法想法
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/">多指针</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-7-28-HuaRongDao/">解华容道</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-7-28-HuaRongDao/">
-          
-          
-            
-          
-          解华容道问题状态空间表示法及搜索策略华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.
-
-
-我们不妨从简单问题出发，考虑一个3x3的华容道问题。
-
-在搜索时需要解决的基本问题：
-
-搜索过程能否一定能找到一个解
-找到一个解，是否为最优解
-时间与空间复杂度如何
-搜索过程是否终止运行或者陷入一个死循
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%B8%B8%E6%88%8F/">游戏</a>
             
           </div>
         
@@ -996,6 +996,23 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
 
 
 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>
