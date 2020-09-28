@@ -142,7 +142,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-08-01 00:00" pubdate>
-        2020年8月1日 凌晨
+        星期六, 八月 1日 2020, 12:00 凌晨
       </time>
     </span>
   
@@ -153,7 +153,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.1k 字
+      5k 字
     </span>
   
 
@@ -169,6 +169,14 @@
   
 
   
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
   
 </div>
 
@@ -379,7 +387,7 @@
 <li>以 1 为 $a_1$ 的排列一共有 $(n-1)!$ 个；<br>以 2 为 $a_1 $ 的排列一共有 $(n-1)!$ 个；<br>$\cdots⋯$<br>以 n 为 $a_1$ 的排列一共有 $(n-1)!$个。<br>由于我们需要求出从小到大的第 k 个排列，因此：</li>
 </ul>
 <p>如果 $k \leq (n-1)!$，我们就可以确定排列的首个元素为 1；<br>如果 $(n-1)! &lt; k \leq 2 \cdot (n-1)!$，我们就可以确定排列的首个元素为 2；<br>$\cdots⋯$<br>如果 $(n-1) \cdot (n-1)! &lt; k \leq n \cdot (n-1)!$，我们就可以确定排列的首个元素为 n。<br>因此，第 k 个排列的首个元素就是：</p>
-<script type="math/tex; mode=display">{a_1 = \lfloor \frac{k-1}{(n-1)!} \rfloor + 1}
+<script type="math/tex; mode=display">
 a_1 = \lfloor \frac{k-1}{(n-1)!} \rfloor + 1</script><p>其中 $\lfloor x \rfloor$ 表示将 x 向下取整。</p>
 <p>当我们确定了 $a_1$后，如何使用相似的思路，确定下一个元素 $a_2$呢？实际上，我们考虑以 $a_1$为首个元素的所有排列：</p>
 <p>第 k 个排列实际上就对应着这其中的第</p>
@@ -913,6 +921,8 @@ f(a)=\sum\limits_{i=0}^{n-1}b^i×a_i(mod \ P)</script><p>Rabin-karp编码</p>
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

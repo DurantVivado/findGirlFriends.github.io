@@ -142,7 +142,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-08-10 13:23" pubdate>
-        2020年8月10日 下午
+        星期一, 八月 10日 2020, 1:23 下午
       </time>
     </span>
   
@@ -169,6 +169,14 @@
   
 
   
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
   
 </div>
 
@@ -213,7 +221,7 @@
 <li>按权值从小到大选择边，所选的边连接的两个顶点$u_i,v_i$应该属于两个不同的树（否则会形成环），则称为最小生成树的一条边，并将这两棵树作为一棵树。</li>
 <li>重复<code>3.</code>。直到所有的顶点都在一棵树内，或者有$n-1$条边为止。</li>
 </ol>
-<p><img src="https://pic.leetcode-cn.com/1599997366-bsvjKQ-file_1599997368379" srcset="/img/loading.gif" alt="MST示意图"></p>
+<p><img src="\img\kruskal.jpg" srcset="/img/loading.gif" alt="MST示意图"></p>
 <p>和并查集的概念非常相似。Kruskal算法可以看成是基于并查集的贪心算法。    </p>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
     <span class="hljs-keyword">int</span> res,n;
@@ -292,7 +300,7 @@
 <li>在两个集合$u,v$所构成的边中，选择一条代价最小的边。</li>
 <li>重复上述步骤，直到最小生成树有$n-1$条边，或者只有一棵树为止。</li>
 </ol>
-<p><img src="https://pic.leetcode-cn.com/1599997366-aPWWkJ-file_1599997368384" srcset="/img/loading.gif" alt="这里写图片描述"></p>
+<p><img src="\img\prim.jpg" srcset="/img/loading.gif" alt="这里写图片描述"></p>
 <p>我们注意到我们每次添加的都是最小边，因此可以用小顶堆来存储。 Prim算法更像是Dijkstra算法。</p>
 <h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
     <span class="hljs-keyword">int</span> res,n;
@@ -486,6 +494,8 @@
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

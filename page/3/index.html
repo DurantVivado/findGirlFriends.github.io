@@ -152,61 +152,6 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/">C++ 如何让Unordered_map支持pair作为键值</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/">
-          
-          
-            
-          
-          
-C++
-
-如何让Unordered_map支持pair作为键值template&lt;class T1, class T2&gt; 
-struct pair_hash//没这个pair 就不能在unorder——map快乐的玩耍了
-&#123;
-    size_t operator() (const pair&lt;T1, T2&gt;&amp; p) const
-    &#123;
-   
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-25 00:00" pubdate>
-              2020-07-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/C/">C++</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
         <a href="/2020/07/25/2020-07-27-backpack-problem/">做一只可爱的小🐖背包 Cover「背包九讲」</a>
       </h1>
 
@@ -497,9 +442,9 @@ SPFA算法
 
 很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。
 比如求链表到数第N个节点，以及判断链表中是否有环。
-今天我们看LeetCode 75.颜色分类，原型是荷兰国旗问题。
+首先我们介绍Floyd判圈法
 Floyd判圈法想法
-当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生
+当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生什么？在某一个时刻，跑得快的人一定会
         </a>
       </p>
 
@@ -546,7 +491,10 @@ Floyd判圈法想法
           
             
           
-          面试基础之排序算法
+          
+            排序算法及例题
+          
+面试基础之排序算法
 题目
 
 
@@ -558,9 +506,7 @@ Floyd判圈法想法
 面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)
 
 快速排序非常神奇但是很容易忘记，因此需要经常记忆。
-快速排序$a[l…r]$是一个典型的分治算法，参考《算法导论》第七章P95。
-
-分解，将数组$a[l…r]$以$q$为分阶段划分为两个
+快速排序$a[l…r]$是一个典型的分治算法，参考《算法导论》第七章P
         </a>
       </p>
 
@@ -689,7 +635,10 @@ Sliding Windows，是一类很看重细节的问题，题目通常为Medium或�
 
 给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
 求在该柱状图中，能够勾勒出来的矩形的最大面积。
-                                                    
+ 
+以上是柱状图的示例，其中每个柱子的宽度为 1，给定的高度为 [2,1,5,6,2,3]。
+
+图中阴影
         </a>
       </p>
 
@@ -769,6 +718,59 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">字符串匹配</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">权力的游戏 之 零和博弈</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">
+          
+          
+            
+          
+          什么是零和博弈(Zero sum )？
+在零和博弈中，让自己最优和让对手最差其实是相同的目标！原因还是那句话，两人的总得分不会变化，自己多了，对手必然减少。
+
+在零和博弈问题中，一般会存在先手优势和后手劣势：
+先手优势：因为先手可以先走，所以可决定后手将要面对的局面。因此，后手虽然也会做出最优解，但是先手可以根据先发的优势，让后手进入最优解最差的局面。后手劣势：当先手走完后，虽然后手也会成为下一回
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+            
+              <a href="/tags/%E6%B8%B8%E6%88%8F%E7%B1%BB%E9%97%AE%E9%A2%98/">游戏类问题</a>
             
           </div>
         
@@ -873,6 +875,8 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

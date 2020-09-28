@@ -142,7 +142,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-08-28 00:00" pubdate>
-        2020年8月28日 凌晨
+        星期五, 八月 28日 2020, 12:00 凌晨
       </time>
     </span>
   
@@ -169,6 +169,14 @@
   
 
   
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
   
 </div>
 
@@ -226,16 +234,25 @@
 <p>总的戳破气球操作数一定为<code>n</code>。我们可以倒过来看这些操作，每一次添加一个气球。</p>
 <p>我们定义方法$solve(i,j)$表示将区间$(i,j)$全部填满所能得到的最多的硬币数。这里是一个开区间。当</p>
 <ul>
-<li>$i\ge j-1$，$solve(i,j)=0$</li>
-<li>否则，我们枚举开区间$(i,j)$内的全部位置$mid$，令$mid$为当前区间第一个添加的气球，该操作所能得到的硬币数为$nums[mid-1]<em>nums[mid]</em>nums[mid+1]$. 同时我们递归的计算出分割的两区间对$solve(i,j)$的贡献，这三项最大值，即为$solve(i,j)$的值。这样问题可以转换为求$solve(i,mid)$与$solve(mid,j)$之和。</li>
+<li><p>$i\ge j-1$，$solve(i,j)=0$</p>
+</li>
+<li><p>否则，我们枚举开区间$(i,j)$内的全部位置$mid$，令$mid$为当前区间第一个添加的气球，该操作所能得到的硬币数为  </p>
+</li>
+<li><script type="math/tex; mode=display">
+nums[mid-1]*nums[mid]*nums[mid+1] ​</script></li>
+<li><p>同时我们递归的计算出分割的两区间对$solve(i,j)$的贡献，这三项最大值，即为$solve(i,j)$的值。这样问题可以转换为求$solve(i,mid)$与$solve(mid,j)$之和。</p>
+</li>
 </ul>
 <p>状态转移方程：</p>
 <script type="math/tex; mode=display">
 solve(i,j)= \left\{
-\begin{array}{lcr}
-0,i \ge j-1\\
-
-solve(i,mid)+\max \limits_{i\lt mid \lt j}(nums[mid-1]*nums[mid]*nums[mid+1])+solve(mid,j), otherwise\\
+\begin{array}{rrr}
+0,i \ge j-1
+\\
+solve(i,mid)+
+\\ 
+\max \limits_{i\lt mid \lt j}(nums[mid-1]*nums[mid]*nums[mid+1])+
+\\ solve(mid,j), otherwise\\
 
 \end{array}
 \right.</script><p>然后我们再看边界条件：</p>
@@ -512,9 +529,9 @@ state &amp; <span class="hljs-number">1</span>&lt;&lt;(i<span class="hljs-number
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/08/30/2020-8-30-prefix_sum/">
+                      <a href="/2020/09/02/2020-9-2-fsm/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">神奇的前缀和</span>
+                        <span class="hidden-mobile">貌似很难懂的DSA是什么？</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -629,6 +646,8 @@ state &amp; <span class="hljs-number">1</span>&lt;&lt;(i<span class="hljs-number
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

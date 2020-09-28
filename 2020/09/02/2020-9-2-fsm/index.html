@@ -142,7 +142,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-09-02 00:00" pubdate>
-        2020年9月2日 凌晨
+        星期三, 九月 2日 2020, 12:00 凌晨
       </time>
     </span>
   
@@ -169,6 +169,14 @@
   
 
   
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
   
 </div>
 
@@ -236,7 +244,7 @@
 </ol>
 <p>下一步是找出「初始状态」和「接受状态」的集合。根据题意，「初始状态」应当为状态 1，而「接受状态」的集合则为状态 3、状态 4、状态 6、状态 9 以及状态 10。换言之，字符串的末尾要么是空格，要么是数字，要么是小数点，但前提是小数点的前面有数字。</p>
 <p>最后，需要定义「转移规则」。结合数值字符串应当具备的格式，将自动机转移的过程以图解的方式表示出来：</p>
-<p><img src="E:\Github pages\saasproj.github.io\_posts\img\image-fsa.png" srcset="/img/loading.gif" alt="image-20200902111512582"></p>
+<p><img src="\img\image-fsa.png" srcset="/img/loading.gif" alt="image-20200902111512582"></p>
 <p>在实际代码中，我们需要处理转移失败的情况。例如当位于状态 1（起始空格）时，没有对应字符 \text{e}e 的状态。为了处理这种情况，我们可以创建一个特殊的拒绝状态。如果当前状态下没有对应读入字符的「转移规则」，我们就转移到这个特殊的拒绝状态。一旦自动机转移到这个特殊状态，我们就可以立即判定该字符串不「被接受」。</p>
 <hr>
 <p><strong>代码</strong>：</p>
@@ -377,8 +385,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/08/30/2020-8-30-prefix_sum/">
-                        <span class="hidden-mobile">神奇的前缀和</span>
+                      <a href="/2020/08/28/2020-8-28-memorized-search/">
+                        <span class="hidden-mobile">记忆化搜索vs动态规划</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -484,6 +492,8 @@
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

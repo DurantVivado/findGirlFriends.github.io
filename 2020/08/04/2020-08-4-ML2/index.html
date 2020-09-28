@@ -142,7 +142,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-08-04 00:00" pubdate>
-        2020年8月4日 凌晨
+        星期二, 八月 4日 2020, 12:00 凌晨
       </time>
     </span>
   
@@ -169,6 +169,14 @@
   
 
   
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
   
 </div>
 
@@ -236,7 +244,7 @@ P(+)=\frac{p×cost_{01}}{p×cost_{01}+(1-p)×cost_{10}}</script><p>泛化错误�
 <p>我们在实际任务中不知道学习器的泛化错误率，但是可以根据测试错误率推出泛化错误率的分布。泛化错误率为$\epsilon$，测试错误率$\hat{\epsilon}$，对于m个测试样本，根据概率论知识，我们知道 学习器测得测试错误率为$\hat{\epsilon}$的概率是</p>
 <script type="math/tex; mode=display">
 P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}×m}(1-\epsilon)^{\hat{\epsilon}(1-m)}</script><p>对$P$求导可知，在$\epsilon=\hat{\epsilon}$时最大，符合二项分布。</p>
-<p><img src="https://bkimg.cdn.bcebos.com/pic/f11f3a292df5e0fe99251f12802823a85edf8db1d4c5?x-bce-process=image/resize,m_lfit,w_220,h_220,limit_1" srcset="/img/loading.gif" alt="n=6、p=0.5时的二项分布及正态近似"></p>
+<p><img src="\img\t_test.jpg" srcset="/img/loading.gif" alt="n=6、p=0.5时的二项分布及正态近似"></p>
 </li>
 </ul>
 <p>我们可使用“二项检验”($binomial  test$)来对 “$\epsilon\lt \epsilon_0$”进行检验，则在$1-\alpha$（置信度$confidence$）的概率内所能观测到的最大错误概率。若测试错误率$\hat{\epsilon}&lt;{\epsilon}$,即能以$1-\alpha$的置信度认为，学习器错误率不大于$\epsilon_0$</p>
@@ -390,6 +398,8 @@ P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}�
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 

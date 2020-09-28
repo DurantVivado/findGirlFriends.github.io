@@ -142,7 +142,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-07-21 00:00" pubdate>
-        2020年7月21日 凌晨
+        星期二, 七月 21日 2020, 12:00 凌晨
       </time>
     </span>
   
@@ -153,7 +153,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.7k 字
+      2.6k 字
     </span>
   
 
@@ -163,12 +163,20 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      33
+      32
        分钟
     </span>
   
 
   
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
   
 </div>
 
@@ -209,7 +217,7 @@
 </blockquote>
 <p>很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。</p>
 <p>比如求链表到数第N个节点，以及判断链表中是否有环。</p>
-<p>今天我们看LeetCode 75.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a>，原型是荷兰国旗问题。</p>
+<p>首先我们介绍Floyd判圈法</p>
 <h2 id="Floyd判圈法"><a href="#Floyd判圈法" class="headerlink" title="Floyd判圈法"></a>Floyd判圈法</h2><p><strong>想法</strong></p>
 <p>当然一个跑得快的人和一个跑得慢的人在一个圆形的赛道上赛跑，会发生什么？在某一个时刻，跑得快的人一定会从后面赶上跑得慢的人。</p>
 <p><strong>算法</strong></p>
@@ -217,19 +225,22 @@
 <p>阶段 1</p>
 <p>这里我们初始化两个指针 - 快指针和慢指针。我们每次移动慢指针一步、快指针两步，直到快指针无法继续往前移动。如果在某次移动后，快慢指针指向了同一个节点，我们就返回它。否则，我们继续，直到 while 循环终止且没有返回任何节点，这种情况说明没有成环，我们返回 null 。</p>
 <p>下图说明了这个算法的工作方式：</p>
-<p><img src="https://pic.leetcode-cn.com/ea37804a3d86a51a1bf827b9068e1f515ffddf840a0563ea0d1174c58ac64352-image.png" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;" /></p>
-<p>环中的节点从 0 到 C-1C−1 编号，其中 CC 是环的长度。非环节点从 -F−F 到 -1−1 编号，其中 FF 是环以外节点的数目。 FF 次迭代以后，慢指针指向了 0 且快指针指向某个节点 hh ，其中 F \equiv h \pmod CF≡h(modC) 。这是因为快指针在 FF 次迭代中遍历了 2F2F 个节点，且恰好有 FF 个在环中。继续迭代 C-hC−h 次，慢指针显然指向第 C-hC−h 号节点，而快指针也会指向相同的节点。原因在于，快指针从 hh 号节点出发遍历了 2(C-h)2(C−h) 个节点。</p>
-<p>\begin{aligned} h + 2(C-h) &amp;= 2C - h \ &amp;\equiv C-h \pmod C \end{aligned}<br>h+2(C−h)</p>
-<p>=2C−h<br>≡C−h(modC)</p>
-<p>因此，如果列表是有环的，快指针和慢指针最后会同时指向同一个节点，因此被称为 相遇 。</p>
+<p><img src="\img\floyd.jpg" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;" /></p>
+<p>环中的节点从 0 到 $C-1$ 编号，其中 $C$ 是环的长度。非环节点从 $-F$ 到 $−1 $编号，其中 $F$ 是环以外节点的数目。 $F$ 次迭代以后，慢指针指向了 0 且快指针指向某个节点 $h$ ，其中 $F≡h(modC)$ 。这是因为快指针在 $F$ 次迭代中遍历了 $2F$ 个节点，且恰好有 $F$ 个在环中。继续迭代 $C-h$ 次，慢指针显然指向第 $C-h$ 号节点，而快指针也会指向相同的节点。原因在于，快指针从 $h$ 号节点出发遍历了 $2(C-h)$ 个节点。</p>
+<script type="math/tex; mode=display">
+h+2(C−h)
+
+
+=2C−h
+≡C−h(modC)</script><p>因此，如果列表是有环的，快指针和慢指针最后会同时指向同一个节点，因此被称为 <strong>相遇</strong> 。</p>
 <p>阶段 2</p>
 <p>给定阶段 1 找到的相遇点，阶段 2 将找到环的入口。首先我们初始化额外的两个指针： ptr1 ，指向链表的头， ptr2 指向相遇点。然后，我们每次将它们往前移动一步，直到它们相遇，它们相遇的点就是环的入口，返回这个节点。</p>
 <p>下面的图将更好的帮助理解和证明这个方法的正确性。</p>
-<p><img src="https://pic.leetcode-cn.com/99987d4e679fdfbcfd206a4429d9b076b46ad09bd2670f886703fb35ef130635-image.png" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;" /></p>
+<p><img src="\img\floyd2.jpg" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;" /></p>
 <p>我们利用已知的条件：慢指针移动 1 步，快指针移动 2 步，来说明它们相遇在环的入口处。（下面证明中的 tortoise 表示慢指针，hare 表示快指针）</p>
-<p>\begin{aligned} 2 \cdot distance(tortoise) &amp;= distance(hare) \ 2(F+a) &amp;= F+a+b+a \ 2F+2a &amp;= F+2a+b \ F &amp;= b \ \end{aligned}<br>2⋅distance(tortoise)<br>2(F+a)<br>2F+2a<br>F</p>
-<p>=distance(hare)<br>=F+a+b+a<br>=F+2a+b<br>=b</p>
-<p>因为 F=bF=b ，指针从 hh 点出发和从链表的头出发，最后会遍历相同数目的节点后在环的入口处相遇。</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 2 \cdot distance(tortoise) &= distance(hare) \\ 2(F+a) &= F+a+b+a \\ 2F+2a &= F+2a+b \\ F &= b \\ \end{aligned}</script><p>因为 $F=b$ ，指针从 $h$ 点出发和从链表的头出发，最后会遍历相同数目的节点后在环的入口处相遇。</p>
+<p>444题可作为练习。</p>
 <hr>
 <h2 id="75-颜色分类"><a href="#75-颜色分类" class="headerlink" title="75.颜色分类"></a>75.颜色分类</h2><p>给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
 <p>此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
@@ -239,7 +250,7 @@
 输出: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]</code></pre>
 <hr>
 <p>我们用三个指针（p0, p2 和curr）来分别追踪0的最右边界，2的最左边界和当前考虑的元素。</p>
-<p><img src="https://pic.leetcode-cn.com/5b3d372e0bfb293ca3aac12e90421d7612c9e75b78b579f954c42ebfe74705d4-image.png" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="\img\pointer1.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>此题思路很直观，本解法的思路是沿着数组移动 curr 指针，若nums[curr] = 0，则将其与 nums[p0]互换；若 nums[curr] = 2 ，则与 nums[p2]互换。</p>
 <p>但是细节很需要注意，细节往往能致人于死地。</p>
 <ol>
@@ -554,6 +565,8 @@
   <script  src="/js/clipboard-use.js" ></script>
 
 
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 
