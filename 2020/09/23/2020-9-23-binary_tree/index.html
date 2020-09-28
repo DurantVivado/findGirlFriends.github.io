@@ -163,7 +163,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      68
+      67
        分钟
     </span>
   
@@ -375,31 +375,31 @@
 <li>每次从queue中出队，记为node，然后打印node值，如果node左孩子不为空，则将左孩子入队；如果node的右孩子不为空，则将右孩子入队；</li>
 <li>重复步骤3，直到queue为空。</li>
 </ol>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">levelOrderBottom</span><span class="hljs-params">(TreeNode* root)</span> </span>&#123;
-    <span class="hljs-keyword">auto</span> levelOrder = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;();
-    <span class="hljs-keyword">if</span> (!root) &#123;
-        <span class="hljs-keyword">return</span> levelOrder;
-    &#125;
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">levelorder</span><span class="hljs-params">(TreeNode *root)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> &#123;&#125;;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; postorder;
     <span class="hljs-built_in">queue</span>&lt;TreeNode*&gt; q;
     q.push(root);
-    <span class="hljs-keyword">while</span> (!q.empty()) &#123;
-        <span class="hljs-keyword">auto</span> level = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;();
-        <span class="hljs-keyword">int</span> size = q.size();
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; size; ++i) &#123;
-            <span class="hljs-keyword">auto</span> node = q.front();
-            q.pop();
-            level.push_back(node-&gt;val);
-            <span class="hljs-keyword">if</span> (node-&gt;left) &#123;
-                q.push(node-&gt;left);
-            &#125;
-            <span class="hljs-keyword">if</span> (node-&gt;right) &#123;
-                q.push(node-&gt;right);
-            &#125;
+    TreeNode *node;
+    <span class="hljs-keyword">while</span>(!q.empty())
+    &#123;
+        <span class="hljs-keyword">int</span> num_node = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> q_size = q.size();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; q_size;i++)
+        &#123;
+            node = q.front();
+            postorder.emplace_back(node-&gt;val);
+            <span class="hljs-keyword">if</span>(node-&gt;left) q.push(node-&gt;left);
+            <span class="hljs-keyword">if</span>(node-&gt;right) q.push(node-&gt;right);
+            <span class="hljs-keyword">delete</span> node;
+            q.pop(); 
         &#125;
-        levelOrder.push_back(level);
+
     &#125;
-    <span class="hljs-keyword">return</span> levelOrder;
-&#125;</code></pre>
+    <span class="hljs-keyword">return</span> postorder;
+&#125;
+</code></pre>
 <h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><ol>
 <li><p>从前序遍历和中序遍历构造二叉树</p>
 </li>
