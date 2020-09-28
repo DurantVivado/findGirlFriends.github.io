@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>Markdown那些不为人知的酷炫特效 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>关于 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -56,7 +56,7 @@
 
 
 <body>
-  <header style="height: 70vh;">
+  <header style="height: 60vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -172,51 +172,6 @@
             </span>
 
             
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-07-21 00:00" pubdate>
-        星期二, 七月 21日 2020, 12:00 凌晨
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      382 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      5
-       分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
-      </span>
-    
-  
-</div>
-
-            
           </div>
 
           
@@ -227,136 +182,87 @@
 
   <main>
     
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          >
+          
+            <div class="about-avatar">
+              <img src="/img/avatar.png" srcset="/img/loading.gif"
+                   class="img-fluid" alt="avatar">
+            </div>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<div class="text-center">
+  <div class="about-info">
+    <div class="about-name">myname</div>
+    <div class="about-intro">一句简短的介绍</div>
+    <div class="about-icons">
       
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-md">
-      <div class="container nopadding-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto" id="post">
-            <!-- SEO header -->
-            <h1 style="display: none">Markdown那些不为人知的酷炫特效</h1>
-            
-            <div class="markdown-body" id="post-body">
-              <h1 id="Markdown-那些不为人知的炫🆒特性"><a href="#Markdown-那些不为人知的炫🆒特性" class="headerlink" title="Markdown 那些不为人知的炫🆒特性"></a>Markdown 那些不为人知的炫🆒特性</h1><hr>
-<h2 id="新的甘特图功能，丰富你的文章（Mermaid语言）"><a href="#新的甘特图功能，丰富你的文章（Mermaid语言）" class="headerlink" title="新的甘特图功能，丰富你的文章（Mermaid语言）"></a>新的甘特图功能，丰富你的文章（Mermaid语言）</h2><pre><code class="hljs mermaid">gantt
-        dateFormat  YYYY-MM-DD
-        title Adding GANTT diagram functionality to mermaid
-        section 现有任务
-        已完成               :done,    des1, 2014-01-06,2014-01-08
-        进行中               :active,  des2, 2014-01-09, 3d
-        计划一               :         des3, after des2, 5d
-        计划二               :         des4, after des3, 5d</code></pre>
-<ul>
-<li>关于 <strong>甘特图</strong> 语法，参考 [这儿][2],</li>
-</ul>
-<h2 id="UML-图表（Mermaid语言）"><a href="#UML-图表（Mermaid语言）" class="headerlink" title="UML 图表（Mermaid语言）"></a>UML 图表（Mermaid语言）</h2><p>可以使用UML图表进行渲染。 <a target="_blank" rel="noopener" href="https://mermaidjs.github.io/">Mermaid</a>. 例如下面产生的一个序列图：</p>
-<pre><code class="hljs mermaid">sequenceDiagram
-张三 -&gt;&gt; 李四: 你好！李四, 最近怎么样?
-李四--&gt;&gt;王五: 你最近怎么样，王五？
-李四--x 张三: 我很好，谢谢!
-李四-x 王五: 我很好，谢谢!
-Note right of 王五: 李四想了很长时间, 文字太长了&lt;br&#x2F;&gt;不适合放在一行.
-
-李四--&gt;&gt;张三: 打量着王五...
-张三-&gt;&gt;王五: 很好... 王五, 你怎么样?</code></pre>
-<p>这将产生一个流程图:</p>
-<pre><code class="hljs mermaid">graph LR
-A[长方形] -- 链接 --&gt; B((圆))
-A --&gt; C(圆角长方形)
-B --&gt; D&#123;菱形&#125;
-C --&gt; D</code></pre>
-<ul>
-<li>关于 <strong>Mermaid</strong> 语法，参考 [这儿][3],</li>
-</ul>
-<h2 id="FLowchart流程图（flow语言）"><a href="#FLowchart流程图（flow语言）" class="headerlink" title="FLowchart流程图（flow语言）"></a>FLowchart流程图（flow语言）</h2><p>我们依旧会支持flowchart的流程图：<br><pre><code class="hljs flow">start&#x3D;&gt;start: 开始
-loginInfo&#x3D;&gt;inputoutput: 登录数据
-verifyLogin&#x3D;&gt;subroutine: 登录验证
-isSuccess&#x3D;&gt;condition: 验证成功？
-respondSuccess&#x3D;&gt;operation: 响应成功
-responseFailure&#x3D;&gt;operation: 响应失败
-end&#x3D;&gt;end: 结束
-
-start-&gt;loginInfo-&gt;verifyLogin-&gt;isSuccess
-isSuccess(yes)-&gt;respondSuccess-&gt;end
-isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
-<ul>
-<li>关于 <strong>Flowchart流程图</strong> 语法，参考 <a target="_blank" rel="noopener" href="http://flowchart.js.org/">这儿</a>.</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Iccyco/article/details/106202945">https://blog.csdn.net/Iccyco/article/details/106202945</a></p>
-
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/markdown/">markdown</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/markdown/">markdown</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
-              
-              
-                <div class="post-prevnext row">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">权力的游戏 之 零和博弈</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2020/07/21/2020-8-20-what-is-Trie/">
-                        <span class="hidden-mobile">Google划词搜索的秘密</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
+        
+        
+        
+        <a target="_blank" rel="noopener" href="https://github.com" class="
+           hint--bottom hint--rounded"
+           aria-label=GitHub
+        >
+          <i class="iconfont icon-github-fill" aria-hidden="true"></i>
+          
+        </a>
+      
+        
+        
+        
+        <a target="_blank" rel="noopener" href="https://douban.com" class="
+           hint--bottom hint--rounded"
+           aria-label=豆瓣
+        >
+          <i class="iconfont icon-douban-fill" aria-hidden="true"></i>
+          
+        </a>
+      
+        
+        
+        
+        <a href="javascript:;" class="qr-trigger
+           "
+           
+        >
+          <i class="iconfont icon-wechat-fill" aria-hidden="true"></i>
+          
+            <img class="qr-img" src="/img/favicon.png" srcset="/img/loading.gif" alt="qrcode" />
+          
+        </a>
+      
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div id="tocbot"></div>
-</div>
-
-      </div>
-    
   </div>
 </div>
+<div class="mt-5 markdown-body">
+  <span class="label label-primary">程序员</span>
+<span class="label label-default">汪星人</span>
+<span class="label label-info">百分百二次元</span>
+<span class="label label-success">学霸</span>
+<span class="label label-warning">ACG</span>
+<span class="label label-danger">白毛控</span>
+<span class="label label-danger">撸猫狂魔</span>
+<h1 id="关于我"><a href="#关于我" class="headerlink" title="关于我"></a>关于我</h1><p>I’m Durant Thorvald</p>
+<p>🚹，97年生</p>
+<p>目前在华中科技大学，光电国家研究中心，主攻存储和大数据方向。</p>
+<p>喜欢研究算法，刷题，日语，未来希望去UCLA读博。</p>
+<p><strong>目标：</strong></p>
 
-<!-- Custom -->
+            <input type="checkbox" disabled checked="checked">搭建一个博客
+          
+</div>
 
-
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     
   </main>
 
@@ -464,31 +370,6 @@ isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
 
 
 
-  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
-  <script>
-    $(document).ready(function () {
-      var boardCtn = $('#board-ctn');
-      var boardTop = boardCtn.offset().top;
-
-      tocbot.init({
-        tocSelector: '#tocbot',
-        contentSelector: '#post-body',
-        headingSelector: 'h1,h2,h3,h4,h5,h6',
-        linkClass: 'tocbot-link',
-        activeLinkClass: 'tocbot-active-link',
-        listClass: 'tocbot-list',
-        isCollapsedClass: 'tocbot-is-collapsed',
-        collapsibleClass: 'tocbot-is-collapsible',
-        collapseDepth: 0,
-        scrollSmooth: true,
-        headingsOffset: -boardTop
-      });
-      if ($('.toc-list-item').length > 0) {
-        $('#toc').css('visibility', 'visible');
-      }
-    });
-  </script>
-
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -496,7 +377,7 @@ isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Markdown那些不为人知的酷炫特效&nbsp;",
+        "关于&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -539,20 +420,6 @@ isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
   </script>
 
 
-
-  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-  <script>
-    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
-      function () {
-        var element = document.createElement('a');
-        $(element).attr('data-fancybox', 'images');
-        $(element).attr('href', $(this).attr('src'));
-        $(this).wrap(element);
-      }
-    );
-  </script>
 
 
 
