@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.6k 字
+      5.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      68
+      74
        分钟
     </span>
   
@@ -240,9 +240,9 @@
             <h1 style="display: none">必须掌握数据结构-二叉树</h1>
             
             <div class="markdown-body" id="post-body">
-              <pre><code class="hljs markdown">&#123;% note success %&#125;
-二叉树
-&#123;% endnote %&#125;</code></pre>
+              <div class="note note-success">
+            <p>二叉树</p>
+          </div>
 <h1 id="二叉树相关算法"><a href="#二叉树相关算法" class="headerlink" title="二叉树相关算法"></a>二叉树相关算法</h1><blockquote>
 <p>一看到二叉树，基本上可以确定是DFS或者BFS了，比较单调，但是也有一些很复杂的题目。二叉树，根据实际需要，演变为二叉搜索树，2-3-4树，平衡树（红黑树、AVL树），在计算机系统中占据重要地位。</p>
 </blockquote>
@@ -260,11 +260,10 @@
 <p>我们将介绍</p>
 <ul>
 <li>二叉树的表示</li>
-<li><p>二叉树的遍历</p>
-</li>
-<li><p>二叉树序列化以及反序列化</p>
-</li>
+<li>二叉树的遍历</li>
+<li>二叉树序列化以及反序列化</li>
 <li>树形dp</li>
+<li>线索二叉树</li>
 <li>最近公共祖先（LCA）</li>
 <li>二叉平衡树</li>
 <li>二叉树路径求和</li>
@@ -847,7 +846,8 @@ null = <span class="hljs-literal">None</span>
             <span class="hljs-keyword">else</span>: node.right = <span class="hljs-literal">None</span>
         <span class="hljs-keyword">return</span> root</code></pre>
 <hr>
-<h2 id="树形dp（竞赛难度）"><a href="#树形dp（竞赛难度）" class="headerlink" title="树形dp（竞赛难度）"></a>树形dp（竞赛难度）</h2><p> 一般来说树形dp在设状态转移方程时都可以用f[i][]表示i这颗子树怎么怎么样的最优解，实现时一般都是用子树更新父亲（即从下向上更新），那么首先应该考虑的是一个一个子树的更新父亲还是把所有子树都算完了在更新父亲？这就要因题而异了，一般来说有两种情况：    1. <strong>需要把所有子树的信息都掌握之后再更新子树的就需要把所有子树都算完了在更新父亲</strong>。</p>
+<h2 id="树形dp（竞赛难度）"><a href="#树形dp（竞赛难度）" class="headerlink" title="树形dp（竞赛难度）"></a>树形dp（竞赛难度）</h2><p> 一般来说树形dp在设状态转移方程时都可以用$dp[i][j]$表示i这颗子树怎么怎么样的最优解，实现时一般都是用子树更新父亲（即从下向上更新），那么首先应该考虑的是一个一个子树的更新父亲还是把所有子树都算完了在更新父亲？这就要因题而异了，一般来说有两种情况：    </p>
+<p>​    1. <strong>需要把所有子树的信息都掌握之后再更新子树的就需要把所有子树都算再了在更新父亲</strong>。</p>
 <ol>
 <li><strong>而像树上背包这样的问题就需要一个一个的更新，每次都用一个子树更新已经更新完的子树+父亲，最后就可以将这一部分的子树更新完了，再继续往上更新，最后根节点就是答案。</strong></li>
 </ol>
@@ -924,6 +924,55 @@ null = <span class="hljs-literal">None</span>
 
 &#125;
 </code></pre>
+<hr>
+<h2 id="二叉树的线索化"><a href="#二叉树的线索化" class="headerlink" title="二叉树的线索化*"></a>二叉树的线索化*</h2><blockquote>
+<p>二叉树转换为链表的方式，了解就行</p>
+</blockquote>
+<p>二叉树是一种非线性结构，遍历二叉树几乎都是通过递归或者用栈辅助实现非递归的遍历。二叉树作为存储结构时，一个节点只能获取节点的左孩子和右孩子，不能直接得到节点的<strong>任一</strong>遍历序列的前驱或者后继。为了保存这种在遍历中需要的信息，我们利用二叉树中指向左右子树的空指针来存放节点的前驱或后继信息。</p>
+<p>也就是说，线索二叉树就是充分利用二叉树节点中的空指针，让它们分别指向本节点的前驱或者后继。既充分利用了资源，又方便我们遍历这颗二叉树。</p>
+<p><strong>概念</strong></p>
+<p>$n$个节点的二叉树中含有$n+1$个空指针域。利用二叉树中的空指针域 来存放在某种遍历次序下的前驱和后继 ，这种指针叫“线索”。这种加上了线索的二叉树称为线索二叉树（Threaded BinaryTree）。根据遍历次序的不同，线索二叉树可分为前序线索二叉树、中序线索二叉树和后序线索二叉树三种。</p>
+<p><strong>结构定义</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-comment">// 线索二叉树</span>
+<span class="hljs-keyword">enum</span> Flag&#123;
+    LINK,
+    CLUE,
+&#125;;<span class="hljs-comment">//设置标志位，是正常二叉树还是线索</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ThreadTree</span></span>
+<span class="hljs-class">&#123;</span>
+    <span class="hljs-keyword">int</span> val;
+    ThreadTree *left, *right;
+    Flag left_flag, right_flag;
+    ThreadTree(<span class="hljs-keyword">int</span> x):val(x),left(<span class="hljs-literal">nullptr</span>),right(<span class="hljs-literal">nullptr</span>),left_flag(LINK),right_flag(LINK)&#123;&#125;
+    
+&#125;;</code></pre>
+<p>与遍历一样，线索二叉树也有三种构造方式,我们主要讲中序构建，其它的可以类比。</p>
+<p>建立一个全局节点$pre$，用于记录上一个节点。中序遍历一棵二叉树</p>
+<ul>
+<li>若节点没有左子树，那么节点的$left_flag$设为$CLUE$. 同时左子树指向$pre$</li>
+<li>若节点没有右子树，那么节点的$right_flag$设为$CLUE$. 同时左子树指向当前节点$root$</li>
+<li>$pre = root$</li>
+</ul>
+<pre><code class="hljs cpp">
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">inThreading</span><span class="hljs-params">(ThreadTree* root)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span>;
+    inThreading(root-&gt;left);<span class="hljs-comment">//对左子树递归构建</span>
+    <span class="hljs-keyword">if</span>(!root-&gt;left)
+    &#123;
+        root-&gt;left_flag = CLUE;
+        root-&gt;left = pre;
+    &#125;
+    <span class="hljs-keyword">if</span>(!root-&gt;right)
+    &#123;
+        root-&gt;right_flag = CLUE;
+        root-&gt;right = root;
+    &#125;
+    pre = root;
+    inThreading(root-&gt;right);
+
+&#125;</code></pre>
+<p>然后我们思考遍历这个</p>
 
             </div>
             <hr>

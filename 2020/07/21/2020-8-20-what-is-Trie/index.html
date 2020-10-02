@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.6k 字
+      3.9k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      48
+      52
        分钟
     </span>
   
@@ -511,6 +511,7 @@
 </ol>
 </li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/">1248. 统计「优美子数组」</a></li>
+<li>LCP 19：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">秋叶收藏集</a></li>
 </ul>
 <hr>
 <h2 id="560-和为k的子数组-Medium"><a href="#560-和为k的子数组-Medium" class="headerlink" title="560.和为k的子数组(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">560.和为k的子数组</a>(Medium)</strong></h2><p>给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。</p>
@@ -613,6 +614,28 @@ s 只包含小写英文字母。</code></p>
 </blockquote>
 <p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
 <p>空间复杂度: $O(1)$.</p>
+<hr>
+<h4 id="LCP-19-秋叶收藏集"><a href="#LCP-19-秋叶收藏集" class="headerlink" title="LCP 19. 秋叶收藏集"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">LCP 19. 秋叶收藏集</a></h4><p>小扣出去秋游，途中收集了一些红叶和黄叶，他利用这些叶子初步整理了一份秋叶收藏集 <code>leaves</code>， 字符串 <code>leaves</code> 仅包含小写字符 <code>r</code> 和 <code>y</code>， 其中字符 <code>r</code> 表示一片红叶，字符 <code>y</code> 表示一片黄叶。<br>出于美观整齐的考虑，小扣想要将收藏集中树叶的排列调整成「红、黄、红」三部分。每部分树叶数量可以不相等，但均需大于等于 1。每次调整操作，小扣可以将一片红叶替换成黄叶或者将一片黄叶替换成红叶。请问小扣最少需要多少次调整操作才能将秋叶收藏集调整完毕。</p>
+<p><strong>示例 1：</strong></p>
+<blockquote>
+<p>输入：<code>leaves = &quot;rrryyyrryyyrr&quot;</code></p>
+<p>输出：<code>2</code></p>
+<p>解释：调整两次，将中间的两片红叶替换成黄叶，得到 “rrryyyyyyyyrr”</p>
+</blockquote>
+<p><strong>示例 2：</strong></p>
+<blockquote>
+<p>输入：<code>leaves = &quot;ryr&quot;</code></p>
+<p>输出：<code>0</code></p>
+<p>解释：已符合要求，不需要额外操作</p>
+</blockquote>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>3 &lt;= leaves.length &lt;= 10^5</code></li>
+<li><code>leaves</code> 中只包含字符 <code>&#39;r&#39;</code> 和字符 <code>&#39;y&#39;</code></li>
+</ul>
+<hr>
+<p>这题想到前缀和比想到动态规划要容易一些。</p>
+<p>比如我们希望从整体角度考虑这个问题</p>
 <h2 id="扩展：删除元素"><a href="#扩展：删除元素" class="headerlink" title="扩展：删除元素"></a>扩展：删除元素</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA">https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA</a></p>
 
             </div>

@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.8k 字
+      8.8k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      103
+      116
        分钟
     </span>
   
@@ -264,6 +264,7 @@
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/edit-distance/">编辑距离</a>(Hard)</li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-boxes">移除盒子</a>(Hard)</li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-all-possible-routes/">统计所有可能路径</a>(Hard)</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">秋叶收藏集</a>(Medium)</li>
 </ol>
 <p>配合<a target="_blank" rel="noopener" href="http://zxi.mytechroad.com/blog/leetcode-problem-categories/?from=singlemessage">Huahua’s problem set</a>. 食用更佳！</p>
 <hr>
@@ -878,6 +879,79 @@ dp[0][j] = (p[j]=='*')\&\&dp[0][j-1]</script></li>
     <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">countRoutes</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; locations, <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> finish, <span class="hljs-keyword">int</span> fuel)</span> </span>&#123;
         <span class="hljs-built_in">memset</span>(dp, <span class="hljs-number">-1</span>, <span class="hljs-keyword">sizeof</span>(dp));
         <span class="hljs-keyword">return</span> dfs(locations, start, finish, fuel);
+    &#125;
+&#125;;
+</code></pre>
+<hr>
+<h2 id="LCD-19-秋叶收藏集"><a href="#LCD-19-秋叶收藏集" class="headerlink" title="LCD 19. 秋叶收藏集"></a>LCD 19. 秋叶收藏集</h2><p>小扣出去秋游，途中收集了一些红叶和黄叶，他利用这些叶子初步整理了一份秋叶收藏集 <code>leaves</code>， 字符串 <code>leaves</code> 仅包含小写字符 <code>r</code> 和 <code>y</code>， 其中字符 <code>r</code> 表示一片红叶，字符 <code>y</code> 表示一片黄叶。<br>出于美观整齐的考虑，小扣想要将收藏集中树叶的排列调整成「红、黄、红」三部分。每部分树叶数量可以不相等，但均需大于等于 1。每次调整操作，小扣可以将一片红叶替换成黄叶或者将一片黄叶替换成红叶。请问小扣最少需要多少次调整操作才能将秋叶收藏集调整完毕。</p>
+<p><strong>示例 1：</strong></p>
+<blockquote>
+<p>输入：<code>leaves = &quot;rrryyyrryyyrr&quot;</code></p>
+<p>输出：<code>2</code></p>
+<p>解释：调整两次，将中间的两片红叶替换成黄叶，得到 “rrryyyyyyyyrr”</p>
+</blockquote>
+<p><strong>示例 2：</strong></p>
+<blockquote>
+<p>输入：<code>leaves = &quot;ryr&quot;</code></p>
+<p>输出：<code>0</code></p>
+<p>解释：已符合要求，不需要额外操作</p>
+</blockquote>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>3 &lt;= leaves.length &lt;= 10^5</code></li>
+<li><code>leaves</code> 中只包含字符 <code>&#39;r&#39;</code> 和字符 <code>&#39;y&#39;</code></li>
+</ul>
+<hr>
+<p>乍一看没有思路，很难想到是动态规划来做。但其实我们可以这样想，把字符串分为三个部分，每一个部分都是<code>连续</code>的，我们可以利用这一点来构建状态转移方程。<code>| r:0 | y:1 |  r:2 |</code></p>
+<p>我们用三种状态来表示，0，1，2。因为三种状态出现顺序必须是0，1，2. 所以每组的第一个字符编号必须大于它的状态编号。</p>
+<p>设$dp[i][j]$表示$leaves[0-j]$，最末尾为状态$j$对应的最小操作数。</p>
+<ul>
+<li>第一个状态前面不存在任何状态，因此没有比较，直接写就行：</li>
+</ul>
+<p>$dp[i][0] = dp[i-1][0]+isRed(i)$</p>
+<p>$isRed$表示第i个字符是否为<code>&#39;r&#39;</code>如果是，返回1，否则返回0.</p>
+<ul>
+<li>处于第二种状态的字符，前面要么是第一种状态，要么是第二种状态，所以为：</li>
+</ul>
+<p>$dp[i][1]=min(dp[i-1][1],dp[i-1][0])+isYellow(i)$</p>
+<ul>
+<li><p>处于第三种状态的字符，前面要么是第二种状态，要么是第三种状态，不可能是第一种状态，因为题目规定每一部分至少一个。</p>
+<p>$dp[i][2]=min(dp[i-1][1],dp[i-1][2])+isRed(i)$</p>
+<p>&gt;<br>&gt;</p>
+<blockquote>
+<p>边界条件</p>
+</blockquote>
+</li>
+</ul>
+<p>一旦出现<code>min</code>这种形式，我们就需要剔除不合理条件，特别是这种求最小的题目，用0初始化要特别谨慎。</p>
+<p>$dp[0][0] = isYellow(i)$</p>
+<p>$dp[0][1]=INT_MAX\\dp[0][2]=INT_MAX\\dp[1][2]=INT_MAX$</p>
+<p>这些都是不可能出现的状态。</p>
+<p>最后返回结果是<code>dp[n-1][2]</code>，因为这是一个连续状态转移过程。</p>
+<p>用cpp写的时候千万<strong>不要</strong>写成</p>
+<p><code>dp[i][2] = min(dp[i-1][2],dp[i-1][1]) + (leaves[i] == &#39;y&#39;)?1:0;</code></p>
+<p>?优先级比较低，它会等前面表达式执行完，而 <code>1+true=1</code>，很容易犯错。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minimumOperations</span><span class="hljs-params">(<span class="hljs-built_in">string</span> leaves)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = leaves.size();
+        <span class="hljs-comment">//采用动态规划，设dp[i][j]表示 </span>
+        <span class="hljs-comment">// 0-i片叶子中，第i片叶子处于状态j的最小操作数</span>
+        <span class="hljs-comment">// |  r:0  |  y:1  |   r:2  |</span>
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; dp = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;(n,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(<span class="hljs-number">3</span>)); 
+        dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = (leaves[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;y&#x27;</span>)?<span class="hljs-number">1</span>:<span class="hljs-number">0</span>;
+        <span class="hljs-comment">// dp[0][1] = INT_MAX;</span>
+        <span class="hljs-comment">// dp[0][2] = INT_MAX;</span>
+        <span class="hljs-comment">// dp[1][2] = INT_MAX;</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n;i++)
+        &#123;
+            dp[i][<span class="hljs-number">0</span>] = (leaves[i]==<span class="hljs-string">&#x27;y&#x27;</span>) ? dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>:dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">if</span>(i &gt; <span class="hljs-number">0</span>) dp[i][<span class="hljs-number">1</span>] = (leaves[i] == <span class="hljs-string">&#x27;r&#x27;</span>)? min(dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>],dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>]) + <span class="hljs-number">1</span>:min(dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>],dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>]);
+            <span class="hljs-keyword">if</span>(i &gt; <span class="hljs-number">1</span>) dp[i][<span class="hljs-number">2</span>] = (leaves[i] == <span class="hljs-string">&#x27;y&#x27;</span>)? min(dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">2</span>],dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]) + <span class="hljs-number">1</span>:min(dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">2</span>],dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]);
+            <span class="hljs-comment">// printf(&quot;i:%d,dp[0]:%d,dp[1]:%d,dp[2]:%d\n&quot;,i,dp[i][0],dp[i][1],dp[i][2]);</span>
+        &#125;
+        <span class="hljs-keyword">return</span> dp[n<span class="hljs-number">-1</span>][<span class="hljs-number">2</span>];
+
     &#125;
 &#125;;
 </code></pre>
