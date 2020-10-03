@@ -188,6 +188,61 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/">C++ 如何让Unordered_map支持pair作为键值</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/">
+          
+          
+            
+          
+          
+C++
+
+如何让Unordered_map支持pair作为键值template&lt;class T1, class T2&gt; 
+struct pair_hash//没这个pair 就不能在unorder——map快乐的玩耍了
+&#123;
+    size_t operator() (const pair&lt;T1, T2&gt;&amp; p) const
+    &#123;
+   
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-25 00:00" pubdate>
+              2020-07-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/07/25/2020-07-27-backpack-problem/">做一只可爱的小🐖背包 Cover「背包九讲」</a>
       </h1>
 
@@ -456,68 +511,6 @@ SPFA算法
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/21/2020-7-30-sorting-magic/">【面试向】排序算法</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-7-30-sorting-magic/">
-          
-          
-            
-          
-          
-            排序算法及例题
-          
-面试基础之排序算法
-题目
-
-
-前k个高频元素
-
-
-
-1. 快速排序
-面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)
-
-快速排序非常神奇但是很容易忘记，因此需要经常记忆。
-快速排序$a[l…r]$是一个典型的分治算法，参考《算法导论》第七章P
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8E%92%E5%BA%8F/">排序</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
         <a href="/2020/07/21/2020-7-30-pointers/">神奇的多指针</a>
       </h1>
 
@@ -568,6 +561,68 @@ Floyd判圈法想法
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/">多指针</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-7-30-sorting-magic/">【面试向】排序算法</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-7-30-sorting-magic/">
+          
+          
+            
+          
+          
+            排序算法及例题
+          
+面试基础之排序算法
+题目
+
+
+前k个高频元素
+
+
+
+1. 快速排序
+面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)
+
+快速排序非常神奇但是很容易忘记，因此需要经常记忆。
+快速排序$a[l…r]$是一个典型的分治算法，参考《算法导论》第七章P
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8E%92%E5%BA%8F/">排序</a>
             
           </div>
         
@@ -761,59 +816,6 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">权力的游戏 之 零和博弈</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">
-          
-          
-            
-          
-          什么是零和博弈(Zero sum )？
-在零和博弈中，让自己最优和让对手最差其实是相同的目标！原因还是那句话，两人的总得分不会变化，自己多了，对手必然减少。
-
-在零和博弈问题中，一般会存在先手优势和后手劣势：
-先手优势：因为先手可以先走，所以可决定后手将要面对的局面。因此，后手虽然也会做出最优解，但是先手可以根据先发的优势，让后手进入最优解最差的局面。后手劣势：当先手走完后，虽然后手也会成为下一回
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
-            
-              <a href="/tags/%E6%B8%B8%E6%88%8F%E7%B1%BB%E9%97%AE%E9%A2%98/">游戏类问题</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -887,21 +889,22 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
 
     
       
-        <!-- 不蒜子统计PV -->
-        <span id="busuanzi_container_site_pv" style="display: none">
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
             总访问量 
-            <span id="busuanzi_value_site_pv"></span>
+            <span id="leancloud-site-pv"></span>
              次
           </span>
       
       
-        <!-- 不蒜子统计UV -->
-        <span id="busuanzi_container_site_uv" style="display: none">
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
             总访客数 
-            <span id="busuanzi_value_site_uv"></span>
+            <span id="leancloud-site-uv"></span>
              人
           </span>
       
+
     
   </div>
 
@@ -936,7 +939,185 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
 
 
 
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+  <script defer>
+  (function () {
+    // 查询存储的记录
+    function getRecord(Counter, target) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({target})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {target, time: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    }
+
+    // 发起自增请求
+    function increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    }
+
+    // 构建自增请求体
+    function buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "time": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    }
+
+    // 校验是否为有效的 UV
+    function validUV() {
+      var key = 'LeanCloud_UV_Flag';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    }
+
+    function addCount(Counter) {
+      var enableIncr = 'true' === 'true' && window.location.hostname !== 'localhost';
+      var getterArr = [];
+      var incrArr = [];
+
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#leancloud-site-pv-container');
+      if (pvCtn || enableIncr) {
+        var pvGetter = getRecord(Counter, 'site-pv').then((record) => {
+          incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-pv');
+          if (ele) {
+            ele.innerText = record.time + 1;
+            if (pvCtn) {
+              pvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#leancloud-site-uv-container');
+      if (uvCtn || enableIncr) {
+        var uvGetter = getRecord(Counter, 'site-uv').then((record) => {
+          var vuv = validUV();
+          vuv && incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-uv');
+          if (ele) {
+            ele.innerText = record.time + (vuv ? 1 : 0);
+            if (uvCtn) {
+              uvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 如果是文章，请求文章的浏览数，并自增
+      if ('false' === 'true') {
+        var viewCtn = document.querySelector('#leancloud-post-views-container');
+        if (viewCtn || enableIncr) {
+          var target = decodeURI('/page/3/index.html');
+          var viewGetter = getRecord(Counter, target).then((record) => {
+            incrArr.push(buildIncrement(record.objectId))
+            if (viewCtn) {
+              var ele = document.querySelector('#leancloud-post-views');
+              if (ele) {
+                ele.innerText = (record.time || 0) + 1;
+                viewCtn.style.display = 'inline';
+              }
+            }
+          });
+          getterArr.push(viewGetter);
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && increment(Counter, incrArr);
+        })
+      }
+    }
+
+    var app_id = '8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz'
+    var app_key = 'F0939INl4cKXpCw2HgTIUb6B'
+    var server_url = 'https://8ox7vcxy.lc-cn-n1-shared.com# REST API 服务器地址，国际版不填'
+
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': app_id,
+            'X-LC-Key': app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+
+      addCount(Counter);
+    }
+
+    var api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${ app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(resp => resp.json())
+        .then(({api_server}) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
 
 
 
@@ -1043,6 +1224,19 @@ KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组�
 
 
 
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 

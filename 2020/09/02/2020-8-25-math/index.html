@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      891 字
+      1.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      14
        分钟
     </span>
   
@@ -207,10 +207,10 @@
   
   
     
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
+        <span id="leancloud-post-views"></span> 次
       </span>
     
   
@@ -279,15 +279,35 @@
 <h2 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h2><blockquote>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19782019/article/details/85621386">https://blog.csdn.net/qq_19782019/article/details/85621386</a></p>
 </blockquote>
-<p>我们思考一个问题，求$2^{100}$的最后三位数。</p>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-title">fastPower</span><span class="hljs-params">(<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> base, <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> power)</span> </span>&#123;
+<p>我们思考一个问题，求$2^{10E9}$的最后三位数。</p>
+<blockquote>
+<ol>
+<li>(a + b) % p = (a % p + b % p) % p （1）</li>
+<li>(a - b) % p = (a % p - b % p ) % p （2）</li>
+<li><strong>(a * b) % p = (a % p * b % p) % p （3）</strong></li>
+</ol>
+<p>数学上可以证明只要我们每一步都取后三位，那么最后的结果就是答案。</p>
+</blockquote>
+<p>快速幂的核心算法是【分治】，即把每一次幂都分为两半。</p>
+<ul>
+<li>如果幂为偶数则，将幂除2，将基乘2，并且取余数。</li>
+<li>如果幂为奇数，将幂减1除2，多出的一次幂乘到结果中，并且取余数。</li>
+</ul>
+<p>如果最后幂为0，表示计算完毕。</p>
+<p>我们可以适当进行优化</p>
+<ul>
+<li><code>a&amp;1==true</code>表示a为奇数，因为偶数二进制最后一位一定是0.</li>
+<li>幂减1除2，可以直接省略，因为<code>/2</code>运算会忽略小数点。同时<code>&gt;&gt;1</code>也表示除2.</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-title">fastPower</span><span class="hljs-params">(<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> base, <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> power, <span class="hljs-keyword">int</span> digits)</span> </span>&#123;
+    <span class="hljs-comment">//digits表示取最后几位</span>
     <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> result = <span class="hljs-number">1</span>;
     <span class="hljs-keyword">while</span> (power &gt; <span class="hljs-number">0</span>) &#123;
         <span class="hljs-keyword">if</span> (power &amp; <span class="hljs-number">1</span>) &#123;<span class="hljs-comment">//此处等价于if(power%2==1)</span>
-            result = result * base % <span class="hljs-number">1000</span>;
+            result = result * base % digits;
         &#125;
         power &gt;&gt;= <span class="hljs-number">1</span>;<span class="hljs-comment">//此处等价于power=power/2</span>
-        base = (base * base) % <span class="hljs-number">1000</span>;
+        base = (base * base) % digits;
     &#125;
     <span class="hljs-keyword">return</span> result;
 &#125;</code></pre>
@@ -477,21 +497,22 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
 
     
       
-        <!-- 不蒜子统计PV -->
-        <span id="busuanzi_container_site_pv" style="display: none">
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
             总访问量 
-            <span id="busuanzi_value_site_pv"></span>
+            <span id="leancloud-site-pv"></span>
              次
           </span>
       
       
-        <!-- 不蒜子统计UV -->
-        <span id="busuanzi_container_site_uv" style="display: none">
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
             总访客数 
-            <span id="busuanzi_value_site_uv"></span>
+            <span id="leancloud-site-uv"></span>
              人
           </span>
       
+
     
   </div>
 
@@ -526,7 +547,185 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
 
 
 
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+  <script defer>
+  (function () {
+    // 查询存储的记录
+    function getRecord(Counter, target) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({target})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {target, time: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    }
+
+    // 发起自增请求
+    function increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    }
+
+    // 构建自增请求体
+    function buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "time": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    }
+
+    // 校验是否为有效的 UV
+    function validUV() {
+      var key = 'LeanCloud_UV_Flag';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    }
+
+    function addCount(Counter) {
+      var enableIncr = 'true' === 'true' && window.location.hostname !== 'localhost';
+      var getterArr = [];
+      var incrArr = [];
+
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#leancloud-site-pv-container');
+      if (pvCtn || enableIncr) {
+        var pvGetter = getRecord(Counter, 'site-pv').then((record) => {
+          incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-pv');
+          if (ele) {
+            ele.innerText = record.time + 1;
+            if (pvCtn) {
+              pvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#leancloud-site-uv-container');
+      if (uvCtn || enableIncr) {
+        var uvGetter = getRecord(Counter, 'site-uv').then((record) => {
+          var vuv = validUV();
+          vuv && incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-uv');
+          if (ele) {
+            ele.innerText = record.time + (vuv ? 1 : 0);
+            if (uvCtn) {
+              uvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 如果是文章，请求文章的浏览数，并自增
+      if ('true' === 'true') {
+        var viewCtn = document.querySelector('#leancloud-post-views-container');
+        if (viewCtn || enableIncr) {
+          var target = decodeURI('/2020/09/02/2020-8-25-math/');
+          var viewGetter = getRecord(Counter, target).then((record) => {
+            incrArr.push(buildIncrement(record.objectId))
+            if (viewCtn) {
+              var ele = document.querySelector('#leancloud-post-views');
+              if (ele) {
+                ele.innerText = (record.time || 0) + 1;
+                viewCtn.style.display = 'inline';
+              }
+            }
+          });
+          getterArr.push(viewGetter);
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && increment(Counter, incrArr);
+        })
+      }
+    }
+
+    var app_id = '8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz'
+    var app_key = 'F0939INl4cKXpCw2HgTIUb6B'
+    var server_url = 'https://8ox7vcxy.lc-cn-n1-shared.com# REST API 服务器地址，国际版不填'
+
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': app_id,
+            'X-LC-Key': app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+
+      addCount(Counter);
+    }
+
+    var api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${ app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(resp => resp.json())
+        .then(({api_server}) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
 
 
 
@@ -687,6 +886,19 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
 
 
 
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 

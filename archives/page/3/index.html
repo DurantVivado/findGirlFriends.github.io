@@ -179,12 +179,18 @@
                 
 
 <div class="list-group">
-  <p class="h4">共计 38 篇文章</p>
+  <p class="h4">共计 39 篇文章</p>
   <hr>
   
     
       
       <p class="h5">2020</p>
+    
+    <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">C++ 如何让Unordered_map支持pair作为键值</span>
+      <time style="float: right;">07-25</time>
+    </a>
+  
     
     <a href="/2020/07/25/2020-07-27-backpack-problem/" class="list-group-item list-group-item-action">
       <span class="archive-post-title">做一只可爱的小🐖背包 Cover「背包九讲」</span>
@@ -210,14 +216,14 @@
     </a>
   
     
-    <a href="/2020/07/21/2020-7-30-sorting-magic/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">【面试向】排序算法</span>
+    <a href="/2020/07/21/2020-7-30-pointers/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">神奇的多指针</span>
       <time style="float: right;">07-21</time>
     </a>
   
     
-    <a href="/2020/07/21/2020-7-30-pointers/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">神奇的多指针</span>
+    <a href="/2020/07/21/2020-7-30-sorting-magic/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">【面试向】排序算法</span>
       <time style="float: right;">07-21</time>
     </a>
   
@@ -236,12 +242,6 @@
     
     <a href="/2020/07/21/2020-8-29-KMP/" class="list-group-item list-group-item-action">
       <span class="archive-post-title">臭名昭著的KMP算法</span>
-      <time style="float: right;">07-21</time>
-    </a>
-  
-    
-    <a href="/2020/07/21/2020-9-1-what-is-zero-sum/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">权力的游戏 之 零和博弈</span>
       <time style="float: right;">07-21</time>
     </a>
   
@@ -318,21 +318,22 @@
 
     
       
-        <!-- 不蒜子统计PV -->
-        <span id="busuanzi_container_site_pv" style="display: none">
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
             总访问量 
-            <span id="busuanzi_value_site_pv"></span>
+            <span id="leancloud-site-pv"></span>
              次
           </span>
       
       
-        <!-- 不蒜子统计UV -->
-        <span id="busuanzi_container_site_uv" style="display: none">
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
             总访客数 
-            <span id="busuanzi_value_site_uv"></span>
+            <span id="leancloud-site-uv"></span>
              人
           </span>
       
+
     
   </div>
 
@@ -367,7 +368,185 @@
 
 
 
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+  <script defer>
+  (function () {
+    // 查询存储的记录
+    function getRecord(Counter, target) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({target})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {target, time: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    }
+
+    // 发起自增请求
+    function increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    }
+
+    // 构建自增请求体
+    function buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "time": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    }
+
+    // 校验是否为有效的 UV
+    function validUV() {
+      var key = 'LeanCloud_UV_Flag';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    }
+
+    function addCount(Counter) {
+      var enableIncr = 'true' === 'true' && window.location.hostname !== 'localhost';
+      var getterArr = [];
+      var incrArr = [];
+
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#leancloud-site-pv-container');
+      if (pvCtn || enableIncr) {
+        var pvGetter = getRecord(Counter, 'site-pv').then((record) => {
+          incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-pv');
+          if (ele) {
+            ele.innerText = record.time + 1;
+            if (pvCtn) {
+              pvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#leancloud-site-uv-container');
+      if (uvCtn || enableIncr) {
+        var uvGetter = getRecord(Counter, 'site-uv').then((record) => {
+          var vuv = validUV();
+          vuv && incrArr.push(buildIncrement(record.objectId))
+          var ele = document.querySelector('#leancloud-site-uv');
+          if (ele) {
+            ele.innerText = record.time + (vuv ? 1 : 0);
+            if (uvCtn) {
+              uvCtn.style.display = 'inline';
+            }
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 如果是文章，请求文章的浏览数，并自增
+      if ('false' === 'true') {
+        var viewCtn = document.querySelector('#leancloud-post-views-container');
+        if (viewCtn || enableIncr) {
+          var target = decodeURI('/archives/page/3/index.html');
+          var viewGetter = getRecord(Counter, target).then((record) => {
+            incrArr.push(buildIncrement(record.objectId))
+            if (viewCtn) {
+              var ele = document.querySelector('#leancloud-post-views');
+              if (ele) {
+                ele.innerText = (record.time || 0) + 1;
+                viewCtn.style.display = 'inline';
+              }
+            }
+          });
+          getterArr.push(viewGetter);
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && increment(Counter, incrArr);
+        })
+      }
+    }
+
+    var app_id = '8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz'
+    var app_key = 'F0939INl4cKXpCw2HgTIUb6B'
+    var server_url = 'https://8ox7vcxy.lc-cn-n1-shared.com# REST API 服务器地址，国际版不填'
+
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': app_id,
+            'X-LC-Key': app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+
+      addCount(Counter);
+    }
+
+    var api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${ app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(resp => resp.json())
+        .then(({api_server}) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
 
 
 
@@ -474,6 +653,19 @@
 
 
 
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 
