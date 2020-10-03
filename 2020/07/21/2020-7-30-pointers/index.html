@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="cn" data-default-color-scheme=&quot;auto&quot;>
 
 
 
@@ -79,7 +79,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                首页
+                Home
               </a>
             </li>
           
@@ -91,7 +91,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                标签
+                Tags
               </a>
             </li>
           
@@ -115,7 +115,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                归档
+                Archives
               </a>
             </li>
           
@@ -127,7 +127,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                分类
+                Categories
               </a>
             </li>
           
@@ -139,7 +139,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/links/">
                 <i class="iconfont icon-link-fill"></i>
-                友链
+                Links
               </a>
             </li>
           
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-07-21 00:00" pubdate>
-        星期二, 七月 21日 2020, 12:00 凌晨
+        Tuesday, July 21st 2020, 12:00 am
       </time>
     </span>
   
@@ -261,7 +261,7 @@
 <p>阶段 1</p>
 <p>这里我们初始化两个指针 - 快指针和慢指针。我们每次移动慢指针一步、快指针两步，直到快指针无法继续往前移动。如果在某次移动后，快慢指针指向了同一个节点，我们就返回它。否则，我们继续，直到 while 循环终止且没有返回任何节点，这种情况说明没有成环，我们返回 null 。</p>
 <p>下图说明了这个算法的工作方式：</p>
-<p><img src="\img\floyd.jpg" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;" /></p>
+<p><img src="/.top//img\floyd.jpg" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;"></p>
 <p>环中的节点从 0 到 $C-1$ 编号，其中 $C$ 是环的长度。非环节点从 $-F$ 到 $−1 $编号，其中 $F$ 是环以外节点的数目。 $F$ 次迭代以后，慢指针指向了 0 且快指针指向某个节点 $h$ ，其中 $F≡h(modC)$ 。这是因为快指针在 $F$ 次迭代中遍历了 $2F$ 个节点，且恰好有 $F$ 个在环中。继续迭代 $C-h$ 次，慢指针显然指向第 $C-h$ 号节点，而快指针也会指向相同的节点。原因在于，快指针从 $h$ 号节点出发遍历了 $2(C-h)$ 个节点。</p>
 <script type="math/tex; mode=display">
 h+2(C−h)
@@ -272,7 +272,7 @@ h+2(C−h)
 <p>阶段 2</p>
 <p>给定阶段 1 找到的相遇点，阶段 2 将找到环的入口。首先我们初始化额外的两个指针： ptr1 ，指向链表的头， ptr2 指向相遇点。然后，我们每次将它们往前移动一步，直到它们相遇，它们相遇的点就是环的入口，返回这个节点。</p>
 <p>下面的图将更好的帮助理解和证明这个方法的正确性。</p>
-<p><img src="\img\floyd2.jpg" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;" /></p>
+<p><img src="/.top//img\floyd2.jpg" srcset="/img/loading.gif" alt="image.png" style="zoom:50%;"></p>
 <p>我们利用已知的条件：慢指针移动 1 步，快指针移动 2 步，来说明它们相遇在环的入口处。（下面证明中的 tortoise 表示慢指针，hare 表示快指针）</p>
 <script type="math/tex; mode=display">
 \begin{aligned} 2 \cdot distance(tortoise) &= distance(hare) \\ 2(F+a) &= F+a+b+a \\ 2F+2a &= F+2a+b \\ F &= b \\ \end{aligned}</script><p>因为 $F=b$ ，指针从 $h$ 点出发和从链表的头出发，最后会遍历相同数目的节点后在环的入口处相遇。</p>
@@ -286,7 +286,7 @@ h+2(C−h)
 输出: [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>]</code></pre>
 <hr>
 <p>我们用三个指针（p0, p2 和curr）来分别追踪0的最右边界，2的最左边界和当前考虑的元素。</p>
-<p><img src="\img\pointer1.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="/.top//img\pointer1.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>此题思路很直观，本解法的思路是沿着数组移动 curr 指针，若nums[curr] = 0，则将其与 nums[p0]互换；若 nums[curr] = 2 ，则与 nums[p2]互换。</p>
 <p>但是细节很需要注意，细节往往能致人于死地。</p>
 <ol>
@@ -487,7 +487,7 @@ h+2(C−h)
                       <a href="/2020/07/21/2020-7-28-HuaRongDao/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">解华容道</span>
-                        <span class="visible-mobile">上一篇</span>
+                        <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
@@ -496,7 +496,7 @@ h+2(C−h)
                     
                       <a href="/2020/07/21/2020-7-30-sorting-magic/">
                         <span class="hidden-mobile">【面试向】排序算法</span>
-                        <span class="visible-mobile">下一篇</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -513,7 +513,7 @@ h+2(C−h)
     
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
   <div id="tocbot"></div>
 </div>
 
@@ -540,7 +540,7 @@ h+2(C−h)
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -549,7 +549,7 @@ h+2(C−h)
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
           <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+                 for="local-search-input">keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>

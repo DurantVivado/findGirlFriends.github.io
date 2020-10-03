@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="cn" data-default-color-scheme=&quot;auto&quot;>
 
 
 
@@ -79,7 +79,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
-                首页
+                Home
               </a>
             </li>
           
@@ -91,7 +91,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
-                标签
+                Tags
               </a>
             </li>
           
@@ -115,7 +115,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
-                归档
+                Archives
               </a>
             </li>
           
@@ -127,7 +127,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
-                分类
+                Categories
               </a>
             </li>
           
@@ -139,7 +139,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/links/">
                 <i class="iconfont icon-link-fill"></i>
-                友链
+                Links
               </a>
             </li>
           
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-08-04 00:00" pubdate>
-        星期二, 八月 4日 2020, 12:00 凌晨
+        Tuesday, August 4th 2020, 12:00 am
       </time>
     </span>
   
@@ -280,7 +280,7 @@ P(+)=\frac{p×cost_{01}}{p×cost_{01}+(1-p)×cost_{10}}</script><p>泛化错误�
 <p>我们在实际任务中不知道学习器的泛化错误率，但是可以根据测试错误率推出泛化错误率的分布。泛化错误率为$\epsilon$，测试错误率$\hat{\epsilon}$，对于m个测试样本，根据概率论知识，我们知道 学习器测得测试错误率为$\hat{\epsilon}$的概率是</p>
 <script type="math/tex; mode=display">
 P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}×m}(1-\epsilon)^{\hat{\epsilon}(1-m)}</script><p>对$P$求导可知，在$\epsilon=\hat{\epsilon}$时最大，符合二项分布。</p>
-<p><img src="\img\t_test.jpg" srcset="/img/loading.gif" alt="n=6、p=0.5时的二项分布及正态近似"></p>
+<p><img src="/.top//img\t_test.jpg" srcset="/img/loading.gif" alt="n=6、p=0.5时的二项分布及正态近似"></p>
 </li>
 </ul>
 <p>我们可使用“二项检验”($binomial  test$)来对 “$\epsilon\lt \epsilon_0$”进行检验，则在$1-\alpha$（置信度$confidence$）的概率内所能观测到的最大错误概率。若测试错误率$\hat{\epsilon}&lt;{\epsilon}$,即能以$1-\alpha$的置信度认为，学习器错误率不大于$\epsilon_0$</p>
@@ -320,7 +320,7 @@ P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}�
                       <a href="/2020/08/04/2020-05-10-ML1/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">机器学习I 基本概念</span>
-                        <span class="visible-mobile">上一篇</span>
+                        <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
@@ -329,7 +329,7 @@ P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}�
                     
                       <a href="/2020/08/02/2020-8-2-trackback-demo/">
                         <span class="hidden-mobile">抛砖引玉析回溯</span>
-                        <span class="visible-mobile">下一篇</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -346,7 +346,7 @@ P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}�
     
       <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
         <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
   <div id="tocbot"></div>
 </div>
 
@@ -373,7 +373,7 @@ P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}�
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -382,7 +382,7 @@ P(\hat{\epsilon};\epsilon)=\binom{m}{\hat{\epsilon}×m}\epsilon^{\hat{\epsilon}�
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
           <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+                 for="local-search-input">keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
