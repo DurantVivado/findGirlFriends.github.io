@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
 
 
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-09-18 00:00" pubdate>
-        星期五, 九月 18日 2020, 12:00 凌晨
+        2020年9月18日 凌晨
       </time>
     </span>
   
@@ -207,10 +207,10 @@
   
   
     
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
+        <span id="leancloud-post-views"></span> 次
       </span>
     
   
@@ -248,8 +248,8 @@
 <p><strong>全局区</strong>($static$)：全局变量和静态变量的存储在一起，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。程序结束后由系统释放。</p>
 <p><strong>文字常量区</strong>：常量和字符串等。</p>
 <p><strong>程序代码区</strong>：程序的二进制代码。</p>
-<h2 id="图表"><a href="#图表" class="headerlink" title="图表"></a>图表</h2><p><img src="/.top//img\heap_1.png" srcset="/img/loading.gif" alt="image-20200918200847502"></p>
-<p><img src="/.top//img\heap_2.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="图表"><a href="#图表" class="headerlink" title="图表"></a>图表</h2><p><img src="\img\heap_1.png" srcset="/img/loading.gif" alt="image-20200918200847502"></p>
+<p><img src="\img\heap_2.png" srcset="/img/loading.gif" alt="img"></p>
 <h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code class="hljs cpp"><span class="hljs-comment">//main.cpp</span>
 <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>; <span class="hljs-comment">//全局初始化区</span>
 <span class="hljs-keyword">int</span> a = <span class="hljs-number">0</span>; <span class="hljs-comment">//全局初始化区</span>
@@ -319,6 +319,38 @@ main() &#123;
               
             </div>
 
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
             
           </article>
         </div>
@@ -540,6 +572,45 @@ main() &#123;
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
 
 
   
@@ -600,6 +671,13 @@ main() &#123;
 
 
 
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
 
 
 
@@ -618,23 +696,6 @@ main() &#123;
 
 
 
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

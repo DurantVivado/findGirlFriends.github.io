@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
 
 
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-07-21 00:00" pubdate>
-        星期二, 七月 21日 2020, 12:00 凌晨
+        2020年7月21日 凌晨
       </time>
     </span>
   
@@ -207,10 +207,10 @@
   
   
     
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
+        <span id="leancloud-post-views"></span> 次
       </span>
     
   
@@ -248,20 +248,20 @@
 <li>SPFA算法</li>
 </ul>
 <h2 id="1-邻接矩阵表示法"><a href="#1-邻接矩阵表示法" class="headerlink" title="1.邻接矩阵表示法"></a>1.邻接矩阵表示法</h2><p>如图：</p>
-<p> <img src="/.top//img\graph_1.png" srcset="/img/loading.gif" alt="img"><img src="/.top//img\graph_2.png" srcset="/img/loading.gif" alt="img"></p>
+<p> <img src="\img\graph_1.png" srcset="/img/loading.gif" alt="img"><img src="\img\graph_2.png" srcset="/img/loading.gif" alt="img"></p>
 <p>　　也就是说，如果两节点之间有一条弧，则邻接矩阵中对应的元素为1；否则为0。可以看出，这种表示法非常简单、直接。但是，在邻接矩阵的所有元素中，只有少量为非零元。如果网络比较稀疏，这种表示法浪费大量的存储空间，从而增加了在网络中查找弧的时间。</p>
 <p>　　同样，对于网络中的权，也可以用类似邻接矩阵的 矩阵表示。只是此时一条弧所对应的元素不再是1，而是相应的权而已。如果网络中每条弧赋有多种权，则可以用多个矩阵表示这些权。</p>
-<h2 id="2-关联矩阵表示法"><a href="#2-关联矩阵表示法" class="headerlink" title="2. 关联矩阵表示法"></a>2. 关联矩阵表示法</h2><p><img src="/.top//img\graph_3.png" srcset="/img/loading.gif" alt="img"><img src="/.top//img\graph_4.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="2-关联矩阵表示法"><a href="#2-关联矩阵表示法" class="headerlink" title="2. 关联矩阵表示法"></a>2. 关联矩阵表示法</h2><p><img src="\img\graph_3.png" srcset="/img/loading.gif" alt="img"><img src="\img\graph_4.png" srcset="/img/loading.gif" alt="img"></p>
 <p>　　也就是说，在关联矩阵中，<u>每行对应于图的一个节点，每列对应于图的一条弧</u>。如果一个节点是一条弧的起点，则关联矩阵中对应的元素为1；如果一个节点是一条弧的终点，则关联矩阵中对应的元素为 -1；如果一个节点与一条弧不关联，则关联矩阵中对应的元素为0。对于简单图，关联矩阵每列只含有两个非零元（一个 1，一个-1）可以看出，这种表示法也非常简单、直接。但是，在关联矩阵的所有$mn$ 个元素中，只有 $2m$个为非零元。如果网络比较稀疏，这种表示法也会浪费大量的存储空间。但由于关联矩阵有许多特别重要的理论性质，因此它在网络优化中是非常重要的概念。</p>
 <p>　　同样，对于网络中的权，也可以通过对关联矩阵的扩展来表示。例如，如果网络中每条弧有一个权，我们可以把关联矩阵增加一行，把每一条弧所对应的权存储在增加的行中。如果网络中每条弧赋有多个权，我们可以把关联矩阵增加相应的行数，把每一条弧所对应的权存储在增加的行中。</p>
-<h2 id="3-弧表示法"><a href="#3-弧表示法" class="headerlink" title="3.弧表示法"></a>3.弧表示法</h2><p><img src="/.top//img\graph_5.png" srcset="/img/loading.gif" alt="img"><img src="/.top//img\graph_6.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="3-弧表示法"><a href="#3-弧表示法" class="headerlink" title="3.弧表示法"></a>3.弧表示法</h2><p><img src="\img\graph_5.png" srcset="/img/loading.gif" alt="img"><img src="\img\graph_6.png" srcset="/img/loading.gif" alt="img"></p>
 <p>例如，例7所示的图，假设弧$(1,2)，(1,3)，(2,4)，(3,2)，(4,3)，(4,5)，(5,3)和(5,4)$上的权分别为$8，9，6，4，0，3，6和7$，则弧表表示如上：</p>
 <p>为了便于检索，一般按照起点、终点的字典序顺序存储弧表，如上面的弧表就是按照这样的顺序存储的。</p>
 <h2 id="4-邻接表表示法"><a href="#4-邻接表表示法" class="headerlink" title="4. 邻接表表示法"></a>4. 邻接表表示法</h2><p>　　邻接表表示法将图以邻接表（adjacency lists）的形式存储在计算机中。所谓图的邻接表，也就是图的所有节点的邻接表的集合；而对每个节点，它的邻接表就是它的所有出弧。邻接表表示法就是对图的每个节点，用一个单向链表列出从该节点出发的所有弧，链表中每个单元对应于一条出弧。为了记录弧上的权，链表中每个单元除列出弧的另一个端点外，还可以包含弧上的权等作为数据域。图的整个邻接表可以用一个指针数组表示。例如，例7所示的图，邻接表表示为</p>
-<p><img src="/.top//img\weighed_graph.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="\img\weighed_graph.png" srcset="/img/loading.gif" alt="img"></p>
 <h2 id="5-星形表示法"><a href="#5-星形表示法" class="headerlink" title="5.星形表示法"></a>5.星形表示法</h2><p>星形（star）表示法的思想与邻接表表示法的思想有一定的相似之处。对每个节点，它也是记录从该节点出发的所有弧，但它不是采用单向链表而是采用一个单一的数组表示。也就是说，在该数组中首先存放从节点1出发的所有弧，然后接着存放从节点2出发的所有孤，依此类推，最后存放从节点 出发的所有孤。对每条弧，要依次存放其起点、终点、权的数值等有关信息。这实际上相当于对所有弧给出了一个顺序和编号，只是从同一节点出发的弧的顺序可以任意排列。此外，为了能够快速检索从每个节点出发的所有弧，我们一般还用一个数组记录每个节点出发的弧的起始地址（即弧的编号）。在这种表示法中，可以快速检索从每个节点出发的所有弧，这种星形表示法称为前向星形（forward star）表示法。</p>
 <p>例如，在例7所示的图中，仍然假设弧（1,2），（l,3），（2,4），（3,2），（4,3），（4,5），（5,3）和（5,4）上的权分别为8，9，6，4，0，3，6和7。此时该网络图可以用前向星形表示法表示如下：</p>
-<p><img src="/.top//img\graph_7.png" srcset="/img/loading.gif" alt="img"><img src="/.top//img\graph_8.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="\img\graph_7.png" srcset="/img/loading.gif" alt="img"><img src="\img\graph_8.png" srcset="/img/loading.gif" alt="img"></p>
 <div class="table-container">
 <table>
 <thead>
@@ -492,6 +492,38 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
             </div>
 
             
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
           </article>
         </div>
       </div>
@@ -712,6 +744,45 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
 
 
   
@@ -772,6 +843,13 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
 
 
 
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
 
 
 
@@ -790,23 +868,6 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
 
 
 
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

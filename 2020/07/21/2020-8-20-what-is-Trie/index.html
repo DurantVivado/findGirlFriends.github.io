@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
 
 
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-07-21 00:00" pubdate>
-        星期二, 七月 21日 2020, 12:00 凌晨
+        2020年7月21日 凌晨
       </time>
     </span>
   
@@ -207,10 +207,10 @@
   
   
     
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
+        <span id="leancloud-post-views"></span> 次
       </span>
     
   
@@ -252,20 +252,20 @@
 <li>从根节点到某个节点，路径上所有的字符连在一起，就是这个节点所对应的字符串</li>
 <li>每个节点的子节点所包含的字符都不同</li>
 </ol>
-<p><img src="/.top//img\trie1.jpg" srcset="/img/loading.gif" alt="Trie"></p>
+<p><img src="\img\trie1.jpg" srcset="/img/loading.gif" alt="Trie"></p>
 <p><strong>应用场景</strong>：</p>
 <p>1.自动补全</p>
-<p><img src="/.top//img\trie2.jpg" srcset="/img/loading.gif" alt="自动补全"></p>
+<p><img src="\img\trie2.jpg" srcset="/img/loading.gif" alt="自动补全"></p>
 <p align="center" style="font:italic;color:gray"><i>图1. 谷歌的搜索建议</i></p>
 
 <ol>
 <li>拼写检查</li>
 </ol>
-<p><img src="/.top//img\trie3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="\img\trie3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p align="center" style="font:italic;color:gray"><i>图2. 拼写检查</i></p>
 
 <p>3.IP路由（最长前缀匹配）</p>
-<p><img src="/.top//img\trie4.jpg" srcset="/img/loading.gif" alt="无效的图片地址"></p>
+<p><img src="\img\trie4.jpg" srcset="/img/loading.gif" alt="无效的图片地址"></p>
 <p align="center"><i>图 3. 使用Trie树的最长前缀匹配算法，Internet 协议（IP）路由中利用转发表选择路径。</i></p>
 
 <ol>
@@ -718,6 +718,38 @@ s 只包含小写英文字母。</code></p>
             </div>
 
             
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
           </article>
         </div>
       </div>
@@ -938,6 +970,45 @@ s 只包含小写英文字母。</code></p>
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
 
 
   
@@ -998,6 +1069,13 @@ s 只包含小写英文字母。</code></p>
 
 
 
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
 
 
 
@@ -1016,23 +1094,6 @@ s 只包含小写英文字母。</code></p>
 
 
 
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

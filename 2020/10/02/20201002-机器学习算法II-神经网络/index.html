@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
 
 
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-10-02 00:00" pubdate>
-        星期五, 十月 2日 2020, 12:00 凌晨
+        2020年10月2日 凌晨
       </time>
     </span>
   
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      166 字
+      840 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      10
        分钟
     </span>
   
@@ -207,10 +207,10 @@
   
   
     
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
+        <span id="leancloud-post-views"></span> 次
       </span>
     
   
@@ -244,12 +244,58 @@
 <p>按照[Kohone,1988]的说法，神经网络是具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实物体所做出反应。</p>
 </blockquote>
 <p>我们从M-P神经元开始了解：</p>
-<p><img src="/.top//img\mp_neuron.jpg" srcset="/img/loading.gif" alt="这里写图片描述" style="zoom: 67%;"></p>
+<p><img src="\img\mp_neuron.jpg" srcset="/img/loading.gif" alt=""></p>
 <p>用公式描述就是$y=f(\sum\limits_{i=1}^nw_ix_i-\theta)$</p>
-<p>其中$f$函数被称为激活函数，通常采用平滑的sigmoid函数，$1/(1+e^{-x})$。把多个这样的神经元按照一定层次串联起来就构成了神经网络。</p>
+<p>其中$f$函数被称为激活函数，通常采用平滑的sigmoid函数，$1/(1+e^{-x})$。把多个这样的神经元按照一定层次串联起来就构成了神经网络。其有一个很好的性质$f’(x)=f(x)(1-f(x))$</p>
 <p>感知机由两层神经元组成，</p>
-<p><img src="/.top//blog\myblog\source\img\perceptron.png" srcset="/img/loading.gif" alt="一个感知器"></p>
-<p>感知机可以非常容易的实现与、或、非运算。</p>
+<p><img src="\img\perceptron.png" srcset="/img/loading.gif" alt="一个感知器"></p>
+<p>感知机可以非常容易的实现与、或、非运算。更一般地，给定数据集，权重$w_i(i=1,2,3,…n)$以及阈值$\theta$可以通过学习得到。阈值$\theta$可以看作是固定输入为-1.0的哑节点所对应的连接权重$w_{n+1}$。学习方式</p>
+<script type="math/tex; mode=display">
+w_i\leftarrow w_i + \triangle w_i\\
+\triangle w_i=\eta(y-\hat{y})x_i</script><p>其中$\eta\in (0,1)$被称为学习率（learning rate）。这是最简单的情况，不能解决实际问题。一般地，会加入隐藏层。</p>
+<hr>
+<h2 id="误差逆向传递BP算法"><a href="#误差逆向传递BP算法" class="headerlink" title="误差逆向传递BP算法"></a>误差逆向传递BP算法</h2><p>这是迄今最为成功的神经网络算法。如下图所示：</p>
+<p><img src="E:\blog\myblog\source\img\bp.png" srcset="/img/loading.gif" alt="image-20201004215837939" style="zoom:50%;" /></p>
+<p>输入神经元数目d，中间为q，输出为l，那么总参数数量为$(d+l+1)*q+l$</p>
+<p>第j个神经元的输入为 $\beta_j = \sum\limits_{h=1}^q = w_{kj}b_h$，第h个隐藏层输入为$\alpha_h=\sum\limits_{i=1}^dv_{ih}x_i$</p>
+<p>神经元的输出</p>
+<script type="math/tex; mode=display">
+\hat{y_j}=f(\beta_j-\theta_j)</script><p>网络在$(x_k,y_k)$上的均方误差</p>
+<script type="math/tex; mode=display">
+E_k=\frac{1}{2}\sum\limits_{j=1}^{l}(\hat{y_j}-y_j^k)^2</script><p>BP算法基于梯度下降策略（$gradient  descent$）,对 给定学习率$\eta$：</p>
+<script type="math/tex; mode=display">
+\triangle w_{hj}=-\eta\frac{\partial E_k}{\partial w_{hj}}</script><p>BP算法：</p>
+<ul>
+<li><p>在（0，1）范围内随机初始化网络中所有连接权和阈值</p>
+</li>
+<li><p>对于训练集所有数据，不断进行如下循环：</p>
+<ul>
+<li><p>根据 (2) 计算出当前样本输出；</p>
+</li>
+<li><p>根据 $ g_i = -\frac{\partial E_k}{\partial y_j}.\frac{\partial y_j}{\partial \beta_j}\     = y_j(1-y_j)(Y_j-y_j)$, 为方便表示为$y_j = \hat{y_j}, Y_j = y_j$</p>
+<p>计算出输出层梯度项；</p>
+</li>
+<li><p>根据$e_h=  -\frac{\partial E_k}{\partial b_h}. \frac{\partial b_h}{\partial \alpha_h}\ \quad = -\sum\limits_{j=1}^l\frac{\partial E_k}{\partial \beta_j}\frac{\partial \beta_j}{\partial b_h}f’(\alpha_h-γ_h) \ \quad= b_h(1-b_h)\sum\limits_{j=1}^lw_{hj}g_j$</p>
+<p>计算隐藏层神经元的梯度项。</p>
+</li>
+<li><p>根据$\triangle \theta_j = -\eta g_i \ \triangle v_{ih}=\eta e_h x_i \ \triangle γ_h = -\eta e_h$</p>
+<p>更新连接权和阈值</p>
+</li>
+</ul>
+</li>
+<li><p>如果误差小于某一个值，则停止。</p>
+</li>
+</ul>
+<p>BP的目标是最小化训练集上的累积误差，即$E=\frac{1}{m}\sum\limits_{k=1}^mE_k$.</p>
+<p>由于BP神经元强大的表示能力，其经常遇到过拟合问题，有两种解决途径：1. 早停，若训练误差下降而验证集误差上升就停止。2. 正则化，基本思想是在误差目标函数中增加一个用于描述网络复杂度的部分。</p>
+<script type="math/tex; mode=display">
+E=\lambda\frac{1}{m}\sum\limits_{k=1}^mE_k + (1-\lambda)\sum w_i^2</script><p>其中$\lambda \in(0,1)$</p>
+<h3 id="全局最小与局部最小"><a href="#全局最小与局部最小" class="headerlink" title="全局最小与局部最小"></a>全局最小与局部最小</h3><p>通常有以下策略：</p>
+<ul>
+<li>以多组不同参数初始化多个神经网络，取其中最小误差的解作为最终参数。</li>
+<li>使用“模拟退火”，“遗传算法”</li>
+<li>使用随机梯度下降，（Stochastic Gradient Descent）。</li>
+</ul>
 
             </div>
             <hr>
@@ -297,6 +343,38 @@
               
             </div>
 
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
             
           </article>
         </div>
@@ -518,6 +596,45 @@
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
 
 
   
@@ -578,6 +695,13 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
 
 
 
@@ -596,23 +720,6 @@
 
 
 
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

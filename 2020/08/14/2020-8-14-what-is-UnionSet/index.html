@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
 
 
@@ -178,7 +178,7 @@
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
       <time datetime="2020-08-14 00:00" pubdate>
-        星期五, 八月 14日 2020, 12:00 凌晨
+        2020年8月14日 凌晨
       </time>
     </span>
   
@@ -207,10 +207,10 @@
   
   
     
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
+        <span id="leancloud-post-views"></span> 次
       </span>
     
   
@@ -327,7 +327,7 @@
 <p>我们得到的并查集是这样的，很像一棵二叉树。</p>
 <p><strong>按秩合并</strong></p>
 <p>按路径压缩后的并查集结构仍是毕竟复杂的，比如现在我们有一棵较复杂的树，与一个单元素进行合并：</p>
-<p><img src="/.top//dsu_1.jpg" srcset="/img/loading.gif" alt></p>
+<p><img src="/img/dsu_1.jpg" srcset="/img/loading.gif" alt=""></p>
 <p>那么是把7作为8的父节点好呢，还是8作为7父节点好呢：</p>
 <p>当然是前者，因为后者会使树的深度加深。所以要<strong>把简单树往复杂树上合并。</strong></p>
 <p>我们用于一个数组<code>rank[]</code>记录每个根节点对应树的深度。一开始，所有节点的秩设为1.合并时比较两个根节点，把秩小的往秩的根节点合并。</p>
@@ -354,9 +354,9 @@
     &#125;   
 &#125;</code></pre>
 <p>为什么根秩相同，深度要加1呢，如下图，我们有两个秩均为2 的树，现在要合并。</p>
-<p><img src="/.top//dsu_2.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;"></p>
+<p><img src="/img/dsu_2.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;" /></p>
 <p>我们把2的父节点设为5，这里深度加1，同样另一种合并方式也会使深度加1.</p>
-<p><img src="/.top//img\dsu_3.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;"></p>
+<p><img src="\img\dsu_3.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;" /></p>
 <h2 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h2><p>1、解决的是两个顶点是否连通的问题，可以用于检测图中是否存在环；</p>
 <p>2、代表元法：采用 parent 数组实现，以每个结点的根结点作为代表元；</p>
 <p>3、并查集的优化有两种策略：</p>
@@ -366,7 +366,7 @@
 <li>「隔代压缩」性能比较高，虽然压缩不完全，不过多次执行「隔代压缩」也能达到「完全压缩」的效果，我本人比较偏向使用「隔代压缩」的写法。</li>
 <li>「完全压缩」需要借助系统栈，使用递归的写法。或者先找到当前结点的根结点，然后把沿途上所有的结点都指向根结点，得遍历两次。</li>
 </ul>
-<p><img src="/.top//img\dsu_3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
+<p><img src="\img\dsu_3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p>（2）按秩合并。</p>
 <p>秩也有两种含义：</p>
 <p>秩表示以当前结点为根结点的子树结点总数，即这里的「秩」表示 size 含义；<br>秩表示以当前结点为根结点的子树的高度，即这里的「秩」表示 rank 含义（更合理，因为查询时候的时间性能主要决定于树的高度）。<br>4、如果同时使用「路径压缩」与「按秩合并」，这里的「秩」就失去了它的定义，但即使秩表示的含义不准确，也能够作为合并时候很好的「参考」。在这种情况下，并查集的查询与合并的时间复杂度可以达到接近 $O(1)$。</p>
@@ -377,11 +377,11 @@
 <p>同时，你也不能回到上一次移动时所在的格子。比方说，环 <code>(1, 1) -&gt; (1, 2) -&gt; (1, 1)</code> 是不合法的，因为从 <code>(1, 2)</code> 移动到 <code>(1, 1)</code> 回到了上一次移动时的格子。</p>
 <p>如果 <code>grid</code> 中有相同值形成的环，请你返回 <code>true</code> ，否则返回 <code>false</code> 。</p>
 <p><strong>示例 1：</strong></p>
-<p><img src="/.top//img\5482e1.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="\img\5482e1.png" srcset="/img/loading.gif" alt="img"></p>
 <pre><code class="hljs smalltalk">输入：grid = [[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>],[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>],[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;b&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>],[<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>,<span class="hljs-comment">&quot;a&quot;</span>]]
 输出：<span class="hljs-keyword">true</span>
 解释：如下图所示，有 <span class="hljs-number">2</span> 个用不同颜色标出来的环：</code></pre>
-<p><img src="/.top//img\5482e11.png" srcset="/img/loading.gif" alt="img"> </p>
+<p><img src="\img\5482e11.png" srcset="/img/loading.gif" alt="img"> </p>
 <hr>
 <p>利用并查集的思想，相同的字母可以形成一个连通区域，从左上角开始，遇到相同字母则进行合并，合并时若发现$x$和$y$与$parent$相同，即形成环。</p>
 <pre><code class="hljs C++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
@@ -533,13 +533,13 @@
 <p>有 <code>A.length</code> 个节点，按从 <code>A[0]</code>到 <code>A[A.length - 1]</code> 标记；<br>只有当 <code>A[i]</code> 和 <code>A[j]</code> 共用一个大于 1 的公因数时，<code>A[i]</code> 和 <code>A[j]</code>之间才有一条边。<br>返回图中最大连通组件的大小。</p>
 <p>示例 1：</p>
 <p>输入：[4,6,15,35]<br>输出：4</p>
-<p><img src="/.top//img\ex1.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;"></p>
+<p><img src="\img\ex1.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;" /></p>
 <p>示例 2：</p>
 <p>输入：[20,50,9,63]<br>输出：2</p>
-<p><img src="/.top//img\ex2.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;"></p>
+<p><img src="\img\ex2.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;" /></p>
 <p>示例 3：</p>
 <p>输入：[2,3,6,7,4,12,21,39]<br>输出：8</p>
-<p><img src="/.top//img\ex3.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;"></p>
+<p><img src="\img\ex3.png" srcset="/img/loading.gif" alt="img" style="zoom:33%;" /></p>
 <p>提示：</p>
 <p><code>1 &lt;= A.length &lt;= 20000
 1 &lt;= A[i] &lt;= 100000</code></p>
@@ -547,7 +547,7 @@
 <p>按照并查集的思路求解</p>
 <p>设$W = max(A[i]), R = \sqrt{W}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+A.length$个不同的质因数。质因数为本身的最多$A.length$个，非本身的质因数一定比$R$小，最多$R$个。</p>
 <p>我们可以提取$A$中每个数的质因数，对每个质因数建立索引，然后利用并查集。</p>
-<p><img src="/.top//img\dsu_4.png" srcset="/img/loading.gif" alt></p>
+<p><img src="\img\dsu_4.png" srcset="/img/loading.gif" alt=""></p>
 <p><strong>代码</strong></p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
 <span class="hljs-keyword">public</span>:
@@ -765,6 +765,38 @@
               
             </div>
 
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
             
           </article>
         </div>
@@ -986,6 +1018,45 @@
 
 
 
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
 
 
   
@@ -1046,6 +1117,13 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
 
 
 
@@ -1064,23 +1142,6 @@
 
 
 
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>
