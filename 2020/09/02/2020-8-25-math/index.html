@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
 
 
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.4k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      18
        分钟
     </span>
   
@@ -245,7 +245,7 @@
 </blockquote>
 <h1 id="利用数学、信号理论解题"><a href="#利用数学、信号理论解题" class="headerlink" title="利用数学、信号理论解题"></a>利用数学、信号理论解题</h1><blockquote>
 <p>包括但不限于数论，几何，排列组合等。。。</p>
-<p>LC上有很多题目是和数学相关的，如果我们有一定的数学基础，那么解起题来事半功倍！</p>
+<p>LC上有很多题目是和数学相关的，如果我们有一定的数学基础，那么解起题来事半功倍！下面是一些例题和典型方法。</p>
 </blockquote>
 <ul>
 <li><ol>
@@ -255,11 +255,22 @@
 <li><ol>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/circle-and-rectangle-overlapping/">圆和矩形是否有重叠</a></li>
 </ol>
+<hr>
 </li>
-<li>求质因数（GCD）</li>
-<li>快速幂算法</li>
-<li>FFT算法</li>
-<li>Java bitCount的实现</li>
+<li><p>求质因数</p>
+</li>
+<li><p>最大公因数（GCD）</p>
+</li>
+<li><p>最小公倍数（LCM）</p>
+</li>
+<li><p>快速幂算法</p>
+</li>
+<li><p>FFT算法</p>
+</li>
+<li><p>Gauss消元法</p>
+</li>
+<li><p>Java bitCount的实现</p>
+</li>
 </ul>
 <h2 id="质因数求解"><a href="#质因数求解" class="headerlink" title="质因数求解"></a>质因数求解</h2><p>设$ R = \sqrt{A}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+1$个不同的质因数。质因数为本身的只有一个，非本身的质因数一定比$R$小，最多$R$个。</p>
 <p><strong>策略</strong></p>
@@ -269,15 +280,21 @@
 &#123;
 ...
 &#125;</code></pre>
-<h2 id="最大公因数"><a href="#最大公因数" class="headerlink" title="最大公因数"></a>最大公因数</h2><p>交替递归，可以有效减小迭代次数。$(a,b)\rightarrow ( b,a\%b)$直到有一个数为0.</p>
+<h2 id="最大公因数（Greatest-Common-Divisor）"><a href="#最大公因数（Greatest-Common-Divisor）" class="headerlink" title="最大公因数（Greatest Common Divisor）"></a>最大公因数（Greatest Common Divisor）</h2><p>交替递归，可以有效减小迭代次数。$(a,b)\rightarrow ( b,a\%b)$直到有一个数为0.</p>
 <pre><code class="hljs Java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span></span>&#123;
     <span class="hljs-keyword">if</span> (b == <span class="hljs-number">0</span>)&#123;
         <span class="hljs-keyword">return</span> a;
     &#125;
     <span class="hljs-keyword">return</span> gcd(b, a % b);
 &#125;</code></pre>
+<p>上述代码也可以用一行搞定：</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span></span>
+<span class="hljs-function"></span>&#123;<span class="hljs-keyword">return</span> (!b)?a:gcd(b,a%b);&#125;</code></pre>
+<h2 id="最小公倍数（LCM，Least-Common-Multiple）"><a href="#最小公倍数（LCM，Least-Common-Multiple）" class="headerlink" title="最小公倍数（LCM，Least Common Multiple）"></a>最小公倍数（LCM，Least Common Multiple）</h2><p>比如 $(2,3) - 6, (3,6) - 6, (6,15) - 30$，找到$a,b$的最大公因数$k$，结果就是$a/k*b$</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-title">lcm</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span></span>
+<span class="hljs-function"></span>&#123;<span class="hljs-keyword">return</span> a/gcd(a,b)*b;&#125;</code></pre>
 <h2 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19782019/article/details/85621386">https://blog.csdn.net/qq_19782019/article/details/85621386</a></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19782019/article/details/85621386">https://blog.csdn.net/qq_19782019/article/details/85621386</a></p>
 </blockquote>
 <p>我们思考一个问题，求$2^{10E9}$的最后三位数。</p>
 <blockquote>
@@ -311,7 +328,17 @@
     &#125;
     <span class="hljs-keyword">return</span> result;
 &#125;</code></pre>
-<h2 id="FFT算法"><a href="#FFT算法" class="headerlink" title="FFT算法"></a>FFT算法</h2><hr>
+<h2 id="FFT算法"><a href="#FFT算法" class="headerlink" title="FFT算法"></a>FFT算法</h2><h2 id="Gauss消元法-竞赛级别"><a href="#Gauss消元法-竞赛级别" class="headerlink" title="Gauss消元法(竞赛级别)"></a>Gauss消元法(竞赛级别)</h2><blockquote>
+<p>高斯消元法主要用于求解线性方程组，也可以求矩阵的秩、矩阵的逆等，是一个重要的数学方法。其时间复杂度主要与方程组个数、方程组未知数个数有关，一般来说，时间复杂度为 $O(n^3)$</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011815404/article/details/88890702">https://blog.csdn.net/u011815404/article/details/88890702</a></p>
+</blockquote>
+<p>高斯消元法的基本思想是：通过一系列加减消元运算，直到得到类似$Ax=b$形式，然后再解方程。</p>
+<p>解以下几种可能性：</p>
+<ol>
+<li>无解，表现为某一行系数全为0，但解不为0. </li>
+<li>无穷多解，$det(A)=0$，增广矩阵的行列式为0，矩阵有至少一行全部为0。</li>
+</ol>
+<hr>
 <h2 id="1-完全平方数"><a href="#1-完全平方数" class="headerlink" title="1. 完全平方数"></a>1. 完全平方数</h2><p>1770年，<a href="[https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem](https://en.wikipedia.org/wiki/Lagrange&#39;s_four-square_theorem">Lagrange</a>)证明了一个定理，被称为四平方数定理，它指出每个自然数都能表示为四个平方整数之和：</p>
 <script type="math/tex; mode=display">
 p=a_0^2+a_1^2+a_2^2+a_3^2</script><p>这就规定了问题的上限，即最大的平方数个数是4.</p>
@@ -802,6 +829,23 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
 
 
 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
 
 
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.6k 字
+      2.9k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      32
+      36
        分钟
     </span>
   
@@ -242,6 +242,9 @@
             <div class="markdown-body" id="post-body">
               <h1 id="多指针问题"><a href="#多指针问题" class="headerlink" title="多指针问题"></a>多指针问题</h1><hr>
 <blockquote>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum/">四数之和</a></li>
+</ol>
 <p>75.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a></p>
 <p>1574.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></p>
 <ol>
@@ -277,6 +280,23 @@ h+2(C−h)
 <script type="math/tex; mode=display">
 \begin{aligned} 2 \cdot distance(tortoise) &= distance(hare) \\ 2(F+a) &= F+a+b+a \\ 2F+2a &= F+2a+b \\ F &= b \\ \end{aligned}</script><p>因为 $F=b$ ，指针从 $h$ 点出发和从链表的头出发，最后会遍历相同数目的节点后在环的入口处相遇。</p>
 <p>444题可作为练习。</p>
+<hr>
+<h2 id="18-四数之和"><a href="#18-四数之和" class="headerlink" title="18.四数之和"></a>18.四数之和</h2><p>给定一个包含 <em>n</em> 个整数的数组 <code>nums</code> 和一个目标值 <code>target</code>，判断 <code>nums</code> 中是否存在四个元素 <em>a，</em>b，c 和 <em>d</em> ，使得 <em>a</em> + <em>b</em> + <em>c</em> + <em>d</em> 的值与 <code>target</code> 相等？找出所有满足条件且不重复的四元组。</p>
+<p><strong>注意：</strong></p>
+<p>答案中不可以包含重复的四元组。</p>
+<p><strong>示例：</strong></p>
+<pre><code class="hljs angelscript">给定数组 nums = [<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">2</span>]，和 target = <span class="hljs-number">0</span>。
+
+满足要求的四元组集合为：
+[
+  [<span class="hljs-number">-1</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>],
+  [<span class="hljs-number">-2</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+  [<span class="hljs-number">-2</span>,  <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>]
+]</code></pre>
+<hr>
+<p>这是一道非常经典的多指针题目，题目的条件设计的是如此特殊，以至于 用多指针恰到好处。</p>
+<p>原因是：1. 四个数而不是任意多的数，因此可以用有限多的指针进行记录。2. 题目要求求所有不重复的结果，指针可以在数组上滑动，自然能产生不同结果，去重是多指针的特长。3.这道题不适合用dfs，原因是dfs会产生很多分支$O(2^N)$量级，很容易TLE。而使用多指针，时间复杂度为$O(n^3)$。</p>
+<p>下面按照个人思路进行讲解:</p>
 <hr>
 <h2 id="75-颜色分类"><a href="#75-颜色分类" class="headerlink" title="75.颜色分类"></a>75.颜色分类</h2><p>给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
 <p>此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
@@ -484,9 +504,9 @@ h+2(C−h)
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+                      <a href="/2020/07/21/2020-08-1-representation_of_graph/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">解华容道</span>
+                        <span class="hidden-mobile">爸爸再也不想做图类题目了</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -494,8 +514,8 @@ h+2(C−h)
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-30-sorting-magic/">
-                        <span class="hidden-mobile">【面试向】排序算法</span>
+                      <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+                        <span class="hidden-mobile">解华容道</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -882,6 +902,23 @@ h+2(C−h)
 
 
 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>

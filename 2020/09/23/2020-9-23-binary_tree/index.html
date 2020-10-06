@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
 
 
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.2k 字
+      6.4k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      75
+      90
        分钟
     </span>
   
@@ -272,8 +272,9 @@
 <p><strong>部分题目</strong></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-tree-cameras/">968.二叉树监控（Hard）</a></li>
+<li>834.树中距离之和（Hard）</li>
 <li>124.二叉树最大路径（Hard）</li>
-<li>99.恢复二叉搜索树（Hard）</li>
+<li>99.恢复二叉搜索树（Hard）（*）</li>
 <li>297.二叉树序列化与反序列化</li>
 <li><ol>
 <li>从中序遍历和前序遍历构造二叉树</li>
@@ -288,7 +289,7 @@
 </ol>
 </li>
 <li><ol>
-<li>从先序遍历还原二叉树（Hard）</li>
+<li>从先序遍历还原二叉树（Hard）（*）</li>
 </ol>
 </li>
 </ul>
@@ -325,9 +326,8 @@
         self.left = <span class="hljs-literal">None</span>
         self.right = <span class="hljs-literal">None</span></code></pre>
 <h2 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h2><p>由许多方法可以帮我们完成遍历：前序遍历（Preorder）、中序遍历（Inorder）、后序遍历（Postorder）、层序遍历。</p>
-<p>采用递归是非常trivial的。我们思考迭代的方式。</p>
-<p><strong>前序遍历</strong></p>
-<ol>
+<p>采用递归是非常trivial的。我们思考<strong>迭代</strong>的方式。</p>
+<h3 id="前序遍历"><a href="#前序遍历" class="headerlink" title="前序遍历"></a><strong>前序遍历</strong></h3><ol>
 <li>首先申请一个新的栈，记为stack；</li>
 <li>声明一个结点treeNode，让其指向node结点；</li>
 <li>如果treeNode的不为空，将treeNode的值打印，并将treeNode入栈，然后让treeNode指向treeNode的右结点，</li>
@@ -352,8 +352,7 @@
             &#125;
         &#125;
     &#125;</code></pre>
-<p><strong>中序遍历</strong></p>
-<p><em>*对于一棵二叉搜索树而言，其中序遍历是非递减的。</em>，这可以成为许多题目的key。</p>
+<h3 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a><strong>中序遍历</strong></h3><p><em>*对于一棵二叉搜索树而言，其中序遍历是非递减的。</em>，这可以成为许多题目的key。</p>
 <p>例如：<code>[5,3,7,2,4,6,8]</code>，其中序遍历（根左右）为<code>[2,3,4,5,6,7,8]</code>，前序遍历（左根右）<code>[5,3,2,4,7,6,8]</code>，后序（左右根）遍历<code>[2,4,3,6,8,7,5]</code></p>
 <ul>
 <li>算法</li>
@@ -380,8 +379,7 @@
 
         &#125;
     &#125;</code></pre>
-<p><strong>后序遍历</strong></p>
-<p>我们需要一个标记位来记忆我们此时节点上一个节点，具体看代码注释</p>
+<h3 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a><strong>后序遍历</strong></h3><p>我们需要一个标记位来记忆我们此时节点上一个节点，具体看代码注释</p>
 <pre><code class="hljs Java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">postOrderTraveralWithStack</span><span class="hljs-params">(TreeNode node)</span></span>&#123;
         Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> Stack&lt;TreeNode&gt;();
         TreeNode treeNode = node;
@@ -447,12 +445,61 @@
 &#125;
 </code></pre>
 <h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><ol>
-<li><p>从前序遍历和中序遍历构造二叉树</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">从前序遍历和中序遍历构造二叉树</a></p>
 </li>
-<li><p>从后序遍历和中序遍历构造二叉树</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">从后序遍历和中序遍历构造二叉树</a></p>
 </li>
 </ol>
 <p>我们要知道，中序遍历作用是确定左右子树与根节点的相对位置。我们建立一个哈希表记录中序遍历所有节点的位置，然后在前序遍历寻找，直到遇到叶子节点。</p>
+<hr>
+<h2 id="二叉树最近公共祖先"><a href="#二叉树最近公共祖先" class="headerlink" title="二叉树最近公共祖先"></a>二叉树最近公共祖先</h2><p>236.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/">二叉树最近公共祖先</a></p>
+<p>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/最近公共祖先/8918834?fr=aladdin">百度百科</a>中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（<strong>一个节点也可以是它自己的祖先</strong>）。”</p>
+<p>例如，给定如下二叉树:<code>root = [3,5,1,6,2,0,8,null,null,7,4]</code></p>
+<p><img src="\img\binarytree.png" srcset="/img/loading.gif" alt="img"></p>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs yaml"><span class="hljs-string">输入:</span> <span class="hljs-string">root</span> <span class="hljs-string">=</span> [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>]<span class="hljs-string">,</span> <span class="hljs-string">p</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">q</span> <span class="hljs-string">=</span> <span class="hljs-number">1</span>
+<span class="hljs-string">输出:</span> <span class="hljs-number">3</span>
+<span class="hljs-string">解释:</span> <span class="hljs-string">节点</span> <span class="hljs-number">5</span> <span class="hljs-string">和节点</span> <span class="hljs-number">1</span> <span class="hljs-string">的最近公共祖先是节点</span> <span class="hljs-number">3</span><span class="hljs-string">。</span></code></pre>
+<p><strong>示例 2:</strong></p>
+<pre><code class="hljs yaml"><span class="hljs-string">输入:</span> <span class="hljs-string">root</span> <span class="hljs-string">=</span> [<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">8</span>,<span class="hljs-literal">null</span>,<span class="hljs-literal">null</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>]<span class="hljs-string">,</span> <span class="hljs-string">p</span> <span class="hljs-string">=</span> <span class="hljs-number">5</span><span class="hljs-string">,</span> <span class="hljs-string">q</span> <span class="hljs-string">=</span> <span class="hljs-number">4</span>
+<span class="hljs-string">输出:</span> <span class="hljs-number">5</span>
+<span class="hljs-string">解释:</span> <span class="hljs-string">节点</span> <span class="hljs-number">5</span> <span class="hljs-string">和节点</span> <span class="hljs-number">4</span> <span class="hljs-string">的最近公共祖先是节点</span> <span class="hljs-number">5</span><span class="hljs-string">。因为根据定义最近公共祖先节点可以为节点本身。</span></code></pre>
+<p><strong>说明:</strong></p>
+<ul>
+<li>所有节点的值都是唯一的。</li>
+<li>p、q 为不同节点且均存在于给定的二叉树中。</li>
+</ul>
+<hr>
+<ul>
+<li><p>思路和算法</p>
+<p>我们递归遍历整棵二叉树，定义 $f_x$表示 $x$ 节点的子树中是否包含 p 节点或 q节点，如果包含为 true，否则为 false。那么符合条件的最近公共祖先 x 一定满足如下条件：</p>
+<script type="math/tex; mode=display">
+(f_{\text{lson}}\ \&\&\ f_{\text{rson}})\ ||\ ((x\ =\ p\ ||\ x\ =\ q)\ \&\&\ (f_{\text{lson}}\ ||\ f_{\text{rson}}))</script><p>其中 $\text{lson}$ 和 $\text{rson}$ 分别代表 $x$ 节点的左孩子和右孩子。初看可能会感觉条件判断有点复杂，我们来一条条看，$f_{\text{lson}} \&amp;\&amp; f_{\text{rson}}$ 说明左子树和右子树均包含 p 节点或 q 节点，如果左子树包含的是 p 节点，那么右子树只能包含 q 节点，反之亦然，因为 p 节点和 q 节点都是不同且唯一的节点，因此如果满足这个判断条件即可说明 xx 就是我们要找的最近公共祖先。再来看第二条判断条件，这个判断条件即是考虑了 x 恰好是 p 节点或 q 节点且它的左子树或右子树有一个包含了另一个节点的情况，因此如果满足这个判断条件亦可说明 x就是我们要找的最近公共祖先。</p>
+<p>你可能会疑惑这样找出来的公共祖先深度是否是最大的。其实是最大的，因为我们是自底向上从叶子节点开始更新的，所以在所有满足条件的公共祖先中一定是深度最大的祖先先被访问到，且由于 $f_x$本身的定义很巧妙，在找到最近公共祖先 x 以后，$f_x$    按定义被设置为 true ，即假定了这个子树中只有一个 p 节点或 q 节点，因此其他公共祖先不会再被判断为符合条件。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    TreeNode* ans;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">dfs</span><span class="hljs-params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">nullptr</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">bool</span> lson = dfs(root-&gt;left, p, q);
+        <span class="hljs-keyword">bool</span> rson = dfs(root-&gt;right, p, q);
+        <span class="hljs-keyword">if</span> ((lson &amp;&amp; rson) || ((root-&gt;val == p-&gt;val || root-&gt;val == q-&gt;val) &amp;&amp; (lson || rson))) &#123;
+            ans = root;
+        &#125; 
+        <span class="hljs-keyword">return</span> lson || rson || (root-&gt;val == p-&gt;val || root-&gt;val == q-&gt;val);
+    &#125;
+    <span class="hljs-function">TreeNode* <span class="hljs-title">lowestCommonAncestor</span><span class="hljs-params">(TreeNode* root, TreeNode* p, TreeNode* q)</span> </span>&#123;
+        dfs(root, p, q);
+        <span class="hljs-keyword">return</span> ans;
+    &#125;
+&#125;;
+</code></pre>
+<p>复杂度分析</p>
+<p>时间复杂度：$O(N)$，其中 $N$ 是二叉树的节点数。二叉树的所有节点有且只会被访问一次，因此时间复杂度为 $O(N)$。</p>
+<p>空间复杂度：$O(N) $，其中 $N$ 是二叉树的节点数。递归调用的栈深度取决于二叉树的高度，二叉树最坏情况下为一条链，此时高度为 $N$，因此空间复杂度为 $O(N)$。</p>
+</li>
+</ul>
 <hr>
 <h2 id="二叉树序列化和反序列化"><a href="#二叉树序列化和反序列化" class="headerlink" title="二叉树序列化和反序列化"></a>二叉树序列化和反序列化</h2><blockquote>
 <p>我们需要将字符串转化为树或者反过来就需要序列化和反序列化。</p>
@@ -472,6 +519,7 @@
 <p><strong>提示:</strong> 这与 LeetCode 目前使用的方式一致，详情请参阅 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/faq/#binary-tree">LeetCode 序列化二叉树的格式</a>。你并非必须采取这种方式，你也可以采用其他的方法解决这个问题。</p>
 <p><strong>说明:</strong> 不要使用类的成员 / 全局 / 静态变量来存储状态，你的序列化和反序列化算法应该是无状态的。</p>
 <hr>
+<p>补题解。。。</p>
 <p><strong>C++代码</strong></p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Codec</span></span>
 <span class="hljs-class">&#123;</span>
@@ -568,8 +616,8 @@
 <span class="hljs-comment">     *</span>
 <span class="hljs-comment">     * <span class="hljs-doctag">@param</span> root The root node of a binary tree</span>
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span> The level traversal serialization of this binary tree. For the syntax of serialization,</span>
-<span class="hljs-comment">     * check https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation</span>
-<span class="hljs-comment">     * or https://support.leetcode-cn.com/hc/kb/article/1194353/.</span>
+<span class="hljs-comment">     * check https://suport.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation</span>
+<span class="hljs-comment">     * or https://suport.leetcode-cn.com/hc/kb/article/1194353/.</span>
 <span class="hljs-comment">     * If the root node contains any circle, it will return &quot;Error! Cycle found in the binary tree!&quot;.</span>
 <span class="hljs-comment">     */</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">treeNodeToString</span><span class="hljs-params">(TreeNode root)</span></span>&#123;
@@ -590,8 +638,8 @@
 
             <span class="hljs-keyword">if</span> (cur != <span class="hljs-keyword">null</span>)&#123;
                 --cnt;
-                SB.append(Integer.toString(cur.val));
-                SB.append(<span class="hljs-string">&#x27;,&#x27;</span>);
+                SB.apend(Integer.toString(cur.val));
+                SB.apend(<span class="hljs-string">&#x27;,&#x27;</span>);
                 <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-keyword">null</span>)&#123;
                     ++cnt;
                 &#125;
@@ -603,7 +651,7 @@
                 memo.add(cur);
             &#125;
             <span class="hljs-keyword">else</span>&#123;
-                SB.append(<span class="hljs-string">&quot;null,&quot;</span>);
+                SB.apend(<span class="hljs-string">&quot;null,&quot;</span>);
             &#125;
         &#125;
         SB.setCharAt(SB.length()-<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;]&#x27;</span>);
@@ -785,21 +833,21 @@ null = <span class="hljs-literal">None</span>
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
         res = [(root.val, root)]
         node_Q = deque()
-        node_Q.appendleft((root.val, root))
+        node_Q.apendleft((root.val, root))
         node = root
         <span class="hljs-keyword">while</span> node_Q:
             tup = node_Q.popleft()
             a = tup[<span class="hljs-number">0</span>]; node = tup[<span class="hljs-number">1</span>]
             <span class="hljs-keyword">if</span> node.left:
-                node_Q.append((node.left.val, node.left))
-                res.append((node.left.val, node.left))
+                node_Q.apend((node.left.val, node.left))
+                res.apend((node.left.val, node.left))
             <span class="hljs-keyword">else</span>:
-                res.append((<span class="hljs-string">&#x27;null&#x27;</span>, <span class="hljs-literal">None</span>))
+                res.apend((<span class="hljs-string">&#x27;null&#x27;</span>, <span class="hljs-literal">None</span>))
             <span class="hljs-keyword">if</span> node.right:
-                node_Q.append((node.right.val, node.right))
-                res.append((node.right.val, node.right))
+                node_Q.apend((node.right.val, node.right))
+                res.apend((node.right.val, node.right))
             <span class="hljs-keyword">else</span>:
-                res.append((<span class="hljs-string">&#x27;null&#x27;</span>, <span class="hljs-literal">None</span>))
+                res.apend((<span class="hljs-string">&#x27;null&#x27;</span>, <span class="hljs-literal">None</span>))
         <span class="hljs-comment"># remove redundant nones and stringify it</span>
         <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>: 
             node = res[<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>]
@@ -808,9 +856,9 @@ null = <span class="hljs-literal">None</span>
         ret = []
         <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> res: 
             <span class="hljs-keyword">if</span> r != <span class="hljs-string">&#x27;null&#x27;</span>:
-                ret.append(str(r[<span class="hljs-number">0</span>]))
+                ret.apend(str(r[<span class="hljs-number">0</span>]))
             <span class="hljs-keyword">else</span>:
-                ret.append(r[<span class="hljs-number">0</span>]) 
+                ret.apend(r[<span class="hljs-number">0</span>]) 
         <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;[&#x27;</span>+<span class="hljs-string">&#x27;,&#x27;</span>.join(ret)+<span class="hljs-string">&#x27;]&#x27;</span>
         
         
@@ -821,7 +869,7 @@ null = <span class="hljs-literal">None</span>
 <span class="hljs-string">        :rtype: TreeNode</span>
 <span class="hljs-string">        &quot;&quot;&quot;</span>
         <span class="hljs-comment"># first we have to transform the string to a list </span>
-        <span class="hljs-comment"># and supplement the missing none</span>
+        <span class="hljs-comment"># and suplement the missing none</span>
         <span class="hljs-comment"># it&#x27;s totally a reversal process of serialization</span>
         <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
         <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> data: <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
@@ -829,24 +877,24 @@ null = <span class="hljs-literal">None</span>
         root = TreeNode(deserial[<span class="hljs-number">0</span>])
         node_Q = deque()
         <span class="hljs-keyword">for</span> i  <span class="hljs-keyword">in</span> deserial[<span class="hljs-number">1</span>:]: 
-            <span class="hljs-keyword">if</span> i!=<span class="hljs-string">&#x27;null&#x27;</span>: node_Q.append(TreeNode(int(i)))
-            <span class="hljs-keyword">else</span>: node_Q.append(<span class="hljs-literal">None</span>)
+            <span class="hljs-keyword">if</span> i!=<span class="hljs-string">&#x27;null&#x27;</span>: node_Q.apend(TreeNode(int(i)))
+            <span class="hljs-keyword">else</span>: node_Q.apend(<span class="hljs-literal">None</span>)
         node_stack = deque()
-        node_stack.append(root)
+        node_stack.apend(root)
         <span class="hljs-keyword">while</span> node_stack:
             node = node_stack.popleft()
             <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node: <span class="hljs-keyword">continue</span>
             <span class="hljs-keyword">if</span> node_Q: 
                 node.left = node_Q.popleft()
-                node_stack.append(node.left)
+                node_stack.apend(node.left)
             <span class="hljs-keyword">else</span>: node.left = <span class="hljs-literal">None</span>
             <span class="hljs-keyword">if</span> node_Q: 
                 node.right = node_Q.popleft()
-                node_stack.append(node.right)
+                node_stack.apend(node.right)
             <span class="hljs-keyword">else</span>: node.right = <span class="hljs-literal">None</span>
         <span class="hljs-keyword">return</span> root</code></pre>
 <hr>
-<h2 id="树形dp（竞赛难度）"><a href="#树形dp（竞赛难度）" class="headerlink" title="树形dp（竞赛难度）"></a>树形dp（竞赛难度）</h2><p> 一般来说树形dp在设状态转移方程时都可以用$dp[i][j]$表示i这颗子树怎么怎么样的最优解，实现时一般都是用子树更新父亲（即从下向上更新），那么首先应该考虑的是一个一个子树的更新父亲还是把所有子树都算完了在更新父亲？这就要因题而异了，一般来说有两种情况：    </p>
+<h2 id="树形dp（Hard）"><a href="#树形dp（Hard）" class="headerlink" title="树形dp（Hard）"></a>树形dp（Hard）</h2><p> 一般来说树形dp在设状态转移方程时都可以用$dp[i][j]$表示i这颗子树怎么怎么样的最优解，实现时一般都是用子树更新父亲（即从下向上更新），那么首先应该考虑的是一个一个子树的更新父亲还是把所有子树都算完了在更新父亲？这就要因题而异了，一般来说有两种情况：    </p>
 <p>​    1. <strong>需要把所有子树的信息都掌握之后再更新子树的就需要把所有子树都算再了在更新父亲</strong>。</p>
 <ol>
 <li><strong>而像树上背包这样的问题就需要一个一个的更新，每次都用一个子树更新已经更新完的子树+父亲，最后就可以将这一部分的子树更新完了，再继续往上更新，最后根节点就是答案。</strong></li>
@@ -858,8 +906,10 @@ null = <span class="hljs-literal">None</span>
 <li><ol>
 <li>监控二叉树</li>
 </ol>
-<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2></li>
+</li>
+<li>834.树中距离之和</li>
 </ul>
+<hr>
 <h4 id="968-监控二叉树"><a href="#968-监控二叉树" class="headerlink" title="968. 监控二叉树"></a>968. 监控二叉树</h4><p>给定一个二叉树，我们在树的节点上安装摄像头。</p>
 <p>节点上的每个摄影头都可以监视<strong>其父对象、自身及其直接子对象。</strong></p>
 <p>计算监控树的所有节点所需的最小摄像头数量。</p>
@@ -900,7 +950,7 @@ null = <span class="hljs-literal">None</span>
 <p>对于边界条件的判断。</p>
 <p>如果该节点为<code>null</code>那么相当于无论用多少个摄像头都无法覆盖$a=INT_MAX,b=0,c=0$</p>
 <hr>
-<p><strong>代码</strong></p>
+<p><strong>JAVA代码</strong></p>
 <pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span>  <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> INT_MAX = <span class="hljs-number">0x3f3f3f3f</span>;
     <span class="hljs-keyword">int</span> res;
@@ -925,7 +975,27 @@ null = <span class="hljs-literal">None</span>
 &#125;
 </code></pre>
 <hr>
-<h2 id="二叉树的线索化"><a href="#二叉树的线索化" class="headerlink" title="二叉树的线索化*"></a>二叉树的线索化*</h2><blockquote>
+<h4 id="834-树中距离之和"><a href="#834-树中距离之和" class="headerlink" title="834. 树中距离之和"></a>834. 树中距离之和</h4><p>给定一个无向、连通的树。树中有 <code>N</code> 个标记为 <code>0...N-1</code> 的节点以及 <code>N-1</code> 条边 。</p>
+<p>第 <code>i</code> 条边连接节点 <code>edges[i][0]</code> 和 <code>edges[i][1]</code> 。</p>
+<p>返回一个表示节点 <code>i</code> 与其他所有节点距离之和的列表 <code>ans</code>。</p>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs angelscript">输入: N = <span class="hljs-number">6</span>, edges = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>]]
+输出: [<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">6</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>,<span class="hljs-number">10</span>]
+解释: 
+如下为给定的树的示意图：
+  <span class="hljs-number">0</span>
+ / \
+<span class="hljs-number">1</span>   <span class="hljs-number">2</span>
+   /|\
+  <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>
+
+我们可以计算出 dist(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">3</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">4</span>) + dist(<span class="hljs-number">0</span>,<span class="hljs-number">5</span>) 
+也就是 <span class="hljs-number">1</span> + <span class="hljs-number">1</span> + <span class="hljs-number">2</span> + <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">8</span>。 因此，answer[<span class="hljs-number">0</span>] = <span class="hljs-number">8</span>，以此类推。</code></pre>
+<p><strong>说明:</strong> <code>1 &lt;= N &lt;= 10000</code></p>
+<hr>
+<p>Hard难度的二叉树，然后节点数量很大，猜测多半是树形dp。首先不要害怕，把题目好好读一遍，然后看一下时间，想想晚上吃啥，开个玩笑（逃）。</p>
+<hr>
+<h2 id="二叉树的线索化-（待完善）"><a href="#二叉树的线索化-（待完善）" class="headerlink" title="二叉树的线索化*（待完善）"></a>二叉树的线索化*（待完善）</h2><blockquote>
 <p>二叉树转换为链表的方式，了解就行,参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014492609/article/details/40477795#">https://blog.csdn.net/u014492609/article/details/40477795#</a></p>
 </blockquote>
 <p>二叉树是一种非线性结构，遍历二叉树几乎都是通过递归或者用栈辅助实现非递归的遍历。二叉树作为存储结构时，一个节点只能获取节点的左孩子和右孩子，不能直接得到节点的<strong>任一</strong>遍历序列的前驱或者后继。为了保存这种在遍历中需要的信息，我们利用二叉树中指向左右子树的空指针来存放节点的前驱或后继信息。</p>
@@ -1404,6 +1474,23 @@ null = <span class="hljs-literal">None</span>
 
 
 
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 </body>
 </html>
