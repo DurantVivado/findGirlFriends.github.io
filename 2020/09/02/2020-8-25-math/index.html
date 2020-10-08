@@ -34,6 +34,8 @@
   
 
   
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -189,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      2.2k 字
     </span>
   
 
@@ -199,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      18
+      29
        分钟
     </span>
   
@@ -328,7 +330,7 @@
     &#125;
     <span class="hljs-keyword">return</span> result;
 &#125;</code></pre>
-<h2 id="FFT算法"><a href="#FFT算法" class="headerlink" title="FFT算法"></a>FFT算法</h2><h2 id="Gauss消元法-竞赛级别"><a href="#Gauss消元法-竞赛级别" class="headerlink" title="Gauss消元法(竞赛级别)"></a>Gauss消元法(竞赛级别)</h2><blockquote>
+<h2 id="FFT算法"><a href="#FFT算法" class="headerlink" title="FFT算法"></a>FFT算法</h2><h2 id="Gauss消元法"><a href="#Gauss消元法" class="headerlink" title="Gauss消元法"></a>Gauss消元法</h2><blockquote>
 <p>高斯消元法主要用于求解线性方程组，也可以求矩阵的秩、矩阵的逆等，是一个重要的数学方法。其时间复杂度主要与方程组个数、方程组未知数个数有关，一般来说，时间复杂度为 $O(n^3)$</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011815404/article/details/88890702">https://blog.csdn.net/u011815404/article/details/88890702</a></p>
 </blockquote>
@@ -338,8 +340,121 @@
 <li>无解，表现为某一行系数全为0，但解不为0. </li>
 <li>无穷多解，$det(A)=0$，增广矩阵的行列式为0，矩阵有至少一行全部为0。</li>
 </ol>
+<p>思路：遍历整个上三角区域，想办法初等变换得到上三角矩阵。设增广矩阵为$matrix$，大小为$m×n$。当前行为$row$，当前列为$col$。</p>
+<ul>
+<li>找出当前列绝对值最大的行$maxRow$。</li>
+<li>采用冒泡法思想，将绝对值最大的行替换到最上面，方便后面进行消元。</li>
+<li>若$col$列第$row$行下全为0，则对$row—$，直接处理下一列。</li>
+<li>枚举要删去的行，采取的办法是求最小公倍数，以$maxRow$行为基准，消去$matrix[row][col],row!=maxRow$。</li>
+</ul>
+<p>下面代码不保证鲁棒性，仅作理解用。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">Gauss</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; &amp;matrix)</span></span>
+<span class="hljs-function"></span>&#123;
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * @description: 利用Gauss消元法解方程</span>
+<span class="hljs-comment"> * @param matrix为增广矩阵，包括非齐次项</span>
+<span class="hljs-comment"> * @return &#123;type&#125; None</span>
+<span class="hljs-comment"> * @author: Durant Thorvals</span>
+<span class="hljs-comment"> * @complexity: Time:O(1),Space:O(1)</span>
+<span class="hljs-comment"> */</span>    
+  <span class="hljs-keyword">if</span>(!matrix.size()||!matrix[<span class="hljs-number">0</span>].size()) <span class="hljs-keyword">return</span> &#123;&#125;;
+    <span class="hljs-keyword">int</span> m = matrix.size(), n = matrix[<span class="hljs-number">0</span>].size();
+    <span class="hljs-keyword">if</span>(m!=n<span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> &#123;&#125;;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; res = <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(m,<span class="hljs-number">0</span>);
+    <span class="hljs-comment">//转换为上三角形阶梯阵</span>
+    <span class="hljs-keyword">int</span> row = <span class="hljs-number">0</span>, col = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(row = <span class="hljs-number">0</span>; row &lt; m &amp;&amp; col &lt; n;row++,col++)
+    &#123;
+        <span class="hljs-keyword">int</span> maxrow = row;
+        <span class="hljs-comment">//找出当前列绝对值最大的行</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = row+<span class="hljs-number">1</span>;i &lt; m;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">abs</span>(matrix[i][col]) &gt; <span class="hljs-built_in">abs</span>(matrix[maxrow][col]))
+                maxrow = i;
+        &#125;
+        <span class="hljs-comment">//将所有绝对值小于它的行进行交换</span>
+        <span class="hljs-keyword">if</span>(maxrow != row)
+        &#123;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = col;j &lt; n;j++)
+            &#123;
+                swap(matrix[row][j],matrix[maxrow][j]);
+            &#125;
+        &#125;
+        
+        <span class="hljs-comment">//若col列第row行一下全为0，则处理下一列</span>
+        <span class="hljs-keyword">if</span>(!matrix[row][col])
+        &#123;
+            row -- ;
+            <span class="hljs-keyword">continue</span>;
+        &#125;
+        <span class="hljs-comment">//枚举要删去的行</span>
+        <span class="hljs-comment">//通过寻找最小公倍数方式进行初等变换</span>
+        <span class="hljs-keyword">int</span> lcm, t_a, t_b;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = row+<span class="hljs-number">1</span>;i &lt; m;i++)
+        &#123;    
+            lcm = LCM(matrix[row][col],matrix[i][col]);
+            <span class="hljs-comment">//采用同乘方式消元</span>
+            <span class="hljs-keyword">if</span>(!lcm) &#123;<span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;The equations have infinite solution&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;<span class="hljs-keyword">return</span> &#123;&#125;;&#125;
+            t_a = lcm/ matrix[row][col];
+            t_b = lcm/ matrix[i][col];
+
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = col;j &lt; n;j++)
+            &#123;<span class="hljs-comment">//这儿就可以看出是O(n^3)时间复杂度</span>
+                matrix[i][j] = matrix[i][j]*t_b - matrix[row][j]*t_a;
+            &#125;
+        &#125;
+    &#125;
+    
+    <span class="hljs-comment">//讨论解的可能形式</span>
+    <span class="hljs-comment">//1.无解, 有一行是 0 ....0 b的形式</span>
+    <span class="hljs-keyword">int</span> i ;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        <span class="hljs-keyword">if</span>(matrix[m<span class="hljs-number">-1</span>][i]) <span class="hljs-keyword">break</span>; 
+    <span class="hljs-keyword">if</span>(i == n<span class="hljs-number">-1</span>)
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;The equations seem insolvable...&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-keyword">return</span> &#123;&#125;;
+    &#125;
+
+    <span class="hljs-comment">//2.有无穷多解</span>
+    <span class="hljs-keyword">if</span>(i == n)
+    &#123;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;The equations have infinite solution&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-keyword">return</span> &#123;&#125;;
+    &#125;
+
+    <span class="hljs-comment">//3.有唯一一组解</span>
+    <span class="hljs-comment">//系数矩阵变为对角型，可以直接求解</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = m<span class="hljs-number">-1</span>; i &gt;= <span class="hljs-number">0</span>; i--)
+    &#123;
+        <span class="hljs-keyword">int</span> temp = matrix[i][n<span class="hljs-number">-1</span>];
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i+<span class="hljs-number">1</span>;j &lt; n<span class="hljs-number">-1</span>;j++)
+            temp -= res[j]*matrix[i][j];
+
+        <span class="hljs-keyword">if</span>(temp%matrix[i][i]!=<span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;solution needs tranform to floating unit...&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+            <span class="hljs-keyword">return</span> &#123;&#125;;
+        &#125;
+        res[i] = temp/matrix[i][i];
+    &#125;
+    <span class="hljs-keyword">return</span> res;
+    &#125;
+</code></pre>
+<p>可以清楚的看到算法时间复杂度$O(n^3)$，设矩阵大小为$n$。</p>
 <hr>
-<h2 id="1-完全平方数"><a href="#1-完全平方数" class="headerlink" title="1. 完全平方数"></a>1. 完全平方数</h2><p>1770年，<a href="[https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem](https://en.wikipedia.org/wiki/Lagrange&#39;s_four-square_theorem">Lagrange</a>)证明了一个定理，被称为四平方数定理，它指出每个自然数都能表示为四个平方整数之和：</p>
+<p>题目赏析</p>
+<h4 id="279-完全平方数"><a href="#279-完全平方数" class="headerlink" title="279. 完全平方数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/perfect-squares/">279. 完全平方数</a></h4><p>给定正整数 <em>n</em>，找到若干个完全平方数（比如 <code>1, 4, 9, 16, ...</code>）使得它们的和等于 <em>n</em>。你需要让组成和的完全平方数的个数最少。</p>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs angelscript">输入: n = <span class="hljs-number">12</span>
+输出: <span class="hljs-number">3</span> 
+解释: <span class="hljs-number">12</span> = <span class="hljs-number">4</span> + <span class="hljs-number">4</span> + <span class="hljs-number">4.</span></code></pre>
+<p><strong>示例 2:</strong></p>
+<pre><code class="hljs angelscript">输入: n = <span class="hljs-number">13</span>
+输出: <span class="hljs-number">2</span>
+解释: <span class="hljs-number">13</span> = <span class="hljs-number">4</span> + <span class="hljs-number">9.</span></code></pre>
+<hr>
+<p>1770年，<a href="[https://en.wikipedia.org/wiki/Lagrange%27s_four-square_theorem](https://en.wikipedia.org/wiki/Lagrange&#39;s_four-square_theorem">Lagrange</a>)证明了一个定理，被称为四平方数定理，它指出每个自然数都能表示为四个平方整数之和：</p>
 <script type="math/tex; mode=display">
 p=a_0^2+a_1^2+a_2^2+a_3^2</script><p>这就规定了问题的上限，即最大的平方数个数是4.</p>
 <p>注意，这里0也被当成完全平方数。</p>
@@ -465,7 +580,7 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
           el: "#vcomments",
           app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
           app_key: "F0939INl4cKXpCw2HgTIUb6B",
-          placeholder: "说点什么",
+          placeholder: "说点什么,（支持Markdown）",
           path: window.location.pathname,
           avatar: "retro",
           meta: ["nick","mail","link"],
@@ -704,45 +819,6 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
 
 
 
-
-  
-
-  
-    <!-- MathJax -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
-        },
-        options: {
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = { node: text, delim: '', n: 0 };
-                math.end = { node: text, delim: '', n: 0 };
-                doc.math.push(math);
-              });
-            }, '', false],
-            insertedScript: [200, () => {
-              document.querySelectorAll('mjx-container').forEach(node => {
-                let target = node.parentNode;
-                if (target.nodeName.toLowerCase() === 'li') {
-                  target.parentNode.classList.add('has-jax');
-                }
-              });
-            }, '', false]
-          }
-        }
-      };
-    </script>
-
-    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
-
-  
 
 
 

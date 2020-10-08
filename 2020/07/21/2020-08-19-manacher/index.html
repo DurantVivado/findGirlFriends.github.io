@@ -34,6 +34,8 @@
   
 
   
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -392,9 +394,9 @@ f(i) = f(i-1)*base\% mod + s[i]\\
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/25/2020-07-27-backpack-problem/">
+                      <a href="/2020/07/21/2020-08-1-representation_of_graph/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">做一只可爱的小🐖背包 Cover「背包九讲」</span>
+                        <span class="hidden-mobile">爸爸再也不想做图类题目了</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -402,8 +404,8 @@ f(i) = f(i-1)*base\% mod + s[i]\\
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-08-1-representation_of_graph/">
-                        <span class="hidden-mobile">爸爸再也不想做图类题目了</span>
+                      <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+                        <span class="hidden-mobile">解华容道</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -426,7 +428,7 @@ f(i) = f(i-1)*base\% mod + s[i]\\
           el: "#vcomments",
           app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
           app_key: "F0939INl4cKXpCw2HgTIUb6B",
-          placeholder: "说点什么",
+          placeholder: "说点什么,（支持Markdown）",
           path: window.location.pathname,
           avatar: "retro",
           meta: ["nick","mail","link"],
@@ -665,45 +667,6 @@ f(i) = f(i-1)*base\% mod + s[i]\\
 
 
 
-
-  
-
-  
-    <!-- MathJax -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
-        },
-        options: {
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = { node: text, delim: '', n: 0 };
-                math.end = { node: text, delim: '', n: 0 };
-                doc.math.push(math);
-              });
-            }, '', false],
-            insertedScript: [200, () => {
-              document.querySelectorAll('mjx-container').forEach(node => {
-                let target = node.parentNode;
-                if (target.nodeName.toLowerCase() === 'li') {
-                  target.parentNode.classList.add('has-jax');
-                }
-              });
-            }, '', false]
-          }
-        }
-      };
-    </script>
-
-    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
-
-  
 
 
 

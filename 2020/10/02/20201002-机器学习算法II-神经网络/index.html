@@ -34,6 +34,8 @@
   
 
   
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -189,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      840 字
+      1.5k 字
     </span>
   
 
@@ -199,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      18
        分钟
     </span>
   
@@ -245,16 +247,19 @@
 </blockquote>
 <p>我们从M-P神经元开始了解：</p>
 <p><img src="\img\mp_neuron.jpg" srcset="/img/loading.gif" alt=""></p>
+<p><img src="E:\blog\myblog\source\img\mp_neuron.jpg" srcset="/img/loading.gif" alt="image-20201004215837939" style="zoom:60%;" /></p>
 <p>用公式描述就是$y=f(\sum\limits_{i=1}^nw_ix_i-\theta)$</p>
 <p>其中$f$函数被称为激活函数，通常采用平滑的sigmoid函数，$1/(1+e^{-x})$。把多个这样的神经元按照一定层次串联起来就构成了神经网络。其有一个很好的性质$f’(x)=f(x)(1-f(x))$</p>
 <p>感知机由两层神经元组成，</p>
 <p><img src="\img\perceptron.png" srcset="/img/loading.gif" alt="一个感知器"></p>
+<p><img src="E:\blog\myblog\source\img\perceptron.png" srcset="/img/loading.gif" alt="image-20201004215837939" style="zoom:100%;" /></p>
 <p>感知机可以非常容易的实现与、或、非运算。更一般地，给定数据集，权重$w_i(i=1,2,3,…n)$以及阈值$\theta$可以通过学习得到。阈值$\theta$可以看作是固定输入为-1.0的哑节点所对应的连接权重$w_{n+1}$。学习方式</p>
 <script type="math/tex; mode=display">
 w_i\leftarrow w_i + \triangle w_i\\
 \triangle w_i=\eta(y-\hat{y})x_i</script><p>其中$\eta\in (0,1)$被称为学习率（learning rate）。这是最简单的情况，不能解决实际问题。一般地，会加入隐藏层。</p>
 <hr>
 <h2 id="误差逆向传递BP算法"><a href="#误差逆向传递BP算法" class="headerlink" title="误差逆向传递BP算法"></a>误差逆向传递BP算法</h2><p>这是迄今最为成功的神经网络算法。如下图所示：</p>
+<p><img src="\img\bp.png" srcset="/img/loading.gif" alt=""></p>
 <p><img src="E:\blog\myblog\source\img\bp.png" srcset="/img/loading.gif" alt="image-20201004215837939" style="zoom:50%;" /></p>
 <p>输入神经元数目d，中间为q，输出为l，那么总参数数量为$(d+l+1)*q+l$</p>
 <p>第j个神经元的输入为 $\beta_j = \sum\limits_{h=1}^q = w_{kj}b_h$，第h个隐藏层输入为$\alpha_h=\sum\limits_{i=1}^dv_{ih}x_i$</p>
@@ -296,6 +301,43 @@ E=\lambda\frac{1}{m}\sum\limits_{k=1}^mE_k + (1-\lambda)\sum w_i^2</script><p>�
 <li>使用“模拟退火”，“遗传算法”</li>
 <li>使用随机梯度下降，（Stochastic Gradient Descent）。</li>
 </ul>
+<h3 id="其它常见的神经网络"><a href="#其它常见的神经网络" class="headerlink" title="其它常见的神经网络"></a>其它常见的神经网络</h3><ol>
+<li>RBF 径向基网络</li>
+</ol>
+<script type="math/tex; mode=display">
+\phi(x)=\sum\limits_{i=1}^qw_i\rho(x,c_i)</script><p>其中q为隐层神经元个数，$c_i$和$w_i$分别为第i个隐层神经元所对应的中心和权重，$\rho$为径向基函数，某种沿径向对称的标量函数。</p>
+<ol>
+<li>竞争学习网络</li>
+</ol>
+<p>网络中输出神经元相互抑制，只有表现最优者胜出。典型的是ART网络。</p>
+<ol>
+<li><p>SOM网络</p>
+</li>
+<li><p>级联相关网络</p>
+</li>
+<li><p><strong>Boltzmann机</strong></p>
+<p>神经网络有一类模型是定义“能量”，当能量达最小时达到理想状态。其神经元分为两层：显示层和隐藏层。显示层用于表示输入输出，而隐藏层表示书表达，神经元的状态只有两种，用0，1表示，1表示激活，0表示抑制。</p>
+<p>设$s_i$为第i个神经元状态，$w_{ij}$表示神经元i和j的连接权，$\theta_i$表示神经元i的阈值，Boltzman能量为：</p>
+<script type="math/tex; mode=display">
+E(s) = -\sum\limits_{i=1}^{n-1}\sum\limits_{j=i+1}^{n}w_{ij}s_is_j-\sum\limits_{i=1}^{n}\theta_is_i</script><p>训练后的网络将服从boltzman分布：</p>
+<script type="math/tex; mode=display">
+P(s)=\frac{e^{-E(s)}}{\sum e^{-E(t)}}</script><p>标准的Boltzman是一个全连接图，复杂度很高，实际采用受限boltzmann（Restricted Boltzmann Machine），如下图，通常采用对比散度算法来训练（Contrast Divergence）。假定网络有d个显示层神经元和q个隐藏层神经元。则由于同一层内不存在连接：</p>
+<script type="math/tex; mode=display">
+P(v|h)=\prod\limits_{i=1}^dP(v_i|h)</script><script type="math/tex; mode=display">
+P(h|v)=\prod\limits_{j=1}^dP(h_j|v)</script><p>先根据（10）得到隐藏层概率分布求出h，再根据（9）得到v‘，产生h’，连接权更新公式为：</p>
+<script type="math/tex; mode=display">
+\triangle w=\eta(vh^T-v'h'^T)</script></li>
+</ol>
+<p>   <img src="\img\rbm.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>   <img src="E:\blog\myblog\source\img\rbm.jpg" srcset="/img/loading.gif" alt="img" style="zoom:50%;" /></p>
+<h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><h2 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a><strong>RNN</strong></h2><p> RNN是一种特殊的神经网络结构, 它是根据”人的认知是基于过往的经验和记忆”这一观点提出的. 它与DNN,CNN不同的是: 它不仅考虑前一时刻的输入,而且赋予了网络对前面的内容的一种<strong>‘记忆’功能</strong>.</p>
+<p>  RNN之所以称为<strong>循环神经网路</strong>，即一个序列当前的输出与前面的输出也有关。具体的表现形式为网络会对前面的信息进行记忆并应用于当前输出的计算中，即隐藏层之间的节点不再无连接而是有连接的，并且隐藏层的输入不仅包括输入层的输出还包括上一时刻隐藏层的输出。</p>
+<p>  ① <strong><em>\</em>自然语言处理(NLP)**</strong>: 主要有<strong>视频处理</strong>, <strong>文本生成*</strong>,<em> <strong>语言模型</strong></em>, 图像处理*</p>
+<p>  ② <strong>机器翻译</strong>, 机器写小说</p>
+<p>  ③ <strong>语音识别</strong></p>
+<p>  ④ <strong>图像描述生成</strong></p>
+<p>  ⑤ 文本相似度计算</p>
+<p>  ⑥ <strong>音乐推荐</strong>、<strong>网易考拉商品推荐</strong>、<strong>Youtube视频推荐</strong>等新的应用领域</p>
 
             </div>
             <hr>
@@ -328,9 +370,9 @@ E=\lambda\frac{1}{m}\sum\limits_{k=1}^mE_k + (1-\lambda)\sum w_i^2</script><p>�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/05/2020-10-5-mapreduce/">
+                      <a href="/2020/10/02/2020-10-5-mapreduce/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">深入浅出学MapReduce</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -362,7 +404,7 @@ E=\lambda\frac{1}{m}\sum\limits_{k=1}^mE_k + (1-\lambda)\sum w_i^2</script><p>�
           el: "#vcomments",
           app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
           app_key: "F0939INl4cKXpCw2HgTIUb6B",
-          placeholder: "说点什么",
+          placeholder: "说点什么,（支持Markdown）",
           path: window.location.pathname,
           avatar: "retro",
           meta: ["nick","mail","link"],
@@ -601,45 +643,6 @@ E=\lambda\frac{1}{m}\sum\limits_{k=1}^mE_k + (1-\lambda)\sum w_i^2</script><p>�
 
 
 
-
-  
-
-  
-    <!-- MathJax -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
-        },
-        options: {
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = { node: text, delim: '', n: 0 };
-                math.end = { node: text, delim: '', n: 0 };
-                doc.math.push(math);
-              });
-            }, '', false],
-            insertedScript: [200, () => {
-              document.querySelectorAll('mjx-container').forEach(node => {
-                let target = node.parentNode;
-                if (target.nodeName.toLowerCase() === 'li') {
-                  target.parentNode.classList.add('has-jax');
-                }
-              });
-            }, '', false]
-          }
-        }
-      };
-    </script>
-
-    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
-
-  
 
 
 

@@ -34,6 +34,8 @@
   
 
   
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -189,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.4k 字
+      7.2k 字
     </span>
   
 
@@ -199,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      90
+      101
        分钟
     </span>
   
@@ -994,6 +996,75 @@ null = <span class="hljs-literal">None</span>
 <p><strong>说明:</strong> <code>1 &lt;= N &lt;= 10000</code></p>
 <hr>
 <p>Hard难度的二叉树，然后节点数量很大，猜测多半是树形dp。首先不要害怕，把题目好好读一遍，然后看一下时间，想想晚上吃啥，开个玩笑（逃）。</p>
+<p>本题需要想到的是：定义 $dp[u]$ 表示以 $u$ 为根的子树，它的所有子节点到它的距离之和，同时定义 $cnt[u]$ 表示以 $u$ 为根的所有节点数量（包括根节点），得到基本的转移方程：</p>
+<script type="math/tex; mode=display">
+dp[u] = \sum\limits_{v\in son[u]} (dp[v]+cnt[v])</script><p>然后 就很trivial，把每个节点都这样dp一下，得到时间复杂度$O(n^2)$的TLE，n为节点数目。</p>
+<p>所以我们考虑如何优化时间复杂度到$O(n)$。官方给的一种方法是“翻转”，非常tricky。链表题目也有几道是这样的。</p>
+<p>​    设当前根为$u$，子节点为$v$，让 $v$ 换到根的位置，$u$ 变为其孩子节点，同时维护原有的 dp 信息。在这一次的转变中，我们观察到除了 $u$ 和 $v$ 的$dp$ 值，其他节点的 $dp$ 值都不会改变，因此只要更新 $dp[u]$ 和 $dp[v] $的值即可。</p>
+<p>​    那么我们来看 $v$ 换到根的位置的时候怎么利用已有信息求出 $dp[u]$ 和 $dp[v]$ 的值。重新回顾第一次树形动态规划的转移方程，我们可以知道当 $u$ 变为 $v$ 的孩子的时候 $v$ 不在 $u$ 的后代集合 $son[u]$ 中了，因此此时 $dp[u]$ 需要减去 $v$ 的贡献，即</p>
+<script type="math/tex; mode=display">
+dp[u]=dp[u]−(dp[v]+cnt[v])</script><p>同时 $cnt[u] = cnt[u]-cnt[v]$，$cnt[v] = cnt_{pre}[u]$，可以想u原来是老大，v逆袭了继承了老大所有财产，而老大失去了原来v的那部分财产。</p>
+<p>而 $v$ 的后代节点集合中多出了 $u$，因此$dp[v]$ 的值要由 $u$ 更新上来，即</p>
+<script type="math/tex; mode=display">
+dp[v]=dp[v]+(dp[u]+sz[u])</script><p>同时 更新ans数组。</p>
+<p>至此我们完成了一次「换根」操作，在 $O(1)$ 的时间内维护了 $dp$ 的信息，且此时的树结构以 $v$ 为根。那么接下来我们不断地进行换根的操作，即能在 $O(N)$ 的时间内求出每个节点为根的答案，实现了时间复杂度的优化。</p>
+<p><strong>cpp代码</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> N;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; dp,cnt,res;<span class="hljs-comment">//保存节点的深度</span>
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; tree;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs1</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> f)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(tree[u].empty()) <span class="hljs-keyword">return</span>;
+        cnt[u] = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;t:tree[u])
+        &#123;
+            <span class="hljs-keyword">if</span>(t == f) <span class="hljs-keyword">continue</span>;
+            dfs1(t,u);
+            cnt[u] += cnt[t];
+            dp[u] += (dp[t]+cnt[t]);
+        &#125;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs2</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> f)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//f的作用避免 u-&gt;v-&gt;u无限循环</span>
+        <span class="hljs-keyword">if</span>(tree[u].empty()) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">int</span> dpu = dp[u], cntu = cnt[u];
+        
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;t:tree[u])
+        &#123;
+            <span class="hljs-keyword">if</span>(t == f) <span class="hljs-keyword">continue</span>;
+            dp[u] -= (dp[t] + cnt[t]);
+            cnt[u] -= cnt[t];
+            cnt[t] = cntu;
+            dp[t] += (dp[u] + cnt[u]);
+            res[t] = dp[t];
+            dfs2(t,u); 
+            dp[u] = dpu;
+            cnt[u] = cntu;
+        &#125;
+        res[u] = dp[u];
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">sumOfDistancesInTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span> N, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; edges)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!edges.size()) <span class="hljs-keyword">return</span> &#123;<span class="hljs-number">0</span>&#125;;
+        <span class="hljs-comment">//有节点但没有边一定要考虑！</span>
+        <span class="hljs-keyword">this</span>-&gt;N = N;
+        dp.resize(N,<span class="hljs-number">0</span>);
+        cnt.resize(N,<span class="hljs-number">0</span>);
+        res.resize(N,<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;e:edges)
+        &#123;<span class="hljs-comment">//题目说了双向图了</span>
+            tree[e[<span class="hljs-number">0</span>]].emplace_back(e[<span class="hljs-number">1</span>]);
+            tree[e[<span class="hljs-number">1</span>]].emplace_back(e[<span class="hljs-number">0</span>]);
+        &#125;
+        <span class="hljs-comment">//得到不考虑上层节点的树形dp</span>
+        dfs1(<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>);
+        <span class="hljs-comment">//进行“倒根”操作</span>
+        dfs2(<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>);
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<p>这里有个细节，就是0不一定是根节点，但是题目说了是双向图，无论是从哪个子节点均可以遍历整个树，牢记！</p>
 <hr>
 <h2 id="二叉树的线索化-（待完善）"><a href="#二叉树的线索化-（待完善）" class="headerlink" title="二叉树的线索化*（待完善）"></a>二叉树的线索化*（待完善）</h2><blockquote>
 <p>二叉树转换为链表的方式，了解就行,参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014492609/article/details/40477795#">https://blog.csdn.net/u014492609/article/details/40477795#</a></p>
@@ -1110,7 +1181,7 @@ null = <span class="hljs-literal">None</span>
           el: "#vcomments",
           app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
           app_key: "F0939INl4cKXpCw2HgTIUb6B",
-          placeholder: "说点什么",
+          placeholder: "说点什么,（支持Markdown）",
           path: window.location.pathname,
           avatar: "retro",
           meta: ["nick","mail","link"],
@@ -1349,45 +1420,6 @@ null = <span class="hljs-literal">None</span>
 
 
 
-
-  
-
-  
-    <!-- MathJax -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
-        },
-        options: {
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = { node: text, delim: '', n: 0 };
-                math.end = { node: text, delim: '', n: 0 };
-                doc.math.push(math);
-              });
-            }, '', false],
-            insertedScript: [200, () => {
-              document.querySelectorAll('mjx-container').forEach(node => {
-                let target = node.parentNode;
-                if (target.nodeName.toLowerCase() === 'li') {
-                  target.parentNode.classList.add('has-jax');
-                }
-              });
-            }, '', false]
-          }
-        }
-      };
-    </script>
-
-    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
-
-  
 
 
 

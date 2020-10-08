@@ -34,6 +34,8 @@
   
 
   
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -189,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      382 字
+      718 字
     </span>
   
 
@@ -199,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      10
        分钟
     </span>
   
@@ -271,17 +273,58 @@ C --&gt; D</code></pre>
 <ul>
 <li>关于 <strong>Mermaid</strong> 语法，参考 [这儿][3],</li>
 </ul>
-<h2 id="FLowchart流程图（flow语言）"><a href="#FLowchart流程图（flow语言）" class="headerlink" title="FLowchart流程图（flow语言）"></a>FLowchart流程图（flow语言）</h2><p>我们依旧会支持flowchart的流程图：<br><pre><code class="hljs flow">start&#x3D;&gt;start: 开始
-loginInfo&#x3D;&gt;inputoutput: 登录数据
-verifyLogin&#x3D;&gt;subroutine: 登录验证
-isSuccess&#x3D;&gt;condition: 验证成功？
-respondSuccess&#x3D;&gt;operation: 响应成功
-responseFailure&#x3D;&gt;operation: 响应失败
-end&#x3D;&gt;end: 结束
+<h2 id="FLowchart流程图（flow语言）"><a href="#FLowchart流程图（flow语言）" class="headerlink" title="FLowchart流程图（flow语言）"></a>FLowchart流程图（flow语言）</h2><p>我们依旧会支持flowchart的流程图，以中断处理流程为例：<br><pre><code class="hljs flow">start&#x3D;&gt;start: 开始
+mainProcess&#x3D;&gt;inputoutput: 主程序指令
+IRrequest&#x3D;&gt;condition: 有中断请求？
+IRoff&#x3D;&gt;operation: 关中断
+BPsaved&#x3D;&gt;operation: 保存断点
+IRrecog&#x3D;&gt;operation: 中断源识别
+protect&#x3D;&gt;operation: 保护现场
+IRservice&#x3D;&gt;operation: 中断服务
+recover&#x3D;&gt;operation: 恢复现场
+IRon&#x3D;&gt;operation: 开中断
+IRreturn&#x3D;&gt;operation: 中断返回
+end&#x3D;&gt;end: 主程序指令
+mainProcess-&gt;IRrequest
+IRrequest(no)-&gt;end
+IRrequest(yes)-&gt;IRoff-&gt;BPsaved-&gt;IRrecog-&gt;protect-&gt;IRservice-&gt;recover-&gt;IRon-&gt;IRreturn-&gt;end
+</code></pre></p>
+<p>​                                                                                (a) 单极中断处理流程</p>
+<pre><code class="hljs flow">start&#x3D;&gt;start: 开始
+mainProcess&#x3D;&gt;inputoutput: 主程序指令
+IRrequest&#x3D;&gt;condition: 有中断请求？
+IRoff&#x3D;&gt;operation: 关中断
+BPsaved&#x3D;&gt;operation: 保存断点
+IRrecog&#x3D;&gt;operation: 中断源识别
+protect&#x3D;&gt;operation: 保护现场和屏蔽字
+newMask&#x3D;&gt;operation: 设置新的屏蔽字
+IRon_&#x3D;&gt;operation: 重新开中断
+IRservice&#x3D;&gt;operation: 中断服务
+IRoff_&#x3D;&gt;operation: 重新关中断
+recover&#x3D;&gt;operation: 恢复现场和屏蔽字
+IRon&#x3D;&gt;operation: 开中断
+IRreturn&#x3D;&gt;operation: 中断返回
+end&#x3D;&gt;end: 主程序指令
+mainProcess-&gt;IRrequest
+IRrequest(no)-&gt;end
+IRrequest(yes)-&gt;IRoff-&gt;BPsaved-&gt;IRrecog-&gt;protect-&gt;newMask-&gt;IRon_
+IRon_-&gt;IRservice-&gt;IRoff_-&gt;recover-&gt;IRon-&gt;IRreturn-&gt;end
+</code></pre>
+<p>​                                                                                (b) 多级中断处理流程</p>
+<pre><code class="hljs flow">st&#x3D;&gt;start: Start:&gt;http:&#x2F;&#x2F;www.google.com[blank]
+e&#x3D;&gt;end:&gt;http:&#x2F;&#x2F;www.google.com
+op1&#x3D;&gt;operation: My Operation
+sub1&#x3D;&gt;subroutine: My Subroutine
+cond&#x3D;&gt;condition: Yes
+or No?:&gt;http:&#x2F;&#x2F;www.google.com
+io&#x3D;&gt;inputoutput: catch something...
+para&#x3D;&gt;parallel: parallel tasks
 
-start-&gt;loginInfo-&gt;verifyLogin-&gt;isSuccess
-isSuccess(yes)-&gt;respondSuccess-&gt;end
-isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
+st-&gt;op1-&gt;cond
+cond(yes)-&gt;io-&gt;e
+cond(no)-&gt;para
+para(path1, bottom)-&gt;sub1(right)-&gt;op1
+para(path2, top)-&gt;op1</code></pre>
 <ul>
 <li>关于 <strong>Flowchart流程图</strong> 语法，参考 <a target="_blank" rel="noopener" href="http://flowchart.js.org/">这儿</a>.</li>
 </ul>
@@ -350,7 +393,7 @@ isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
           el: "#vcomments",
           app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
           app_key: "F0939INl4cKXpCw2HgTIUb6B",
-          placeholder: "说点什么",
+          placeholder: "说点什么,（支持Markdown）",
           path: window.location.pathname,
           avatar: "retro",
           meta: ["nick","mail","link"],
@@ -589,45 +632,6 @@ isSuccess(no)-&gt;responseFailure-&gt;end</code></pre></p>
 
 
 
-
-  
-
-  
-    <!-- MathJax -->
-    <script>
-      MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
-        },
-        options: {
-          renderActions: {
-            findScript: [10, doc => {
-              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-                const display = !!node.type.match(/; *mode=display/);
-                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-                const text = document.createTextNode('');
-                node.parentNode.replaceChild(text, node);
-                math.start = { node: text, delim: '', n: 0 };
-                math.end = { node: text, delim: '', n: 0 };
-                doc.math.push(math);
-              });
-            }, '', false],
-            insertedScript: [200, () => {
-              document.querySelectorAll('mjx-container').forEach(node => {
-                let target = node.parentNode;
-                if (target.nodeName.toLowerCase() === 'li') {
-                  target.parentNode.classList.add('has-jax');
-                }
-              });
-            }, '', false]
-          }
-        }
-      };
-    </script>
-
-    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
-
-  
 
 
 
