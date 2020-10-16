@@ -339,7 +339,7 @@ dp[j] = \max(dp[j-w[i-1]]+v[i-1],dp[j])</script><p>注意后面的dp[j]其实是
 <hr>
 <h2 id="III-多重背包问题"><a href="#III-多重背包问题" class="headerlink" title="III. 多重背包问题"></a>III. 多重背包问题</h2><p>多重背包问题介于0-1背包和完全背包之间。</p>
 <p>我们除了给出背包的最大容量，物品的体积V和价值W，还给出物品的最大数量S。</p>
-<p><u>我们可以将多重背包问题转化为0-1背包，即将每种物品视为k种不同的物品</u>，这样的时间复杂度为<script type="math/tex">O(s×\sum k_i)</script>，由此可见，降低每件物品的数量可以大大降低其时间复杂度。我们运用一些tricky技巧，将原来数量为k的物品拆分为若干组，每组物品看成一件物品，其价值和重量为该组所有物品之和。$\color{red}{每组物品包含原物品数目分别为: 1,2,4···k-2^c+1}，其中k为使得k-2^c+1大于0的最大整数$.得到新的时间复杂度为<script type="math/tex">O(s×\sum \log k_i)</script>。</p>
+<p><u>我们可以将多重背包问题转化为0-1背包，即将每种物品视为k种不同的物品</u>，这样的时间复杂度为<script type="math/tex">O(s×\sum k_i)</script>，由此可见，降低每件物品的数量可以大大降低其时间复杂度。我们运用一些tricky技巧，将原来数量为k的物品拆分为若干组，每组物品看成一件物品，其价值和重量为该组所有物品之和。每组物品包含原物品数目分别为: $1,2,4···k-2^c+1$，其中k为使得$k-2^c+1$大于0的最大整数$.得到新的时间复杂度为<script type="math/tex">O(s×\sum \log k_i)</script>。</p>
 <p><strong>二进制优化</strong></p>
 <pre><code class="hljs Cpp"><span class="hljs-keyword">int</span> N,C;<span class="hljs-comment">//分别表示物品数量和背包容量</span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">object</span></span>
@@ -377,8 +377,8 @@ dp[j] = \max(dp[j-w[i-1]]+v[i-1],dp[j])</script><p>注意后面的dp[j]其实是
 0&lt;V≤200000&lt;V≤20000
 0&lt;vi,wi,si≤20000</code></p>
 <p>当数据范围变得极大，使用二进制将<code>TLE</code>，我们必须优化，这里有一种优化方式是单调队列优化。</p>
-<p>因为我们需要的是${ dp[j], dp[v+j], dp[2<em>v+j], dp[3</em>v+j], … , dp[k*v+j] }$ 中的最大值，我们通过维护一个单调队列来维护这些数中最大值。</p>
-<p>单调队列问题，最重要的两点<br>1）维护队列元素的个数，如果不能继续入队，弹出队头元素<br>2）维护队列的单调性，即：$尾值 &gt;= dp[j + k<em>v] - k</em>w$</p>
+<p>因为我们需要的是$ dp[j], dp[v+j], dp[2<em>v+j], dp[3</em>v+j], … , dp[k*v+j] $ 中的最大值，我们通过维护一个单调队列来维护这些数中最大值。</p>
+<p>单调队列问题，最重要的两点<br>1）维护队列元素的个数，如果不能继续入队，弹出队头元素<br>2）维护队列的单调性，即：尾值$ &gt;= dp[j + k<em>v] - k</em>w$</p>
 <p>本题中，队列中元素的个数应该为 $s+1$ 个，即 $0 - s $个物品 $i$. 为了方便大家理解，我举例进行说明。</p>
 <pre><code class="hljs cpp">
 <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N_MAX = <span class="hljs-number">20010</span>;
@@ -431,7 +431,7 @@ dp[j] = \max(dp[j-w[i-1]]+v[i-1],dp[j])</script><p>注意后面的dp[j]其实是
 <li>$si&gt;0$ 表示第 $i$ 种物品可以使用 $si$ 次；</li>
 </ul>
 <h4 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出一个整数，表示最大价值。</p>
-<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$0&lt;N,V≤10000&lt;N,V≤1000<br>0&lt;vi,wi≤10000&lt;vi,wi≤1000<br>−1≤si≤1000$</p>
+<h4 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h4><p>$0&lt;N,V≤100\\<br>0&lt;vi,wi≤100\\<br>−1≤si≤1000$</p>
 <blockquote>
 <hr>
 </blockquote>
@@ -521,9 +521,7 @@ dp[j] = \max(dp[j-w[i-1]]+v[i-1],dp[j])</script><p>注意后面的dp[j]其实是
 <li>每组数据接下来有 $Si$ 行，每行有两个整数 $v_{ij},w_{ij}$，用空格隔开，分别表示第 $i$ 个物品组的第 $j$ 个物品的体积和价值；</li>
 </ul>
 <h4 id="输出格式-2"><a href="#输出格式-2" class="headerlink" title="输出格式"></a>输出格式</h4><p>输出一个整数，表示最大价值。</p>
-<h4 id="数据范围-2"><a href="#数据范围-2" class="headerlink" title="数据范围"></a>数据范围</h4><p><code>0&lt;N,V≤100
-0&lt;Si≤100
-0&lt;vij,wij≤100</code></p>
+<h4 id="数据范围-2"><a href="#数据范围-2" class="headerlink" title="数据范围"></a>数据范围</h4><p>$0&lt;N,V≤100\\<br>0&lt;Si≤100\\<br>0&lt;vij,wij≤100$</p>
 <blockquote>
 <hr>
 </blockquote>
@@ -913,7 +911,7 @@ dp[i-1][j+nums[i]],j<sum-nums[i]
                     
                     
                       <a href="/2020/07/21/2020-08-1-representation_of_graph/">
-                        <span class="hidden-mobile">爸爸再也不想做图类题目了</span>
+                        <span class="hidden-mobile">再也不想做图类题目了</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

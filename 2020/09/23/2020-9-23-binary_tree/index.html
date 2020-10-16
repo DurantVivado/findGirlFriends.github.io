@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>必须掌握数据结构-二叉树 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>必须掌握数据结构-树 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.2k 字
+      7.3k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      101
+      102
        分钟
     </span>
   
@@ -239,14 +239,14 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">必须掌握数据结构-二叉树</h1>
+            <h1 style="display: none">必须掌握数据结构-树</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-success">
-            <p>二叉树</p>
+            <p>树，按照子节点最大数目分为二叉树和多叉树，按照方向分为单向树和双向树。</p>
           </div>
-<h1 id="二叉树相关算法"><a href="#二叉树相关算法" class="headerlink" title="二叉树相关算法"></a>二叉树相关算法</h1><blockquote>
-<p>一看到二叉树，基本上可以确定是DFS或者BFS了，比较单调，但是也有一些很复杂的题目。二叉树，根据实际需要，演变为二叉搜索树，2-3-4树，平衡树（红黑树、AVL树），在计算机系统中占据重要地位。</p>
+<h1 id="树相关算法"><a href="#树相关算法" class="headerlink" title="树相关算法"></a>树相关算法</h1><blockquote>
+<p>一看到树，基本上可以确定是DFS或者BFS了，比较单调，但是也有一些很复杂的题目。二叉树，根据实际需要，演变为二叉搜索树，2-3-4树，平衡树（红黑树、AVL树），在计算机系统中占据重要地位。</p>
 </blockquote>
 <p>树是一种抽象数据类型（ADT）或是实现这种抽象数据类型的数据结构，用来模拟具有树状结构性质的数据集合。它是由 $n(n&gt;0)$ 个有限节点组成一个具有层次关系的集合。</p>
 <p><img src="\img\binary_1.png" srcset="/img/loading.gif" alt=""></p>
@@ -293,6 +293,8 @@
 <li><ol>
 <li>从先序遍历还原二叉树（Hard）（*）</li>
 </ol>
+</li>
+<li><p>1617.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-subtrees-with-max-distance-between-cities/">统计子树中城市最大距离（Hard）</a></p>
 </li>
 </ul>
 <hr>
@@ -903,13 +905,13 @@ null = <span class="hljs-literal">None</span>
 </ol>
 <p>其实上面的两种情况可以总结成一种情况就是一个个子树更新父亲，一般来说第一种情况应用更多，也能解决第二情况的问题，只不过如果符合第二种情况的时候用第二种可以速度更快一点，毕竟你省了一遍循环嘛。</p>
 <ul>
-<li><p>有依赖的背包问题（见相应专题）</p>
-</li>
+<li>有依赖的背包问题（见相应专题）</li>
 <li><ol>
 <li>监控二叉树</li>
 </ol>
 </li>
 <li>834.树中距离之和</li>
+<li>1617.统计子树中城市最大距离</li>
 </ul>
 <hr>
 <h4 id="968-监控二叉树"><a href="#968-监控二叉树" class="headerlink" title="968. 监控二叉树"></a>968. 监控二叉树</h4><p>给定一个二叉树，我们在树的节点上安装摄像头。</p>
@@ -1133,6 +1135,8 @@ dp[v]=dp[v]+(dp[u]+sz[u])</script><p>同时 更新ans数组。</p>
                 
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
                     
                       <a class="hover-with-bg" href="/tags/%E6%A0%91/">树</a>
                     
@@ -1359,7 +1363,7 @@ dp[v]=dp[v]+(dp[u]+sz[u])</script><p>同时 更新ans数组。</p>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "必须掌握数据结构-二叉树&nbsp;",
+        "必须掌握数据结构-树&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

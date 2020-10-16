@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6 字
+      450 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      4
        分钟
     </span>
   
@@ -242,7 +242,45 @@
             <h1 style="display: none">深入浅出学MapReduce</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="深入浅出学MapReduce"><a href="#深入浅出学MapReduce" class="headerlink" title="深入浅出学MapReduce"></a>深入浅出学MapReduce</h1>
+              <h1 id="深入浅出学MapReduce"><a href="#深入浅出学MapReduce" class="headerlink" title="深入浅出学MapReduce"></a>深入浅出学MapReduce</h1><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/boothsun/p/7714609.html">https://www.cnblogs.com/boothsun/p/7714609.html</a></p>
+<p>谷歌在2004年发表了可以分析大量数据的MapReduce算法. 每当你听到”大数据”这个词时，它指的是因为太大而让仅仅一台机器难以有效存储或分析的问题。MapReduce通过把计算量分配给不同的计算机群，能够解决大部分和大数据有关的分析问题。Hadoop提供了最受欢迎的利用MapReduce算法来管理大数据的开源方式。先进MapReduce是主流，题外话：Hadoop是其发明者(Prof. Doug Cutting)的孩子画的大象的名字。</p>
+<p>Hadoop的优势：PB级数据处理，经济，高效，可靠。</p>
+<p>所以通常来说，每当你听到“大数据”，那也许意味着Hadoop被用来存储数据，也通常意味着数据的抽取和检索是用的MapReduce。</p>
+</blockquote>
+<p>你想数出一摞扑克牌中有多少黑桃。直观方式是一张一张检查并且数出有多少张是黑桃。</p>
+<p><img src="../img/hadoop.png" srcset="/img/loading.gif" alt="image-20201011211938355" style="zoom:67%;" /></p>
+<p><img src="../img/mapreduce_2.jpg" srcset="/img/loading.gif" alt="image-20201011212059132" style="zoom:67%;" /><img src="2020-10-5-mapreduce/image-20201011214146689.png" srcset="/img/loading.gif" alt="image-20201011214146689"></p>
+<p><img src="../img/mapreduce_2.jpg" srcset="/img/loading.gif" alt="image-20201011212059132" style="zoom:67%;" /><img src="2020-10-5-mapreduce/image-20201011214146689.png" srcset="/img/loading.gif" alt="image-20201011214146689"></p>
+<p>MapReduce方法规则是:</p>
+<ol>
+<li>给在座的所有玩家中分配这摞牌</li>
+<li>让每个玩家数自己手中有几张是黑桃,然后把这个数目汇报给你</li>
+<li>你把所有玩家告诉你的数字加起来,得到最后的结论</li>
+</ol>
+<hr>
+<p>MapReduce融合了两种经典函数：</p>
+<ul>
+<li><p><strong>映射</strong>（Mapping）：对集合里每一个目标应用同一个操作。</p>
+</li>
+<li><p><strong>化简</strong>（Reducing）：遍历集合中的元素来返回一个综合的结果。</p>
+</li>
+</ul>
+<p>Mapreduce关注</p>
+<p>1）如何分割输入数据</p>
+<p>2）大集群上的调度</p>
+<p>3）计算机错误处理</p>
+<p>4）管理集群中计算机必要的通信</p>
+<hr>
+<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><p>Hadoop Distributed File System</p>
+<p>HDFS架构：</p>
+<p>主节点namenode：只有一个。</p>
+<ul>
+<li>接受用户请求。</li>
+<li></li>
+</ul>
+<p>从节点datanodes：有多个。</p>
+
             </div>
             <hr>
             <div>

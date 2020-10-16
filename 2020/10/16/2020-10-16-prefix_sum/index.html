@@ -1,0 +1,810 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>数组和字符串的🆒skr操作——前缀和 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-16 00:00" pubdate>
+        2020年10月16日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-post-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">数组和字符串的🆒skr操作——前缀和</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><ul>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">和为k的子数组</a>(Medium)</li>
+</ol>
+</li>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">每个元音包含最长的子字符串</a>(Medium)</li>
+</ol>
+</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/">1248. 统计「优美子数组」</a></li>
+<li>LCP 19：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">秋叶收藏集</a></li>
+</ul>
+<blockquote>
+<p>什么是前缀和？前缀和是一个数组的某项下标之前(包括此项元素)的所有数组元素的和。 </p>
+<p>设$p[]$为前缀和数组，$a[]$为原数组，根据这句话可以得到前缀和的定义式和递推式:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>定义式</th>
+<th>递推式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>一维前缀和</strong></td>
+<td>$p[i]=\sum\limits_{i}^{n}a[i]$</td>
+<td>$p[i]-p[i-1]=a[i]$</td>
+</tr>
+<tr>
+<td><strong>二维前缀和</strong></td>
+<td>$p[i]=\sum\limits_{i}^{n}\sum\limits_{j}^{m}a[i][j]$</td>
+<td>$p[i][j]=p[i-1][j]+p[i][j-1]-p[i-1][j-1]+a[i][j]$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<hr>
+<h2 id="560-和为k的子数组-Medium"><a href="#560-和为k的子数组-Medium" class="headerlink" title="560.和为k的子数组(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">560.和为k的子数组</a>(Medium)</strong></h2><p>给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。</p>
+<p>示例 1 :</p>
+<p>输入:nums = [1,1,1], k = 2<br>输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。<br>说明 :</p>
+<p>数组的长度为 [1, 20,000]。<br>数组中元素的范围是 [-1000, 1000] ，且整数 k 的范围是 [-1e7, 1e7]。</p>
+<hr>
+<p>定义$pre[i]$表示$[0…i]$所有数之和,那么范围$[j-i]$可以表示为: $pre[i]-pre[j-1]$,  且$pre[i] = pre[i-1] + nums[i]$ , 问题转化为,</p>
+<p>找到有多少个区间,满足$pre[i]-pre[j-1]==k$. 所以我们考虑以 $i$ 结尾的和为 $k$ 的连续子数组个数时只要统计有多少个前缀和为 $\textit{pre}[i]-k$的 $\textit{pre}[j]$ 即可。我们建立哈希表 $\textit{mp}$，以和为键，出现次数为对应的值，记录 $\textit{pre}[i]$ 出现的次数，从左往右边更新 $\textit{mp}$边计算答案，那么以 $i$ 结尾的答案 $\textit{mp}[\textit{pre}[i]-k]$ 即可在 $O(1)$ 时间内得到。最后的答案即为所有下标结尾的和为 $k$ 的子数组个数之和。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> res;
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">subarraySum</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!nums.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-comment">//数组长度和k都非常大，因此要尽量在线性时间复杂度解决</span>
+        <span class="hljs-comment">//我们尝试动态规划解决,</span>
+        <span class="hljs-keyword">int</span> n = nums.size();
+        <span class="hljs-keyword">if</span>(n==<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>]==k;
+        res = <span class="hljs-number">0</span>;
+        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; memo;<span class="hljs-comment">//记录和的个数</span>
+        <span class="hljs-keyword">int</span> pre = <span class="hljs-number">0</span>;
+        memo[<span class="hljs-number">0</span>]++;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n;i++)
+        &#123;
+            <span class="hljs-comment">// cout&lt;&lt;i&lt;&lt;&quot;,&quot;&lt;&lt;pre&lt;&lt;endl;</span>
+            pre = pre + nums[i];
+            
+            <span class="hljs-keyword">if</span>(memo.count(pre-k))
+            res += memo[pre-k];
+            memo[pre]++;
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<hr>
+<h2 id="1371-每个元音包含最长的子字符串-Medium"><a href="#1371-每个元音包含最长的子字符串-Medium" class="headerlink" title="1371,每个元音包含最长的子字符串(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">1371,每个元音包含最长的子字符串</a>(Medium)</h2><p>给你一个字符串 s ，请你返回满足以下条件的最长子字符串的长度：每个元音字母，即 ‘a’，’e’，’i’，’o’，’u’ ，在子字符串中都恰好出现了偶数次。</p>
+<p>示例 1：</p>
+<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;eleetminicoworoep&quot;</span>
+输出：<span class="hljs-number">13</span>
+解释：最长子字符串是 <span class="hljs-string">&quot;leetminicowor&quot;</span> ，它包含 e，i，o 各 <span class="hljs-number">2</span> 个，以及 <span class="hljs-number">0</span> 个 a，u 。
+</code></pre>
+<p>示例 2：</p>
+<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;leetcodeisgreat&quot;</span>
+输出：<span class="hljs-number">5</span>
+解释：最长子字符串是 <span class="hljs-string">&quot;leetc&quot;</span> ，其中包含 <span class="hljs-number">2</span> 个 e 。
+</code></pre>
+<p>示例 3：</p>
+<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;bcbcbc&quot;</span>
+输出：<span class="hljs-number">6</span>
+解释：这个示例中，字符串 <span class="hljs-string">&quot;bcbcbc&quot;</span> 本身就是最长的，因为所有的元音 a，e，i，o，u 都出现了 <span class="hljs-number">0</span> 次。
+</code></pre>
+<p>提示：</p>
+<p><code>1 &lt;= s.length &lt;= 5 x 10^5
+s 只包含小写英文字母。</code></p>
+<p>定义$pre[i][k]$表示前$i$个字母，第$k$个元音字母总出现的次数。那么在$[i-1,j-1]$区间内，元音字母出现次数为$pre[j][k]-pre[i][k]$，在$O(1)$时间内得到第$k$个元音字母出现的次数。</p>
+<p>同时我们要考虑避免枚举所有的$i$，计算以它结尾的满足条件的最长子字符串长度，我们要找到最小$i$使得$pre[j][k]-pre[i][k]$均为偶数。 我们需要利用【所有元音出现偶数次】这个条件，对于满足条件的子串而言，$pre[i][k]$和$pre[j][k]$的奇偶性一定相同，因为偶数一定是奇数+奇数，或者偶数+偶数组成。所以我们可以把$pre[i][k]$改为表示$[0,i-1]$的<strong>元音奇偶性</strong>。</p>
+<p>此外我们还需要进行「状态压缩」：</p>
+<pre><code class="hljs dts">&#123;
+<span class="hljs-symbol">  a:</span> cnta, <span class="hljs-comment">// a 出现次数的奇偶性</span>
+<span class="hljs-symbol">  e:</span> cnte, <span class="hljs-comment">// e 出现次数的奇偶性</span>
+<span class="hljs-symbol">  i:</span> cnti, <span class="hljs-comment">// i 出现次数的奇偶性</span>
+<span class="hljs-symbol">  o:</span> cnto, <span class="hljs-comment">// o 出现次数的奇偶性</span>
+<span class="hljs-symbol">  u:</span> cntu  <span class="hljs-comment">// u 出现次数的奇偶性</span>
+&#125;
+</code></pre>
+<p>我们可以用二进制表示这些奇偶。</p>
+<p>举一个例子，假如到第 $i $个位置，<code>u o i e a</code>出现的奇偶性分别为 <code>1 1 0 0 1</code>，那么我们就可以将其压成一个二进制数 $(11001)_2=(25)_{10}$ 作为它的状态。</p>
+<p><strong>代码：</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">findTheLongestSubstring</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!s.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> n = s.size(), res = <span class="hljs-number">0</span>, status = <span class="hljs-number">0</span>;
+        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>,<span class="hljs-keyword">int</span>&gt; vowel&#123;
+            &#123;<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-string">&#x27;i&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">2</span>&#125;,&#123;<span class="hljs-string">&#x27;o&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">3</span>&#125;,&#123;<span class="hljs-string">&#x27;u&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>&#125;
+        &#125;;
+        <span class="hljs-comment">// 我们用pre[status]表示status状态对应的位置i，不断更新</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">pre</span><span class="hljs-params">(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>,<span class="hljs-number">-1</span>)</span></span>;<span class="hljs-comment">//初始均为偶</span>
+        pre[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;<span class="hljs-comment">//初始状态，所有元音为偶数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(vowel.count(s[i<span class="hljs-number">-1</span>]))
+            status ^= vowel[s[i<span class="hljs-number">-1</span>]];
+            
+            <span class="hljs-keyword">if</span>(~pre[status]) res = max(res,i - pre[status]); <span class="hljs-comment">//pre[status]!=-1</span>
+            <span class="hljs-keyword">else</span> 
+            &#123;
+                pre[status] = i ;
+            &#125;
+        
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<blockquote>
+<p>注意 18行的 ~pre[status]表示<strong>按位取反</strong>，包含了符号位，所以只有pre[status]不为-1，才为True。</p>
+<p>$ \text{~} 0 = -1$， </p>
+</blockquote>
+<p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
+<p>空间复杂度: $O(1)$.</p>
+<hr>
+<h4 id="LCP-19-秋叶收藏集"><a href="#LCP-19-秋叶收藏集" class="headerlink" title="LCP 19. 秋叶收藏集"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">LCP 19. 秋叶收藏集</a></h4><p>小扣出去秋游，途中收集了一些红叶和黄叶，他利用这些叶子初步整理了一份秋叶收藏集 <code>leaves</code>， 字符串 <code>leaves</code> 仅包含小写字符 <code>r</code> 和 <code>y</code>， 其中字符 <code>r</code> 表示一片红叶，字符 <code>y</code> 表示一片黄叶。<br>出于美观整齐的考虑，小扣想要将收藏集中树叶的排列调整成「红、黄、红」三部分。每部分树叶数量可以不相等，但均需大于等于 1。每次调整操作，小扣可以将一片红叶替换成黄叶或者将一片黄叶替换成红叶。请问小扣最少需要多少次调整操作才能将秋叶收藏集调整完毕。</p>
+<p><strong>示例 1：</strong></p>
+<blockquote>
+<p>输入：<code>leaves = &quot;rrryyyrryyyrr&quot;</code></p>
+<p>输出：<code>2</code></p>
+<p>解释：调整两次，将中间的两片红叶替换成黄叶，得到 “rrryyyyyyyyrr”</p>
+</blockquote>
+<p><strong>示例 2：</strong></p>
+<blockquote>
+<p>输入：<code>leaves = &quot;ryr&quot;</code></p>
+<p>输出：<code>0</code></p>
+<p>解释：已符合要求，不需要额外操作</p>
+</blockquote>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>3 &lt;= leaves.length &lt;= 10^5</code></li>
+<li><code>leaves</code> 中只包含字符 <code>&#39;r&#39;</code> 和字符 <code>&#39;y&#39;</code></li>
+</ul>
+<hr>
+<p>【待更新】</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/12/Hadoop%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "数组和字符串的🆒skr操作——前缀和&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      2.8k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      29
+      37
        分钟
     </span>
   
@@ -257,8 +257,14 @@
 <li><ol>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/circle-and-rectangle-overlapping/">圆和矩形是否有重叠</a></li>
 </ol>
-<hr>
 </li>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-number-of-visible-points/">可见点的最大数目</a>（配合滑动窗口和atan2）</li>
+</ol>
+</li>
+</ul>
+<hr>
+<ul>
 <li><p>求质因数</p>
 </li>
 <li><p>最大公因数（GCD）</p>
@@ -267,12 +273,11 @@
 </li>
 <li><p>快速幂算法</p>
 </li>
-<li><p>FFT算法</p>
-</li>
 <li><p>Gauss消元法</p>
 </li>
-<li><p>Java bitCount的实现</p>
+<li><p>几何</p>
 </li>
+<li></li>
 </ul>
 <h2 id="质因数求解"><a href="#质因数求解" class="headerlink" title="质因数求解"></a>质因数求解</h2><p>设$ R = \sqrt{A}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+1$个不同的质因数。质因数为本身的只有一个，非本身的质因数一定比$R$小，最多$R$个。</p>
 <p><strong>策略</strong></p>
@@ -330,7 +335,7 @@
     &#125;
     <span class="hljs-keyword">return</span> result;
 &#125;</code></pre>
-<h2 id="FFT算法"><a href="#FFT算法" class="headerlink" title="FFT算法"></a>FFT算法</h2><h2 id="Gauss消元法"><a href="#Gauss消元法" class="headerlink" title="Gauss消元法"></a>Gauss消元法</h2><blockquote>
+<h2 id="Gauss消元法"><a href="#Gauss消元法" class="headerlink" title="Gauss消元法"></a>Gauss消元法</h2><blockquote>
 <p>高斯消元法主要用于求解线性方程组，也可以求矩阵的秩、矩阵的逆等，是一个重要的数学方法。其时间复杂度主要与方程组个数、方程组未知数个数有关，一般来说，时间复杂度为 $O(n^3)$</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011815404/article/details/88890702">https://blog.csdn.net/u011815404/article/details/88890702</a></p>
 </blockquote>
@@ -442,6 +447,17 @@
     &#125;
 </code></pre>
 <p>可以清楚的看到算法时间复杂度$O(n^3)$，设矩阵大小为$n$。</p>
+<h2 id="几何"><a href="#几何" class="headerlink" title="几何"></a>几何</h2><p>几何问题很广泛，有些看似几何的问题其实可以归结为图问题。这里我们介绍纯数学几何。可能会涉及浮点数，我们需要了解一些常见工具。</p>
+<p>有一些常用的库：</p>
+<p><strong>C++</strong></p>
+<blockquote>
+<p><code>include&lt;cmath&gt;</code> </p>
+</blockquote>
+<p>基础: <code>cos</code>,<code>sin</code>,<code>tan</code>,<code>atan</code>,<code>sqrt</code>,<code>exp</code>,<code>pow</code>,<code>log</code>(lnx),<code>log10()</code>,<code>ceil</code>（向上取整）,<code>floor</code>（向下取整）。    </p>
+<p><code>fabs</code>浮点数绝对值,</p>
+<p><code>double modf (double, double*)</code>; 将参数的整数部分通过指针回传, 返回小数部分<br><code>double fmod (double, double)</code>; 返回两参数相除的余数</p>
+<p><code>double atan2(double y, double x)</code>：返回的是方位角。范围$[-\pi,\pi]$</p>
+<p><img src="\img\atan2.jpg" srcset="/img/loading.gif" alt="atan2的公式"></p>
 <hr>
 <p>题目赏析</p>
 <h4 id="279-完全平方数"><a href="#279-完全平方数" class="headerlink" title="279. 完全平方数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/perfect-squares/">279. 完全平方数</a></h4><p>给定正整数 <em>n</em>，找到若干个完全平方数（比如 <code>1, 4, 9, 16, ...</code>）使得它们的和等于 <em>n</em>。你需要让组成和的完全平方数的个数最少。</p>
@@ -512,6 +528,36 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
 <li><strong>时间复杂度</strong>： 最好的情况下是$O(1)$，比如$n$是完全平方数, 最坏$O(N)$，即该数有两个平方数组成。</li>
 <li><strong>空间复杂度</strong>:   $O(1)$，常数级别空间占用。</li>
 </ul>
+<hr>
+<h4 id="10-可见点的最大数目"><a href="#10-可见点的最大数目" class="headerlink" title="10. 可见点的最大数目"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-number-of-visible-points/">10. 可见点的最大数目</a></h4><p>给你一个点数组 <code>points</code> 和一个表示角度的整数 <code>angle</code> ，你的位置是 <code>location</code> ，其中 <code>location = [posx, posy]</code> 且 <code>points[i] = [xi, yi]</code> 都表示 X-Y 平面上的整数坐标。</p>
+<p>最开始，你面向东方进行观测。你 <strong>不能</strong> 进行移动改变位置，但可以通过 <strong>自转</strong> 调整观测角度。换句话说，<code>posx</code> 和 <code>posy</code> 不能改变。你的视野范围的角度用 <code>angle</code> 表示， 这决定了你观测任意方向时可以多宽。设 <code>d</code> 为你逆时针自转旋转的度数，那么你的视野就是角度范围 <code>[d - angle/2, d + angle/2]</code> 所指示的那片区域。</p>
+<p>同一个坐标上可以有多个点。你所在的位置也可能存在一些点，但不管你的怎么旋转，总是可以看到这些点。同时，点不会阻碍你看到其他点。</p>
+<p>返回你能看到的点的最大数目。</p>
+<p><strong>示例 1：</strong></p>
+<p><img src="\img\lc1610_1.jpg" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：points = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]], angle = <span class="hljs-number">90</span>, location = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+输出：<span class="hljs-number">3</span>
+解释：阴影区域代表你的视野。在你的视野中，所有的点都清晰可见，尽管 [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] 和 [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]在同一条直线上，你仍然可以看到 [<span class="hljs-number">3</span>,<span class="hljs-number">3</span>] 。</code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：points = [[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]], angle = <span class="hljs-number">90</span>, location = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+输出：<span class="hljs-number">4</span>
+解释：在你的视野中，所有的点都清晰可见，包括你所在位置的那个点。</code></pre>
+<p><strong>示例 3：</strong></p>
+<p><img src="/img/lc1610_2.jpg" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：points = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]], angle = <span class="hljs-number">13</span>, location = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>]
+输出：<span class="hljs-number">1</span>
+解释：如图所示，你只能看到两点之一。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= points.length &lt;= 105</code></li>
+<li><code>points[i].length == 2</code></li>
+<li><code>location.length == 2</code></li>
+<li><code>0 &lt;= angle &lt; 360</code></li>
+<li><code>0 &lt;= posx, posy, xi, yi &lt;= 109</code></li>
+</ul>
+<hr>
+<p>题解：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-number-of-visible-points/solution/ji-zuo-biao-hua-dong-chuang-kou-zui-da-chang-du-zh/">https://leetcode-cn.com/problems/maximum-number-of-visible-points/solution/ji-zuo-biao-hua-dong-chuang-kou-zui-da-chang-du-zh/</a></p>
+<p>需要额外定义2pi，是为了两角之差大于180时取补角考虑。</p>
 
             </div>
             <hr>

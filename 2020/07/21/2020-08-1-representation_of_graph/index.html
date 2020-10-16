@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>爸爸再也不想做图类题目了 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>再也不想做图类题目了 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.4k 字
+      2.5k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      31
+      32
        分钟
     </span>
   
@@ -239,7 +239,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">爸爸再也不想做图类题目了</h1>
+            <h1 style="display: none">再也不想做图类题目了</h1>
             
             <div class="markdown-body" id="post-body">
               <h1 id="图的表示和图算法"><a href="#图的表示和图算法" class="headerlink" title="图的表示和图算法"></a>图的表示和图算法</h1><ul>
@@ -249,6 +249,9 @@
 <li>Bellman-Ford算法</li>
 <li>SPFA算法</li>
 </ul>
+<blockquote>
+<p>本博客介绍了四种图的表示方法，包括 邻接矩阵表示法，关联矩阵表示法，邻接表表示法，弧表示法，星形表示法。以及图的典型算法，包括Dijkstra, Floyd, Bellman-Ford以及SPFA算法。</p>
+</blockquote>
 <h2 id="1-邻接矩阵表示法"><a href="#1-邻接矩阵表示法" class="headerlink" title="1.邻接矩阵表示法"></a>1.邻接矩阵表示法</h2><p>如图：</p>
 <p> <img src="\img\graph_1.png" srcset="/img/loading.gif" alt="img"><img src="\img\graph_2.png" srcset="/img/loading.gif" alt="img"></p>
 <p>　　也就是说，如果两节点之间有一条弧，则邻接矩阵中对应的元素为1；否则为0。可以看出，这种表示法非常简单、直接。但是，在邻接矩阵的所有元素中，只有少量为非零元。如果网络比较稀疏，这种表示法浪费大量的存储空间，从而增加了在网络中查找弧的时间。</p>
@@ -294,7 +297,7 @@
 </div>
 <hr>
 <h1 id="Dijsktra算法"><a href="#Dijsktra算法" class="headerlink" title="Dijsktra算法"></a>Dijsktra算法</h1><blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/FrozaFerrari/xue-tu-lun-ni-zhen-di-liao-xie-zui-duan-lu-ma-post">米奇妙妙屋</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/FrozaFerrari/xue-tu-lun-ni-zhen-di-liao-xie-zui-duan-lu-ma-post">参考：米奇妙妙屋</a></p>
 </blockquote>
 <p>先用邻接矩阵存储数据，考虑采用一个二重循环，每次寻找出距离集合最近的一个点，然后数组标记它已经加入集合，然后在用当前点对不在集合中的点进行松弛，进行 <em>n</em> 次，整个操作就完成了,注意起点对应的最小距离是0.</p>
 <p><strong>cpp代码</strong></p>
@@ -684,7 +687,7 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "爸爸再也不想做图类题目了&nbsp;",
+        "再也不想做图类题目了&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

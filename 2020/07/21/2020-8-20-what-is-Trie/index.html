@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4k 字
+      2.3k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      54
+      31
        分钟
     </span>
   
@@ -503,168 +503,6 @@
 <p>时间复杂度: $O(N*M^2)$, $N$为字符数组总长度，$M$为字符串平均长度。</p>
 <p>空间复杂度: $O(N*M)$。实际上由于字符前缀重合，用不到这么多空间。</p>
 <hr>
-<h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><ul>
-<li><ol>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">和为k的子数组</a>(Medium)</li>
-</ol>
-</li>
-<li><ol>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">每个元音包含最长的子字符串</a>(Medium)</li>
-</ol>
-</li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-number-of-nice-subarrays/">1248. 统计「优美子数组」</a></li>
-<li>LCP 19：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">秋叶收藏集</a></li>
-</ul>
-<blockquote>
-<p>什么是前缀和？前缀和是一个数组的某项下标之前(包括此项元素)的所有数组元素的和。 </p>
-<p>设$p[]$为前缀和数组，$a[]$为原数组，根据这句话可以得到前缀和的定义式和递推式:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>定义式</th>
-<th>递推式</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>一维前缀和</strong></td>
-<td>$p[i]=\sum\limits_{i}^{n}a[i]$</td>
-<td>$p[i]-p[i-1]=a[i]$</td>
-</tr>
-<tr>
-<td><strong>二维前缀和</strong></td>
-<td>$p[i]=\sum\limits_{i}^{n}\sum\limits_{j}^{m}a[i][j]$</td>
-<td>$p[i][j]=p[i-1][j]+p[i][j-1]-p[i-1][j-1]+a[i][j]$</td>
-</tr>
-</tbody>
-</table>
-</div>
-</blockquote>
-<hr>
-<h2 id="560-和为k的子数组-Medium"><a href="#560-和为k的子数组-Medium" class="headerlink" title="560.和为k的子数组(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">560.和为k的子数组</a>(Medium)</strong></h2><p>给定一个整数数组和一个整数 k，你需要找到该数组中和为 k 的连续的子数组的个数。</p>
-<p>示例 1 :</p>
-<p>输入:nums = [1,1,1], k = 2<br>输出: 2 , [1,1] 与 [1,1] 为两种不同的情况。<br>说明 :</p>
-<p>数组的长度为 [1, 20,000]。<br>数组中元素的范围是 [-1000, 1000] ，且整数 k 的范围是 [-1e7, 1e7]。</p>
-<hr>
-<p>定义$pre[i]$表示$[0…i]$所有数之和,那么范围$[j-i]$可以表示为: $pre[i]-pre[j-1]$,  且$pre[i] = pre[i-1] + nums[i]$ , 问题转化为,</p>
-<p>找到有多少个区间,满足$pre[i]-pre[j-1]==k$. 所以我们考虑以 $i$ 结尾的和为 $k$ 的连续子数组个数时只要统计有多少个前缀和为 $\textit{pre}[i]-k$的 $\textit{pre}[j]$ 即可。我们建立哈希表 $\textit{mp}$，以和为键，出现次数为对应的值，记录 $\textit{pre}[i]$ 出现的次数，从左往右边更新 $\textit{mp}$边计算答案，那么以 $i$ 结尾的答案 $\textit{mp}[\textit{pre}[i]-k]$ 即可在 $O(1)$ 时间内得到。最后的答案即为所有下标结尾的和为 $k$ 的子数组个数之和。</p>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-keyword">int</span> res;
-    
-    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">subarraySum</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
-        <span class="hljs-keyword">if</span>(!nums.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-        <span class="hljs-comment">//数组长度和k都非常大，因此要尽量在线性时间复杂度解决</span>
-        <span class="hljs-comment">//我们尝试动态规划解决,</span>
-        <span class="hljs-keyword">int</span> n = nums.size();
-        <span class="hljs-keyword">if</span>(n==<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> nums[<span class="hljs-number">0</span>]==k;
-        res = <span class="hljs-number">0</span>;
-        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; memo;<span class="hljs-comment">//记录和的个数</span>
-        <span class="hljs-keyword">int</span> pre = <span class="hljs-number">0</span>;
-        memo[<span class="hljs-number">0</span>]++;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n;i++)
-        &#123;
-            <span class="hljs-comment">// cout&lt;&lt;i&lt;&lt;&quot;,&quot;&lt;&lt;pre&lt;&lt;endl;</span>
-            pre = pre + nums[i];
-            
-            <span class="hljs-keyword">if</span>(memo.count(pre-k))
-            res += memo[pre-k];
-            memo[pre]++;
-        &#125;
-        <span class="hljs-keyword">return</span> res;
-    &#125;
-&#125;;</code></pre>
-<hr>
-<h2 id="1371-每个元音包含最长的子字符串-Medium"><a href="#1371-每个元音包含最长的子字符串-Medium" class="headerlink" title="1371,每个元音包含最长的子字符串(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/">1371,每个元音包含最长的子字符串</a>(Medium)</h2><p>给你一个字符串 s ，请你返回满足以下条件的最长子字符串的长度：每个元音字母，即 ‘a’，’e’，’i’，’o’，’u’ ，在子字符串中都恰好出现了偶数次。</p>
-<p>示例 1：</p>
-<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;eleetminicoworoep&quot;</span>
-输出：<span class="hljs-number">13</span>
-解释：最长子字符串是 <span class="hljs-string">&quot;leetminicowor&quot;</span> ，它包含 e，i，o 各 <span class="hljs-number">2</span> 个，以及 <span class="hljs-number">0</span> 个 a，u 。
-</code></pre>
-<p>示例 2：</p>
-<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;leetcodeisgreat&quot;</span>
-输出：<span class="hljs-number">5</span>
-解释：最长子字符串是 <span class="hljs-string">&quot;leetc&quot;</span> ，其中包含 <span class="hljs-number">2</span> 个 e 。
-</code></pre>
-<p>示例 3：</p>
-<pre><code class="hljs lsl">输入：s = <span class="hljs-string">&quot;bcbcbc&quot;</span>
-输出：<span class="hljs-number">6</span>
-解释：这个示例中，字符串 <span class="hljs-string">&quot;bcbcbc&quot;</span> 本身就是最长的，因为所有的元音 a，e，i，o，u 都出现了 <span class="hljs-number">0</span> 次。
-</code></pre>
-<p>提示：</p>
-<p><code>1 &lt;= s.length &lt;= 5 x 10^5
-s 只包含小写英文字母。</code></p>
-<p>定义$pre[i][k]$表示前$i$个字母，第$k$个元音字母总出现的次数。那么在$[i-1,j-1]$区间内，元音字母出现次数为$pre[j][k]-pre[i][k]$，在$O(1)$时间内得到第$k$个元音字母出现的次数。</p>
-<p>同时我们要考虑避免枚举所有的$i$，计算以它结尾的满足条件的最长子字符串长度，我们要找到最小$i$使得$pre[j][k]-pre[i][k]$均为偶数。 我们需要利用【所有元音出现偶数次】这个条件，对于满足条件的子串而言，$pre[i][k]$和$pre[j][k]$的奇偶性一定相同，因为偶数一定是奇数+奇数，或者偶数+偶数组成。所以我们可以把$pre[i][k]$改为表示$[0,i-1]$的<strong>元音奇偶性</strong>。</p>
-<p>此外我们还需要进行「状态压缩」：</p>
-<pre><code class="hljs dts">&#123;
-<span class="hljs-symbol">  a:</span> cnta, <span class="hljs-comment">// a 出现次数的奇偶性</span>
-<span class="hljs-symbol">  e:</span> cnte, <span class="hljs-comment">// e 出现次数的奇偶性</span>
-<span class="hljs-symbol">  i:</span> cnti, <span class="hljs-comment">// i 出现次数的奇偶性</span>
-<span class="hljs-symbol">  o:</span> cnto, <span class="hljs-comment">// o 出现次数的奇偶性</span>
-<span class="hljs-symbol">  u:</span> cntu  <span class="hljs-comment">// u 出现次数的奇偶性</span>
-&#125;
-</code></pre>
-<p>我们可以用二进制表示这些奇偶。</p>
-<p>举一个例子，假如到第 $i $个位置，<code>u o i e a</code>出现的奇偶性分别为 <code>1 1 0 0 1</code>，那么我们就可以将其压成一个二进制数 $(11001)_2=(25)_{10}$ 作为它的状态。</p>
-<p><strong>代码：</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
-<span class="hljs-keyword">public</span>:
-    
-    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">findTheLongestSubstring</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
-        <span class="hljs-keyword">if</span>(!s.size()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-        <span class="hljs-keyword">int</span> n = s.size(), res = <span class="hljs-number">0</span>, status = <span class="hljs-number">0</span>;
-        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">char</span>,<span class="hljs-keyword">int</span>&gt; vowel&#123;
-            &#123;<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-string">&#x27;e&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-string">&#x27;i&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">2</span>&#125;,&#123;<span class="hljs-string">&#x27;o&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">3</span>&#125;,&#123;<span class="hljs-string">&#x27;u&#x27;</span>,<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>&#125;
-        &#125;;
-        <span class="hljs-comment">// 我们用pre[status]表示status状态对应的位置i，不断更新</span>
-        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">pre</span><span class="hljs-params">(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>,<span class="hljs-number">-1</span>)</span></span>;<span class="hljs-comment">//初始均为偶</span>
-        pre[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;<span class="hljs-comment">//初始状态，所有元音为偶数</span>
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)
-        &#123;
-            <span class="hljs-keyword">if</span>(vowel.count(s[i<span class="hljs-number">-1</span>]))
-            status ^= vowel[s[i<span class="hljs-number">-1</span>]];
-            
-            <span class="hljs-keyword">if</span>(~pre[status]) res = max(res,i - pre[status]); <span class="hljs-comment">//pre[status]!=-1</span>
-            <span class="hljs-keyword">else</span> 
-            &#123;
-                pre[status] = i ;
-            &#125;
-        
-        &#125;
-        <span class="hljs-keyword">return</span> res;
-    &#125;
-&#125;;</code></pre>
-<blockquote>
-<p>注意 18行的 ~pre[status]表示<strong>按位取反</strong>，包含了符号位，所以只有pre[status]不为-1，才为True。</p>
-<p>$ \text{~} 0 = -1$， </p>
-</blockquote>
-<p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
-<p>空间复杂度: $O(1)$.</p>
-<hr>
-<h4 id="LCP-19-秋叶收藏集"><a href="#LCP-19-秋叶收藏集" class="headerlink" title="LCP 19. 秋叶收藏集"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">LCP 19. 秋叶收藏集</a></h4><p>小扣出去秋游，途中收集了一些红叶和黄叶，他利用这些叶子初步整理了一份秋叶收藏集 <code>leaves</code>， 字符串 <code>leaves</code> 仅包含小写字符 <code>r</code> 和 <code>y</code>， 其中字符 <code>r</code> 表示一片红叶，字符 <code>y</code> 表示一片黄叶。<br>出于美观整齐的考虑，小扣想要将收藏集中树叶的排列调整成「红、黄、红」三部分。每部分树叶数量可以不相等，但均需大于等于 1。每次调整操作，小扣可以将一片红叶替换成黄叶或者将一片黄叶替换成红叶。请问小扣最少需要多少次调整操作才能将秋叶收藏集调整完毕。</p>
-<p><strong>示例 1：</strong></p>
-<blockquote>
-<p>输入：<code>leaves = &quot;rrryyyrryyyrr&quot;</code></p>
-<p>输出：<code>2</code></p>
-<p>解释：调整两次，将中间的两片红叶替换成黄叶，得到 “rrryyyyyyyyrr”</p>
-</blockquote>
-<p><strong>示例 2：</strong></p>
-<blockquote>
-<p>输入：<code>leaves = &quot;ryr&quot;</code></p>
-<p>输出：<code>0</code></p>
-<p>解释：已符合要求，不需要额外操作</p>
-</blockquote>
-<p><strong>提示：</strong></p>
-<ul>
-<li><code>3 &lt;= leaves.length &lt;= 10^5</code></li>
-<li><code>leaves</code> 中只包含字符 <code>&#39;r&#39;</code> 和字符 <code>&#39;y&#39;</code></li>
-</ul>
-<hr>
-<p>这题想到前缀和比想到动态规划要容易一些。</p>
-<p>比如我们希望从整体角度考虑这个问题</p>
 <h2 id="扩展：删除元素"><a href="#扩展：删除元素" class="headerlink" title="扩展：删除元素"></a>扩展：删除元素</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA">https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA</a></p>
 
             </div>
@@ -698,9 +536,9 @@ s 只包含小写英文字母。</code></p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">
+                      <a href="/2020/07/21/2020-8-17-recognition-monostack/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Markdown那些不为人知的酷炫特效</span>
+                        <span class="hidden-mobile">红尘客栈之单调栈</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -708,8 +546,8 @@ s 只包含小写英文字母。</code></p>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
-                        <span class="hidden-mobile">动态规划</span>
+                      <a href="/2020/07/21/2020-8-29-KMP/">
+                        <span class="hidden-mobile">臭名昭著的KMP算法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
