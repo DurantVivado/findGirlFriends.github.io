@@ -659,7 +659,7 @@ M[j] = \begin{cases}
 <span class="hljs-function"></span>&#123;
     <span class="hljs-keyword">int</span> v,w,line = <span class="hljs-number">0</span>;
     <span class="hljs-built_in">cin</span>&gt;&gt;N&gt;&gt;C;
-    <span class="hljs-built_in">memset</span>(dp,INT_MIN,<span class="hljs-keyword">sizeof</span>(dp));<span class="hljs-comment">//为了使价值从0开始计数，我们把dp数组初始化为-inf</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;= C;i++) dp[i] = INT_MIN;
     M[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<span class="hljs-comment">//价值为0的方案为1，即全不放</span>
     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; N;i++)
     &#123;

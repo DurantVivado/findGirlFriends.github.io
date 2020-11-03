@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.5k 字
+      3.1k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      32
+      39
        分钟
     </span>
   
@@ -295,6 +295,13 @@
 </tbody>
 </table>
 </div>
+<h2 id="6-二分图"><a href="#6-二分图" class="headerlink" title="6. 二分图"></a>6. 二分图</h2><p>​    分图又称作二部图，是图论中的一种<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/特殊模型/19071206">特殊模型</a>。 设$G=(V,E)$是一个无向图，如果顶点V可分割为两个互不相交的子集$(A,B)$，并且图中的每条边$（i，j）$所关联的两个顶点$i$和$j$分别属于这两个不同的顶点集$(i \in A,j \in B)$，则称图G为一个二分图。</p>
+<p>关于二部图有一个重要的定理：G为二部图的充要条件是G中的每一个圈的长度都是偶数</p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/pic/二分图/9089095/0/3c6d55fbb2fb43169079761121a4462309f7d373?fr=lemma&amp;ct=single"><img src="\img\bipartite graph.jpg" srcset="/img/loading.gif" alt="img"></a></p>
+<p>上图中U和V构造的点集所形成的圈长度不为奇数，所以是二分图。</p>
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/pic/二分图/9089095/0/d52a2834349b033b409ef0b114ce36d3d539bd42?fr=lemma&amp;ct=single"><img src="\img\nonbipartite graph.jpg" srcset="/img/loading.gif" alt="img"></a></p>
+<p>上图中U和V和W构造的点集所形成的的圈长度为奇数，所以不是二分图。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26822029/article/details/90382581">https://blog.csdn.net/qq_26822029/article/details/90382581</a></p>
 <hr>
 <h1 id="Dijsktra算法"><a href="#Dijsktra算法" class="headerlink" title="Dijsktra算法"></a>Dijsktra算法</h1><blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/FrozaFerrari/xue-tu-lun-ni-zhen-di-liao-xie-zui-duan-lu-ma-post">参考：米奇妙妙屋</a></p>
@@ -443,6 +450,35 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
 <span class="hljs-keyword">return</span> (minDis[des] == INF)? UNABLE2REACH:minDis[des];
 &#125;
 </code></pre>
+<hr>
+<h4 id="1631-最小体力消耗路径"><a href="#1631-最小体力消耗路径" class="headerlink" title="1631. 最小体力消耗路径"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-with-minimum-effort/">1631. 最小体力消耗路径</a></h4><p>难度中等29</p>
+<p>你准备参加一场远足活动。给你一个二维 <code>rows x columns</code> 的地图 <code>heights</code> ，其中 <code>heights[row][col]</code> 表示格子 <code>(row, col)</code> 的高度。一开始你在最左上角的格子 <code>(0, 0)</code> ，且你希望去最右下角的格子 <code>(rows-1, columns-1)</code> （注意下标从 <strong>0</strong> 开始编号）。你每次可以往 <strong>上</strong>，<strong>下</strong>，<strong>左</strong>，<strong>右</strong> 四个方向之一移动，你想要找到耗费 <strong>体力</strong> 最小的一条路径。</p>
+<p>一条路径耗费的 <strong>体力值</strong> 是路径上相邻格子之间 <strong>高度差绝对值</strong> 的 <strong>最大值</strong> 决定的。</p>
+<p>请你返回从左上角走到右下角的最小 <strong>体力消耗值</strong> 。</p>
+<p><strong>示例 1：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/10/25/ex1.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]]
+输出：<span class="hljs-number">2</span>
+解释：路径 [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>] 连续格子的差值绝对值最大为 <span class="hljs-number">2</span> 。
+这条路径比路径 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>] 更优，因为另一条路劲差值最大值为 <span class="hljs-number">3</span> 。</code></pre>
+<p><strong>示例 2：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/10/25/ex2.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]]
+输出：<span class="hljs-number">1</span>
+解释：路径 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>] 的相邻格子差值绝对值最大为 <span class="hljs-number">1</span> ，比路径 [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>] 更优。</code></pre>
+<p><strong>示例 3：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/10/25/ex3.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]]
+输出：<span class="hljs-number">0</span>
+解释：上图所示路径不需要消耗任何体力。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>rows == heights.length</code></li>
+<li><code>columns == heights[i].length</code></li>
+<li><code>1 &lt;= rows, columns &lt;= 100</code></li>
+<li><code>1 &lt;= heights[i][j] &lt;= 106</code></li>
+</ul>
+<p>此题虽然是图类问题，但根据零神的解答，有二分法，最短路，并查集，三种做法。真乃大神也。</p>
 
             </div>
             <hr>

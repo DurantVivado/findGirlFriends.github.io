@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.1k 字
+      3.6k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      28
+      52
        分钟
     </span>
   
@@ -407,6 +407,200 @@
     &#125;
 &#125;;</code></pre>
 <p>时间和空间可以根据代码进行分析。</p>
+<h1 id="剪枝技巧"><a href="#剪枝技巧" class="headerlink" title="剪枝技巧"></a>剪枝技巧</h1><h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h3 id="一种常见的技巧是让生成子序列是单增顺序的，如-216-组合总和III。"><a href="#一种常见的技巧是让生成子序列是单增顺序的，如-216-组合总和III。" class="headerlink" title="一种常见的技巧是让生成子序列是单增顺序的，如 216. 组合总和III。"></a>一种常见的技巧是让生成子序列是单增顺序的，如 216. 组合总和III。</h3><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> target,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; sub)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(k==<span class="hljs-number">0</span>&amp;&amp;target==<span class="hljs-number">0</span>) &#123;res.push_back(sub);<span class="hljs-keyword">return</span>;&#125;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= min(<span class="hljs-number">9</span>,target);i++)
+        <span class="hljs-keyword">if</span>(!sub.size()||i &gt; sub.back())
+        &#123;
+            sub.emplace_back(i);
+            dfs(k<span class="hljs-number">-1</span>,target-i,sub);
+            sub.pop_back();
+        &#125;
+    &#125;</code></pre>
+<ul>
+<li>当题目不能出现重复项时，有两种方法。如40.组合总和II</li>
+<li><ol>
+<li>使用哈希表天然去重功能，但是需要编码。</li>
+<li>先对<code>candidates</code>进行排序，然后每次dfs取下一项，遇到<code>candidates</code>重复项就跳过。这里我们分<code>candidates</code>能否被选无限次进行讨论。</li>
+</ol>
+</li>
+</ul>
+<p>A. Candidates只能选取一次【40题】</p>
+<pre><code class="hljs Cpp"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; candidates;
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;
+<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; path;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DFS</span><span class="hljs-params">(<span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (target == <span class="hljs-number">0</span>) &#123;
+        res.push_back(path);
+        <span class="hljs-keyword">return</span>;
+    &#125;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = start; i &lt; candidates.size() &amp;&amp; target - candidates[i] &gt;= <span class="hljs-number">0</span>; i++) &#123;
+        <span class="hljs-keyword">if</span> (i &gt; start &amp;&amp; candidates[i] == candidates[i - <span class="hljs-number">1</span>])
+            <span class="hljs-keyword">continue</span>;
+        path.push_back(candidates[i]);
+        <span class="hljs-comment">// 元素不可重复利用，使用下一个即i+1</span>
+        DFS(i + <span class="hljs-number">1</span>, target - candidates[i]);
+        path.pop_back();
+    &#125;
+&#125;
+</code></pre>
+<p>B. Candidates选取无限次【39题】</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DFS</span><span class="hljs-params">(<span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (target == <span class="hljs-number">0</span>) &#123;
+            res.push_back(path);
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = start;
+             i &lt; candidates.size() &amp;&amp; target - candidates[i] &gt;= <span class="hljs-number">0</span>; i++) &#123;
+            path.push_back(candidates[i]);
+            DFS(i, target - candidates[i]);
+            path.pop_back();
+        &#125;
+    &#125;</code></pre>
+<p>区别在于<code>dfs(i)</code>还是<code>dfs(i+1)</code>.</p>
+<h3 id="二分法剪枝"><a href="#二分法剪枝" class="headerlink" title="二分法剪枝"></a>二分法剪枝</h3><p>二分法在特定情况下也可以进行剪枝。 请看下例。</p>
+<h4 id="1631-最小体力消耗路径"><a href="#1631-最小体力消耗路径" class="headerlink" title="1631. 最小体力消耗路径"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/path-with-minimum-effort/">1631. 最小体力消耗路径</a></h4><p>你准备参加一场远足活动。给你一个二维 <code>rows x columns</code> 的地图 <code>heights</code> ，其中 <code>heights[row][col]</code> 表示格子 <code>(row, col)</code> 的高度。一开始你在最左上角的格子 <code>(0, 0)</code> ，且你希望去最右下角的格子 <code>(rows-1, columns-1)</code> （注意下标从 <strong>0</strong> 开始编号）。你每次可以往 <strong>上</strong>，<strong>下</strong>，<strong>左</strong>，<strong>右</strong> 四个方向之一移动，你想要找到耗费 <strong>体力</strong> 最小的一条路径。</p>
+<p>一条路径耗费的 <strong>体力值</strong> 是路径上相邻格子之间 <strong>高度差绝对值</strong> 的 <strong>最大值</strong> 决定的。</p>
+<p>请你返回从左上角走到右下角的最小 <strong>体力消耗值</strong> 。</p>
+<p><strong>示例 1：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/10/25/ex1.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]]
+输出：<span class="hljs-number">2</span>
+解释：路径 [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>] 连续格子的差值绝对值最大为 <span class="hljs-number">2</span> 。
+这条路径比路径 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>] 更优，因为另一条路劲差值最大值为 <span class="hljs-number">3</span> 。</code></pre>
+<p><strong>示例 2：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/10/25/ex2.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]]
+输出：<span class="hljs-number">1</span>
+解释：路径 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>] 的相邻格子差值绝对值最大为 <span class="hljs-number">1</span> ，比路径 [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>] 更优。</code></pre>
+<p><strong>示例 3：</strong></p>
+<p><img src="https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/10/25/ex3.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs angelscript">输入：heights = [[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]]
+输出：<span class="hljs-number">0</span>
+解释：上图所示路径不需要消耗任何体力。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>rows == heights.length</code></li>
+<li><code>columns == heights[i].length</code></li>
+<li><code>1 &lt;= rows, columns &lt;= 100</code></li>
+<li><code>1 &lt;= heights[i][j] &lt;= 106</code></li>
+</ul>
+<hr>
+<p>「二分法」</p>
+<p>我们对所有可能的高度差绝对值（介于0和999999）进行二分，设某次范围为$[start,end],mid = (start+end)/2$,当我们枚举到$mid$，只保留对应的相邻高度差绝对值小于等于$mid$的“枝叶”。从而达到剪枝目的。</p>
+<p>只需要判断x下，能否到达终点。</p>
+<ul>
+<li>若能到达，则更新$end = mid-1,ans = mid$</li>
+<li>否则更新$start = mid+1$</li>
+</ul>
+<p>最后的ans即为答案。</p>
+<p>DFS版本</p>
+<pre><code class="hljs cpp"><span class="hljs-comment">//DFS解法</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> m,n,res;
+    <span class="hljs-keyword">int</span> move[<span class="hljs-number">4</span>][<span class="hljs-number">2</span>] = &#123;&#123;<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;&#125;;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">outRange</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> (x &lt; <span class="hljs-number">0</span>)||(y &lt; <span class="hljs-number">0</span>)||(x &gt;= m)||(y &gt;= n);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; heights,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt;&amp; vis,<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y, <span class="hljs-keyword">int</span> mid)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(vis[x*n+y]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">if</span>(x == m<span class="hljs-number">-1</span> &amp;&amp; y == n<span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        vis[x*n+y] = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">bool</span> ret = <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;p : move)
+        &#123;
+            <span class="hljs-keyword">if</span>(outRange(x+p[<span class="hljs-number">0</span>],y+p[<span class="hljs-number">1</span>])) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">abs</span>(heights[x][y]-heights[x+p[<span class="hljs-number">0</span>]][y+p[<span class="hljs-number">1</span>]])&lt;=mid&amp;&amp;dfs(heights,vis,x+p[<span class="hljs-number">0</span>],y+p[<span class="hljs-number">1</span>],mid)) 
+                ret = <span class="hljs-literal">true</span>;
+            
+        &#125;
+        
+        <span class="hljs-keyword">return</span> ret;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; heights)</span> </span>&#123;
+        m = heights.size(), n = heights[<span class="hljs-number">0</span>].size();
+        res = INT32_MAX;
+        <span class="hljs-comment">//采用二分法+dfs</span>
+        <span class="hljs-keyword">int</span> start = <span class="hljs-number">0</span>, end = <span class="hljs-number">999999</span>, mid = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(start &lt;= end)
+        &#123;
+            mid = (start + end)&gt;&gt;<span class="hljs-number">1</span>;
+            <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt; <span class="hljs-title">vis</span><span class="hljs-params">(m*n, <span class="hljs-literal">false</span>)</span></span>;<span class="hljs-comment">//状态压缩</span>
+            <span class="hljs-comment">// vis[0] = true;</span>
+            <span class="hljs-keyword">auto</span> arrivable = dfs(heights,vis,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,mid);
+            <span class="hljs-comment">//如果能到，那么最大体力消耗还可以缩小</span>
+            <span class="hljs-keyword">if</span>(arrivable) &#123;
+                end = mid - <span class="hljs-number">1</span>;
+                res = mid;
+                <span class="hljs-comment">// cout&lt;&lt;res&lt;&lt;endl;</span>
+            &#125;
+            <span class="hljs-keyword">else</span> start = mid + <span class="hljs-number">1</span>; 
+            <span class="hljs-comment">// printf(&quot;[%d,%d]:res:%d\n&quot;,start,end,res);</span>
+            
+
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<p>时间复杂度：$O(log(M*N))$</p>
+<p>空间复杂度:$O(M*N)$</p>
+<p>BFS版本</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">int</span> m,n,res;
+    <span class="hljs-keyword">int</span> move[<span class="hljs-number">4</span>][<span class="hljs-number">2</span>] = &#123;&#123;<span class="hljs-number">1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">1</span>&#125;,&#123;<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>&#125;,&#123;<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>&#125;&#125;;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">outRange</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> (x &lt; <span class="hljs-number">0</span>)||(y &lt; <span class="hljs-number">0</span>)||(x &gt;= m)||(y &gt;= n);
+    &#125;
+    <span class="hljs-comment">//采用二分法进行5</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; heights)</span> </span>&#123;
+        m = heights.size(), n = heights[<span class="hljs-number">0</span>].size();
+        res = INT32_MAX;
+        <span class="hljs-comment">//采用二分法+dfs</span>
+        <span class="hljs-keyword">int</span> start = <span class="hljs-number">0</span>, end = <span class="hljs-number">999999</span>, mid = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(start &lt;= end)
+        &#123;
+            mid = (start + end)&gt;&gt;<span class="hljs-number">1</span>;
+            <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt; <span class="hljs-title">vis</span><span class="hljs-params">(m*n, <span class="hljs-literal">false</span>)</span></span>;<span class="hljs-comment">//状态压缩</span>
+            <span class="hljs-built_in">queue</span>&lt;<span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt;&gt; reco;
+            <span class="hljs-keyword">bool</span> available = <span class="hljs-literal">false</span>;
+            reco.emplace(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>); 
+            <span class="hljs-keyword">while</span>(!reco.empty())
+            &#123;
+                <span class="hljs-keyword">auto</span> [x,y] = reco.front();reco.pop();
+                <span class="hljs-keyword">if</span>(vis[x*n+y]) <span class="hljs-keyword">continue</span>;
+                <span class="hljs-keyword">if</span>(x == m<span class="hljs-number">-1</span> &amp;&amp; y == n<span class="hljs-number">-1</span>)&#123;available = <span class="hljs-literal">true</span>; <span class="hljs-keyword">break</span>;&#125;
+                vis[x*n+y] = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;p : move)
+                &#123;
+                    <span class="hljs-keyword">if</span>(!outRange(x+p[<span class="hljs-number">0</span>],y+p[<span class="hljs-number">1</span>])&amp;&amp;<span class="hljs-built_in">abs</span>(heights[x][y]-heights[x+p[<span class="hljs-number">0</span>]][y+p[<span class="hljs-number">1</span>]])&lt;=mid) 
+                    &#123;
+                        reco.emplace(x+p[<span class="hljs-number">0</span>],y+p[<span class="hljs-number">1</span>]);
+                    &#125;
+                &#125;
+            &#125;
+            <span class="hljs-comment">//如果能到，那么最大体力消耗还可以缩小</span>
+            <span class="hljs-keyword">if</span>(available) &#123;
+                end = mid - <span class="hljs-number">1</span>;
+                res = mid;
+            &#125;
+            <span class="hljs-keyword">else</span> start = mid + <span class="hljs-number">1</span>; 
+
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<p>时间复杂度：$O(M*N)$,$M,N$分别为高度数组的长和宽。</p>
+<p>空间复杂度：$O(M<em>N+M+N-1)=O(M</em>N)$</p>
+<p>一般用dfs，在时间和空间上表现更好。</p>
+<p>「并查集」：我们可以将所有边按照长度进行排序并依次添加进并查集，直到左上角和右下角连通为止。</p>
+<p>「最短路」：我们可以使用任一单源最短路径的算法（例如 Dijkstra 算法），只需要在维护当前路径长度时，将其修改为题目中的定义即可。</p>
 
             </div>
             <hr>

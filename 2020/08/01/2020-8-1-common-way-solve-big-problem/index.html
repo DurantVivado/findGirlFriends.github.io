@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5k 字
+      4.7k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      67
+      61
        分钟
     </span>
   
@@ -301,8 +301,7 @@
 <li><strong>回溯</strong></li>
 <li><strong>字典</strong></li>
 <li><strong>数学</strong></li>
-<li><strong>状态压缩</strong></li>
-<li><strong>【补充】剪枝技巧</strong></li>
+<li>**状态压缩</li>
 </ol>
 <h2 id="I-递归"><a href="#I-递归" class="headerlink" title="I. 递归"></a>I. 递归</h2><p>递归不一定是递归函数，而是逐层次的把nums下一个数与前面的数融合起来。</p>
 <p>比如：</p>
@@ -753,63 +752,6 @@ f(a)=\sum\limits_{i=0}^{n-1}b^i×a_i(mod \ P)</script><p>Rabin-karp编码</p>
 &#125;;
 </code></pre>
 <hr>
-<h2 id="剪枝技巧"><a href="#剪枝技巧" class="headerlink" title="剪枝技巧"></a><strong>剪枝技巧</strong></h2><ul>
-<li>一种常见的技巧是让生成子序列是单增顺序的，如 216. 组合总和III。</li>
-</ul>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> target,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; sub)</span></span>
-<span class="hljs-function">    </span>&#123;
-        <span class="hljs-keyword">if</span>(k==<span class="hljs-number">0</span>&amp;&amp;target==<span class="hljs-number">0</span>) &#123;res.push_back(sub);<span class="hljs-keyword">return</span>;&#125;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt;= min(<span class="hljs-number">9</span>,target);i++)
-        <span class="hljs-keyword">if</span>(!sub.size()||i &gt; sub.back())
-        &#123;
-            sub.emplace_back(i);
-            dfs(k<span class="hljs-number">-1</span>,target-i,sub);
-            sub.pop_back();
-        &#125;
-    &#125;</code></pre>
-<ul>
-<li>当题目不能出现重复项时，有两种方法。如40.组合总和II</li>
-<li><ol>
-<li>使用哈希表天然去重功能，但是需要编码。</li>
-<li>先对<code>candidates</code>进行排序，然后每次dfs取下一项，遇到<code>candidates</code>重复项就跳过。这里我们分<code>candidates</code>能否被选无限次进行讨论。</li>
-</ol>
-</li>
-</ul>
-<p>A. Candidates只能选取一次【40题】</p>
-<pre><code class="hljs Cpp">
-<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; candidates;
-<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;
-<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; path;
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DFS</span><span class="hljs-params">(<span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
-    <span class="hljs-keyword">if</span> (target == <span class="hljs-number">0</span>) &#123;
-        res.push_back(path);
-        <span class="hljs-keyword">return</span>;
-    &#125;
-
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = start; i &lt; candidates.size() &amp;&amp; target - candidates[i] &gt;= <span class="hljs-number">0</span>; i++) &#123;
-        <span class="hljs-keyword">if</span> (i &gt; start &amp;&amp; candidates[i] == candidates[i - <span class="hljs-number">1</span>])
-            <span class="hljs-keyword">continue</span>;
-        path.push_back(candidates[i]);
-        <span class="hljs-comment">// 元素不可重复利用，使用下一个即i+1</span>
-        DFS(i + <span class="hljs-number">1</span>, target - candidates[i]);
-        path.pop_back();
-    &#125;
-&#125;
-</code></pre>
-<p>B. Candidates选取无限次【39题】</p>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">DFS</span><span class="hljs-params">(<span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
-        <span class="hljs-keyword">if</span> (target == <span class="hljs-number">0</span>) &#123;
-            res.push_back(path);
-            <span class="hljs-keyword">return</span>;
-        &#125;
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = start;
-             i &lt; candidates.size() &amp;&amp; target - candidates[i] &gt;= <span class="hljs-number">0</span>; i++) &#123;
-            path.push_back(candidates[i]);
-            DFS(i, target - candidates[i]);
-            path.pop_back();
-        &#125;
-    &#125;</code></pre>
-<p>区别在于<code>dfs(i)</code>还是<code>dfs(i+1)</code>.</p>
 
             </div>
             <hr>

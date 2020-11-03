@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      918 字
+      2.4k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      30
        分钟
     </span>
   
@@ -243,16 +243,68 @@
             
             <div class="markdown-body" id="post-body">
               <h1 id="贪心算法及其应用"><a href="#贪心算法及其应用" class="headerlink" title="贪心算法及其应用"></a>贪心算法及其应用</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-increasing-subsequence/">300. 最长上升子序列</a></li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game-ii/">45.跳跃游戏II</a></li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game/">55.跳跃游戏</a></li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-valid-matrix-given-row-and-column-sums/">1607.给定行列和求可行矩阵</a></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-increasing-subsequence/">300. 最长上升子序列</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game-$i$/">45.跳跃游戏$i$</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/jump-game/">55.跳跃游戏</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-valid-matrix-given-row-and-column-sums/">1607.给定行列和求可行矩阵</a></p>
+</li>
+<li><h4 id="763-划分字母区间"><a href="#763-划分字母区间" class="headerlink" title="763. 划分字母区间"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-labels/">763. 划分字母区间</a></h4></li>
+<li><h4 id="1621-大小为-K-的不重叠线段的数目"><a href="#1621-大小为-K-的不重叠线段的数目" class="headerlink" title="1621. 大小为 K 的不重叠线段的数目"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-sets-of-k-non-overlapping-line-segments/">1621. 大小为 K 的不重叠线段的数目</a></h4></li>
+<li><h4 id="1024-视频拼接"><a href="#1024-视频拼接" class="headerlink" title="1024. 视频拼接"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/video-stitching/">1024. 视频拼接</a></h4></li>
 </ul>
 <blockquote>
 <p>贪心算法（又称贪婪算法）是指，在对问题求解时，总是做出在当前看来是最好的选择。也就是说，不从整体最优上加以考虑，他所做出的是在某种意义上的局部最优解。</p>
 <p>贪心算法不是对所有问题都能得到整体最优解，关键是贪心策略的选择，选择的贪心策略必须具备无后效性，即某个状态以前的过程不会影响以后的状态，只与当前状态有关。</p>
 </blockquote>
-<h2 id="最长上升序列"><a href="#最长上升序列" class="headerlink" title="最长上升序列"></a>最长上升序列</h2><p>给定一个无序的整数数组，找到其中最长上升子序列的长度。</p>
+<hr>
+<h4 id="763-划分字母区间-1"><a href="#763-划分字母区间-1" class="headerlink" title="763. 划分字母区间"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/partition-labels/">763. 划分字母区间</a></h4><p>难度中等</p>
+<p>字符串 <code>S</code> 由小写字母组成。我们要把这个字符串划分为尽可能多的片段，同一个字母只会出现在其中的一个片段。返回一个表示每个字符串片段的长度的列表。</p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs lsl">输入：S = <span class="hljs-string">&quot;ababcbacadefegdehijhklij&quot;</span>
+输出：[<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]
+解释：
+划分结果为 <span class="hljs-string">&quot;ababcbaca&quot;</span>, <span class="hljs-string">&quot;defegde&quot;</span>, <span class="hljs-string">&quot;hijhklij&quot;</span>。
+每个字母最多出现在一个片段中。
+像 <span class="hljs-string">&quot;ababcbacadefegde&quot;</span>, <span class="hljs-string">&quot;hijhklij&quot;</span> 的划分是错误的，因为划分的片段数较少。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>S</code>的长度在<code>[1, 500]</code>之间。</li>
+<li><code>S</code>只包含小写字母 <code>&#39;a&#39;</code> 到 <code>&#39;z&#39;</code> 。</li>
+</ul>
+<hr>
+<p>这题我开始想的是并查集，后来看了官方题解，发现贪心+指针也可以做。</p>
+<p>而且思路和<strong>跳跃游戏</strong>出奇一致。</p>
+<p>我们用两个指针$start$和$end$分别表示某个区间左端点和右端点。同时用数组$last$记录每个字母最后一次出现的位置。</p>
+<p>我们遍历整个字符串，更新右端点$end = max(i,last[(int)(S[i]-‘a’)])$</p>
+<p>若遍历到右端点了，也就是$end == i$，说明这个时候已经将一个完整区间遍历完了，更新res,$res.push_back(end-start+1)$，同时将start赋值为下一个区间的开头，$start = end+1$</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">partitionLabels</span><span class="hljs-params">(<span class="hljs-built_in">string</span> S)</span> </span>&#123;
+	<span class="hljs-keyword">int</span> last[<span class="hljs-number">26</span>];
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; res;
+    <span class="hljs-keyword">int</span> n = S.size();
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+    &#123;
+        last[(<span class="hljs-keyword">int</span>)(S[i]-<span class="hljs-string">&#x27;a&#x27;</span>)] = i;
+	&#125;
+     <span class="hljs-keyword">int</span> start = <span class="hljs-number">0</span>, end = <span class="hljs-number">0</span>;
+     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span> ;i &lt; n;i++)
+     &#123;
+         end = max(i,last[(<span class="hljs-keyword">int</span>)(S[i]-<span class="hljs-string">&#x27;a&#x27;</span>)]);
+         <span class="hljs-keyword">if</span>(i == end)
+         &#123;
+             res.push_back(end-start+<span class="hljs-number">1</span>);
+             end = start+<span class="hljs-number">1</span>;
+		&#125;
+	&#125;
+       <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<hr>
+<h4 id="300-最长上升序列"><a href="#300-最长上升序列" class="headerlink" title="300.最长上升序列"></a>300.最长上升序列</h4><p>给定一个无序的整数数组，找到其中最长上升子序列的长度。</p>
 <p><strong>示例:</strong></p>
 <pre><code class="hljs angelscript">输入: [<span class="hljs-number">10</span>,<span class="hljs-number">9</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">101</span>,<span class="hljs-number">18</span>]
 输出: <span class="hljs-number">4</span> 
@@ -316,6 +368,73 @@
         &#125;
 &#125;;
 </code></pre>
+<hr>
+<h4 id="1024-视频拼接-1"><a href="#1024-视频拼接-1" class="headerlink" title="1024. 视频拼接"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/video-stitching/">1024. 视频拼接</a></h4><p>你将会获得一系列视频片段，这些片段来自于一项持续时长为 <code>T</code> 秒的体育赛事。这些片段可能有所重叠，也可能长度不一。</p>
+<p>视频片段 <code>clips[i]</code> 都用区间进行表示：开始于 <code>clips[i][0]</code> 并于 <code>clips[i][1]</code> 结束。我们甚至可以对这些片段自由地再剪辑，例如片段 <code>[0, 7]</code> 可以剪切成 <code>[0, 1] + [1, 3] + [3, 7]</code> 三部分。</p>
+<p>我们需要将这些片段进行再剪辑，并将剪辑后的内容拼接成覆盖整个运动过程的片段（<code>[0, T]</code>）。返回所需片段的最小数目，如果无法完成该任务，则返回 <code>-1</code> 。</p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：clips = [[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">8</span>,<span class="hljs-number">10</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">9</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">9</span>]], T = <span class="hljs-number">10</span>
+输出：<span class="hljs-number">3</span>
+解释：
+我们选中 [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>], [<span class="hljs-number">8</span>,<span class="hljs-number">10</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">9</span>] 这三个片段。
+然后，按下面的方案重制比赛片段：
+将 [<span class="hljs-number">1</span>,<span class="hljs-number">9</span>] 再剪辑为 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] + [<span class="hljs-number">2</span>,<span class="hljs-number">8</span>] + [<span class="hljs-number">8</span>,<span class="hljs-number">9</span>] 。
+现在我们手上有 [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>] + [<span class="hljs-number">2</span>,<span class="hljs-number">8</span>] + [<span class="hljs-number">8</span>,<span class="hljs-number">10</span>]，而这些涵盖了整场比赛 [<span class="hljs-number">0</span>, <span class="hljs-number">10</span>]。</code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：clips = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]], T = <span class="hljs-number">5</span>
+输出：<span class="hljs-number">-1</span>
+解释：
+我们无法只用 [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>] 和 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] 覆盖 [<span class="hljs-number">0</span>,<span class="hljs-number">5</span>] 的整个过程。</code></pre>
+<p><strong>示例 3：</strong></p>
+<pre><code class="hljs angelscript">输入：clips = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">8</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">2</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">0</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">9</span>]], T = <span class="hljs-number">9</span>
+输出：<span class="hljs-number">3</span>
+解释： 
+我们选取片段 [<span class="hljs-number">0</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">7</span>] 和 [<span class="hljs-number">6</span>,<span class="hljs-number">9</span>] 。</code></pre>
+<p><strong>示例 4：</strong></p>
+<pre><code class="hljs angelscript">输入：clips = [[<span class="hljs-number">0</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">8</span>]], T = <span class="hljs-number">5</span>
+输出：<span class="hljs-number">2</span>
+解释：
+注意，你可能录制超过比赛结束时间的视频。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= clips.length &lt;= 100</code></li>
+<li><code>0 &lt;= clips[i][0] &lt;= clips[i][1] &lt;= 100</code></li>
+<li><code>0 &lt;= T &lt;= 100</code></li>
+</ul>
+<hr>
+<p>这道题动态规划时间复杂度是$O(TN)$</p>
+<p>但是贪心算法往往能做到$O(N)$， 人类的本质是贪婪，所以我们选择贪心算法。</p>
+<p>注意到对于所有左端点相同的子区间，其右端点越远越有利。且最佳方案中不可能出现两个左端点相同的子区间。于是我们预处理所有的子区间，对于每一个位置 $i$，我们记录以其为左端点的子区间中最远的右端点，记为 $maxn[i]$。</p>
+<p>我们枚举每一个位置，假设当枚举到位置 $i$ 时，记左端点不大于 $i$ 的所有子区间的最远右端点为 $last$。这样 $last$ 就代表了当前能覆盖到的最远的右端点。</p>
+<p>每次我们枚举到一个新位置，我们都用$maxn[i]$ 来更新 $last$。如果更新后 $last==i$，那么说明下一个位置无法被覆盖，我们无法完成目标。</p>
+<p>同时我们还需要记录上一个被使用的子区间的结束位置为 $pre$，每次我们越过一个被使用的子区间，就说明我们要启用一个新子区间，这个新子区间的结束位置即为当前的 $last$。也就是说，每次我们遇到 $i==pre$，则说明我们用完了一个被使用的子区间。这种情况下我们让答案加 1，并更新 $pre$ 即可。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">videoStitching</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; clips, <span class="hljs-keyword">int</span> T)</span> </span>&#123;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">maxn</span><span class="hljs-params">(T)</span></span>;
+        <span class="hljs-keyword">int</span> last = <span class="hljs-number">0</span>, ret = <span class="hljs-number">0</span>, pre = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; it : clips) &#123;
+            <span class="hljs-keyword">if</span> (it[<span class="hljs-number">0</span>] &lt; T) &#123;
+                maxn[it[<span class="hljs-number">0</span>]] = max(maxn[it[<span class="hljs-number">0</span>]], it[<span class="hljs-number">1</span>]);<span class="hljs-comment">//更新maxn为保证左端点被覆盖的最远的端点，</span>
+            &#125;
+        &#125;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; T; i++) &#123;
+            last = max(last, maxn[i]); <span class="hljs-comment">//获取最远右端点</span>
+            <span class="hljs-keyword">if</span> (i == last) &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>; <span class="hljs-comment">//i到达最远，无法完成</span>
+            &#125;
+            <span class="hljs-keyword">if</span> (i == pre) &#123;
+                ret++;
+                pre = last;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> ret;
+    &#125;
+&#125;;
+</code></pre>
+<p>复杂度分析</p>
+<p>时间复杂度：$O(T+N)$，其中 $T $是区间的长度，$N$ 是子区间的数量。我们需要枚举每一个位置，时间复杂度 $O(T)$，同时我们还需要预处理所有的子区间，时间复杂度 $O(N)$。总时间复杂度为 $O(T) + O(N) = O(T + N)$。</p>
+<p>空间复杂度：$O(T)$，其中 T 是区间的长度。对于每一个位置，我们需要记录以其为左端点的子区间的最右端点。</p>
 
             </div>
             <hr>
