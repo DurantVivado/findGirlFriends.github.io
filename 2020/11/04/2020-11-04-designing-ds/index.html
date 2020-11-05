@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>Markdown那些不为人知的酷炫特效 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -179,8 +179,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-07-21 00:00" pubdate>
-        2020年7月21日 凌晨
+      <time datetime="2020-11-04 15:22" pubdate>
+        2020年11月4日 下午
       </time>
     </span>
   
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      718 字
+      43 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      1
        分钟
     </span>
   
@@ -239,116 +239,18 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Markdown那些不为人知的酷炫特效</h1>
+            <h1 style="display: none"></h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Markdown-那些不为人知的炫🆒特性"><a href="#Markdown-那些不为人知的炫🆒特性" class="headerlink" title="Markdown 那些不为人知的炫🆒特性"></a>Markdown 那些不为人知的炫🆒特性</h1><hr>
-<h2 id="新的甘特图功能，丰富你的文章（Mermaid语言）"><a href="#新的甘特图功能，丰富你的文章（Mermaid语言）" class="headerlink" title="新的甘特图功能，丰富你的文章（Mermaid语言）"></a>新的甘特图功能，丰富你的文章（Mermaid语言）</h2><pre><code class="hljs mermaid">gantt
-        dateFormat  YYYY-MM-DD
-        title Adding GANTT diagram functionality to mermaid
-        section 现有任务
-        已完成               :done,    des1, 2014-01-06,2014-01-08
-        进行中               :active,  des2, 2014-01-09, 3d
-        计划一               :         des3, after des2, 5d
-        计划二               :         des4, after des3, 5d</code></pre>
-<ul>
-<li>关于 <strong>甘特图</strong> 语法，参考 [这儿][2],</li>
-</ul>
-<h2 id="UML-图表（Mermaid语言）"><a href="#UML-图表（Mermaid语言）" class="headerlink" title="UML 图表（Mermaid语言）"></a>UML 图表（Mermaid语言）</h2><p>可以使用UML图表进行渲染。 <a target="_blank" rel="noopener" href="https://mermaidjs.github.io/">Mermaid</a>. 例如下面产生的一个序列图：</p>
-<pre><code class="hljs mermaid">sequenceDiagram
-张三 -&gt;&gt; 李四: 你好！李四, 最近怎么样?
-李四--&gt;&gt;王五: 你最近怎么样，王五？
-李四--x 张三: 我很好，谢谢!
-李四-x 王五: 我很好，谢谢!
-Note right of 王五: 李四想了很长时间, 文字太长了&lt;br&#x2F;&gt;不适合放在一行.
-
-李四--&gt;&gt;张三: 打量着王五...
-张三-&gt;&gt;王五: 很好... 王五, 你怎么样?</code></pre>
-<p>这将产生一个流程图:</p>
-<pre><code class="hljs mermaid">graph LR
-A[长方形] -- 链接 --&gt; B((圆))
-A --&gt; C(圆角长方形)
-B --&gt; D&#123;菱形&#125;
-C --&gt; D</code></pre>
-<ul>
-<li>关于 <strong>Mermaid</strong> 语法，参考 [这儿][3],</li>
-</ul>
-<h2 id="FLowchart流程图（flow语言）"><a href="#FLowchart流程图（flow语言）" class="headerlink" title="FLowchart流程图（flow语言）"></a>FLowchart流程图（flow语言）</h2><p>我们依旧会支持flowchart的流程图，以中断处理流程为例：<br><pre><code class="hljs flow">start&#x3D;&gt;start: 开始
-mainProcess&#x3D;&gt;inputoutput: 主程序指令
-IRrequest&#x3D;&gt;condition: 有中断请求？
-IRoff&#x3D;&gt;operation: 关中断
-BPsaved&#x3D;&gt;operation: 保存断点
-IRrecog&#x3D;&gt;operation: 中断源识别
-protect&#x3D;&gt;operation: 保护现场
-IRservice&#x3D;&gt;operation: 中断服务
-recover&#x3D;&gt;operation: 恢复现场
-IRon&#x3D;&gt;operation: 开中断
-IRreturn&#x3D;&gt;operation: 中断返回
-end&#x3D;&gt;end: 主程序指令
-mainProcess-&gt;IRrequest
-IRrequest(no)-&gt;end
-IRrequest(yes)-&gt;IRoff-&gt;BPsaved-&gt;IRrecog-&gt;protect-&gt;IRservice-&gt;recover-&gt;IRon-&gt;IRreturn-&gt;end
-</code></pre></p>
-<p>​                                                                                (a) 单极中断处理流程</p>
-<pre><code class="hljs flow">start&#x3D;&gt;start: 开始
-mainProcess&#x3D;&gt;inputoutput: 主程序指令
-IRrequest&#x3D;&gt;condition: 有中断请求？
-IRoff&#x3D;&gt;operation: 关中断
-BPsaved&#x3D;&gt;operation: 保存断点
-IRrecog&#x3D;&gt;operation: 中断源识别
-protect&#x3D;&gt;operation: 保护现场和屏蔽字
-newMask&#x3D;&gt;operation: 设置新的屏蔽字
-IRon_&#x3D;&gt;operation: 重新开中断
-IRservice&#x3D;&gt;operation: 中断服务
-IRoff_&#x3D;&gt;operation: 重新关中断
-recover&#x3D;&gt;operation: 恢复现场和屏蔽字
-IRon&#x3D;&gt;operation: 开中断
-IRreturn&#x3D;&gt;operation: 中断返回
-end&#x3D;&gt;end: 主程序指令
-mainProcess-&gt;IRrequest
-IRrequest(no)-&gt;end
-IRrequest(yes)-&gt;IRoff-&gt;BPsaved-&gt;IRrecog-&gt;protect-&gt;newMask-&gt;IRon_
-IRon_-&gt;IRservice-&gt;IRoff_-&gt;recover-&gt;IRon-&gt;IRreturn-&gt;end
-</code></pre>
-<p>​                                                                                (b) 多级中断处理流程</p>
-<pre><code class="hljs flow">st&#x3D;&gt;start: Start:&gt;http:&#x2F;&#x2F;www.google.com[blank]
-e&#x3D;&gt;end:&gt;http:&#x2F;&#x2F;www.google.com
-op1&#x3D;&gt;operation: My Operation
-sub1&#x3D;&gt;subroutine: My Subroutine
-cond&#x3D;&gt;condition: Yes
-or No?:&gt;http:&#x2F;&#x2F;www.google.com
-io&#x3D;&gt;inputoutput: catch something...
-para&#x3D;&gt;parallel: parallel tasks
-
-st-&gt;op1-&gt;cond
-cond(yes)-&gt;io-&gt;e
-cond(no)-&gt;para
-para(path1, bottom)-&gt;sub1(right)-&gt;op1
-para(path2, top)-&gt;op1</code></pre>
-<ul>
-<li>关于 <strong>Flowchart流程图</strong> 语法，参考 <a target="_blank" rel="noopener" href="http://flowchart.js.org/">这儿</a>.</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Iccyco/article/details/106202945">https://blog.csdn.net/Iccyco/article/details/106202945</a></p>
+              <h1 id="设计类题目如何解决"><a href="#设计类题目如何解决" class="headerlink" title="设计类题目如何解决"></a>设计类题目如何解决</h1><blockquote>
+<p>设计类题目占比并不大，题目难度也不大。但是一旦碰到了，我们也要直到如何解决！</p>
+</blockquote>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/markdown/">markdown</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/markdown/">markdown</a>
-                    
-                  </div>
                 
               </div>
               
@@ -359,18 +261,12 @@ para(path2, top)-&gt;op1</code></pre>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">权力的游戏 之 零和博弈</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
-                        <span class="hidden-mobile">动态规划</span>
+                      <a href="/2020/11/03/2020113-Ceph-Mon-%E8%AF%A6%E8%A7%A3/">
+                        <span class="hidden-mobile">Ceph-Mon 详解</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -571,7 +467,7 @@ para(path2, top)-&gt;op1</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Markdown那些不为人知的酷炫特效&nbsp;",
+        "&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
