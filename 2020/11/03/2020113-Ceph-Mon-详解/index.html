@@ -247,7 +247,7 @@
 </blockquote>
 <p>监视器们维护着集群运行图的“主副本”，就是说客户端连到一个监视器并获取当前运行图就能确定所有监视器、 OSD 和元数据服务器的位置。 Ceph 客户端读写 OSD 或元数据服务器前，必须先连到一个监视器，靠当前集群运行图的副本和 CRUSH 算法，客户端能计算出任何对象的位置，故此客户端有能力直接连到 OSD ，这对 Ceph 的高伸缩性、高性能来说非常重要。更多信息见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/architecture#scalability-and-high-availability">伸缩性和高可用性</a>。</p>
 <p>监视器的主要角色是<strong>维护集群运行图的主副本，它也提供认证和日志记录服务</strong>。 Ceph 监视器们把监视器服务的所有更改写入一个单独的 Paxos 例程，然后 Paxos 以键/值方式存储所有变更以实现高度一致性。同步期间， Ceph 监视器能查询集群运行图的近期版本，它们通过操作键/值存储快照和迭代器（用 leveldb ）来进行存储级同步。</p>
-<p><img src="http://docs.ceph.org.cn/_images/ditaa-ae8fc6ae5b4014f064a0bed424507a7a247cd113.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="\img\ceph-mon.jpg" srcset="/img/loading.gif" alt="img"></p>
 <h3 id="集群运行图"><a href="#集群运行图" class="headerlink" title="集群运行图"></a>集群运行图</h3><p>集群运行图是多个图的组合，包括监视器图、 OSD 图、归置组图和元数据服务器图。集群运行图追踪几个重要事件：哪些进程在集群里（ <code>in</code> ）；哪些进程在集群里（ <code>in</code> ）是 <code>up</code> 且在运行、或 <code>down</code> ；归置组状态是 <code>active</code> 或 <code>inactive</code> 、 <code>clean</code> 或其他状态；和其他反映当前集群状态的信息，像总存储容量、和使用量。</p>
 <p>当集群状态有明显变更时，如一 OSD 挂了、一归置组降级了等等，集群运行图会被更新以反映集群当前状态。另外，监视器也维护着集群的主要状态历史。监视器图、 OSD 图、归置组图和元数据服务器图各自维护着它们的运行图版本。我们把各图的版本称为一个 epoch 。</p>
 <p>运营集群时，跟踪这些状态是系统管理任务的重要部分。详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/monitoring">监控集群</a>和<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/monitoring-osd-pg">监控 OSD 和归置组</a>。</p>
@@ -369,9 +369,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/04/2020-11-04-designing-ds/">
+                      <a href="/2020/11/05/2020-11-04-designing-ds/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">设计类问题如何解决</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
