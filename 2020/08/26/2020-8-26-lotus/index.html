@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      917 字
+      1.8k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      21
        分钟
     </span>
   
@@ -243,23 +243,60 @@
             
             <div class="markdown-body" id="post-body">
               <h1 id="股票系列问题"><a href="#股票系列问题" class="headerlink" title="股票系列问题"></a>股票系列问题</h1><ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">买卖股票的最佳时机</a>(Easy)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/">买卖股票的最佳时机</a>(Easy)（最多只能进行一次交易）</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/">买卖股票的最佳时机 II</a>(Easy)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/">买卖股票的最佳时机 II</a>(Easy) （你可以尽可能地完成更多的交易（多次买卖一支股票）。）</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">买卖股票的最佳时机 III</a>(Hard)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">买卖股票的最佳时机 III</a>(Hard) （你最多可以完成 <em>两笔</em> 交易。）</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">买卖股票的最佳时机 IV</a>(Hard)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">买卖股票的最佳时机 IV</a>(Hard) （设计一个算法来计算你所能获取的最大利润。你最多可以完成 <strong>k</strong> 笔交易。）</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">最佳买卖股票时机含冷冻期</a>(Medium)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">最佳买卖股票时机含冷冻期</a>(Medium) (卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天))</p>
 </li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">买卖股票的最佳时机含手续费</a>(Medium)</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">买卖股票的最佳时机含手续费</a>(Medium) (你可以无限次地完成交易，但是你每笔交易都需要付手续费。)</p>
 </li>
 </ol>
-<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/">剑指 Offer 63. 股票的最大利润</a>(Medium)</p>
-<p>一种常用的方法是将「买入」和「卖出」分开进行考虑：「买入」为负收益，而「卖出」为正收益。在初入股市时，你只有「买入」的权利，只能获得负收益。而当你「买入」之后，你就有了「卖出」的权利，可以获得正收益。显然，我们需要尽可能地降低负收益而提高正收益，因此我们的目标总是将收益值最大化。因此，我们可以使用动态规划的方法，维护在股市中每一天结束后可以获得的「累计最大收益」，并以此进行状态转移，得到最终的答案。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/">剑指 Offer 63. 股票的最大利润</a>(Medium) </p>
+<p>一种常用的方法是将「买入」和「卖出」分开进行考虑：「买入」为负收益，而「卖出」为正收益。在初入股市时，你只有「买入」的权利，只能获得负收益。而当你「买入」之后，你就有了「卖出」的权利，可以获得正收益。显然，我们需要尽可能地降低负收益而提高正收益，因此我们的目标总是将收益值最大化。因此，我们可以使用动态规划的方法，维护在股市中每一天结束后可以获得的「累计最大收益」，并以此进行状态转移，得到最终的答案。<strong>这些题目共同点你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</strong></p>
+<blockquote>
+<p>此外也可以采用单调栈进行求解！</p>
+</blockquote>
+<h4 id=""><a href="#" class="headerlink" title=" "></a> </h4><hr>
+<h3 id="入门-买卖股票的最佳时机含手续费"><a href="#入门-买卖股票的最佳时机含手续费" class="headerlink" title="入门. 买卖股票的最佳时机含手续费"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">入门. 买卖股票的最佳时机含手续费</a></h3><p>给定一个整数数组 <code>prices</code>，其中第 <code>i</code> 个元素代表了第 <code>i</code> 天的股票价格 ；非负整数 <code>fee</code> 代表了交易股票的手续费用。</p>
+<p>你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。</p>
+<p>返回获得利润的最大值。</p>
+<p><strong>注意：</strong>这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。</p>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs angelscript">输入: prices = [<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>], fee = <span class="hljs-number">2</span>
+输出: <span class="hljs-number">8</span>
+解释: 能够达到的最大利润:  
+在此处买入 prices[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+在此处卖出 prices[<span class="hljs-number">3</span>] = <span class="hljs-number">8</span>
+在此处买入 prices[<span class="hljs-number">4</span>] = <span class="hljs-number">4</span>
+在此处卖出 prices[<span class="hljs-number">5</span>] = <span class="hljs-number">9</span>
+总利润: ((<span class="hljs-number">8</span> - <span class="hljs-number">1</span>) - <span class="hljs-number">2</span>) + ((<span class="hljs-number">9</span> - <span class="hljs-number">4</span>) - <span class="hljs-number">2</span>) = <span class="hljs-number">8.</span></code></pre>
+<p><strong>注意:</strong></p>
+<ul>
+<li><code>0 &lt; prices.length &lt;= 50000</code>.</li>
+<li><code>0 &lt; prices[i] &lt; 50000</code>.</li>
+<li><code>0 &lt;= fee &lt; 50000</code>.</li>
+</ul>
 <hr>
-<h3 id="1-最佳买卖股票时机含冷冻期-Medium"><a href="#1-最佳买卖股票时机含冷冻期-Medium" class="headerlink" title="1.最佳买卖股票时机含冷冻期(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">1.最佳买卖股票时机含冷冻期</a>(Medium)</strong></h3><p>给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。</p>
+<p>我们将这道题作为入门，这道题要求时间复杂度为$O(N)$，否则无法AC。</p>
+<p>这样的话我们只能定义常数状态来进行转移。</p>
+<ul>
+<li><p>当我们手头有没有卖出的股票，我们可以选择卖出，当然这样需要手续费。记录此时最大利润为cash</p>
+</li>
+<li><p>当我们手头没有股票，我们可以选择买入。记录此时最大利润为hold</p>
+</li>
+</ul>
+<p>自然就有状态方程：</p>
+<script type="math/tex; mode=display">
+cash = max(cash, hold + prices[i]-fee)\\
+hold = max(cash, hold - prices[i])</script><p>因为$hold[0]$是非法的，定义一个它无法取到的数，比如$-prices[0]$</p>
+<hr>
+<p>下面一题代表了多种状态的情况，这是股票问题最有趣的地方，很多状态！</p>
+<h3 id="进阶-最佳买卖股票时机含冷冻期-Medium"><a href="#进阶-最佳买卖股票时机含冷冻期-Medium" class="headerlink" title="进阶.最佳买卖股票时机含冷冻期(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">进阶.最佳买卖股票时机含冷冻期</a>(Medium)</strong></h3><p>给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。</p>
 <p>设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:</p>
 <ul>
 <li>你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</li>
@@ -322,9 +359,27 @@ dp[0][2] = 0;
 </code></pre>
 <p><strong>优化</strong></p>
 <p>滚动数组【略】</p>
-<ol>
-<li><strong>有限状态自动机解法</strong></li>
-</ol>
+<hr>
+<h3 id="实战-买卖股票的最佳时机-IV"><a href="#实战-买卖股票的最佳时机-IV" class="headerlink" title="实战.买卖股票的最佳时机 IV"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/">实战.买卖股票的最佳时机 IV</a></h3><p>给定一个整数数组 <code>prices</code> ，它的第 <code>i</code> 个元素 <code>prices[i]</code> 是一支给定的股票在第 <code>i</code> 天的价格。</p>
+<p>设计一个算法来计算你所能获取的最大利润。你最多可以完成 <strong>k</strong> 笔交易。</p>
+<p><strong>注意:</strong> 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：k = <span class="hljs-number">2</span>, prices = [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>]
+输出：<span class="hljs-number">2</span>
+解释：在第 <span class="hljs-number">1</span> 天 (股票价格 = <span class="hljs-number">2</span>) 的时候买入，在第 <span class="hljs-number">2</span> 天 (股票价格 = <span class="hljs-number">4</span>) 的时候卖出，这笔交易所能获得利润 = <span class="hljs-number">4</span><span class="hljs-number">-2</span> = <span class="hljs-number">2</span> 。</code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：k = <span class="hljs-number">2</span>, prices = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>]
+输出：<span class="hljs-number">7</span>
+解释：在第 <span class="hljs-number">2</span> 天 (股票价格 = <span class="hljs-number">2</span>) 的时候买入，在第 <span class="hljs-number">3</span> 天 (股票价格 = <span class="hljs-number">6</span>) 的时候卖出, 这笔交易所能获得利润 = <span class="hljs-number">6</span><span class="hljs-number">-2</span> = <span class="hljs-number">4</span> 。
+     随后，在第 <span class="hljs-number">5</span> 天 (股票价格 = <span class="hljs-number">0</span>) 的时候买入，在第 <span class="hljs-number">6</span> 天 (股票价格 = <span class="hljs-number">3</span>) 的时候卖出, 这笔交易所能获得利润 = <span class="hljs-number">3</span><span class="hljs-number">-0</span> = <span class="hljs-number">3</span> 。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>0 &lt;= k &lt;= 109</code></li>
+<li><code>0 &lt;= prices.length &lt;= 1000</code></li>
+<li><code>0 &lt;= prices[i] &lt;= 1000</code></li>
+</ul>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">123. 买卖股票的最佳时机 III</a>是 该题的特例，我们重点分析 一般情况。</p>
 
             </div>
             <hr>

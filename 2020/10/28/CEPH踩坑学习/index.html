@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10.1k 字
+      10.3k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      114
+      115
        分钟
     </span>
   
@@ -288,17 +288,18 @@
 <p><img src="..\img\ceph-st1.jpg" srcset="/img/loading.gif" alt="640?wx_fmt=png"></p>
 <ul>
 <li><p>Monitor</p>
-<p>一个Ceph集群需要多个Monitor组成的小集群，它们通过Paxos同步数据，用来保存OSD的元数据。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-ceph-monitor"><em>Ceph Monitor</em></a>维护着展示集群状态的各种图表，包括监视器图、 OSD 图、归置组（ PG ）图、和 CRUSH 图。 Ceph 保存着发生在Monitors 、 OSD 和 PG上的每一次状态变更的历史信息（称为 epoch ）。</p>
+<p><code>ceph-mon</code>，一个Ceph集群需要多个Monitor组成的小集群，它们通过Paxos同步数据，用来保存OSD的元数据。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-ceph-monitor"><em>Ceph Monitor</em></a>维护着展示集群状态的各种图表，包括监视器图、 OSD 图、归置组（ PG ）图、和 CRUSH 图。 Ceph 保存着发生在Monitors 、 OSD 和 PG上的每一次状态变更的历史信息（称为 epoch ）。通常至少需要三个监视器才能实现冗余和高可用性。</p>
 </li>
-</ul>
-<ul>
+<li><p>Manager</p>
+<p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/glossary/#term-Ceph-Manager">Ceph Manager</a>守护进程（<code>ceph-mgr</code>）负责跟踪运行时指标和Ceph集群的当前状态，包括存储利用率，当前性能指标和系统负载。Ceph Manager守护进程还托管基于python的模块，以管理和公开Ceph集群信息，包括基于Web的<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/dashboard/#mgr-dashboard">Ceph仪表板</a>和 <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/mgr/restful">REST API</a>。通常，至少需要两个管理器才能实现高可用性。</p>
+</li>
 <li><p>OSD</p>
-<p>OSD全称Object Storage Daemon，也就是负责响应客户端请求返回具体数据的进程。一个Ceph集群一般都有很多个OSD。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-56"><em>Ceph OSD 守护进程</em></a>（ Ceph OSD ）的功能是存储数据，处理数据的复制、恢复、回填、再均衡，并通过检查其他OSD 守护进程的心跳来向 Ceph Monitors 提供一些监控信息。当 Ceph 存储集群设定为有2个副本时，至少需要2个 OSD 守护进程，集群才能达到 <code>active+clean</code> 状态（ Ceph 默认有3个副本，但你可以调整副本数）</p>
+<p>OSD全称Object Storage Daemon（<code>ceph-osd</code>），也就是负责响应客户端请求返回具体数据的进程。一个Ceph集群一般都有很多个OSD。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-56"><em>Ceph OSD 守护进程</em></a>（ Ceph OSD ）的功能是存储数据，处理数据的复制、恢复、回填、再均衡，并通过检查其他OSD 守护进程的心跳来向 Ceph Monitors 提供一些监控信息。当 Ceph 存储集群设定为有2个副本时，至少需要2个 OSD 守护进程，集群才能达到 <code>active+clean</code> 状态（ Ceph 默认有3个副本，但你可以调整副本数）</p>
 </li>
 </ul>
 <ul>
 <li><p>MDS</p>
-<p>MDS全称Ceph Metadata Server，是CephFS服务依赖的元数据服务。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-63"><em>Ceph 元数据服务器</em></a>（ MDS ）为 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-45"><em>Ceph 文件系统</em></a>存储元数据（也就是说，Ceph 块设备和 Ceph 对象存储不使用MDS ）。元数据服务器使得 POSIX 文件系统的用户们，可以在不对 Ceph 存储集群造成负担的前提下，执行诸如 <code>ls</code>、<code>find</code> 等基本命令。</p>
+<p>MDS全称Ceph Metadata Server（<code>ceph-mds</code>），是CephFS服务依赖的元数据服务。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-63"><em>Ceph 元数据服务器</em></a>（ MDS ）为 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-45"><em>Ceph 文件系统</em></a>存储元数据（也就是说，Ceph 块设备和 Ceph 对象存储不使用MDS ）。元数据服务器使得 POSIX 文件系统的用户们，可以在不对 Ceph 存储集群造成负担的前提下，执行诸如 <code>ls</code>、<code>find</code> 等基本命令。</p>
 </li>
 </ul>
 <ul>

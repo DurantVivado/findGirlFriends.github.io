@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      22.1k 字
+      24.8k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      296
+      330
        分钟
     </span>
   
@@ -306,19 +306,19 @@
 <td>November 2015 - June 2016</td>
 </tr>
 <tr>
-<td>Jewel</td>
+<td>Jewel 10</td>
 <td>2016年4月</td>
 </tr>
 <tr>
-<td>Kraken</td>
+<td>Kraken 11</td>
 <td>2017年10月</td>
 </tr>
 <tr>
-<td>Luminous</td>
+<td>Luminous 12</td>
 <td>2017年10月</td>
 </tr>
 <tr>
-<td>mimic</td>
+<td>mimic 13</td>
 <td>2018年5月</td>
 </tr>
 <tr>
@@ -493,7 +493,7 @@ Host node3
 <p>若使用 <code>iptables</code> ，要开放 Ceph Monitors 使用的 <code>6789</code> 端口和 OSD 使用的 <code>6800:7300</code> 端口范围，命令如下：</p>
 <pre><code class="hljs dust"><span class="xml">sudo iptables -A INPUT -i </span><span class="hljs-template-variable">&#123;iface&#125;</span><span class="xml"> -p tcp -s </span><span class="hljs-template-variable">&#123;ip-address&#125;</span><span class="xml">/</span><span class="hljs-template-variable">&#123;netmask&#125;</span><span class="xml"> --dport 6789 -j ACCEPT</span></code></pre>
 <p>在每个节点上配置好 <code>iptables</code> 之后要一定要保存，这样重启之后才依然有效。例如：</p>
-<pre><code class="hljs routeros">/sbin<span class="hljs-built_in">/service </span>iptables save</code></pre>
+<pre><code class="hljs awk"><span class="hljs-regexp">/sbin/i</span>ptables-save</code></pre>
 <h3 id="终端（-TTY-）"><a href="#终端（-TTY-）" class="headerlink" title="终端（ TTY ）"></a>终端（ TTY ）</h3><p>在 CentOS 和 RHEL 上执行 <code>ceph-deploy</code> 命令时可能会报错。如果你的 Ceph 节点默认设置了 <code>requiretty</code> ，执行 <code>sudo visudo</code> 禁用它，并找到 <code>Defaults requiretty</code> 选项，把它改为 <code>Defaults:ceph !requiretty</code> 或者直接注释掉，这样 <code>ceph-deploy</code> 就可以用之前创建的用户（<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-start-preflight/#id3">创建部署 Ceph 的用户</a> ）连接了。</p>
 <h3 id="SELINUX"><a href="#SELINUX" class="headerlink" title="SELINUX"></a>SELINUX</h3><p>在 CentOS 和 RHEL 上， SELinux 默认为 <code>Enforcing</code> 开启状态。为简化安装，我们建议把 SELinux 设置为 <code>Permissive</code> 或者完全禁用，也就是在加固系统配置前先确保集群的安装、配置没问题。用下列命令把 SELinux 设置为 <code>Permissive</code> ：</p>
 <pre><code class="hljs angelscript">sudo setenforce <span class="hljs-number">0</span></code></pre>
@@ -799,7 +799,7 @@ sudo ceph-fuse -m &#123;ip-address-of-monitor&#125;<span class="hljs-function">:
 </ol>
 <hr>
 <h1 id="Build-amp-Make-编译源码"><a href="#Build-amp-Make-编译源码" class="headerlink" title="Build &amp;Make:编译源码"></a>Build &amp;Make:编译源码</h1><p><span id="here">您到站了！</span></p>
-<p><del>版本14.0.2：Nautilus</del></p>
+<p><del>版本14.2.12：Nautilus</del></p>
 <p>版本15.2.5：Octopus √ （最新版）</p>
 <blockquote>
 <p>参考：</p>
@@ -807,12 +807,16 @@ sudo ceph-fuse -m &#123;ip-address-of-monitor&#125;<span class="hljs-function">:
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40071358/article/details/106924184">Octopus版本部署</a></p>
 </blockquote>
 <p>硬件配置</p>
-<p>Ubuntu18.04 LTS（Bionic Beaver）</p>
+<ul>
+<li>Ubuntu18.04 LTS（Bionic Beaver） </li>
+</ul>
 <p>装完虚拟机，你应该1. <a target="_blank" rel="noopener" href="https://blog.csdn.net/adullperson/article/details/105184861">设置共享文件夹</a> 2. 改变镜像为清华源并update 3. 下载中文输入法vim，chrome等 4. 快照保存 【由于从官网和github下载ceph源码和tarball很慢，我放在我的网盘上】</p>
 <blockquote>
 <p>如果你，发现硬盘分配小了，想扩容，又不想重新装系统，看<a target="_blank" rel="noopener" href="https://blog.csdn.net/daemon_2017/article/details/80660372">这里</a>。以及磁盘清理<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_37407756/article/details/79903837">技巧</a>。</p>
 </blockquote>
-<p> 运存16g+硬盘50g 四核</p>
+<ul>
+<li>运存16g+硬盘80g 四核（根据实际情况）</li>
+</ul>
 <p>（官网要求最少60g空间：A debug build of Ceph may take around 40 gigabytes. If you want to build Ceph in a virtual machine (VM) please make sure total disk space on the VM is at least 60 gigabytes.）</p>
 <p>（初始4g+20g出现硬盘不足问题，一怒之下。。）</p>
 <p>安装步骤：</p>
@@ -1045,9 +1049,10 @@ ext/_yaml.h:<span class="hljs-number">2</span>:<span class="hljs-number">10</spa
       |          ^~~~~~~~
 </code></pre>
 <pre><code class="hljs q">sudo apt-<span class="hljs-built_in">get</span> install libyaml-cpp-<span class="hljs-built_in">dev</span></code></pre>
-<pre><code class="hljs yaml"><span class="hljs-attr">sys/sdt.h:</span> <span class="hljs-literal">No</span> <span class="hljs-string">such</span> <span class="hljs-string">file</span> <span class="hljs-string">or</span> <span class="hljs-string">directory</span>   
+<h2 id="p10-缺失sdt库"><a href="#p10-缺失sdt库" class="headerlink" title="p10. 缺失sdt库"></a>p10. 缺失sdt库</h2><pre><code class="hljs yaml"><span class="hljs-attr">sys/sdt.h:</span> <span class="hljs-literal">No</span> <span class="hljs-string">such</span> <span class="hljs-string">file</span> <span class="hljs-string">or</span> <span class="hljs-string">directory</span>   
 <span class="hljs-number">111</span> <span class="hljs-string">|</span> <span class="hljs-comment">#include &lt;sys/sdt.h&gt;</span></code></pre>
-<h2 id="p10-undefined-reference-to-symbol-‘HMAC-CTX-new-OPENSSL-1-1-0’，用python2编译会出现这个问题"><a href="#p10-undefined-reference-to-symbol-‘HMAC-CTX-new-OPENSSL-1-1-0’，用python2编译会出现这个问题" class="headerlink" title="p10:undefined reference to symbol ‘HMAC_CTX_new@@OPENSSL_1_1_0’，用python2编译会出现这个问题"></a>p10:undefined reference to symbol ‘HMAC_CTX_new@@OPENSSL_1_1_0’，用python2编译会出现这个问题</h2><pre><code class="hljs shell">/usr/bin/ld: warning: libcrypto.so.1.1, needed by /usr/lib/x86_64-linux-gnu/librabbitmq.so, may conflict with libcrypto.so.1.0.0
+<pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">install</span> systemtap-sdt-dev</code></pre>
+<h2 id="p11-undefined-reference-to-symbol-‘HMAC-CTX-new-OPENSSL-1-1-0’，用python2编译会出现这个问题"><a href="#p11-undefined-reference-to-symbol-‘HMAC-CTX-new-OPENSSL-1-1-0’，用python2编译会出现这个问题" class="headerlink" title="p11:undefined reference to symbol ‘HMAC_CTX_new@@OPENSSL_1_1_0’，用python2编译会出现这个问题"></a>p11:undefined reference to symbol ‘HMAC_CTX_new@@OPENSSL_1_1_0’，用python2编译会出现这个问题</h2><pre><code class="hljs shell">/usr/bin/ld: warning: libcrypto.so.1.1, needed by /usr/lib/x86_64-linux-gnu/librabbitmq.so, may conflict with libcrypto.so.1.0.0
 /usr/bin/ld: ../../lib/librgw_a.a(rgw_common.cc.o): undefined reference to symbol &#x27;HMAC_CTX_new@@OPENSSL_1_1_0&#x27;
 //usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: error adding symbols: DSO missing from command line
 collect2: error: ld returned 1 exit status
@@ -1075,7 +1080,7 @@ collect2: error: ld returned 1 exit status
 <p>如何查看openssl版本?</p>
 <p><code>openssl version -a</code></p>
 <p>ubuntu默认安装1.1.1，没事别卸载，否则很多功能会失效，比如chrome</p>
-<h2 id="p11-Make-all-出现ELF-section-name-out-of-range"><a href="#p11-Make-all-出现ELF-section-name-out-of-range" class="headerlink" title="p11. Make all 出现ELF section name out of range"></a>p11. Make all 出现ELF section name out of range</h2><pre><code class="hljs stata">/usr/bin/ld: warning: CMakeFiles/unittest_rbd_mirror.<span class="hljs-keyword">dir</span>/test_mock_ImageReplayer.<span class="hljs-keyword">cc</span>.o has a corrupt string <span class="hljs-keyword">table</span> index - ignoring
+<h2 id="p12-Make-all-出现ELF-section-name-out-of-range"><a href="#p12-Make-all-出现ELF-section-name-out-of-range" class="headerlink" title="p12. Make all 出现ELF section name out of range"></a>p12. Make all 出现ELF section name out of range</h2><pre><code class="hljs stata">/usr/bin/ld: warning: CMakeFiles/unittest_rbd_mirror.<span class="hljs-keyword">dir</span>/test_mock_ImageReplayer.<span class="hljs-keyword">cc</span>.o has a corrupt string <span class="hljs-keyword">table</span> index - ignoring
 /usr/bin/ld: <span class="hljs-keyword">error</span>: CMakeFiles/unittest_rbd_mirror.<span class="hljs-keyword">dir</span>/test_mock_ImageReplayer.<span class="hljs-keyword">cc</span>.o: ELF section name <span class="hljs-keyword">out</span> of <span class="hljs-keyword">range</span>
 collect2: <span class="hljs-keyword">error</span>: ld returned 1 <span class="hljs-keyword">exit</span> status
 src/<span class="hljs-keyword">test</span>/rbd_mirror/CMakeFiles/unittest_rbd_mirror.<span class="hljs-keyword">dir</span>/build.make:951: recipe <span class="hljs-keyword">for</span> target &#x27;bin/unittest_rbd_mirror&#x27; failed
@@ -1083,6 +1088,15 @@ make[2]: *** [bin/unittest_rbd_mirror] <span class="hljs-keyword">Error</span> 1
 CMakeFiles/Makefile2:26032: recipe <span class="hljs-keyword">for</span> target &#x27;src/<span class="hljs-keyword">test</span>/rbd_mirror/CMakeFiles/unittest_rbd_mirror.<span class="hljs-keyword">dir</span>/all&#x27; failed
 make[1]: *** [src/<span class="hljs-keyword">test</span>/rbd_mirror/CMakeFiles/unittest_rbd_mirror.<span class="hljs-keyword">dir</span>/all] <span class="hljs-keyword">Error</span> 2
 </code></pre>
+<p>直接重新make就好了，玄学问题</p>
+<h2 id="P13-internal-compiler-error-Segmentation-fault"><a href="#P13-internal-compiler-error-Segmentation-fault" class="headerlink" title="P13:internal compiler error: Segmentation fault"></a>P13:internal compiler error: Segmentation fault</h2><pre><code class="hljs gradle"><span class="hljs-regexp">/home/</span>ceph-server<span class="hljs-regexp">/ceph-15.2.5/</span>src<span class="hljs-regexp">/osd/</span>ECBackend.cc: In member function ‘<span class="hljs-keyword">void</span> ECBackend::filter_read_op(const OSDMapRef&amp;, ECBackend::ReadOp&amp;)’:
+<span class="hljs-regexp">/home/</span>ceph-server<span class="hljs-regexp">/ceph-15.2.5/</span>src<span class="hljs-regexp">/osd/</span>ECBackend.cc:<span class="hljs-number">1398</span>:<span class="hljs-number">1</span>: internal compiler error: Segmentation fault
+ <span class="hljs-number">1398</span> | &#125;
+      | ^
+Please submit a full bug report,
+with preprocessed <span class="hljs-keyword">source</span> <span class="hljs-keyword">if</span> appropriate.
+</code></pre>
+<p>重新编译</p>
 <hr>
 <h1 id="Way-to-development…"><a href="#Way-to-development…" class="headerlink" title="Way to development…"></a>Way to development…</h1><p>好的在这里假设你编译源码成功了！</p>
 <p>先不要庆祝</p>
@@ -1145,17 +1159,62 @@ The following tests FAILED:
 	<span class="hljs-number">191</span> - unittest_seastar_lru (Not Run)
 Errors <span class="hljs-keyword">while</span> running CTest
 </code></pre>
+<p>如果想进行单个测试，在/bin文件夹运行对应文件，比如：</p>
+<pre><code class="hljs awk">sudo .<span class="hljs-regexp">/bin/u</span>nittest_rbd_mirror</code></pre>
+<p>如果没有问题，应该是我这样的：</p>
+<pre><code class="hljs angelscript"><span class="hljs-number">99</span>% tests passed, <span class="hljs-number">2</span> tests failed <span class="hljs-keyword">out</span> of <span class="hljs-number">192</span>
+
+Total Test time (real) = <span class="hljs-number">488.16</span> sec
+
+The following tests FAILED:
+	<span class="hljs-number">111</span> - readable.sh (Failed)
+	<span class="hljs-number">177</span> - unittest_rgw_dmclock_scheduler (Failed)
+Errors <span class="hljs-keyword">while</span> running CTest
+</code></pre>
+<p>上面报错，是因为它们是trivial的，dmclock的api甚至还没开发出来。emoji~</p>
 <hr>
-<h2 id="调试集群，添加日志"><a href="#调试集群，添加日志" class="headerlink" title="调试集群，添加日志"></a>调试集群，添加日志</h2><p>我们可以在配置文件针对特定模块生成调试日志。但这可能产生超过1GB的日志文件。</p>
+<h2 id="利用虚拟机搭建集群"><a href="#利用虚拟机搭建集群" class="headerlink" title="利用虚拟机搭建集群"></a>利用虚拟机搭建集群</h2><p>官方的最低要求是 <strong>3</strong> Monitors + <strong>2</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">虚拟机节点名称</th>
+<th style="text-align:center">职责</th>
+<th style="text-align:center">IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ceph-master (source-code compiled)</td>
+<td style="text-align:center">mon + osd</td>
+<td style="text-align:center">192.168.161.129</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-node1</td>
+<td style="text-align:center">mon+mgr+osd</td>
+<td style="text-align:center">192.168.161.130</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-node2</td>
+<td style="text-align:center">mon+mgr+osd</td>
+<td style="text-align:center">192.168.161.131</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="调试集群，添加日志"><a href="#调试集群，添加日志" class="headerlink" title="调试集群，添加日志"></a>调试集群，添加日志</h2><p>我们可以在配置文件针对特定模块生成调试日志。但这可能产生超过1GB的日志文件。调试会影响集群的性能。</p>
 <p>所以必须保证你磁盘有足够的空间。</p>
-<p>如果你希望看到实时调试信息，你必须登录到一台主机上执行：</p>
+<h3 id="实时显示"><a href="#实时显示" class="headerlink" title="实时显示"></a>实时显示</h3><p>如果你希望看到实时调试信息，你必须登录到一台主机上执行：</p>
 <pre><code class="hljs routeros">ceph daemon &#123;daemon-name&#125;<span class="hljs-built_in"> config </span>show | less</code></pre>
+<p>例如</p>
+<pre><code class="hljs routeros">ceph daemon osd.0<span class="hljs-built_in"> config </span>show | less</code></pre>
 <p>为了激活调试输出，使用<code>ceph tell</code>:</p>
 <pre><code class="hljs routeros">ceph tell &#123;daemon-type&#125;.&#123;daemon id <span class="hljs-keyword">or</span> *&#125;<span class="hljs-built_in"> config </span><span class="hljs-builtin-name">set</span> &#123;name&#125; &#123;value&#125;</code></pre>
-<p>daemon-type为mds,mon,osd之一。</p>
+<p>daemon-type为mds,mon,osd之一。该命令通过监视器。如果您无法绑定到监视器，则仍然可以通过使用来登录要更改其配置的守护程序的主机，以进行更改。</p>
 <p>例如</p>
 <pre><code class="hljs routeros">ceph tell osd.0<span class="hljs-built_in"> config </span><span class="hljs-builtin-name">set</span> debug_osd 0/5</code></pre>
-<p>调试文件设定</p>
+<h3 id="启动时调试"><a href="#启动时调试" class="headerlink" title="启动时调试"></a>启动时调试</h3><p>可以在global设置设定</p>
 <pre><code class="hljs routeros">[global]
         <span class="hljs-builtin-name">debug</span> ms = 1/5
 
@@ -1173,7 +1232,7 @@ Errors <span class="hljs-keyword">while</span> running CTest
 [mds]
         <span class="hljs-builtin-name">debug</span> mds = 1
         <span class="hljs-builtin-name">debug</span> mds balancer = 1</code></pre>
-<p>如果您的操作系统磁盘相对较满，则可以通过在处修改Ceph日志轮换文件来加速日志轮换<code>/etc/logrotate.d/ceph</code>。如果日志超过大小设置，请在旋转频率之后添加大小设置以加速日志旋转（通过cronjob）。例如，默认设置如下所示：</p>
+<h3 id="加速日志选择"><a href="#加速日志选择" class="headerlink" title="加速日志选择"></a>加速日志选择</h3><p>如果您的操作系统磁盘相对较满，则可以通过在处修改Ceph日志轮换文件来加速日志轮换<code>/etc/logrotate.d/ceph</code>。如果日志超过大小设置，请在旋转频率之后添加大小设置以加速日志旋转（通过cronjob）。例如，默认设置如下所示：</p>
 <pre><code class="hljs stata"><span class="hljs-keyword">rotate</span> 7
 weekly
 <span class="hljs-keyword">compress</span>
@@ -1189,18 +1248,12 @@ sharedscripts</code></pre>
 <p>最后，添加一个条目以检查<code>etc/logrotate.d/ceph</code>文件。</p>
 <pre><code class="hljs basic"><span class="hljs-symbol">30 </span>* * * * /<span class="hljs-keyword">usr</span>/sbin/logrotate /etc/logrotate.d/ceph &gt;/dev/null <span class="hljs-number">2</span>&gt;&amp;<span class="hljs-number">1</span></code></pre>
 <p>前面的示例<code>etc/logrotate.d/ceph</code>每30分钟检查一次文件。</p>
-<h2 id="子系统，日志和调试设置"><a href="#子系统，日志和调试设置" class="headerlink" title="子系统，日志和调试设置"></a>子系统，日志和调试设置</h2><p>在大多数情况下，您将通过子系统启用调试日志记录输出。</p>
-<h3 id="CEPH子系统"><a href="#CEPH子系统" class="headerlink" title="CEPH子系统"></a>CEPH子系统</h3><p>每个子系统都有其输出日志和内存中日志的日志记录级别。通过为调试日志记录设置日志文件级别和内存级别，可以为每个子系统设置不同的值。Ceph的日志记录级别以<code>1</code>to为单位<code>20</code>，其中<code>1</code>简洁且<code>20</code>冗长<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/troubleshooting/log-and-debug/#id2">1</a>。通常，除非以下情况，否则不会将内存中的日志发送到输出日志：</p>
-<ul>
-<li>发出致命信号或</li>
-<li>一个<code>assert</code>在源代码被触发或</li>
-<li>根据要求。请参阅<a target="_blank" rel="noopener" href="http://docs.ceph.com/docs/master/man/8/ceph/#daemon">管理套接字上的文档以</a>获取更多详细信息。</li>
-</ul>
-<p>调试日志记录设置可以采用单个值作为日志级别和内存级别，这会将它们设置为相同的值。例如，如果您指定，则Ceph会将其视为日志级别和内存级别。您也可以单独指定它们。第一个设置是日志级别，第二个设置是内存级别。您必须使用正斜杠（/）分隔它们。例如，如果要将子系统的调试日志记录级别设置为，将其内存级别设置为，则可以将其指定为。例如：<code>debug ms = 5``5``ms``1``5``debug ms = 1/5</code></p>
+<h3 id="Valgrind"><a href="#Valgrind" class="headerlink" title="Valgrind"></a>Valgrind</h3><p>调试可能还需要您跟踪内存和线程问题。您可以使用Valgrind运行单个守护程序，一种守护程序或整个集群。您仅应在开发或调试Ceph时使用Valgrind。Valgrind在计算上很昂贵，否则会降低您的系统速度。Valgrind消息已记录到<code>stderr</code>。</p>
+<h3 id="子系统，日志和调试设置"><a href="#子系统，日志和调试设置" class="headerlink" title="子系统，日志和调试设置"></a>子系统，日志和调试设置</h3><p>每个子系统都有其输出日志和内存中日志的日志记录级别。通过为调试日志记录设置日志文件级别和内存级别，可以为每个子系统设置不同的值。Ceph的日志记录级别以1到20，1最为简洁，20最为冗余。</p>
+<p>调试日志记录设置可以为日志级别和内存级别采用单个值，这会将它们设置为相同的值。例如，如果您指定，则Ceph会将其视为日志级别和内存级别。您也可以单独指定它们。<strong>第一个设置是日志级别，第二个设置是内存级别</strong>。您必须使用正斜杠（/）分隔它们。例如，如果要将子系统的调试日志记录级别设置为，将其内存级别设置为，则可以将其指定为。例如：<code>debug ms = 1/5</code></p>
 <pre><code class="hljs pgsql"><span class="hljs-keyword">debug</span> &#123;subsystem&#125; = &#123;<span class="hljs-keyword">log</span>-<span class="hljs-keyword">level</span>&#125;/&#123;memory-<span class="hljs-keyword">level</span>&#125;
 <span class="hljs-meta">#for example</span>
 <span class="hljs-keyword">debug</span> mds balancer = <span class="hljs-number">1</span>/<span class="hljs-number">20</span></code></pre>
-<p>下表提供了Ceph子系统及其默认日志和内存级别的列表。完成日志记录工作后，将子系统还原到默认级别或适合正常操作的级别。</p>
 <div class="table-container">
 <table>
 <thead>
@@ -1595,6 +1648,433 @@ sharedscripts</code></pre>
 </tbody>
 </table>
 </div>
+<h2 id="操作集群的三种方法"><a href="#操作集群的三种方法" class="headerlink" title="操作集群的三种方法"></a>操作集群的三种方法</h2><h2 id="1-Systemd"><a href="#1-Systemd" class="headerlink" title="1.Systemd."></a>1.Systemd.</h2><p>Systemd 是 Linux 系统工具，用来启动<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html">守护进程</a>，已成为大多数发行版的标准配置。包括启动，检查，列举systemd，以及停止。</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">sudo</span> systemctl start ceph.target       <span class="hljs-comment"># start all daemons</span>
+
+sudo systemctl status ceph-osd@<span class="hljs-number">12</span>      <span class="hljs-comment"># check status of osd.12</span>
+
+sudo systemctl status ceph\<span class="hljs-regexp">*.service</span> ceph\<span class="hljs-regexp">*.target</span> <span class="hljs-comment"># list the Ceph systemd units on a node</span>
+sudo systemctl stop ceph\<span class="hljs-regexp">*.service</span> ceph\<span class="hljs-regexp">*.target</span> <span class="hljs-comment">#stop all the daemons</span>
+</code></pre>
+<p>如果要启动一个节点上所有特定类型的守护进程。执行下面一个即可：</p>
+<pre><code class="hljs aspectj">sudo systemctl start ceph-osd.<span class="hljs-keyword">target</span>
+sudo systemctl start ceph-mon.<span class="hljs-keyword">target</span>
+sudo systemctl start ceph-mds.<span class="hljs-keyword">target</span></code></pre>
+<h2 id="2-Upstart"><a href="#2-Upstart" class="headerlink" title="2.Upstart"></a>2.Upstart</h2><h3 id="启动守护进程"><a href="#启动守护进程" class="headerlink" title="启动守护进程"></a>启动守护进程</h3><p>要在Ceph节点上启动特定的守护程序实例，请执行以下操作之一：</p>
+<pre><code class="hljs sql">sudo <span class="hljs-keyword">start</span> ceph-<span class="hljs-keyword">all</span>
+sudo <span class="hljs-keyword">start</span> ceph-osd <span class="hljs-keyword">id</span>=&#123;<span class="hljs-keyword">id</span>&#125;
+sudo <span class="hljs-keyword">start</span> ceph-mon <span class="hljs-keyword">id</span>=&#123;hostname&#125;
+sudo <span class="hljs-keyword">start</span> ceph-mds <span class="hljs-keyword">id</span>=&#123;hostname&#125;
+sudo <span class="hljs-keyword">start</span> ceph-osd-<span class="hljs-keyword">all</span>
+sudo <span class="hljs-keyword">start</span> ceph-mon-<span class="hljs-keyword">all</span>
+sudo <span class="hljs-keyword">start</span> ceph-mds-<span class="hljs-keyword">all</span></code></pre>
+<h3 id="停止守护程序"><a href="#停止守护程序" class="headerlink" title="停止守护程序"></a>停止守护程序</h3><p>要在Ceph节点上停止特定的守护程序实例，请执行以下操作之一：</p>
+<pre><code class="hljs sql">sudo <span class="hljs-keyword">stop</span> ceph-<span class="hljs-keyword">all</span>
+sudo <span class="hljs-keyword">stop</span> ceph-osd <span class="hljs-keyword">id</span>=&#123;<span class="hljs-keyword">id</span>&#125;
+sudo <span class="hljs-keyword">stop</span> ceph-mon <span class="hljs-keyword">id</span>=&#123;hostname&#125;
+sudo <span class="hljs-keyword">stop</span> ceph-mds <span class="hljs-keyword">id</span>=&#123;hostname&#125;
+sudo <span class="hljs-keyword">stop</span> ceph-osd-<span class="hljs-keyword">all</span>
+sudo <span class="hljs-keyword">stop</span> ceph-mon-<span class="hljs-keyword">all</span>
+sudo <span class="hljs-keyword">stop</span> ceph-mds-<span class="hljs-keyword">all</span></code></pre>
+<h2 id="3-Sysvinit"><a href="#3-Sysvinit" class="headerlink" title="3.Sysvinit"></a>3.Sysvinit</h2><p>每次<strong>启动</strong>，<strong>重新启动</strong>和 <strong>停止</strong>Ceph守护程序（或整个集群）时，都必须至少指定一个选项和一个命令。您也可以指定守护程序类型或守护程序实例。</p>
+<pre><code class="hljs clojure">&#123;commandline&#125; [options] [commands] [daemons]</code></pre>
+<p>该<code>ceph</code>选项包括：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">选项</th>
+<th style="text-align:left">捷径</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>--verbose</code></td>
+<td style="text-align:left"><code>-v</code></td>
+<td style="text-align:left">使用详细日志记录。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>--valgrind</code></td>
+<td style="text-align:left"><code>N/A</code></td>
+<td style="text-align:left">（仅限Dev和QA）使用<a target="_blank" rel="noopener" href="http://www.valgrind.org/">Valgrind</a>调试。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>--allhosts</code></td>
+<td style="text-align:left"><code>-a</code></td>
+<td style="text-align:left">在<code>ceph.conf.</code> 否则的所有节点上执行，否则仅在上执行<code>localhost</code>。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>--restart</code></td>
+<td style="text-align:left"><code>N/A</code></td>
+<td style="text-align:left">如果核心转储，则自动重新启动守护程序。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>--norestart</code></td>
+<td style="text-align:left"><code>N/A</code></td>
+<td style="text-align:left">如果守护程序发生核心转储，请不要重新启动它。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>--conf</code></td>
+<td style="text-align:left"><code>-c</code></td>
+<td style="text-align:left">使用备用配置文件。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这些<code>ceph</code>命令包括：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>start</code></td>
+<td style="text-align:left">启动守护程序。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>stop</code></td>
+<td style="text-align:left">停止守护程序。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>forcestop</code></td>
+<td style="text-align:left">强制守护程序停止。与…一样<code>kill -9</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>killall</code></td>
+<td style="text-align:left">杀死所有特定类型的守护程序。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>cleanlogs</code></td>
+<td style="text-align:left">清除日志目录。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>cleanalllogs</code></td>
+<td style="text-align:left">清除日志目录中的<strong>所有内容</strong>。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于子系统操作，<code>ceph</code>服务可以通过为<code>[daemons]</code>选项添加特定的守护程序类型来定位特定的守护程序类型。守护程序类型包括：</p>
+<ul>
+<li><code>mon</code></li>
+<li><code>osd</code></li>
+<li><code>mds</code></li>
+</ul>
+<hr>
+<h2 id="了解ceph的健康状况"><a href="#了解ceph的健康状况" class="headerlink" title="了解ceph的健康状况"></a>了解ceph的健康状况</h2><h3 id="Monitor"><a href="#Monitor" class="headerlink" title="Monitor"></a>Monitor</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">状态</th>
+<th style="text-align:center">定义</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">MON_DOWN</td>
+<td style="text-align:center">当前有一个或多个监视守护程序已关闭。该群集需要大多数（超过1/2）的监视器才能正常运行。当一个或多个监视器关闭时，客户端可能很难与群集建立初始连接，因为它们可能需要尝试更多地址才能到达运行中的监视器。</td>
+<td>通常，应该尽快重新启动关闭监视器的守护程序，以减少子监视器失败导致服务中断的风险。</td>
+</tr>
+<tr>
+<td style="text-align:center">MON_CLOCK_SKEW</td>
+<td style="text-align:center">运行ceph-mon监视器守护程序的主机上的时钟同步不够充分。如果群集检测到时钟偏差大于，则会发出此健康警报<code>mon_clock_drift_allowed</code>。</td>
+<td>最好使用诸如<code>ntpd</code>或的工具同步时钟来解决 <code>chrony</code>。</td>
+</tr>
+<tr>
+<td style="text-align:center">MON_MSGR2_NOT_ENABLED</td>
+<td style="text-align:center">该<code>ms_bind_msgr2</code>选项已启用，但未将一个或多个监视器配置为绑定到群集monmap中的v2端口。这意味着特定于msgr2协议的功能（例如，加密）在某些或所有连接上不可用。</td>
+<td><code>ceph mon enable-msgr2</code>该命令将更改为旧的默认端口6789配置的任何监视器，以继续侦听6789上的v1连接，并继续侦听新的默认3300端口上的v2连接。</td>
+</tr>
+<tr>
+<td style="text-align:center">MON_DISK_LOW \MON_DISK_CRIT</td>
+<td style="text-align:center">一台或多台监视器的磁盘空间不足。如果存储监视器数据库的文件系统上的可用空间（通常<code>/var/lib/ceph/mon</code>为百分比）降低至以下百分比<code>mon_data_avail_warn</code>（默认值：30％）， 则将触发此警报。</td>
+<td>请通过诸如清理日志文件的方式来增加空间，或者进行扩容。</td>
+</tr>
+<tr>
+<td style="text-align:center">MON_DISK_BIG</td>
+<td style="text-align:center">如果监视器数据库的大小大于<code>mon_data_size_warn</code>（默认值：15 GiB），则会触发此警报 。</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Manager"><a href="#Manager" class="headerlink" title="Manager"></a>Manager</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>定义</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGR_DOWN</td>
+<td>当前所有管理器守护程序都已关闭。</td>
+<td>应尽快重新启动停机管理器守护程序，以确保可以监视群集。</td>
+</tr>
+<tr>
+<td>MGR_MODULE_DEPENDENCY</td>
+<td>已启用的管理器模块未能通过依赖关系检查。此运行状况检查应随附来自模块的有关该问题的解释性消息</td>
+<td></td>
+</tr>
+<tr>
+<td>MGR_MODULE_ERROR</td>
+<td>管理器模块遇到意外错误。</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="OSD"><a href="#OSD" class="headerlink" title="OSD"></a>OSD</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>定义</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OSD_DOWN</td>
+<td>标记了一个或多个OSD。ceph-osd守护程序可能已停止，或者对等OSD可能无法通过网络访问OSD。</td>
+<td></td>
+</tr>
+<tr>
+<td>OSD_ <CRUSH_TYPE> _DOWN</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>OSD_ORPHAN</td>
+<td>OSD在CRUSH映射层次结构中被引用，但不存在。</td>
+<td>可以使用以下方法从CRUSH层次结构中删除OSD：ceph osd crush rm osd</td>
+</tr>
+<tr>
+<td>OSD_OUT_OF_ORDER_FULL</td>
+<td>Nearfull，backfillfull，full和/或failsafe_full的利用率阈值并非升序</td>
+<td></td>
+</tr>
+<tr>
+<td>OSD_FULL</td>
+<td>一个或多个OSD超出了整个阈值，并正在阻止群集为写入提供服务。</td>
+<td></td>
+</tr>
+<tr>
+<td>OSD_BACKFILLFULL</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>OSD_NEARFULL</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>OSDMAP_FLAGS</td>
+<td>已设置一个或多个感兴趣的群集标志。这些标志包括：</td>
+<td></td>
+</tr>
+<tr>
+<td>OSD_FLAGS</td>
+<td>一个或多个OSD或CRUSH {nodes，device classes}已设置了关注标记</td>
+<td></td>
+</tr>
+<tr>
+<td>POOL_FULL</td>
+<td>一个或多个池已达到其配额，并且不再允许写入。</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="BlueStore"><a href="#BlueStore" class="headerlink" title="BlueStore"></a>BlueStore</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>BLUEFS_SPILLOVER</th>
+<th>已经为使用BlueStore后端的一个或多个OSD分配了 db分区（用于元数据的存储空间，通常在较快的设备上），但是该空间已满，因此元数据已“溢出”到正常的慢速设备上。</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BLUEFS_AVAILABLE_SPACE</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>BLUEFS_LOW_SPACE</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>BLUESTORE_FRAGMENTATION</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>BLUESTORE_LEGACY_STATFS</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>BLUESTORE_NO_PER_POOL_OMAP</td>
+<td>从Octopus版本开始，BlueStore按池跟踪omap空间利用率，并且一个或多个OSD具有在Octopus之前创建的卷。</td>
+<td></td>
+</tr>
+<tr>
+<td>BLUESTORE_DISK_SIZE_MISMATCH</td>
+<td>使用BlueStore的一个或多个OSD在物理设备的大小和跟踪其大小的元数据之间存在内部不一致。将来可能导致OSD崩溃</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="设备运行状况"><a href="#设备运行状况" class="headerlink" title="设备运行状况"></a>设备运行状况</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>OSDMAP_FLAGS</p>
+<ul>
+<li><em>full</em>-群集被标记为已满，无法处理写入</li>
+<li><em>pauserd</em>，<em>pausewr-</em>暂停的读取或写入</li>
+<li><em>noup</em> -OSD不允许启动</li>
+<li><em>nodown</em> -OSD故障报告被忽略，因此监视器不会将OSD标记为故障</li>
+<li>noin-以前标记屏上显示出来，不会标示后面的，当他们开始</li>
+<li><em>noout-</em>在配置的间隔后，不会自动将向下的OSD标记出来</li>
+<li><em>nobackfill</em>，<em>norecover</em>，<em>norebalance-</em>恢复或数据重新平衡已暂停</li>
+<li><em>noscrub</em>，<em>nodeep_scrub-</em>禁用清理</li>
+<li><em>notieragent-</em>缓存分层活动已暂停</li>
+</ul>
+<p>除<em>full之外</em>，可以使用以下方式设置或清除这些标志：</p>
+<pre><code class="hljs pf">ceph osd <span class="hljs-built_in">set</span> <span class="hljs-variable">&lt;flag&gt;</span>
+ceph osd unset <span class="hljs-variable">&lt;flag&gt;</span></code></pre>
+<p>OSD_FLAGS</p>
+<p>一个或多个OSD或CRUSH {nodes，device classes}已设置了关注标记。这些标志包括：</p>
+<ul>
+<li><em>noup</em>：这些OSD不允许启动</li>
+<li><em>nodown</em>：这些OSD的故障报告将被忽略</li>
+<li><em>noin</em>：如果以前在故障后自动将这些OSD标记出来，则它们在启动时将不会被标记</li>
+<li><em>noout</em>：如果这些OSD处于关闭状态，则在配置的间隔后它们不会自动被标记 出来</li>
+</ul>
+<p>可以批量设置和清除这些标志：</p>
+<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-built_in">set-group</span> &lt;<span class="hljs-string">flags&gt;</span> &lt;<span class="hljs-string">who&gt;</span>
+<span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">unset-group </span>&lt;<span class="hljs-string">flags&gt;</span> &lt;<span class="hljs-string">who&gt;</span></code></pre>
+<p>可以按以下方式检查池利用率：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph df</span></code></pre>
+<p>当前定义的满比率可以通过以下方式看到：</p>
+<pre><code class="hljs gradle">ceph osd <span class="hljs-keyword">dump</span> | <span class="hljs-keyword">grep</span> full_ratio</code></pre>
+<p>可以通过以下方式查看池配额和利用率：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph df detail</span></code></pre>
+<p>您可以使用以下方法提高池配额：</p>
+<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">pool </span><span class="hljs-built_in">set-quota</span> &lt;<span class="hljs-string">poolname&gt;</span> <span class="hljs-string">max_objects </span>&lt;<span class="hljs-string">num-objects&gt;</span>
+<span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">pool </span><span class="hljs-built_in">set-quota</span> &lt;<span class="hljs-string">poolname&gt;</span> <span class="hljs-string">max_bytes </span>&lt;<span class="hljs-string">num-bytes&gt;</span></code></pre>
+<p>或删除一些现有数据以降低利用率。</p>
+<p>要检查BlueFS有多少可用空间，请执行以下操作：</p>
+<pre><code class="hljs mipsasm">ceph daemon osd.<span class="hljs-number">123</span> <span class="hljs-keyword">bluestore </span><span class="hljs-keyword">bluefs </span>available</code></pre>
+<p>要模拟分配单位不同时的可用空间，请执行以下操作：</p>
+<pre><code class="hljs arduino">ceph daemon osd<span class="hljs-number">.123</span> bluestore bluefs <span class="hljs-built_in">available</span> &lt;alloc-unit-<span class="hljs-built_in">size</span>&gt;</code></pre>
+<p>要检查BlueStore碎片，可以执行以下操作：</p>
+<pre><code class="hljs mipsasm">ceph daemon osd.<span class="hljs-number">123</span> <span class="hljs-keyword">bluestore </span>allocator <span class="hljs-keyword">score </span><span class="hljs-keyword">block</span></code></pre>
+<p>如果需要详细的免费碎片报告，请执行以下操作：</p>
+<pre><code class="hljs angelscript">ceph daemon osd<span class="hljs-number">.123</span> bluestore allocator dump block</code></pre>
+<p>如果处理未运行的OSD进程时可以使用ceph-bluestore-tool检查碎片。获取碎片分数：</p>
+<pre><code class="hljs crystal">ceph-bluestore-tool --path /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-123 --<span class="hljs-title">allocator</span> <span class="hljs-title">block</span> <span class="hljs-title">free</span>-<span class="hljs-title">score</span></span></code></pre>
+<p>并转储详细的免费块：</p>
+<pre><code class="hljs crystal">ceph-bluestore-tool --path /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-123 --<span class="hljs-title">allocator</span> <span class="hljs-title">block</span> <span class="hljs-title">free</span>-<span class="hljs-title">dump</span></span></code></pre>
+<p>通过停止每个OSD，运行修复操作并重新启动它，可以将旧的OSD更新为按池跟踪。例如，如果<code>osd.123</code>需要更新，则 ：</p>
+<pre><code class="hljs crystal">systemctl stop ceph-osd@<span class="hljs-number">123</span>
+ceph-bluestore-tool repair --path /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-123</span>
+systemctl start ceph-osd@<span class="hljs-number">123</span></code></pre>
+<p>使用BlueStore的一个或多个OSD在物理设备的大小和跟踪其大小的元数据之间存在内部不一致。将来可能导致OSD崩溃。</p>
+<p>相关的OSD应该销毁并重新配置。应当小心地一次执行一个OSD，并且这种方式不会使任何数据受到威胁。例如，如果osd<code>$N</code>出现错误，则：</p>
+<pre><code class="hljs awk">ceph osd out osd.<span class="hljs-variable">$N</span>
+<span class="hljs-keyword">while</span> ! ceph osd safe-to-destroy osd.<span class="hljs-variable">$N</span> ; <span class="hljs-keyword">do</span> sleep <span class="hljs-number">1</span>m ; done
+ceph osd destroy osd.<span class="hljs-variable">$N</span>
+ceph-volume lvm zap <span class="hljs-regexp">/path/</span>to/device
+ceph-volume lvm create --osd-id <span class="hljs-variable">$N</span> --data <span class="hljs-regexp">/path/</span>to/device</code></pre>
+<p>可以使用以下方法检查设备的运行状况：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">ceph</span> device <span class="hljs-literal">info</span> &lt;device-id&gt;</code></pre>
+<p>设备预期寿命是由mgr或外部工具通过以下命令运行的预测模型设置的：</p>
+<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">device </span><span class="hljs-built_in">set-life-expectancy</span> &lt;<span class="hljs-string">device-id&gt;</span> &lt;<span class="hljs-string">from&gt;</span> &lt;<span class="hljs-string">to&gt;</span></code></pre>
+<p>您可以手动更改存储的预期寿命，但这通常无法完成任何操作，因为最初设置的任何工具都可能会对其进行重新设置，并且更改存储的值不会影响硬件设备的实际运行状况。</p>
 <hr>
 <h2 id="手动配置"><a href="#手动配置" class="headerlink" title="手动配置"></a>手动配置</h2><p>所有 Ceph 集群都需要至少一个监视器、且 OSD 数量不小于副本数。自举引导初始监视器是部署 Ceph 存储集群的第一步，监视器的部署也为整个集群奠定了重要框架，如存储池副本数、每个 OSD 拥有的归置组数量（PG）、心跳周期、是否需认证等，其中大多数选项都有默认值，但是建设生产集群时仍需要您熟知它们。</p>
 <p><img src="http://docs.ceph.org.cn/_images/ditaa-b67d58275cae03a5573d36907b437e36df685600.png" srcset="/img/loading.gif" alt="img"></p>
