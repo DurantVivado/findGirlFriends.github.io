@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>Hadoop环境配置 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -179,8 +179,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-08 00:00" pubdate>
-        2020年10月8日 凌晨
+      <time datetime="2020-11-10 20:43" pubdate>
+        2020年11月10日 晚上
       </time>
     </span>
   
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      255 字
+      386 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      7
        分钟
     </span>
   
@@ -239,51 +239,34 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Hadoop环境配置</h1>
+            <h1 style="display: none"></h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Hadoop环境配置"><a href="#Hadoop环境配置" class="headerlink" title="Hadoop环境配置"></a>Hadoop环境配置</h1><h2 id="单机模式的操作方法"><a href="#单机模式的操作方法" class="headerlink" title="单机模式的操作方法"></a>单机模式的操作方法</h2><p>默认情况下，Hadoop被配置成以非分布式模式运行的一个独立Java进程。这对调试非常有帮助。</p>
-<p>下面的实例将已解压的 conf 目录拷贝作为输入，查找并显示匹配给定正则表达式的条目。输出写入到指定的output目录。</p>
-<pre><code class="hljs bash">$ mkdir input
-$ cp conf/*.xml input
-$ bin/hadoop jar hadoop-*-examples.jar grep input output <span class="hljs-string">&#x27;dfs[a-z.]+&#x27;</span>
-$ cat output/*</code></pre>
-<h2 id="伪分布式模式的操作方法"><a href="#伪分布式模式的操作方法" class="headerlink" title="伪分布式模式的操作方法"></a>伪分布式模式的操作方法</h2><p>Hadoop可以在单节点上以所谓的伪分布式模式运行，此时每一个Hadoop守护进程都作为一个独立的Java进程运行。</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>使用如下的 conf/hadoop-site.xml:</p>
-<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>fs.default.name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>localhost:9000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapred.job.tracker<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>localhost:9001<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.replication<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre>
-
+              <h1 id="论文阅读-Optimal-Repair-Layering-for-Erasure-Coded-Data-Centers-From-theory-to-Practice"><a href="#论文阅读-Optimal-Repair-Layering-for-Erasure-Coded-Data-Centers-From-theory-to-Practice" class="headerlink" title="论文阅读: Optimal Repair Layering for Erasure-Coded Data Centers: From theory to Practice"></a>论文阅读: Optimal Repair Layering for Erasure-Coded Data Centers: From theory to Practice</h1><blockquote>
+<p>Yuchong Hu, Xiaolu Li, Mi Zhang, Patrick P. C. Lee, Xiaoyang Zhang, Pan Zhou, and Dan Feng. 2017. Optimal Repair Layering for Erasure-Coded Data Centers: From Theory to Practice. <em>ACM Trans. Storage</em> 1, 1, Article 1 (January 2017), 26 pages.</p>
+</blockquote>
+<p>Main Idea: In data centers, the cross-rack network is always the bottleneck of repair performance. We propose that one method is to partition the repair operation into inner-rack and cross-rack layers, which is called $DoubleR$, whereby we design two families of practical $double  generating  codes(DRC)$<sup id="fnref:24" class="footnote-ref"><a href="#fn:24" rel="footnote"><span class="hint--top hint--rounded" aria-label="Yuchong Hu, Patrick P. C. Lee, and Xiaoyang Zhang. 2016. Double Regenerating Codes for Hierarchical Data Centers. In Proceedings of the 2016 IEEE International Symposium on Information Theory (ISIT’16). 245—249.
+">[24]</span></a></sup>, which not only minimize the cross-rack repair traffic but also have several properties that improve state-of-the-art regenerating codes<sup id="fnref:15" class="footnote-ref"><a href="#fn:15" rel="footnote"><span class="hint--top hint--rounded" aria-label=" A. G. Dimakis, P. B. Godfrey, Y. Wu, M. Wainwright, and K. Ramchandran. 2010. Network Coding for Distributed Storage Systems. IEEE Transactions on Information Theory 56, 9 (Sep 2010), 4539—4551.
+">[15]</span></a></sup>.   </p>
+<p>Conceptions:</p>
+<p>$repair  layering$, it splits the repairing into inner-racks and cross-racks in order to trade inner-rack bandwidth for cross-rack bandwidth.  </p>
+<p><img src="论文阅读 Optimal Repair Layering for Erasure-Coded Data Centers From theory to Practice/image-20201110211634545.png" srcset="/img/loading.gif" alt="image-20201110211634545"></p>
+<p>Architecture</p>
+<p>First, repair as much failed data as possible within each rack, and then combine the partially repaired results from multiple racks to repair all failed nodes. </p>
+<p>DoublerR follows the regenerating codes by partitioning a block into smaller $ subblock$, and allowing each nodes to compute encoded subblocks from its stored block. Furthermore, DoubleR reencodes the encoded subblocks from all nodes in the same rack to achieve additional bandwidth savings across the racks. </p>
+<p>DoubleR selects one $target$ node in the <em>local rack</em> to be responsible for repairing. </p>
+<p>$(n,k,r)$ code： n is the number of blocks. k is the number of data blocks, r is the number of racks. subject to k&lt;n. </p>
+<p>we assume r = n.   (n-k) is the number of $parity  blocks$.</p>
+<p>The MDS erasure codes include RS , MSR,. some non-MDS codes like MBR and locally repairable codes.</p>
+<p>we focus on $systematic$ codes, meaning k out of n coded blocks are in original uncoded form.  non-sytematic codes mean that all codes are encoded .</p>
+<section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:15" class="footnote-text"><span>A. G. Dimakis, P. B. Godfrey, Y. Wu, M. Wainwright, and K. Ramchandran. 2010. Network Coding for Distributed Storage Systems. <em>IEEE Transactions on Information Theory</em> 56, 9 (Sep 2010), 4539—4551.
+<a href="#fnref:15" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:24" class="footnote-text"><span>Yuchong Hu, Patrick P. C. Lee, and Xiaoyang Zhang. 2016. Double Regenerating Codes for Hierarchical Data Centers. In <em>Proceedings of the 2016 IEEE International Symposium on Information Theory</em> <em>(ISIT<strong>’</strong>16)</em>. 245—249.
+<a href="#fnref:24" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/hadoop/">hadoop</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E6%9E%B6%E6%9E%84/">分布式存储架构</a>
-                    
-                  </div>
                 
               </div>
               
@@ -294,18 +277,12 @@ $ cat output/*</code></pre>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/08/2020-10-8-article_navigator/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【置顶】本博客导航！</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/02/2020-10-5-mapreduce/">
-                        <span class="hidden-mobile">深入浅出学MapReduce</span>
+                      <a href="/2020/11/05/2020-11-04-designing-ds/">
+                        <span class="hidden-mobile">设计类问题如何解决</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -506,7 +483,7 @@ $ cat output/*</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Hadoop环境配置&nbsp;",
+        "&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

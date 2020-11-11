@@ -209,10 +209,10 @@
   
   
     
-      <!-- LeanCloud 统计文章PV -->
-      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="leancloud-post-views"></span> 次
+        <span id="busuanzi_value_page_pv"></span> 次
       </span>
     
   
@@ -832,22 +832,22 @@ sudo ceph-fuse -m &#123;ip-address-of-monitor&#125;<span class="hljs-function">:
 <p>如果是虚拟机的话：需要支持共享文件夹。</p>
 <pre><code class="hljs dts">tar -<span class="hljs-class">zxvf </span>&#123;文件名&#125; <span class="hljs-meta">#解压</span>
 <span class="hljs-class">cd </span>&#123;文件名&#125;</code></pre>
-<pre><code class="hljs shell">git submodule update --init --recursive #检查有没有模块缺失，试了一下没啥卵用
-sudo ./install-deps.sh #安装所有依赖，需要大量时间，建议网好的时候进行
-sudo ./do_cmake.sh -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_SEASTAR=ON -DWITH_MGR_DASHBOARD_FRONTEND=OFF -DWITH_PYTHON2=OFF -DWITH_PYTHON3=ON -DMGR_PYTHON_VERSION=3 #这一步 如果这部报错就试试 sudo ./run-make-check.sh 只要最后build文件夹有makefile就可以了，我们不需要调试信息，需要seastar，不需要前端，采用python3
-cd build
-sudo make -j4 vstart# 保证能运行test cluster就行，这里-j4是线程数，根据实际情况设定
-sudo make -j4 all #编译所有组件，需要很多空间，根据需要进行</code></pre>
+<pre><code class="hljs sql">git submodule <span class="hljs-keyword">update</span> <span class="hljs-comment">--init --recursive #检查有没有模块缺失，试了一下没啥卵用</span>
+sudo ./<span class="hljs-keyword">install</span>-deps.sh <span class="hljs-comment">#安装所有依赖，需要大量时间，建议网好的时候进行</span>
+sudo ./do_cmake.sh -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_SEASTAR=<span class="hljs-keyword">ON</span> -DWITH_MGR_DASHBOARD_FRONTEND=<span class="hljs-keyword">OFF</span> -DWITH_PYTHON2=<span class="hljs-keyword">OFF</span> -DWITH_PYTHON3=<span class="hljs-keyword">ON</span> -DMGR_PYTHON_VERSION=<span class="hljs-number">3</span> <span class="hljs-comment">#这一步 如果这部报错就试试 sudo ./run-make-check.sh 只要最后build文件夹有makefile就可以了，我们不需要调试信息，需要seastar，不需要前端，采用python3</span>
+cd <span class="hljs-keyword">build</span>
+sudo make -j4 vstart<span class="hljs-comment"># 保证能运行test cluster就行，这里-j4是线程数，根据实际情况设定</span>
+sudo make -j4 <span class="hljs-keyword">all</span> <span class="hljs-comment">#编译所有组件，需要很多空间，根据需要进行</span></code></pre>
 <p>缺啥补啥 (lib+XX+-dev格式)</p>
 <p>比如笔者装了以下库 </p>
-<pre><code class="hljs shell">sudo apt install libhwloc-dev
-sudo apt install libsctp-dev
-sudo apt install libyaml-cpp-dev
-sudo apt install ragel</code></pre>
+<pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">install</span> libhwloc-dev
+sudo apt <span class="hljs-keyword">install</span> libsctp-dev
+sudo apt <span class="hljs-keyword">install</span> libyaml-cpp-dev
+sudo apt <span class="hljs-keyword">install</span> ragel</code></pre>
 <p>编译可能要5-8小时。建议开个<code>top</code>窗口，看看<code>cc1plus</code>这个进程在不在，如果不在，而且内存没怎么占用，说明程序死了。<code>ctrl+c</code>终止再重新编译。</p>
 <hr>
 <p>按照官方的测试cluster只用编译到vstart就行了</p>
-<p><code>$sudo make -j4 vstart</code></p>
+<p><code>sudo make -j4 vstart</code></p>
 <p>如果你遇到问题，请对症下药！</p>
 <h2 id="P1-未与github远程库建立联系"><a href="#P1-未与github远程库建立联系" class="headerlink" title="P1:未与github远程库建立联系"></a>P1:未与github远程库建立联系</h2><pre><code class="hljs gradle">CMake Error at src<span class="hljs-regexp">/CMakeFiles/gi</span>t-data/grabRef.cmake:<span class="hljs-number">48</span> (<span class="hljs-keyword">file</span>):
   <span class="hljs-keyword">file</span> failed to open <span class="hljs-keyword">for</span> reading (No such <span class="hljs-keyword">file</span> or directory):
@@ -898,7 +898,7 @@ git commit -m <span class="hljs-string">&quot;123&quot;</span></code></pre>
 <p>现在的ceph是通过python3编译。python3直接连接到openssl1.1.1，所以我们通过以下参数强制用python3编译。</p>
 <pre><code class="hljs routeros"><span class="hljs-attribute">-DWITH_PYTHON2</span>=OFF <span class="hljs-attribute">-DWITH_PYTHON3</span>=ON <span class="hljs-attribute">-DMGR_PYTHON_VERSION</span>=3</code></pre>
 <p>只要开始编译就可以停下来了，因为这是单线程很慢，但是基本的makefile已经有了。</p>
-<p><code>$sudo make -j4</code></p>
+<p><code>sudo make -j4</code></p>
 <p>这里<code>-j4</code>表示使用4线程编译，会比单线程快很多。</p>
 <p>技巧：build过程随时查看Makefile，检查编译进度。如果某个target有问题，我们只需要单独build这个target即可，比如</p>
 <pre><code class="hljs puppet">sudo make -<span class="hljs-keyword">j4</span> &#123;挂掉的<span class="hljs-literal">target</span>，在makefile最后可以找到&#125;</code></pre>
@@ -1038,7 +1038,7 @@ make: *** [vstart-base] Error 2
       |          ^~~~~~~~~~~~~
 compilation terminated.
 </code></pre>
-<pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$sudo</span> apt install libcurl4-gnutls</span></code></pre>
+<pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> apt install libcurl<span class="hljs-number">4</span>-gnutls</code></pre>
 <h2 id="p9-缺失yaml库"><a href="#p9-缺失yaml库" class="headerlink" title="p9: 缺失yaml库"></a>p9: 缺失yaml库</h2><pre><code class="hljs angelscript">Best match: PyYAML <span class="hljs-number">5.3</span><span class="hljs-number">.1</span>
 Processing PyYAML<span class="hljs-number">-5.3</span><span class="hljs-number">.1</span>.tar.gz
 Writing /tmp/easy_install-_fQ46U/PyYAML<span class="hljs-number">-5.3</span><span class="hljs-number">.1</span>/setup.cfg

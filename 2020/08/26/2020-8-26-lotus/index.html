@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      2.5k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      21
+      31
        分钟
     </span>
   
@@ -209,10 +209,10 @@
   
   
     
-      <!-- LeanCloud 统计文章PV -->
-      <span id="leancloud-post-views-container" class="post-meta" style="display: none">
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
         <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="leancloud-post-views"></span> 次
+        <span id="busuanzi_value_page_pv"></span> 次
       </span>
     
   
@@ -259,7 +259,7 @@
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/">剑指 Offer 63. 股票的最大利润</a>(Medium) </p>
 <p>一种常用的方法是将「买入」和「卖出」分开进行考虑：「买入」为负收益，而「卖出」为正收益。在初入股市时，你只有「买入」的权利，只能获得负收益。而当你「买入」之后，你就有了「卖出」的权利，可以获得正收益。显然，我们需要尽可能地降低负收益而提高正收益，因此我们的目标总是将收益值最大化。因此，我们可以使用动态规划的方法，维护在股市中每一天结束后可以获得的「累计最大收益」，并以此进行状态转移，得到最终的答案。<strong>这些题目共同点你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</strong></p>
 <blockquote>
-<p>此外也可以采用单调栈进行求解！</p>
+<p>此外也可以采用单调栈和DFA（有限自动状态机）进行求解！</p>
 </blockquote>
 <h4 id=""><a href="#" class="headerlink" title=" "></a> </h4><hr>
 <h3 id="入门-买卖股票的最佳时机含手续费"><a href="#入门-买卖股票的最佳时机含手续费" class="headerlink" title="入门. 买卖股票的最佳时机含手续费"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">入门. 买卖股票的最佳时机含手续费</a></h3><p>给定一个整数数组 <code>prices</code>，其中第 <code>i</code> 个元素代表了第 <code>i</code> 天的股票价格 ；非负整数 <code>fee</code> 代表了交易股票的手续费用。</p>
@@ -293,7 +293,7 @@
 <p>自然就有状态方程：</p>
 <script type="math/tex; mode=display">
 cash = max(cash, hold + prices[i]-fee)\\
-hold = max(cash, hold - prices[i])</script><p>因为$hold[0]$是非法的，定义一个它无法取到的数，比如$-prices[0]$</p>
+hold = max(hold, cash - prices[i])</script><p>因为$hold[0]$是非法的，定义一个它无法取到的数，比如$-prices[0]$</p>
 <hr>
 <p>下面一题代表了多种状态的情况，这是股票问题最有趣的地方，很多状态！</p>
 <h3 id="进阶-最佳买卖股票时机含冷冻期-Medium"><a href="#进阶-最佳买卖股票时机含冷冻期-Medium" class="headerlink" title="进阶.最佳买卖股票时机含冷冻期(Medium)"></a><strong><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown">进阶.最佳买卖股票时机含冷冻期</a>(Medium)</strong></h3><p>给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。</p>
@@ -378,8 +378,81 @@ dp[0][2] = 0;
 <li><code>0 &lt;= prices.length &lt;= 1000</code></li>
 <li><code>0 &lt;= prices[i] &lt;= 1000</code></li>
 </ul>
-<hr>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/">123. 买卖股票的最佳时机 III</a>是 该题的特例，我们重点分析 一般情况。</p>
+<hr>
+<p>这一题我们先冷静分析，对于长度为N的$prices$，最大的交易次数为$[N/2]$。然后如果$k\ge N/2$，那么问题转化为无限次股票问题，直接按照<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">入门. 买卖股票的最佳时机含手续费</a>做法就可以了。</p>
+<p>否则，我们可以把交易数$j$作为一个状态转移变量，那么</p>
+<p>第j次交易流程应该是   持有→买入→保持→卖出，</p>
+<ul>
+<li><p>设$dp[j][0]$表示第$j+1$次交易完成后所能获得的最大利润(或者第$j$次交易开始时)。$dp[j][1]$表示第$j+1$次交易<strong>买入之后</strong>所能得到最大利润。</p>
+</li>
+<li><p>那么第j次交易卖出之前的最大利润要么是自己（保持），要么是上次卖出的。</p>
+<script type="math/tex; mode=display">
+dp[j][0] = max(dp[j][0],dp[j-1][1] + prices[i])</script></li>
+<li></li>
+<li><p>我们观察到，第j次卖出之后最大利润要么是自己（保持），要么等于第j次买入之后，利用这个把整个交易链接起来，</p>
+</li>
+</ul>
+<script type="math/tex; mode=display">
+dp[j-1][1] = max(dp[j-1][1], dp[j-1][0] - prices[i])</script><ul>
+<li><p>这儿其实是逻辑问题，就是我们只有更新了$dp[j-1][1]$才能知道下一笔交易的初始最大利润，这里的最大利润是累积的。</p>
+</li>
+<li><p>初始条件：</p>
+</li>
+<li>$dp[i][0] = 0, dp[i][1] = -price[0],i\in (0,k]$</li>
+</ul>
+<p>每一笔交易之前的$dp[i][1]$都是无法取到的，所以设成一个不可能的值。</p>
+<p>这一道题其实是有依赖的背包问题。</p>
+<p>代码</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxProfit</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; prices)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = prices.size();
+        <span class="hljs-comment">//由于k值极大，</span>
+        <span class="hljs-keyword">if</span>(!n) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span>( k == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span>(k &gt;= n/<span class="hljs-number">2</span> ) <span class="hljs-comment">//退化为无限次交易问题</span>
+        &#123;
+            <span class="hljs-keyword">int</span> cash = <span class="hljs-number">0</span>, hold = -prices[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+            &#123;
+                cash = max(cash, hold + prices[i]);
+                hold = max(hold, cash - prices[i]);
+            &#125;
+            <span class="hljs-keyword">return</span> max(cash,hold);
+        &#125;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">dp</span><span class="hljs-params">(k+<span class="hljs-number">1</span>, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;(<span class="hljs-number">2</span>,<span class="hljs-number">0</span>))</span></span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; k;i++)
+            dp[i][<span class="hljs-number">1</span>] = -prices[<span class="hljs-number">0</span>];
+
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        &#123;
+            <span class="hljs-comment">// cout&lt;&lt;i&lt;&lt;endl;</span>
+            
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = k;j &gt; <span class="hljs-number">0</span>; j--)
+            &#123;<span class="hljs-comment">// 不能写成j = min(k,(n+1)/2) 有一些状态会影响后面合法的状态转移</span>
+                dp[j<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>] = max(dp[j<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>], dp[j<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>] - prices[i]);
+                dp[j][<span class="hljs-number">0</span>] = max(dp[j][<span class="hljs-number">0</span>], dp[j<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>] + prices[i]);
+                
+                <span class="hljs-comment">//对应交易加1</span>
+                <span class="hljs-comment">// printf(&quot;dp[%d][%d]=%d,dp[%d][%d]=%d\n&quot;,j-1,1,dp[j-1][1],j,0,dp[j][0]);</span>
+            &#125;
+        &#125;
+        <span class="hljs-comment">// cout&lt;&lt;endl;</span>
+        <span class="hljs-keyword">return</span> dp[k][<span class="hljs-number">0</span>];
+    &#125;
+&#125;;</code></pre>
+<p>时间复杂度：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+O(nk),\ k<n/2\\
+O(n), \ else
+\end{cases}</script><p>空间复杂度：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+O(2*k),\ k<n/2\\
+O(1), \ else
+\end{cases}</script><p>这题还可以用dfs和记忆化搜索来做，有兴趣的读者可以尝试之。</p>
 
             </div>
             <hr>
