@@ -285,7 +285,7 @@
 <li>Block：支持精简配置、快照、克隆。</li>
 <li>File：Posix接口，支持快照。</li>
 </ul>
-<p><img src="..\img\ceph-st1.jpg" srcset="/img/loading.gif" alt="640?wx_fmt=png"></p>
+<p><img src="\img\ceph-st1.jpg" srcset="/img/loading.gif" alt="640?wx_fmt=png"></p>
 <ul>
 <li><p>Monitor</p>
 <p><code>ceph-mon</code>，一个Ceph集群需要多个Monitor组成的小集群，它们通过Paxos同步数据，用来保存OSD的元数据。<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-ceph-monitor"><em>Ceph Monitor</em></a>维护着展示集群状态的各种图表，包括监视器图、 OSD 图、归置组（ PG ）图、和 CRUSH 图。 Ceph 保存着发生在Monitors 、 OSD 和 PG上的每一次状态变更的历史信息（称为 epoch ）。通常至少需要三个监视器才能实现冗余和高可用性。</p>
@@ -359,7 +359,7 @@
 </li>
 <li>Replica OSDs 完成写并通知Primary OSD。</li>
 <li>Primary OSDs 通知client APP 写完成。</li>
-<li><img src="CEPH踩坑学习/image-20201122180847737.png" srcset="/img/loading.gif" alt="image-20201122180847737"></li>
+<li><img src="\img\ceph-b.png" srcset="/img/loading.gif" alt="image-20201122180847737"></li>
 </ul>
 <h3 id="三种存储方式"><a href="#三种存储方式" class="headerlink" title="三种存储方式"></a>三种存储方式</h3><h4 id="1-块设备"><a href="#1-块设备" class="headerlink" title="1. 块设备"></a>1. 块设备</h4><p><strong>典型设备：</strong> 磁盘阵列，硬盘</p>
 <p>主要是将裸磁盘空间映射给主机使用的。</p>
@@ -398,7 +398,7 @@
 <li>有目录结构的文件存储。</li>
 <li>…</li>
 </ul>
-<h4 id="3-对象存储"><a href="#3-对象存储" class="headerlink" title="3.对象存储"></a>3.对象存储</h4><p><img src="CEPH踩坑学习/2099201-372ff5a93ceca813.png" srcset="/img/loading.gif" alt="img"></p>
+<h4 id="3-对象存储"><a href="#3-对象存储" class="headerlink" title="3.对象存储"></a>3.对象存储</h4><p><img src="\img\ceph-c.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>典型设备：</strong> 内置大容量硬盘的分布式服务器(swift, s3)<br> 多台服务器内置大容量硬盘，安装上对象存储管理软件，对外提供读写访问功能。</p>
 <p><strong>优点：</strong></p>
 <ul>
@@ -603,8 +603,8 @@
 </table>
 </div>
 <hr>
-<h2 id="2-Ceph-I-O流程和数据分布"><a href="#2-Ceph-I-O流程和数据分布" class="headerlink" title="2 Ceph I/O流程和数据分布"></a>2 Ceph I/O流程和数据分布</h2><p><img src="CEPH踩坑学习/2099201-db0fd6e3e3f49f68.png" srcset="/img/loading.gif" alt="img"></p>
-<p><img src="CEPH踩坑学习/ceph_io2.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="2-Ceph-I-O流程和数据分布"><a href="#2-Ceph-I-O流程和数据分布" class="headerlink" title="2 Ceph I/O流程和数据分布"></a>2 Ceph I/O流程和数据分布</h2><p><img src="\img\ceph-d.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="\img\ceph_io2.png" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>步骤：</strong></p>
 <ol>
 <li>client 创建cluster handler。</li>
@@ -615,7 +615,7 @@
 <li>等待主节点以及另外两个副本节点写完数据状态。</li>
 <li>主节点及副本节点写入状态都成功后，返回给client，io写入完成。</li>
 </ol>
-<h3 id="新主I-O流程图"><a href="#新主I-O流程图" class="headerlink" title="新主I/O流程图"></a>新主I/O流程图</h3><p><img src="CEPH踩坑学习/2099201-9cc1013f7e3dc8f9.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="新主I-O流程图"><a href="#新主I-O流程图" class="headerlink" title="新主I/O流程图"></a>新主I/O流程图</h3><p><img src="\img\ceph-e.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>步骤：</strong></p>
 <ol>
 <li>client连接monitor获取集群map信息。</li>
@@ -628,7 +628,7 @@
 <li>如果osd1数据同步完毕，临时主osd2会交出主角色。</li>
 <li>osd1成为主节点，osd2变成副本。</li>
 </ol>
-<h3 id="Ceph-I-O算法流程"><a href="#Ceph-I-O算法流程" class="headerlink" title="Ceph I/O算法流程"></a>Ceph I/O算法流程</h3><p><img src="CEPH踩坑学习/2099201-b24c72ac8bbf1a19.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="Ceph-I-O算法流程"><a href="#Ceph-I-O算法流程" class="headerlink" title="Ceph I/O算法流程"></a>Ceph I/O算法流程</h3><p><img src="\img\ceph-arch.png" srcset="/img/loading.gif" alt="img"></p>
 <ol>
 <li>File用户需要读写的文件。File-&gt;Object映射：</li>
 </ol>
@@ -656,7 +656,7 @@
 <span class="hljs-attr">osds_for_pg</span> = crush(pg)  <span class="hljs-comment"># returns a list of osds</span>
 <span class="hljs-attr">primary</span> = osds_for_pg[<span class="hljs-number">0</span>]
 <span class="hljs-attr">replicas</span> = osds_for_pg[<span class="hljs-number">1</span>:]</code></pre>
-<h3 id="Ceph-RBD-IO流程"><a href="#Ceph-RBD-IO流程" class="headerlink" title="Ceph RBD IO流程"></a>Ceph RBD IO流程</h3><p><img src="CEPH踩坑学习/2099201-ed51d7d8050dbf64.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="Ceph-RBD-IO流程"><a href="#Ceph-RBD-IO流程" class="headerlink" title="Ceph RBD IO流程"></a>Ceph RBD IO流程</h3><p><img src="/img/ceph-f.png" srcset="/img/loading.gif" alt="img"></p>
 <ol>
 <li><p>客户端创建一个pool，需要为这个pool指定pg的数量。</p>
 </li>
@@ -673,14 +673,14 @@
 <li><p>object的存储就变成了存储一个文rbd0.object1.file。</p>
 </li>
 </ol>
-<p><img src="CEPH踩坑学习/2099201-850a745bc0f44494.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-g.png" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>客户端写数据osd过程：</strong></p>
 <ol>
 <li>采用的是librbd的形式，使用librbd创建一个块设备，向这个块设备中写入数据。</li>
 <li>在客户端本地同过调用librados接口，然后经过pool，rbd，object、pg进行层层映射,在PG这一层中，可以知道数据保存在哪3个OSD上，这3个OSD分为主从的关系。</li>
 <li>客户端与primay OSD建立SOCKET 通信，将要写入的数据传给primary OSD，由primary OSD再将数据发送给其他replica OSD数据节点。</li>
 </ol>
-<h3 id="Ceph-Pool和PG分布情况"><a href="#Ceph-Pool和PG分布情况" class="headerlink" title="Ceph Pool和PG分布情况"></a>Ceph Pool和PG分布情况</h3><p><img src="CEPH踩坑学习/2099201-d49d90ae6a918ef2.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="Ceph-Pool和PG分布情况"><a href="#Ceph-Pool和PG分布情况" class="headerlink" title="Ceph Pool和PG分布情况"></a>Ceph Pool和PG分布情况</h3><p><img src="/img/ceph-h.jpg" srcset="/img/loading.gif" alt="img"></p>
 <ul>
 <li><p>pool是ceph存储数据时的逻辑分区，它起到namespace的作用。</p>
 </li>
@@ -699,9 +699,9 @@
 <li>扩容到4个OSD, 4个PG</li>
 </ul>
 <p><strong>扩容前</strong></p>
-<p><img src="CEPH踩坑学习/2099201-4dda9e2648dabe90.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-i.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>扩容后</strong></p>
-<p><img src="CEPH踩坑学习/2099201-9e324e87c6d086f3.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-j.png" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>说明</strong><br>每个OSD上分布很多PG, 并且每个PG会自动散落在不同的OSD上。如果扩容那么相应的PG会进行迁移到新的OSD上，保证PG数量的均衡。</p>
 <h3 id="PG状态及其含义"><a href="#PG状态及其含义" class="headerlink" title="PG状态及其含义"></a>PG状态及其含义</h3><div class="table-container">
 <table>
@@ -803,13 +803,13 @@
 <li><strong>back端口</strong>：供客集群内部使用的网卡。集群内部之间进行心跳。</li>
 <li><strong>hbclient</strong>：发送ping心跳的messenger。</li>
 </ul>
-<h3 id="Ceph-OSD之间相互心跳检测"><a href="#Ceph-OSD之间相互心跳检测" class="headerlink" title="Ceph OSD之间相互心跳检测"></a>Ceph OSD之间相互心跳检测</h3><p><img src="CEPH踩坑学习/2099201-a04c96ba04ec47df.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="Ceph-OSD之间相互心跳检测"><a href="#Ceph-OSD之间相互心跳检测" class="headerlink" title="Ceph OSD之间相互心跳检测"></a>Ceph OSD之间相互心跳检测</h3><p><img src="/img/ceph-k.jpg" srcset="/img/loading.gif" alt="img"></p>
 <ul>
 <li>同一个PG内OSD互相心跳，他们互相发送PING/PONG信息。</li>
 <li>每隔6s检测一次(实际会在这个基础上加一个随机时间来避免峰值)。</li>
 <li>20s没有检测到心跳回复，加入failure队列。</li>
 </ul>
-<h3 id="Ceph-OSD与Mon心跳检测"><a href="#Ceph-OSD与Mon心跳检测" class="headerlink" title="Ceph OSD与Mon心跳检测"></a>Ceph OSD与Mon心跳检测</h3><p><img src="CEPH踩坑学习/2099201-06fcd181ba5c2671.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="Ceph-OSD与Mon心跳检测"><a href="#Ceph-OSD与Mon心跳检测" class="headerlink" title="Ceph OSD与Mon心跳检测"></a>Ceph OSD与Mon心跳检测</h3><p><img src="/img/ceph-l.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>OSD报告给Monitor：</strong></p>
 <ul>
 <li>OSD有事件发生时（比如故障、PG变更）。</li>
@@ -854,14 +854,14 @@
 </ul>
 <h3 id="Ceph通信框架设计模式"><a href="#Ceph通信框架设计模式" class="headerlink" title="Ceph通信框架设计模式"></a>Ceph通信框架设计模式</h3><p><strong>设计模式(Subscribe/Publish)</strong></p>
 <p>订阅发布模式又名观察者模式，它意图是“定义对象间的一种一对多的依赖关系，<br> 当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新”。</p>
-<p><img src="CEPH踩坑学习/2099201-8662667e6a06e931.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-m.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p>Accepter监听peer的请求, 调用 SimpleMessenger::add_accept_pipe() 创建新的 Pipe 到 SimpleMessenger::pipes 来处理该请求。</p>
 <p>Pipe用于消息的读取和发送。该类主要有两个组件，Pipe::Reader，Pipe::Writer用来处理消息读取和发送。</p>
 <p>Messenger作为消息的发布者, 各个 Dispatcher 子类作为消息的订阅者, Messenger 收到消息之后，  通过 Pipe 读取消息，然后转给 Dispatcher 处理。</p>
 <p>Dispatcher调度员是订阅者的基类，具体的订阅后端继承该类,初始化的时候通过 Messenger::add_dispatcher_tail/head 注册到 Messenger::dispatchers. 收到消息后，通知该类处理。</p>
 <p>DispatchQueue该类用来缓存收到的消息, 然后唤醒 DispatchQueue::dispatch_thread 线程找到后端的 Dispatch 处理消息。</p>
-<p><img src="../CEPH踩坑学习/2099201-f7e6ef5c9d3fe38f.png" srcset="/img/loading.gif" alt="img"></p>
-<h3 id="通信类框架图"><a href="#通信类框架图" class="headerlink" title="通信类框架图"></a>通信类框架图</h3><p><img src="CEPH踩坑学习/2099201-a7d2248cb9963f1d.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-u.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="通信类框架图"><a href="#通信类框架图" class="headerlink" title="通信类框架图"></a>通信类框架图</h3><p><img src="/img/ceph-n.jpg" srcset="/img/loading.gif" alt="img"></p>
 <h3 id="通信数据格式"><a href="#通信数据格式" class="headerlink" title="通信数据格式"></a>通信数据格式</h3><p>通信协议格式需要双方约定数据格式。</p>
 <p><strong>消息的内容主要分为三部分：</strong></p>
 <ul>
@@ -958,7 +958,7 @@
 <ul>
 <li>| 类型ID |  类型名称  |<br> | :——: | :————: |<br>|   0    |    osd     |<br> |   1    |    host    |<br> |   2    |  chassis   |<br> |   3    |    rack    |<br> |   4    |    row     |<br> |   5    |    pdu     |<br> |   6    |    pod     |<br> |   7    |    room    |<br> |   8    | datacenter |<br> |   9    |   region   |<br> |   10   |    root    |</li>
 </ul>
-<p><img src="CEPH踩坑学习/2099201-f0f7321a9e37361f.png" srcset="/img/loading.gif" alt=" "></p>
+<p><img src="/img/ceph-o.png" srcset="/img/loading.gif" alt=" "></p>
 <ul>
 <li>CRUSH Map是一个树形结构，OSDMap更多记录的是OSDMap的属性(epoch/fsid/pool信息以及osd的ip等等)。</li>
 </ul>
@@ -993,7 +993,7 @@
     step chooseleaf  firstn  0  <span class="hljs-built_in">type</span>  host <span class="hljs-comment">#选择一个host,并递归选择叶子节点osd     </span>
     step emit        <span class="hljs-comment">#结束</span>
 &#125;</code></pre>
-<h3 id="Bucket随机算法类型"><a href="#Bucket随机算法类型" class="headerlink" title="Bucket随机算法类型"></a>Bucket随机算法类型</h3><p><img src="CEPH踩坑学习/2099201-ac18dabc9fb44d20.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;" /></p>
+<h3 id="Bucket随机算法类型"><a href="#Bucket随机算法类型" class="headerlink" title="Bucket随机算法类型"></a>Bucket随机算法类型</h3><p><img src="/img/ceph-p.jpg" srcset="/img/loading.gif" alt=""></p>
 <p><strong>一般的buckets</strong>：适合所有子节点权重相同，而且很少添加删除item。</p>
 <p><strong>list buckets</strong>：适用于集群扩展类型。增加item，产生最优的数据移动，查找item，时间复杂度O(n)。</p>
 <p><strong>tree buckets</strong>：查找负责度是O (log n), 添加删除叶子节点时，其他节点node_id不变。</p>
@@ -1023,11 +1023,11 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 </ol>
 <h3 id="CRUSH算法案例"><a href="#CRUSH算法案例" class="headerlink" title="CRUSH算法案例"></a>CRUSH算法案例</h3><p>集群中有部分sas和ssd磁盘，现在有个业务线性能及可用性优先级高于其他业务线，能否让这个高优业务线的数据都存放在ssd磁盘上。</p>
 <p><strong>普通用户：</strong></p>
-<p><img src="CEPH踩坑学习/2099201-1bd6980a2141bc51.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-q.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>高优用户</strong></p>
-<p><img src="CEPH踩坑学习/2099201-127c6f8a40938233.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/ceph-r.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p>配置规则</p>
-<p>作者：<img src="CEPH踩坑学习/2099201-0084962b3a7847b4.png" srcset="/img/loading.gif" alt="img"></p>
+<p>作者：<img src="/img/ceph-t.jpg" srcset="/img/loading.gif" alt="img"></p>
 <hr>
 <h2 id="6-定制化Ceph-RBD-QOS"><a href="#6-定制化Ceph-RBD-QOS" class="headerlink" title="6 定制化Ceph RBD QOS"></a>6 定制化Ceph RBD QOS</h2><p>QoS （Quality of Service，服务质量）起源于网络技术，它用来解决网络延迟和阻塞等问题，能够为指定的网络通信提供更好的服务能力。</p>
 <p>我们总的Ceph集群的iIO能力是有限的，比如带宽，IOPS。如何避免用户争取资源，如果保证集群所有用户资源的高可用性，以及如何保证高优用户资源的可用性。所以我们需要把有限的IO能力合理分配。</p>
@@ -1043,7 +1043,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 <li><p><strong>Recovery</strong>：数据恢复和迁移。集群扩/缩容、osd失效/从新加入等过程。</p>
 </li>
 </ul>
-<h2 id="7-CephFS"><a href="#7-CephFS" class="headerlink" title="7.CephFS"></a>7.CephFS</h2><p><img src="CEPH踩坑学习/image-20201122181908570.png![image-20201122181939220](CEPH踩坑学习/image-20201122181939220.png" srcset="/img/loading.gif" alt="image-20201122181908570"></p>
+<h2 id="7-CephFS"><a href="#7-CephFS" class="headerlink" title="7.CephFS"></a>7.CephFS</h2><p><img src="/img/ceph-lec.jpg" srcset="/img/loading.gif" alt="image-20201122181939220"></p>
 <h2 id="8-BlueStore-分布式对象存储"><a href="#8-BlueStore-分布式对象存储" class="headerlink" title="8.BlueStore 分布式对象存储"></a>8.BlueStore 分布式对象存储</h2><blockquote>
 <p>与一般的FS相比，BlueStore绕过了系统的本地文件系统，由自身接管磁盘，所以其性能更好。并且充分考虑了对下一代全SSD以及全NVMe SSD闪存的支持。例如支持RocksDB。</p>
 </blockquote>
