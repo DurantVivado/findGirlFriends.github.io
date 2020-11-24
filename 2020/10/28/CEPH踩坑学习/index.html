@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10.3k 字
+      10.5k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      115
+      118
        分钟
     </span>
   
@@ -314,7 +314,7 @@
 </ul>
 <ul>
 <li><p>RADOS</p>
-<p>RADOS全称Reliable Autonomic Distributed Object Store，是Ceph集群的<strong>精华</strong>，用户实现数据分配、Failover等集群操作。具有自愈，自管理能力的智能存储节点构建的高可靠，自治，分布式对象存储系统。</p>
+<p>RADOS全称Reliable Autonomic Distributed Object Store （可靠自治的分布式对象存储），是Ceph集群的<strong>精华</strong>，用户实现数据分配、Failover等集群操作。具有自愈，自管理能力的智能存储节点构建的高可靠，自治，分布式对象存储系统。</p>
 </li>
 </ul>
 <ul>
@@ -343,7 +343,24 @@
 <p>CephFS全称Ceph File System，是Ceph对外提供的文件系统服务。与POSIX兼容，同时提供Linux内核态用户端和FUSE访问支持。</p>
 </li>
 </ul>
+<blockquote>
 <p>基于 RADOS 的 Ceph 对象存储集群包括两类守护进程：term:对象存储守护进程（ OSD ）把存储节点上的数据存储为对象； term:Ceph 监视器（ MON ）维护集群运行图的主拷贝。一个 Ceph 集群可以包含数千个存储节点，最简系统至少需要一个监视器和两个 OSD 才能做到数据复制。</p>
+</blockquote>
+<h3 id="ceph读写流程"><a href="#ceph读写流程" class="headerlink" title="ceph读写流程"></a>ceph读写流程</h3><p>Read：</p>
+<ul>
+<li>Client app 发送读请求，RADOS将请求发送给Primary OSD。</li>
+<li>主要OSD在本地磁盘读数据并完成读请求。</li>
+</ul>
+<p>Write:</p>
+<ul>
+<li><p>Client App 写数据，RADOS将数据发送给Primary OSD。</p>
+</li>
+<li><p>Primary OSD识别Replica OSDs并且向他们发送数据，由他们写数据到本地磁盘。</p>
+</li>
+<li>Replica OSDs 完成写并通知Primary OSD。</li>
+<li>Primary OSDs 通知client APP 写完成。</li>
+<li><img src="CEPH踩坑学习/image-20201122180847737.png" srcset="/img/loading.gif" alt="image-20201122180847737"></li>
+</ul>
 <h3 id="三种存储方式"><a href="#三种存储方式" class="headerlink" title="三种存储方式"></a>三种存储方式</h3><h4 id="1-块设备"><a href="#1-块设备" class="headerlink" title="1. 块设备"></a>1. 块设备</h4><p><strong>典型设备：</strong> 磁盘阵列，硬盘</p>
 <p>主要是将裸磁盘空间映射给主机使用的。</p>
 <p><strong>优点：</strong></p>
@@ -836,6 +853,10 @@
 <hr>
 <h2 id="5-Ceph-CRUSH算法"><a href="#5-Ceph-CRUSH算法" class="headerlink" title="5 Ceph CRUSH算法"></a>5 Ceph CRUSH算法</h2><blockquote>
 <p>Controlled Replication Under Scalable Hashing, 可扩展哈希下的可控复制。以数据唯一标识符、当前存储集群的拓扑结构以及数据备份策略作为CRUSH输入，可以随时随地的通过计算获取数控所在的底层存储设备的位置并直接与其通信，从而避免查表操作，实现去中心化和高度并发。</p>
+<p>CRUSH是一种伪随机算法，采用<strong>一致性哈希</strong>。</p>
+<p>OSD MAP: 包含当前所有pool的状态，和所有OSD状态。</p>
+<p>CRUSH MAP: 包含当前磁盘、服务器、机架的层次结构。</p>
+<p>CRUSH Rules：数据映射的策略。以便灵活放置Object。</p>
 </blockquote>
 <h3 id="数据分布算法挑战"><a href="#数据分布算法挑战" class="headerlink" title="数据分布算法挑战"></a>数据分布算法挑战</h3><p><strong>数据分布和负载均衡</strong>：</p>
 <ul>
@@ -946,7 +967,8 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 <li><p><strong>Recovery</strong>：数据恢复和迁移。集群扩/缩容、osd失效/从新加入等过程。</p>
 </li>
 </ul>
-<h1 id="BlueStore-分布式对象存储"><a href="#BlueStore-分布式对象存储" class="headerlink" title="BlueStore 分布式对象存储"></a>BlueStore 分布式对象存储</h1><blockquote>
+<h2 id="7-CephFS"><a href="#7-CephFS" class="headerlink" title="7.CephFS"></a>7.CephFS</h2><p><img src="CEPH踩坑学习/image-20201122181908570.png![image-20201122181939220](CEPH踩坑学习/image-20201122181939220.png" srcset="/img/loading.gif" alt="image-20201122181908570"></p>
+<h2 id="8-BlueStore-分布式对象存储"><a href="#8-BlueStore-分布式对象存储" class="headerlink" title="8.BlueStore 分布式对象存储"></a>8.BlueStore 分布式对象存储</h2><blockquote>
 <p>与一般的FS相比，BlueStore绕过了系统的本地文件系统，由自身接管磁盘，所以其性能更好。并且充分考虑了对下一代全SSD以及全NVMe SSD闪存的支持。例如支持RocksDB。</p>
 </blockquote>
 <p>先介绍一些术语：</p>

@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      2.1k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      25
+      26
        分钟
     </span>
   
@@ -247,9 +247,15 @@
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/">柱状图中最大矩形（Hard）</a></li>
 </ol>
 </li>
-<li>85.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximal-rectangle/">求最大矩形(Hard)</a></li>
-<li>739.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/daily-temperatures/">每日温度(Medium)</a></li>
-<li>多重背包问题III【详见背包九讲】</li>
+<li><p>85.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximal-rectangle/">求最大矩形(Hard)</a></p>
+</li>
+<li><p>739.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/daily-temperatures/">每日温度(Medium)</a></p>
+</li>
+<li><h4 id="402-移掉K位数字"><a href="#402-移掉K位数字" class="headerlink" title="402. 移掉K位数字"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-k-digits/">402. 移掉K位数字</a></h4></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/create-maximum-number/">321. 拼接最大数（Hard）</a></p>
+</li>
+<li><p>多重背包问题III【详见背包九讲】</p>
+</li>
 </ul>
 <blockquote>
 <p>推荐阅读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lucky52529/article/details/89155694">https://blog.csdn.net/lucky52529/article/details/89155694</a></p>
@@ -265,6 +271,7 @@
 <li>4入栈时，栈顶元素7比4大，则入栈，栈内元素为10，7，4。</li>
 <li>12入栈时，栈顶元素4比12小，4出栈，此时栈顶元素为7，仍比12小，栈顶元素7继续出栈，此时栈顶元素为10，仍比12小，10出栈，此时栈为空，12入栈，栈内元素为12。</li>
 </ul>
+<p>细心的读者可能会问，既然单调栈有个循环，加上外面的循环，那么时间复杂度会不会是$O(n^2)$？ 其实不是，时间复杂度：$O(N)$。虽然外循环里面还有一个内循环，但内循环的次数受栈中剩余元素总数的限制，因此最终复杂度仍为 $O(N)。$.这一点可以和滑动窗口进行类比。</p>
 <hr>
 <p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
 <p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>

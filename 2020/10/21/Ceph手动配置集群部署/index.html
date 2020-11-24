@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>「当前最流行的分布式存储系统」——Ceph尝鲜 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>Ceph手动配置集群部署 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      24.8k 字
+      21.3k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      330
+      292
        分钟
     </span>
   
@@ -239,10 +239,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">「当前最流行的分布式存储系统」——Ceph尝鲜</h1>
+            <h1 style="display: none">Ceph手动配置集群部署</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="当前最流行的分布式存储系统——Ceph尝鲜"><a href="#当前最流行的分布式存储系统——Ceph尝鲜" class="headerlink" title="当前最流行的分布式存储系统——Ceph尝鲜"></a>当前最流行的分布式存储系统——Ceph尝鲜</h1><blockquote>
+              <div class="note note-primary">
+            <p>TODO: 最近一次更新 : 2020/11/21 21:11</p>
+          </div>
+<h1 id="当前最流行的分布式存储系统——Ceph尝鲜"><a href="#当前最流行的分布式存储系统——Ceph尝鲜" class="headerlink" title="当前最流行的分布式存储系统——Ceph尝鲜"></a>当前最流行的分布式存储系统——Ceph尝鲜</h1><blockquote>
 <p>首先介绍一些使用的网站备查，建议保存到chrome收藏夹！</p>
 <p><a target="_blank" rel="noopener" href="http://ceph.org.cn/">Ceph中国社区</a>：包括中文文档（非最新），以及新闻等。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/">最新的英文文档</a>：最新的英文文档，包括nautilus和Octopus版本，你一定不想错过！</p>
@@ -266,68 +269,88 @@
 <tr>
 <th>版本名称</th>
 <th>发行时间/EOL</th>
+<th>建议的部署工具</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Argonaut 　0.48版本(LTS)</td>
 <td>2012年6月3日</td>
+<td></td>
 </tr>
 <tr>
 <td>Bobtail 　　0.56版本(LTS)</td>
 <td>2013年1月1日</td>
+<td></td>
 </tr>
 <tr>
 <td>Cuttlefish  0.61版本</td>
 <td>2013年5月7日</td>
+<td></td>
 </tr>
 <tr>
 <td>Dumpling  0.67版本(LTS)</td>
 <td>2013年8月14日</td>
+<td></td>
 </tr>
 <tr>
 <td>Emperor 　 0.72版本</td>
 <td>2013年11月9日</td>
+<td></td>
 </tr>
 <tr>
 <td>Firefly 　　 0.80版本(LTS)</td>
 <td>2014年5月</td>
+<td></td>
 </tr>
 <tr>
 <td>Giant 　 Stable</td>
 <td>October 2014 - April 2015</td>
+<td></td>
 </tr>
 <tr>
 <td>Hammer   LTS</td>
 <td>April 2015 - November 2016</td>
+<td></td>
 </tr>
 <tr>
 <td>Infernalis   Stable</td>
 <td>November 2015 - June 2016</td>
+<td></td>
 </tr>
 <tr>
 <td>Jewel 10</td>
 <td>2016年4月</td>
+<td>ceph-deploy</td>
 </tr>
 <tr>
 <td>Kraken 11</td>
 <td>2017年10月</td>
+<td>ceph-deploy</td>
 </tr>
 <tr>
 <td>Luminous 12</td>
 <td>2017年10月</td>
+<td>ceph-deploy</td>
 </tr>
 <tr>
 <td>mimic 13</td>
 <td>2018年5月</td>
+<td>ceph-deploy</td>
 </tr>
 <tr>
 <td>Nautilus 14.2.12</td>
 <td>2019年3月 /2021年6月</td>
+<td><a target="_blank" rel="noopener" href="https://rook.io/">Rook</a> (Kubernetes-preferred,fully integrated with new orchestration API,  docker-dependent)</td>
 </tr>
 <tr>
 <td>Octopus 15.2.5</td>
 <td>2020年3月 /2022年6月</td>
+<td><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephadm/#cephadm">Cephadm</a>（fully integrated with new orchestration API,  docker-dependent）</td>
+</tr>
+<tr>
+<td>Pacific 16</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -344,459 +367,407 @@
 <li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/troubleshooting/memory-profiling/">Memory Profiling</a></li>
 <li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/troubleshooting/cpu-profiling/">CPU Profiling</a></li>
 </ul>
-<h1 id="Quick-Installation-快速安装"><a href="#Quick-Installation-快速安装" class="headerlink" title="Quick Installation:快速安装"></a>Quick Installation:快速安装</h1><p>咱们建议安装一个 <code>ceph-deploy</code> 管理<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-"><em>节点</em></a>和一个三节点的<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-21"><em>Ceph 存储集群</em></a>来研究 Ceph 的基本特性。<strong>这种方式仅适合初学者，原因是配置无法修改，源码无法修改！更深入的部分需要到第二部分【编译源码】</strong></p>
-<p>快速安装包括: 1. 预检 2. 存储集群配置 3. ceph客户端</p>
-<p><img src="\img\ceph-deploy1.png" srcset="/img/loading.gif" alt="img"></p>
-<h2 id="安装Ceph部署工具"><a href="#安装Ceph部署工具" class="headerlink" title="安装Ceph部署工具"></a>安装Ceph部署工具</h2><p>把 Ceph 仓库添加到 <code>ceph-deploy</code> 管理节点，然后安装 <code>ceph-deploy</code> 。</p>
-<h3 id="高级包管理工具（APT）"><a href="#高级包管理工具（APT）" class="headerlink" title="高级包管理工具（APT）"></a>高级包管理工具（APT）</h3><p>在 Debian 和 Ubuntu 发行版上，执行下列步骤：</p>
-<ol>
-<li><p>添加 release key ：</p>
-<pre><code class="hljs dockerfile">wget -q -O- <span class="hljs-string">&#x27;https://download.ceph.com/keys/release.asc&#x27;</span> | sudo apt-key <span class="hljs-keyword">add</span><span class="bash"> -</span></code></pre>
-</li>
-<li><p>添加Ceph软件包源，用Ceph稳定版（如 <code>cuttlefish</code> 、 <code>dumpling</code> 、 <code>emperor</code> 、 <code>firefly</code> 等等）替换掉 <code>&#123;ceph-stable-release&#125;</code> 。例如：</p>
-<pre><code class="hljs awk">echo deb http:<span class="hljs-regexp">//</span>download.ceph.com<span class="hljs-regexp">/debian-&#123;ceph-stable-release&#125;/</span> $(lsb_release -sc) main | sudo tee <span class="hljs-regexp">/etc/</span>apt<span class="hljs-regexp">/sources.list.d/</span>ceph.list</code></pre>
-</li>
-<li><p>更新你的仓库，并安装 <code>ceph-deploy</code> ：</p>
-<pre><code class="hljs routeros">sudo apt-<span class="hljs-builtin-name">get</span> update &amp;&amp; sudo apt-<span class="hljs-builtin-name">get</span> install ceph-deploy</code></pre>
-</li>
-</ol>
-<h2 id="CEPH-节点安装"><a href="#CEPH-节点安装" class="headerlink" title="CEPH 节点安装"></a>CEPH 节点安装</h2><p>你的管理节点必须能够通过 SSH 无密码地访问各 Ceph 节点。如果 <code>ceph-deploy</code> 以某个普通用户登录，那么这个用户必须有无密码使用 <code>sudo</code> 的权限。</p>
-<h3 id="安装-NTP"><a href="#安装-NTP" class="headerlink" title="安装 NTP"></a>安装 NTP</h3><p>我们建议在所有 Ceph 节点上安装 NTP 服务（特别是 Ceph Monitor 节点），以免因时钟漂移导致故障，详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/configuration/mon-config-ref#clock">时钟</a>。</p>
-<p>在 CentOS / RHEL 上，执行：</p>
-<pre><code class="hljs routeros">sudo yum install<span class="hljs-built_in"> ntp </span>ntpdate ntp-doc</code></pre>
-<p>在 Debian / Ubuntu 上，执行：</p>
-<pre><code class="hljs routeros">sudo apt-<span class="hljs-builtin-name">get</span> install ntp</code></pre>
-<p>确保在各 Ceph 节点上启动了 NTP 服务，并且要使用同一个 NTP 服务器，详情见 <a target="_blank" rel="noopener" href="http://www.ntp.org/">NTP</a> 。</p>
-<h3 id="安装-SSH-服务器"><a href="#安装-SSH-服务器" class="headerlink" title="安装 SSH 服务器"></a>安装 SSH 服务器</h3><p>在<strong>所有</strong> Ceph 节点上执行如下步骤：</p>
-<ol>
-<li><p>在各 Ceph 节点安装 SSH 服务器（如果还没有）：</p>
-<pre><code class="hljs pgsql">sudo apt-<span class="hljs-keyword">get</span> install openssh-<span class="hljs-keyword">server</span></code></pre>
-<p>或者</p>
-<pre><code class="hljs sql">sudo yum <span class="hljs-keyword">install</span> openssh-<span class="hljs-keyword">server</span></code></pre>
-</li>
-<li><p>确保<strong>所有</strong> Ceph 节点上的 SSH 服务器都在运行。</p>
-</li>
-</ol>
-<h3 id="创建部署-CEPH-的用户"><a href="#创建部署-CEPH-的用户" class="headerlink" title="创建部署 CEPH 的用户"></a>创建部署 CEPH 的用户</h3><p><code>ceph-deploy</code> 工具必须以普通用户登录 Ceph 节点，且此用户拥有无密码使用 <code>sudo</code> 的权限，因为它需要在安装软件及配置文件的过程中，不必输入密码。</p>
-<p>较新版的 <code>ceph-deploy</code> 支持用 <code>--username</code> 选项提供可无密码使用 <code>sudo</code> 的用户名（包括 <code>root</code> ，虽然<strong>不建议</strong>这样做）。使用 <code>ceph-deploy --username &#123;username&#125;</code> 命令时，指定的用户必须能够通过无密码 SSH 连接到 Ceph 节点，因为 <code>ceph-deploy</code> 中途不会提示输入密码。</p>
-<p>我们建议在集群内的<strong>所有</strong> Ceph 节点上给 <code>ceph-deploy</code> 创建一个特定的用户，但<strong>不要</strong>用 “ceph” 这个名字。全集群统一的用户名可简化操作（非必需），然而你应该避免使用知名用户名，因为黑客们会用它做暴力破解（如 <code>root</code> 、 <code>admin</code> 、 <code>&#123;productname&#125;</code> ）。后续步骤描述了如何创建无 <code>sudo</code> 密码的用户，你要用自己取的名字替换 <code>&#123;username&#125;</code> 。</p>
+<h1 id="Quick-Deployment-快速部署"><a href="#Quick-Deployment-快速部署" class="headerlink" title="Quick Deployment:快速部署"></a>Quick Deployment:快速部署</h1><div class="note note-danger">
+            <p>Important:</p><p>ceph-deploy 不再经常性维护， 并且在高于Nautilus的版本没有进行过测试。不推荐使用!</p>
+          </div>
+<p><strong>Cephadm</strong>：Cephadm完美支持新的编排API、CLI和仪表盘特性，可用于快速部署Octopus及更新版本的Ceph集群。Cephadm更加简单，且不依赖其它自动化部署工具，但该工具不支持部署旧版本的Ceph（如14的Nautilus），所有Ceph进程也是运行在容器中的，意味着在修改源码的情况下还需要制作新的镜像，比较麻烦。<strong>官方文档中指出，Cephadm暂时不推荐用于生产环境。</strong></p>
+<p><strong>Rook</strong>：可以把Ceph部署在Kubernetes集群中运行。与1类似的是，Ceph也是运行在容器中的。</p>
 <blockquote>
-<p>Note 从 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/release-notes/#v9-1-0-infernalis-release-candidate">Infernalis 版</a>起，用户名 “ceph” 保留给了 Ceph 守护进程。如果 Ceph 节点上已经有了 “ceph” 用户，升级前必须先删掉这个用户。</p>
+<p>上述的两种方法都是容器部署</p>
 </blockquote>
-<h4 id="Ceph-deploy命令使用技巧"><a href="#Ceph-deploy命令使用技巧" class="headerlink" title="Ceph-deploy命令使用技巧"></a>Ceph-deploy命令使用技巧</h4><pre><code class="hljs sql">usage: ceph-deploy [-h] [-v | -q] [<span class="hljs-comment">--version] [--username USERNAME]</span>
-                   [<span class="hljs-comment">--overwrite-conf] [--ceph-conf CEPH_CONF]</span>
-                   COMMAND ...
-
-Easy Ceph deployment
-
-    -^-
-   /   \
-   |O o|  ceph-deploy v2.0.1
-   ).-.(
-  &#x27;/|||\`
-  | &#x27;|` |
-    &#x27;|`
-
-Full documentation can be found at: http://ceph.com/ceph-deploy/docs
-
-optional arguments:
-  -h, <span class="hljs-comment">--help            show this help message and exit</span>
-  -v, <span class="hljs-comment">--verbose         be more verbose</span>
-  -q, <span class="hljs-comment">--quiet           be less verbose</span>
-  <span class="hljs-comment">--version             the current installed version of ceph-deploy</span>
-  <span class="hljs-comment">--username USERNAME   the username to connect to the remote host</span>
-  <span class="hljs-comment">--overwrite-conf      overwrite an existing conf file on remote host (if</span>
-                        present)
-  <span class="hljs-comment">--ceph-conf CEPH_CONF</span>
-                        <span class="hljs-keyword">use</span> (<span class="hljs-keyword">or</span> <span class="hljs-keyword">reuse</span>) a given ceph.conf <span class="hljs-keyword">file</span>
-
-commands:
-  COMMAND               description
-    <span class="hljs-keyword">new</span>                 <span class="hljs-keyword">Start</span> deploying a <span class="hljs-keyword">new</span> cluster, <span class="hljs-keyword">and</span> write a
-                        CLUSTER.conf <span class="hljs-keyword">and</span> keyring <span class="hljs-keyword">for</span> it.
-    <span class="hljs-keyword">install</span>             <span class="hljs-keyword">Install</span> Ceph packages <span class="hljs-keyword">on</span> remote hosts.
-    rgw                 Ceph RGW daemon <span class="hljs-keyword">management</span>
-    mgr                 Ceph MGR daemon <span class="hljs-keyword">management</span>
-    mon                 Ceph MON Daemon <span class="hljs-keyword">management</span>
-    mds                 Ceph MDS daemon <span class="hljs-keyword">management</span>
-    gatherkeys          Gather <span class="hljs-keyword">authentication</span> <span class="hljs-keyword">keys</span> <span class="hljs-keyword">for</span> provisioning <span class="hljs-keyword">new</span> nodes.
-    disk                Manage disks <span class="hljs-keyword">on</span> a remote host.
-    osd                 <span class="hljs-keyword">Prepare</span> a <span class="hljs-keyword">data</span> disk <span class="hljs-keyword">on</span> remote host.
-    <span class="hljs-keyword">admin</span>               Push configuration <span class="hljs-keyword">and</span> client.admin <span class="hljs-keyword">key</span> <span class="hljs-keyword">to</span> a remote
-                        host.
-    repo                Repo definition <span class="hljs-keyword">management</span>
-    config              Copy ceph.conf <span class="hljs-keyword">to</span>/<span class="hljs-keyword">from</span> remote host(s)
-    <span class="hljs-keyword">uninstall</span>           Remove Ceph packages <span class="hljs-keyword">from</span> remote hosts.
-    <span class="hljs-keyword">purge</span>               Remove Ceph packages <span class="hljs-keyword">from</span> remote <span class="hljs-keyword">hosts</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">purge</span> <span class="hljs-keyword">all</span>
-                        data.
-    purgedata           <span class="hljs-keyword">Purge</span> (<span class="hljs-keyword">delete</span>, destroy, discard, shred) <span class="hljs-keyword">any</span> Ceph <span class="hljs-keyword">data</span>
-                        <span class="hljs-keyword">from</span> /<span class="hljs-keyword">var</span>/lib/ceph
-    calamari            <span class="hljs-keyword">Install</span> <span class="hljs-keyword">and</span> configure Calamari nodes. Assumes that a
-                        repository <span class="hljs-keyword">with</span> Calamari packages <span class="hljs-keyword">is</span> already
-                        configured. Refer <span class="hljs-keyword">to</span> the docs <span class="hljs-keyword">for</span> examples
-                        (<span class="hljs-keyword">http</span>://ceph.com/ceph-deploy/docs/conf.html)
-    forgetkeys          Remove <span class="hljs-keyword">authentication</span> <span class="hljs-keyword">keys</span> <span class="hljs-keyword">from</span> the <span class="hljs-keyword">local</span> directory.
-    pkg                 Manage packages <span class="hljs-keyword">on</span> remote hosts.
+<p>第三方部署工具</p>
+<p>【推荐👍】 <strong>ceph-ansible</strong>. 它被广泛使用。ceph-ansible未与Nautlius和Octopus中引入的新的Orchestrator API集成在一起，这意味着更新的管理功能和仪表板集成不可用。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SUSE/DeepSea">DeepSea</a>使用Salt安装Ceph。</p>
+<p><a target="_blank" rel="noopener" href="https://jaas.ai/ceph-mon">jaas.ai/ceph-mon</a>使用Juju安装Ceph。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/openstack/puppet-ceph">github.com/openstack/puppet-ceph</a> 通过Puppet安装Ceph。</p>
+<p>官方的最低要求是 <strong>3</strong> Monitors + <strong>3</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
+<p>在运行ceph-mon守护程序的每个节点上，还应该设置一个ceph-mgr守护程序。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">虚拟机节点名称</th>
+<th style="text-align:center">职责</th>
+<th style="text-align:center">IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ceph-master (w/ source-code compiled)</td>
+<td style="text-align:center">mon0 + mgr0+osd0(部署节点)</td>
+<td style="text-align:center">192.168.161.134</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-node1</td>
+<td style="text-align:center">mon1+mgr1</td>
+<td style="text-align:center">192.168.161.130</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-node2</td>
+<td style="text-align:center">mon2+mgr2</td>
+<td style="text-align:center">192.168.161.131</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-osd1</td>
+<td style="text-align:center">osd1</td>
+<td style="text-align:center">192.168.161.132</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-osd2</td>
+<td style="text-align:center">osd2</td>
+<td style="text-align:center">192.168.161.133</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note note-primary">
+            <p>小技巧：我们可以先在1台虚拟机上配置好通用的预备环境，再克隆出另外的2台，随后调整部分配置后即可（如IP、主机名等）。克隆后记得重新生成网卡MAC地址</p>
+          </div>
+<h3 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h3><p>关闭firewalld，设置selinux为disabled状态，设置ssh免密登录，配置时钟同步服务。</p>
+<blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.51cto.com/14210294/2353243">https://blog.51cto.com/14210294/2353243</a></p>
+</blockquote>
+<pre><code class="hljs nginx"><span class="hljs-attribute">sudo</span> ufw status<span class="hljs-comment">#查看防火墙状态 active:开启 inactive：关闭</span></code></pre>
+<pre><code class="hljs puppet"><span class="hljs-comment"># mon作为控制节点</span>
+sudo apt install openssh-server
+ssh-keygen -t rsa 
+ssh-copy-<span class="hljs-keyword">id</span> &#123;<span class="hljs-built_in">hostname</span>&#125;@&#123;ip&#125;<span class="hljs-comment">#复制密钥到各节点</span>
+<span class="hljs-keyword">ssh</span> &#123;<span class="hljs-built_in">hostname</span>&#125;@&#123;ip&#125;</code></pre>
+<p>mon节点作为时钟同步节点</p>
+<pre><code class="hljs stylus">sudo apt install ntp
+sudo vim /etc/ntp.conf
+#在/etc/ntp.conf添加
+<span class="hljs-selector-id">#server</span> <span class="hljs-number">127.127</span>.<span class="hljs-number">1.0</span>
+<span class="hljs-selector-id">#fudge</span> <span class="hljs-number">127.127</span>.<span class="hljs-number">1.0</span> stratum <span class="hljs-number">10</span>
+#并注释下列四行
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">0</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">1</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">2</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">3</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst</code></pre>
+<p>在其它节点</p>
+<pre><code class="hljs routeros">sudo apt install ntpdate
+sudo /etc/init.d<span class="hljs-built_in">/ntp </span>restart 
+sudo systemctl <span class="hljs-builtin-name">enable</span> ntp.service #启动ntp
+sudo ntpdate &#123;mon-hostname&#125;</code></pre>
+<p>会得到矫正的时间</p>
+<pre><code class="hljs routeros">Nov 06:31:02 ntpdate[8540]: adjust time<span class="hljs-built_in"> server </span>192.168.161.129 offset 0.097653 sec</code></pre>
+<p>有可能出现 name or server not known 错误</p>
+<p>在每个节点 \etc\hosts 加入所有其它节点映射，比如</p>
+<pre><code class="hljs accesslog"><span class="hljs-number">192.168.161.129</span>  ceph-master</code></pre>
+<p>再ping 或者 nslookup测试一下就行。</p>
+<div class="note note-warning">
+            <p>不要在同一个节点同时安装ntp和ntpdate</p>
+          </div>
+<p>另一种方法是直接和aliyun服务器同步，在ntp.conf末尾加上<code>server ntp.aliyun.com</code></p>
+<p>再重启</p>
+<pre><code class="hljs routeros">sudo /etc/init.d<span class="hljs-built_in">/ntp </span>restart</code></pre>
+<p>测试能否连通其它节点</p>
+<pre><code class="hljs routeros">ansible all -m<span class="hljs-built_in"> ping </span>#注意这儿不能加sudo，否则会permission denied</code></pre>
+<p>如果没有问题</p>
+<pre><code class="hljs arcade">node1 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
+    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
+        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
+&#125;
+node2 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
+    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
+        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python3&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
+&#125;
+node3 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
+    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
+        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python3&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
+&#125;</code></pre>
+<h2 id="ceph-ansible-😁"><a href="#ceph-ansible-😁" class="headerlink" title="ceph-ansible 😁"></a>ceph-ansible <a target="_blank" rel="noopener" href="https://docs.ceph.com/projects/ceph-ansible/en/latest/index.html#configuration-and-usage">😁</a></h2><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zyxnhr/p/10543814.html">https://www.cnblogs.com/zyxnhr/p/10543814.html</a> 写的非常细致。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuzhupeng/article/details/106767126">https://blog.csdn.net/liuzhupeng/article/details/106767126</a></p>
+</blockquote>
+<p> 三要素：inventory file, playbook and configuration。</p>
+<p>Dependency: <code>python2</code>所有节点</p>
+<ol>
+<li><h3 id="我们首先安装ceph-ansble"><a href="#我们首先安装ceph-ansble" class="headerlink" title="我们首先安装ceph-ansble."></a>我们首先安装ceph-ansble.</h3></li>
+</ol>
+<pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ceph/</span>ceph-ansible.git
+git checkout <span class="hljs-variable">$branch</span> <span class="hljs-comment">#默认master分支</span>
+pip install -r requirements.txt 
+sudo apt install ansible
 </code></pre>
 <ol>
-<li><p>在各 Ceph 节点创建新用户。</p>
-<pre><code class="hljs dts">ssh user@ceph-server
-sudo useradd -d <span class="hljs-meta-keyword">/home/</span>&#123;username&#125; -<span class="hljs-class">m </span>&#123;username&#125;
-sudo <span class="hljs-class">passwd </span>&#123;username&#125;</code></pre>
-</li>
-<li><p>确保各 Ceph 节点上新创建的用户都有 <code>sudo</code> 权限。</p>
-<pre><code class="hljs awk">echo <span class="hljs-string">&quot;&#123;username&#125; ALL = (root) NOPASSWD:ALL&quot;</span> | sudo tee <span class="hljs-regexp">/etc/</span>sudoers.d/&#123;username&#125;
-sudo chmod <span class="hljs-number">0440</span> <span class="hljs-regexp">/etc/</span>sudoers.d/&#123;username&#125;</code></pre>
-</li>
+<li><h3 id="再配置inventory"><a href="#再配置inventory" class="headerlink" title="再配置inventory"></a>再配置inventory</h3></li>
 </ol>
-<h3 id="允许无密码-SSH-登录"><a href="#允许无密码-SSH-登录" class="headerlink" title="允许无密码 SSH 登录"></a>允许无密码 SSH 登录</h3><p>正因为 <code>ceph-deploy</code> 不支持输入密码，你必须在管理节点上生成 SSH 密钥并把其公钥分发到各 Ceph 节点。 <code>ceph-deploy</code> 会尝试给初始 monitors 生成 SSH 密钥对。</p>
-<ol>
-<li><p>生成 SSH 密钥对，但不要用 <code>sudo</code> 或 <code>root</code> 用户。提示 “Enter passphrase” 时，直接回车，口令即为空：</p>
-<pre><code class="hljs gradle">ssh-keygen
+<p>在 /etc/ansible/</p>
+<pre><code class="hljs csharp">[<span class="hljs-meta">mons</span>]
+node1
+node2
+node3
 
-Generating <span class="hljs-keyword">public</span>/<span class="hljs-keyword">private</span> key pair.
-Enter <span class="hljs-keyword">file</span> in which to save the key (<span class="hljs-regexp">/ceph-admin/</span>.ssh/id_rsa):
-Enter passphrase (empty <span class="hljs-keyword">for</span> no passphrase):
-Enter same passphrase again:
-Your identification has been saved in <span class="hljs-regexp">/ceph-admin/</span>.ssh/id_rsa.
-Your <span class="hljs-keyword">public</span> key has been saved in <span class="hljs-regexp">/ceph-admin/</span>.ssh/id_rsa.pub.</code></pre>
-</li>
-<li><p>把公钥拷贝到各 Ceph 节点，把下列命令中的 <code>&#123;username&#125;</code> 替换成前面<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-start-preflight/#id3">创建部署 Ceph 的用户</a>里的用户名。</p>
-<pre><code class="hljs applescript">ssh-<span class="hljs-keyword">copy</span>-<span class="hljs-built_in">id</span> &#123;username&#125;@node1
-ssh-<span class="hljs-keyword">copy</span>-<span class="hljs-built_in">id</span> &#123;username&#125;@node2
-ssh-<span class="hljs-keyword">copy</span>-<span class="hljs-built_in">id</span> &#123;username&#125;@node3</code></pre>
-</li>
-<li><p>（推荐做法）修改 <code>ceph-deploy</code> 管理节点上的 <code>~/.ssh/config</code> 文件，这样 <code>ceph-deploy</code> 就能用你所建的用户名登录 Ceph 节点了，而无需每次执行 <code>ceph-deploy</code> 都要指定 <code>--username &#123;username&#125;</code> 。这样做同时也简化了 <code>ssh</code> 和 <code>scp</code> 的用法。把 <code>&#123;username&#125;</code> 替换成你创建的用户名。</p>
-<pre><code class="hljs routeros">Host node1
-   Hostname node1
-  <span class="hljs-built_in"> User </span>&#123;username&#125;
-Host node2
-   Hostname node2
-  <span class="hljs-built_in"> User </span>&#123;username&#125;
-Host node3
-   Hostname node3
-  <span class="hljs-built_in"> User </span>&#123;username&#125;</code></pre>
-</li>
+[<span class="hljs-meta">osds</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">rgws</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">clients</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">mgrs</span>]
+node1
+node2
+node3</code></pre>
+<ol>
+<li><h3 id="然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件"><a href="#然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件" class="headerlink" title="然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件"></a>然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件</h3></li>
 </ol>
-<h3 id="引导时联网"><a href="#引导时联网" class="headerlink" title="引导时联网"></a>引导时联网</h3><p>Ceph 的各 OSD 进程通过网络互联并向 Monitors 上报自己的状态。如果网络默认为 <code>off</code> ，那么 Ceph 集群在启动时就不能上线，直到你打开网络。</p>
-<p>某些发行版（如 CentOS ）默认关闭网络接口。所以需要确保网卡在系统启动时都能启动，这样 Ceph 守护进程才能通过网络通信。例如，在 Red Hat 和 CentOS 上，需进入 <code>/etc/sysconfig/network-scripts</code> 目录并确保 <code>ifcfg-&#123;iface&#125;</code> 文件中的 <code>ONBOOT</code> 设置成了 <code>yes</code> 。</p>
-<h3 id="确保联通性"><a href="#确保联通性" class="headerlink" title="确保联通性"></a>确保联通性</h3><p>用 <code>ping</code> 短主机名（ <code>hostname -s</code> ）的方式确认网络联通性。解决掉可能存在的主机名解析问题。</p>
+<pre><code class="hljs stylus">#除了site<span class="hljs-selector-class">.yml</span>.sample，all<span class="hljs-selector-class">.yml</span>.sample是必须要修改的之外，其他文件根据要安装的角色自行修改
+
+cp site<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> site.yml
+
+cp group_vars/osds<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/osds.yml
+
+cp group_vars/clients<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/clients.yml
+
+cp group_vars/mons<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/mons.yml
+
+cp group_vars/mgrs<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/mgrs.yml
+
+cp group_vars/all<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/all.yml</code></pre>
+<ol>
+<li><h3 id="配置all-yml"><a href="#配置all-yml" class="headerlink" title="配置all.yml"></a>配置all.yml</h3></li>
+</ol>
+<p>我们需要修改osds.yml部分：</p>
+<pre><code class="hljs yaml"><span class="hljs-string">--</span>
+<span class="hljs-attr">dummy:</span>
+<span class="hljs-attr">ceph_release_num:</span>
+  <span class="hljs-attr">octopus:</span> <span class="hljs-number">15</span>
+<span class="hljs-attr">cluster:</span> <span class="hljs-string">ceph-test</span>
+<span class="hljs-attr">ceph_origin:</span> <span class="hljs-string">repository</span>
+<span class="hljs-attr">ceph_repository:</span> <span class="hljs-string">community</span>
+<span class="hljs-attr">ceph_mirror:</span> <span class="hljs-string">https://mirrors.aliyun.com/ceph/</span>
+<span class="hljs-attr">ceph_stable_key:</span> <span class="hljs-string">https://mirrors.aliyun.com/ceph/keys/release.asc</span>
+<span class="hljs-attr">ceph_stable_release:</span> <span class="hljs-string">octopus</span>
+<span class="hljs-attr">monitor_interface:</span> <span class="hljs-string">ens33</span>
+<span class="hljs-attr">monitor_address:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.161</span><span class="hljs-number">.135</span>
+<span class="hljs-attr">ip_version:</span> <span class="hljs-string">ipv4</span>
+<span class="hljs-attr">public_network:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.161</span><span class="hljs-number">.0</span><span class="hljs-string">/24</span>
+<span class="hljs-attr">cluster_network:</span> <span class="hljs-string">&quot;<span class="hljs-template-variable">&#123;&#123; public_network | regex_replace(&#x27; &#x27;, &#x27;&#x27;) &#125;&#125;</span>&quot;</span>
+<span class="hljs-attr">osd_mkfs_type:</span> <span class="hljs-string">xfs</span>
+<span class="hljs-attr">osd_mkfs_options_xfs:</span> <span class="hljs-string">-f</span> <span class="hljs-string">-i</span> <span class="hljs-string">size=2048</span>
+<span class="hljs-attr">osd_mount_options_xfs:</span> <span class="hljs-string">noatime,largeio,inode64,swalloc</span>
+<span class="hljs-attr">osd_objectstore:</span> <span class="hljs-string">bluestore</span></code></pre>
+<p>devices：指定osd使用的硬盘</p>
+<p>osd_scenario：启用并置journal  【笔者没有找到】</p>
+<p>下面是一些trick</p>
+<pre><code class="hljs elixir"><span class="hljs-variable">$ </span>sudo fdisk -l <span class="hljs-comment">#查看磁盘信息</span></code></pre>
+<p>查看你的更改</p>
+<pre><code class="hljs vim">$<span class="hljs-keyword">grep</span> -v <span class="hljs-string">&#x27;^#&#x27;</span> <span class="hljs-keyword">all</span>.yml | <span class="hljs-keyword">grep</span> -v <span class="hljs-string">&#x27;^&amp;&#x27;</span> <span class="hljs-keyword">all</span>.yml</code></pre>
+<p>或者查看所有修改后文件</p>
+<pre><code class="hljs \">grep -Ev &quot;^$|^\s*#&quot;  *.yml</code></pre>
+<ol>
+<li><h3 id="配置osd"><a href="#配置osd" class="headerlink" title="配置osd"></a>配置osd</h3></li>
+</ol>
+<pre><code class="hljs arcade">devices:
+   - <span class="hljs-regexp">/dev/</span>vdb
+   - <span class="hljs-regexp">/dev/</span>vdc
+   - <span class="hljs-regexp">/dev/</span>vdd</code></pre>
+<ol>
+<li><h3 id="定义ansible的入口文件"><a href="#定义ansible的入口文件" class="headerlink" title="定义ansible的入口文件"></a>定义ansible的入口文件</h3></li>
+</ol>
+<pre><code class="hljs vala">- hosts:
+  - mons
+<span class="hljs-meta">#  - agents</span>
+  - osds
+<span class="hljs-meta">#  - mdss</span>
+<span class="hljs-meta">#  - rgws</span>
+<span class="hljs-meta">#  - nfss</span>
+<span class="hljs-meta">#  - restapis</span>
+<span class="hljs-meta">#  - rbdmirrors</span>
+  - clients
+  - mgrs
+<span class="hljs-meta">#  - iscsi-gws</span></code></pre>
+<ol>
+<li><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3></li>
+</ol>
+<pre><code class="hljs 1c">ansible-playbook  site.yml <span class="hljs-meta">#注意同样没有sudo</span></code></pre>
+<pre><code class="hljs routeros">PLAY RECAP *********************************************************************
+node1                      : <span class="hljs-attribute">ok</span>=340  <span class="hljs-attribute">changed</span>=33   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=547  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
+node2                      : <span class="hljs-attribute">ok</span>=109  <span class="hljs-attribute">changed</span>=12   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=261  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
+node3                      : <span class="hljs-attribute">ok</span>=112  <span class="hljs-attribute">changed</span>=12   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=260  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
+
+
+INSTALLER STATUS ***************************************************************
+Install Ceph Monitor           : Complete (0:00:32)
+Install Ceph Manager           : Complete (0:00:09)
+Install Ceph OSD               : Complete (0:00:34)
+Install Ceph<span class="hljs-built_in"> Client </span>           : Complete (0:00:31)
+
+</code></pre>
+<p>如果<code>failed=1</code>那就说明安装失败，你需要根据错误进行修改，如果打印的信息太少，你可以使用</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">ansible-playbook</span> <span class="hljs-selector-tag">-vvv</span> <span class="hljs-selector-tag">site</span><span class="hljs-selector-class">.yml</span></code></pre>
+<p>来打印更多信息。</p>
+<p>接下来我们看看集群健康状况 </p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph -s</span></code></pre>
+<p>有可能会提示ceph RADOS object not found.</p>
+<hr>
+<p>当然如果你想更加细致的开发ceph，建议进行<strong>手动部署</strong>！</p>
+<h2 id="手动部署"><a href="#手动部署" class="headerlink" title="手动部署"></a>手动部署</h2><h2 id="1-部署ceph-mon"><a href="#1-部署ceph-mon" class="headerlink" title="1. 部署ceph-mon"></a>1. 部署ceph-mon</h2><p>安装完成之后在<code>/etc/ceph</code>目录下新建文件<code>ceph.conf</code>，内容大致如下，根据实际情况进行修改即可：</p>
+<pre><code class="hljs routeros">[global]
+fsid = &#123;cluster-id&#125;
+mon initial members = &#123;hostname&#125;[, &#123;hostname&#125;]
+mon host = &#123;ip-address&#125;[, &#123;ip-address&#125;]
+public<span class="hljs-built_in"> network </span>= &#123;network&#125;[, &#123;network&#125;]
+cluster<span class="hljs-built_in"> network </span>= &#123;network&#125;[, &#123;network&#125;]
+auth cluster required = cephx
+auth<span class="hljs-built_in"> service </span>required = cephx
+auth<span class="hljs-built_in"> client </span>required = cephx
+osd journal size = &#123;n&#125;
+osd<span class="hljs-built_in"> pool default </span>size = &#123;n&#125;  # Write an object n times.
+osd<span class="hljs-built_in"> pool default </span>min size = &#123;n&#125; # Allow writing n copies <span class="hljs-keyword">in</span> a degraded state.
+osd<span class="hljs-built_in"> pool default </span>pg num = &#123;n&#125;
+osd<span class="hljs-built_in"> pool default </span>pgp num = &#123;n&#125;
+osd crush chooseleaf<span class="hljs-built_in"> type </span>= &#123;n&#125;
+</code></pre>
+<p>为监控节点创建密钥：</p>
+<pre><code class="hljs shell">ceph-authtool --create-keyring /etc/ceph/ceph.mon.keyring --gen-key -n mon. --cap mon &#x27;allow *&#x27;</code></pre>
+<p>创建client.admin用户并创建密钥：</p>
+<pre><code class="hljs shell">ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --cap mon &#x27;allow *&#x27; --cap osd &#x27;allow *&#x27; --cap mds &#x27;allow *&#x27; --cap mgr &#x27;allow *&#x27;</code></pre>
+<p>创建client.bootstrap-osd用户并创建密钥：</p>
+<pre><code class="hljs shell">ceph-authtool --create-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring --gen-key -n client.bootstrap-osd --cap mon &#x27;profile bootstrap-osd&#x27;</code></pre>
+<p>将刚才生成的两个密钥加入ceph.mon.keyring中：</p>
+<pre><code class="hljs shell">ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring
+ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring</code></pre>
+<p>此时ceph.mon.keyring中应有如下密钥：</p>
+<pre><code class="hljs nix">[mon.]
+	<span class="hljs-attr">key</span> = AQBWAa1f8zAHJBAAf0cyxMAZjsZeL7+x+<span class="hljs-attr">czsLw==</span>
+	caps <span class="hljs-attr">mon</span> = <span class="hljs-string">&quot;allow *&quot;</span>
+[client.admin]
+	<span class="hljs-attr">key</span> = AQDPAa1fxm0VMRAAXMJ+<span class="hljs-attr">QU7sA9knr5ZWsluLxg==</span>
+	caps <span class="hljs-attr">mds</span> = <span class="hljs-string">&quot;allow *&quot;</span>
+	caps <span class="hljs-attr">mgr</span> = <span class="hljs-string">&quot;allow *&quot;</span>
+	caps <span class="hljs-attr">mon</span> = <span class="hljs-string">&quot;allow *&quot;</span>
+	caps <span class="hljs-attr">osd</span> = <span class="hljs-string">&quot;allow *&quot;</span>
+[client.bootstrap-osd]
+	<span class="hljs-attr">key</span> = AQAWAq1fATC1ChAAb2wMiO+k/<span class="hljs-attr">hwlMEmddDLAcg==</span>
+	caps <span class="hljs-attr">mgr</span> = <span class="hljs-string">&quot;allow r&quot;</span>
+	caps <span class="hljs-attr">mon</span> = <span class="hljs-string">&quot;profile bootstrap-osd&quot;</span></code></pre>
+<p>生成监控映射：</p>
+<pre><code class="hljs shell">monmaptool --create --add &#123;hostname&#125; &#123;ip-address&#125; --fsid &#123;uuid&#125; /etc/ceph/monmap
+</code></pre>
+<p>创建默认的数据目录，其中目录名是{cluster-name}-{hostname}格式：</p>
+<pre><code class="hljs shell">sudo mkdir /var/lib/ceph/mon/&#123;cluster-name&#125;-&#123;hostname&#125;
+</code></pre>
+<p>创建守护进程：</p>
+<pre><code class="hljs shell">sudo ceph-mon [--cluster &#123;cluster-name&#125;] --mkfs -i &#123;hostname&#125; --monmap /etc/ceph/monmap --keyring /etc/ceph/ceph.mon.keyring</code></pre>
+<p>启动mon：</p>
+<pre><code class="hljs shell">ceph-mon -i &#123;hostname&#125; -c /etc/ceph/ceph.conf --cluster ceph</code></pre>
+<p>这儿不能根据官方推荐的systemctl。 </p>
+<p>之后我们用 </p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph -s</span></code></pre>
+<p>查看集群</p>
+<p>这里笔者遇到问题：</p>
+<pre><code class="hljs pgsql">[errno <span class="hljs-number">2</span>] RADOS <span class="hljs-keyword">object</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span> (error connecting <span class="hljs-keyword">to</span> the <span class="hljs-keyword">cluster</span>)</code></pre>
+<p>提示RADOS对象没有找到，但是我还没有到那一步呢！</p>
+<p>原来是没有加sudo</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">sudo ceph -s</span></code></pre>
+<pre><code class="hljs yaml"><span class="hljs-attr">cluster:</span>
+  <span class="hljs-attr">id:</span>     <span class="hljs-string">250a1431-6cf3-4d0b-a964-361cd8d10dad</span>
+  <span class="hljs-attr">health:</span> <span class="hljs-string">HEALTH_WARN</span>
+          <span class="hljs-number">1</span> <span class="hljs-string">monitors</span> <span class="hljs-string">have</span> <span class="hljs-string">not</span> <span class="hljs-string">enabled</span> <span class="hljs-string">msgr2</span>
+ 
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">mon:</span> <span class="hljs-number">1</span> <span class="hljs-string">daemons,</span> <span class="hljs-string">quorum</span> <span class="hljs-string">ceph-master</span> <span class="hljs-string">(age</span> <span class="hljs-string">25m)</span>
+  <span class="hljs-attr">mgr:</span> <span class="hljs-literal">no</span> <span class="hljs-string">daemons</span> <span class="hljs-string">active</span>
+  <span class="hljs-attr">osd: 0 osds:</span> <span class="hljs-number">0</span> <span class="hljs-string">up,</span> <span class="hljs-number">0</span> <span class="hljs-string">in</span>
+ 
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">pools:</span>   <span class="hljs-number">0</span> <span class="hljs-string">pools,</span> <span class="hljs-number">0</span> <span class="hljs-string">pgs</span>
+  <span class="hljs-attr">objects:</span> <span class="hljs-number">0</span> <span class="hljs-string">objects,</span> <span class="hljs-number">0</span> <span class="hljs-string">B</span>
+  <span class="hljs-attr">usage:</span>   <span class="hljs-number">0</span> <span class="hljs-string">B</span> <span class="hljs-string">used,</span> <span class="hljs-number">0</span> <span class="hljs-string">B</span> <span class="hljs-string">/</span> <span class="hljs-number">0</span> <span class="hljs-string">B</span> <span class="hljs-string">avail</span>
+  <span class="hljs-attr">pgs:</span></code></pre>
+<p>这是最<strong>基本</strong>的集群，所以只有一个monitor，马上我们就进行必要的扩展！</p>
+<p>这儿有一个 <code>HEALTH_WARN</code>大家应该注意到了，这是因为 msgr 没有enable。</p>
+<pre><code class="hljs routeros">sudo ceph<span class="hljs-built_in"> health </span>detail #详细查看健康状况</code></pre>
+<h2 id="2-部署ceph-mgr"><a href="#2-部署ceph-mgr" class="headerlink" title="2. 部署ceph-mgr"></a>2. 部署ceph-mgr</h2><p>前面我们说每一个mon节点最好加一个mgr守护进程。名字叫<code>open-stack</code></p>
+<h2 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h2><p>创建用户 openstack 用于 MGR 监控</p>
+<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">auth </span><span class="hljs-built_in">get-or-create</span> <span class="hljs-string">mgr.</span><span class="hljs-string">openstack </span><span class="hljs-string">mon </span><span class="hljs-string">&#x27;allow *&#x27;</span> <span class="hljs-string">osd </span><span class="hljs-string">&#x27;allow *&#x27;</span> <span class="hljs-string">mds </span><span class="hljs-string">&#x27;allow *&#x27;</span> [<span class="hljs-string">mgr.</span><span class="hljs-string">openstack]</span> <span class="hljs-string">key </span>= <span class="hljs-string">AQBqhxNaKcVpLhAA/</span><span class="hljs-string">P1GVlu3yRugvXkLfgauLA=</span>=</code></pre>
+<h2 id="修改用户"><a href="#修改用户" class="headerlink" title="修改用户"></a>修改用户</h2><p>假如用户已经存在, 用过下面方法进行权限修改</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">ceph</span> auth caps mgr.openstack mon &#x27;<span class="hljs-literal">allow</span> *&#x27; osd &#x27;<span class="hljs-literal">allow</span> *&#x27; mds &#x27;<span class="hljs-literal">allow</span> *&#x27;
+[mgr.openstack]
+        <span class="hljs-attribute">key</span> = AQBqhxNaKcVpLhAA/P<span class="hljs-number">1</span>GVlu<span class="hljs-number">3</span>yRugvXkLfgauLA==</code></pre>
+<h2 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h2><p>提示一下删除用户方法</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">ceph</span> <span class="hljs-selector-tag">auth</span> <span class="hljs-selector-tag">del</span> <span class="hljs-selector-tag">mgr</span><span class="hljs-selector-class">.openstack</span></code></pre>
+<h2 id="导出密钥"><a href="#导出密钥" class="headerlink" title="导出密钥"></a>导出密钥</h2><p>需要吧之前创建的用户密码存放至对应位置</p>
+<pre><code class="hljs crystal">mkdir /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">mgr</span>/<span class="hljs-title">ceph</span>-<span class="hljs-title">openstack</span></span>
+ceph auth get mgr.openstack -o /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">mgr</span>/<span class="hljs-title">ceph</span>-<span class="hljs-title">openstack</span>/<span class="hljs-title">keyring</span></span>
+exported keyring <span class="hljs-keyword">for</span> mgr.openstack</code></pre>
+<h2 id="启动-mgr"><a href="#启动-mgr" class="headerlink" title="启动 mgr"></a>启动 mgr</h2><pre><code class="hljs ebnf"><span class="hljs-attribute">ceph-mgr -i openstack</span></code></pre>
+<p>然后部署完成之后状态如下：</p>
+<h2 id="3-部署ceph-osd"><a href="#3-部署ceph-osd" class="headerlink" title="3.部署ceph-osd"></a>3.部署ceph-osd</h2><p>修改<code>/etc/ceph/ceph.conf</code></p>
+<pre><code class="hljs awk">[osd]
+run_dir = <span class="hljs-regexp">/data0/</span><span class="hljs-variable">$name</span> 
+osd data = <span class="hljs-regexp">/data0/</span><span class="hljs-variable">$name</span>
+osd journal = <span class="hljs-regexp">/data0/</span><span class="hljs-variable">$name</span>/journal
+osd max object name len = <span class="hljs-number">256</span>
+osd max object namespace len = <span class="hljs-number">64</span></code></pre>
+<p>笔者这里未专门分配磁盘，<code>/data0/$name</code>写的是<code>/var/lib/ceph/osd/ceph-0</code>，为了确保体验，建议专门为osd和journal分区，最好是xfs系统。</p>
+<p>官方给了short-form和long form两种方式，我们选择long form。我们先切换到root权限：</p>
+<p>因为下面是脚本模式，$\$var$相当于环境变量。<strong>注意，bash的等号两端不能有空格！</strong></p>
+<pre><code class="hljs crystal">sudo bash <span class="hljs-comment"># 运行运行bash脚本</span>
+UUID=$(uuidgen) <span class="hljs-comment">#和集群ID一样，OSD也要生成唯一ID </span>
+OSD_SECRET=$(ceph-authtool --gen-print-key) <span class="hljs-comment">#生成密匙</span>
+sudo cp /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">bootstrap</span>-<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>.<span class="hljs-title">keyring</span> /<span class="hljs-title">etc</span>/<span class="hljs-title">ceph</span>/</span>
+ID=$(echo <span class="hljs-string">&quot;&#123;\&quot;cephx_secret\&quot;: \&quot;$OSD_SECRET\&quot;&#125;&quot;</span> | \
+   ceph osd new $UUID -i - \
+   -n client.bootstrap-osd -k /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">bootstrap</span>-<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>.<span class="hljs-title">keyring</span>) <span class="hljs-comment">#生成OSD-ID，从0开始</span></span>
+   
+ mkdir /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-$<span class="hljs-title">ID</span></span></code></pre>
 <blockquote>
-<p>Note:  </p>
-<p>主机名应该解析为网络 IP 地址，而非回环接口 IP 地址（即主机名应该解析成非 <code>127.0.0.1</code> 的IP地址）。如果你的管理节点同时也是一个 Ceph 节点，也要确认它能正确解析自己的主机名和 IP 地址（即非回环 IP 地址）。</p>
+<p>sudo su , sudo su-, sudo bash 均可进入root，区别是 sudo bash更全面，可以运行脚本，开头的命令头是绿字，sudo su- 允许一定场合不用输入密码，而sudo su是进入一般的root模式。</p>
 </blockquote>
-<p>主机名应该解析为网络 IP 地址，而非回环接口 IP 地址（即主机名应该解析成非 <code>127.0.0.1</code> 的IP地址）。如果你的管理节点同时也是一个 Ceph 节点，也要确认它能正确解析自己的主机名和 IP 地址（即非回环 IP 地址）。</p>
-<h3 id="开放所需端口"><a href="#开放所需端口" class="headerlink" title="开放所需端口"></a>开放所需端口</h3><p>Ceph Monitors 之间默认使用 <code>6789</code> 端口通信， OSD 之间默认用 <code>6800:7300</code> 这个范围内的端口通信。详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/configuration/network-config-ref">网络配置参考</a>。 Ceph OSD 能利用多个网络连接进行与客户端、monitors、其他 OSD 间的复制和心跳的通信。</p>
-<p>某些发行版（如 RHEL ）的默认防火墙配置非常严格，你可能需要调整防火墙，允许相应的入站请求，这样客户端才能与 Ceph 节点上的守护进程通信。</p>
-<p>对于 RHEL 7 上的 <code>firewalld</code> ，要对公共域开放 Ceph Monitors 使用的 <code>6789</code> 端口和 OSD 使用的 <code>6800:7300</code> 端口范围，并且要配置为永久规则，这样重启后规则仍有效。例如：</p>
-<pre><code class="hljs routeros">sudo firewall-cmd <span class="hljs-attribute">--zone</span>=public <span class="hljs-attribute">--add-port</span>=6789/tcp --permanent</code></pre>
-<p>若使用 <code>iptables</code> ，要开放 Ceph Monitors 使用的 <code>6789</code> 端口和 OSD 使用的 <code>6800:7300</code> 端口范围，命令如下：</p>
-<pre><code class="hljs dust"><span class="xml">sudo iptables -A INPUT -i </span><span class="hljs-template-variable">&#123;iface&#125;</span><span class="xml"> -p tcp -s </span><span class="hljs-template-variable">&#123;ip-address&#125;</span><span class="xml">/</span><span class="hljs-template-variable">&#123;netmask&#125;</span><span class="xml"> --dport 6789 -j ACCEPT</span></code></pre>
-<p>在每个节点上配置好 <code>iptables</code> 之后要一定要保存，这样重启之后才依然有效。例如：</p>
-<pre><code class="hljs awk"><span class="hljs-regexp">/sbin/i</span>ptables-save</code></pre>
-<h3 id="终端（-TTY-）"><a href="#终端（-TTY-）" class="headerlink" title="终端（ TTY ）"></a>终端（ TTY ）</h3><p>在 CentOS 和 RHEL 上执行 <code>ceph-deploy</code> 命令时可能会报错。如果你的 Ceph 节点默认设置了 <code>requiretty</code> ，执行 <code>sudo visudo</code> 禁用它，并找到 <code>Defaults requiretty</code> 选项，把它改为 <code>Defaults:ceph !requiretty</code> 或者直接注释掉，这样 <code>ceph-deploy</code> 就可以用之前创建的用户（<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-start-preflight/#id3">创建部署 Ceph 的用户</a> ）连接了。</p>
-<h3 id="SELINUX"><a href="#SELINUX" class="headerlink" title="SELINUX"></a>SELINUX</h3><p>在 CentOS 和 RHEL 上， SELinux 默认为 <code>Enforcing</code> 开启状态。为简化安装，我们建议把 SELinux 设置为 <code>Permissive</code> 或者完全禁用，也就是在加固系统配置前先确保集群的安装、配置没问题。用下列命令把 SELinux 设置为 <code>Permissive</code> ：</p>
-<pre><code class="hljs angelscript">sudo setenforce <span class="hljs-number">0</span></code></pre>
-<p>要使 SELinux 配置永久生效（如果它的确是问题根源），需修改其配置文件 <code>/etc/selinux/config</code> 。</p>
-<h3 id="优先级-首选项"><a href="#优先级-首选项" class="headerlink" title="优先级/首选项"></a>优先级/首选项</h3><p>确保你的包管理器安装了优先级/首选项包且已启用。在 CentOS 上你也许得安装 EPEL ，在 RHEL 上你也许得启用可选软件库。</p>
-<pre><code class="hljs sql">sudo yum <span class="hljs-keyword">install</span> yum-<span class="hljs-keyword">plugin</span>-priorities</code></pre>
-<p>比如在 RHEL 7 服务器上，可用下列命令安装 <code>yum-plugin-priorities</code>并启用 <code>rhel-7-server-optional-rpms</code> 软件库：</p>
-<pre><code class="hljs sql">sudo yum <span class="hljs-keyword">install</span> yum-<span class="hljs-keyword">plugin</span>-priorities <span class="hljs-comment">--enablerepo=rhel-7-server-optional-rpms</span></code></pre>
-<h1 id="存储集群快速入门"><a href="#存储集群快速入门" class="headerlink" title="存储集群快速入门"></a>存储集群快速入门</h1><p>如果你还没完成<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-start-preflight">预检</a>，请先做完。本篇<strong>快速入门</strong>用 <code>ceph-deploy</code> 从管理节点建立一个 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-21"><em>Ceph 存储集群</em></a>，该集群包含三个节点，以此探索 Ceph 的功能。</p>
-<p><img src="\img\ceph-deploy2.png" srcset="/img/loading.gif" alt="img"></p>
-<p>第一次练习时，我们创建一个 Ceph 存储集群，它有一个 Monitor 和两个 OSD 守护进程。一旦集群达到 <code>active + clean</code> 状态，再扩展它：增加第三个 OSD 、增加元数据服务器和两个 Ceph Monitors。为获得最佳体验，先在管理节点上创建一个目录，用于保存 <code>ceph-deploy</code> 生成的配置文件和密钥对。</p>
-<pre><code class="hljs stata"><span class="hljs-keyword">mkdir</span> my-<span class="hljs-keyword">cluster</span>
-<span class="hljs-keyword">cd</span> my-<span class="hljs-keyword">cluster</span></code></pre>
-<p><code>ceph-deploy</code> 会把文件输出到当前目录，所以请确保在此目录下执行 <code>ceph-deploy</code> 。</p>
-<div class="note note-danger">
-            <p> 如果你是用另一普通用户登录的，不要用 <code>sudo</code> 或在 <code>root</code> 身份运行 <code>ceph-deploy</code> ，因为它不会在远程主机上调用所需</p><p>的 <code>sudo</code> 命令。</p>
+<div class="note note-warning">
+            <p>挂载osd的路径应该与运行操作系统的路径分开。并建议采用xfs文件系统，而不是brtfs或者ext4.</p>
           </div>
-<p>如果你是用另一普通用户登录的，不要用 <code>sudo</code> 或在 <code>root</code> 身份运行 <code>ceph-deploy</code> ，因为它不会在远程主机上调用所需的 <code>sudo</code> 命令。</p>
-<div class="note note-primary">
-            <p>禁用 <code>requiretty</code>:在某些发行版（如 CentOS ）上，执行 <code>ceph-deploy</code> 命令时，如果你的 Ceph 节点默认设置了 <code>requiretty</code> 那就会遇到报错。可以这样禁用此功能：执行 <code>sudo visudo</code> ，找到 <code>Defaults requiretty</code> 选项，把它改为 <code>Defaults:ceph !requiretty</code> ，这样 <code>ceph-deploy</code> 就能用 <code>ceph</code> 用户登录并使用 <code>sudo</code> 了。</p>
-          </div>
-<p>在某些发行版（如 CentOS ）上，执行 <code>ceph-deploy</code> 命令时，如果你的 Ceph 节点默认设置了 <code>requiretty</code> 那就会遇到报错。可以这样禁用此功能：执行 <code>sudo visudo</code> ，找到 <code>Defaults requiretty</code> 选项，把它改为 <code>Defaults:ceph !requiretty</code> ，这样 <code>ceph-deploy</code> 就能用 <code>ceph</code> 用户登录并使用 <code>sudo</code> 了。</p>
-<h2 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h2><p>如果在某些地方碰到麻烦，想从头再来，可以用下列命令清除配置：</p>
-<pre><code class="hljs crmsh">ceph-deploy purgedata &#123;ceph-<span class="hljs-keyword">node</span><span class="hljs-title">&#125; [&#123;ceph-node</span>&#125;]
-ceph-deploy forgetkeys</code></pre>
-<p>用下列命令可以连 Ceph 安装包一起清除：</p>
-<pre><code class="hljs crmsh">ceph-deploy purge &#123;ceph-<span class="hljs-keyword">node</span><span class="hljs-title">&#125; [&#123;ceph-node</span>&#125;]</code></pre>
-<p>如果执行了 <code>purge</code> ，你必须重新安装 Ceph 。</p>
-<p>在管理节点上，进入刚创建的放置配置文件的目录，用 <code>ceph-deploy</code> 执行如下步骤。</p>
-<ol>
-<li><p>创建集群。</p>
-<pre><code class="hljs crmsh">ceph-deploy new &#123;initial-<span class="hljs-literal">monitor</span>-<span class="hljs-keyword">node</span><span class="hljs-title">(s</span>)&#125;</code></pre>
-<p>例如：</p>
-<pre><code class="hljs actionscript">ceph-deploy <span class="hljs-keyword">new</span> node1</code></pre>
-<p>在当前目录下用 <code>ls</code> 和 <code>cat</code> 检查 <code>ceph-deploy</code> 的输出，应该有一个 Ceph 配置文件、一个 monitor 密钥环和一个日志文件。详情见 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/deployment/ceph-deploy-new">ceph-deploy new -h</a> 。</p>
-</li>
-<li><p>把 Ceph 配置文件里的默认副本数从 <code>3</code> 改成 <code>2</code> ，这样只有两个 OSD 也可以达到 <code>active + clean</code> 状态。把下面这行加入 <code>[global]</code> 段：</p>
-<pre><code class="hljs routeros">osd<span class="hljs-built_in"> pool default </span>size = 2</code></pre>
-</li>
-<li><p>如果你有多个网卡，可以把 <code>public network</code> 写入 Ceph 配置文件的 <code>[global]</code> 段下。详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/configuration/network-config-ref">网络配置参考</a>。</p>
-<pre><code class="hljs routeros">public<span class="hljs-built_in"> network </span>= &#123;ip-address&#125;/&#123;netmask&#125;</code></pre>
-</li>
-<li><p>安装 Ceph 。</p>
-<pre><code class="hljs crmsh">ceph-deploy install &#123;ceph-<span class="hljs-keyword">node</span><span class="hljs-title">&#125; [&#123;ceph-node</span>&#125; ...]</code></pre>
-<p>例如：</p>
-<pre><code class="hljs crmsh">ceph-deploy install admin-<span class="hljs-keyword">node</span> <span class="hljs-title">node1</span> node2 node3</code></pre>
-<p><code>ceph-deploy</code> 将在各节点安装 Ceph 。 <strong>注：</strong>如果你执行过 <code>ceph-deploy purge</code> ，你必须重新执行这一步来安装 Ceph 。</p>
-</li>
-<li><p>配置初始 monitor(s)、并收集所有密钥：</p>
-<pre><code class="hljs sql">ceph-deploy mon <span class="hljs-keyword">create</span>-<span class="hljs-keyword">initial</span></code></pre>
-<p>完成上述操作后，当前目录里应该会出现这些密钥环：</p>
-<ul>
-<li><code>&#123;cluster-name&#125;.client.admin.keyring</code></li>
-<li><code>&#123;cluster-name&#125;.bootstrap-osd.keyring</code></li>
-<li><code>&#123;cluster-name&#125;.bootstrap-mds.keyring</code></li>
-<li><code>&#123;cluster-name&#125;.bootstrap-rgw.keyring</code></li>
-</ul>
-<div class="note note-primary">
-            <p>Note: 只有在安装 Hammer 或更高版时才会创建 bootstrap-rgw 密钥环。</p><p>如果此步失败并输出类似于如下信息 “Unable to find /etc/ceph/ceph.client.admin.keyring”，请确认 ceph.conf 中为 monitor 指定的 IP 是 Public IP，而不是 Private IP</p>
-          </div>
-</li>
-</ol>
-<p>如果此步失败并输出类似于如下信息 “Unable to find /etc/ceph/ceph.client.admin.keyring”，请确认 ceph.conf 中为 monitor 指定的 IP 是 Public IP，而不是 Private IP。</p>
-<ol>
-<li><p>添加两个 OSD 。为了快速地安装，这篇快速入门把目录而非整个硬盘用于 OSD 守护进程。如何为 OSD 及其日志使用独立硬盘或分区，请参考 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/deployment/ceph-deploy-osd">ceph-deploy osd</a> 。登录到 Ceph 节点、并给 OSD 守护进程创建一个目录。</p>
-<pre><code class="hljs awk">ssh node2
-sudo mkdir <span class="hljs-regexp">/var/</span>local/osd0
-<span class="hljs-keyword">exit</span>
-
-ssh node3
-sudo mkdir <span class="hljs-regexp">/var/</span>local/osd1
-<span class="hljs-keyword">exit</span></code></pre>
-<p>然后，从管理节点执行 <code>ceph-deploy</code> 来准备 OSD 。</p>
-<pre><code class="hljs elixir">ceph-deploy osd prepare &#123;ceph-node&#125;<span class="hljs-symbol">:/path/to/directory</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs awk">ceph-deploy osd prepare node2:<span class="hljs-regexp">/var/</span>local<span class="hljs-regexp">/osd0 node3:/</span>var<span class="hljs-regexp">/local/</span>osd1</code></pre>
-<p>最后，激活 OSD 。</p>
-<pre><code class="hljs elixir">ceph-deploy osd activate &#123;ceph-node&#125;<span class="hljs-symbol">:/path/to/directory</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs awk">ceph-deploy osd activate node2:<span class="hljs-regexp">/var/</span>local<span class="hljs-regexp">/osd0 node3:/</span>var<span class="hljs-regexp">/local/</span>osd1</code></pre>
-</li>
-<li><p>用 <code>ceph-deploy</code> 把配置文件和 admin 密钥拷贝到管理节点和 Ceph 节点，这样你每次执行 Ceph 命令行时就无需指定 monitor 地址和 <code>ceph.client.admin.keyring</code> 了。</p>
-<pre><code class="hljs crmsh">ceph-deploy admin &#123;admin-<span class="hljs-keyword">node</span><span class="hljs-title">&#125; &#123;ceph-node</span>&#125;</code></pre>
-<p>例如：</p>
-<pre><code class="hljs crmsh">ceph-deploy admin admin-<span class="hljs-keyword">node</span> <span class="hljs-title">node1</span> node2 node3</code></pre>
-<p><code>ceph-deploy</code> 和本地管理主机（ <code>admin-node</code> ）通信时，必须通过主机名可达。必要时可修改 <code>/etc/hosts</code> ，加入管理主机的名字。</p>
-</li>
-<li><p>确保你对 <code>ceph.client.admin.keyring</code> 有正确的操作权限。</p>
-<pre><code class="hljs awk">sudo chmod +r <span class="hljs-regexp">/etc/</span>ceph/ceph.client.admin.keyring</code></pre>
-</li>
-<li><p>检查集群的健康状况。</p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph health</span></code></pre>
-<p>等 peering 完成后，集群应该达到 <code>active + clean</code> 状态。</p>
-</li>
-</ol>
-<h2 id="操作集群"><a href="#操作集群" class="headerlink" title="操作集群"></a>操作集群</h2><p>用 <code>ceph-deploy</code> 部署完成后它会自动启动集群。要在 Debian/Ubuntu 发行版下操作集群守护进程，参见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/operating#rupstart-ceph">用 Upstart 运行 Ceph</a> ；要在 CentOS 、 Red Hat 、 Fedora 和 SLES 下操作集群守护进程，参见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/operating#sysvinit-ceph">用 sysvinit 运行 Ceph</a> 。</p>
-<p>关于 peering 和集群健康状况请参见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/monitoring">监控集群</a>；关于 OSD 守护进程和归置组（ placement group ）健康状况参见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/monitoring-osd-pg">监控 OSD 和归置组</a>；关于用户管理请参见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/user-management">用户管理</a>。</p>
-<p>Ceph 集群部署完成后，你可以尝试一下管理功能、 <code>rados</code> 对象存储命令，之后可以继续快速入门手册，了解 Ceph 块设备、 Ceph 文件系统和 Ceph 对象网关。</p>
-<h2 id="扩展集群（扩容）"><a href="#扩展集群（扩容）" class="headerlink" title="扩展集群（扩容）"></a>扩展集群（扩容）</h2><p>一个基本的集群启动并开始运行后，下一步就是扩展集群。在 <code>node1</code> 上添加一个 OSD 守护进程和一个元数据服务器。然后分别在 <code>node2</code> 和 <code>node3</code> 上添加 Ceph Monitor ，以形成 Monitors 的法定人数。</p>
-<p><img src="\img\ceph-deploy2.png" srcset="/img/loading.gif" alt="img"></p>
-<h3 id="添加-OSD"><a href="#添加-OSD" class="headerlink" title="添加 OSD"></a>添加 OSD</h3><p>你运行的这个三节点集群只是用于演示的，把 OSD 添加到 monitor 节点就行。</p>
-<pre><code class="hljs awk">ssh node1
-sudo mkdir <span class="hljs-regexp">/var/</span>local/osd2
-<span class="hljs-keyword">exit</span></code></pre>
-<p>然后，从 <code>ceph-deploy</code> 节点准备 OSD 。</p>
-<pre><code class="hljs elixir">ceph-deploy osd prepare &#123;ceph-node&#125;<span class="hljs-symbol">:/path/to/directory</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs sql">ceph-deploy osd <span class="hljs-keyword">prepare</span> node1:/<span class="hljs-keyword">var</span>/<span class="hljs-keyword">local</span>/osd2</code></pre>
-<p>最后，激活 OSD 。</p>
-<pre><code class="hljs elixir">ceph-deploy osd activate &#123;ceph-node&#125;<span class="hljs-symbol">:/path/to/directory</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs maxima">ceph-deploy osd <span class="hljs-built_in">activate</span> node1:/<span class="hljs-built_in">var</span>/<span class="hljs-built_in">local</span>/osd2</code></pre>
-<p>一旦你新加了 OSD ， Ceph 集群就开始重均衡，把归置组迁移到新 OSD 。可以用下面的 <code>ceph</code> 命令观察此过程：</p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph -w</span></code></pre>
-<p>你应该能看到归置组状态从 <code>active + clean</code> 变为 <code>active</code> ，还有一些降级的对象；迁移完成后又会回到 <code>active + clean</code> 状态（ Control-C 退出）。</p>
-<h3 id="添加元数据服务器"><a href="#添加元数据服务器" class="headerlink" title="添加元数据服务器"></a>添加元数据服务器</h3><p>至少需要一个元数据服务器才能使用 CephFS ，执行下列命令创建元数据服务器：</p>
-<pre><code class="hljs crmsh">ceph-deploy mds create &#123;ceph-<span class="hljs-keyword">node</span><span class="hljs-title">&#125;</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">ceph</span>-deploy mds create node<span class="hljs-number">1</span></code></pre>
-<div class="note note-primary">
-            <p>当前生产环境下的 Ceph 只能运行一个元数据服务器。你可以配置多个，但现在我们还不会为多个元数据服务器的集群提供商业支持。</p>
-          </div>
-<h3 id="添加-RGW-例程"><a href="#添加-RGW-例程" class="headerlink" title="添加 RGW 例程"></a>添加 RGW 例程</h3><p>要使用 Ceph 的 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-34"><em>Ceph 对象网关</em></a>组件，必须部署 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-rgw"><em>RGW</em></a> 例程。用下列方法创建新 RGW 例程：</p>
-<pre><code class="hljs crmsh">ceph-deploy rgw create &#123;gateway-<span class="hljs-keyword">node</span><span class="hljs-title">&#125;</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">ceph</span>-deploy rgw create node<span class="hljs-number">1</span></code></pre>
-<p><a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-rgw"><em>RGW</em></a> 例程默认会监听 7480 端口，可以更改该节点 ceph.conf 内与 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-rgw"><em>RGW</em></a> 相关的配置，如下：</p>
-<pre><code class="hljs nix">[client]
-rgw <span class="hljs-attr">frontends</span> = civetweb <span class="hljs-attr">port=80</span></code></pre>
-<p>用的是 IPv6 地址的话：</p>
-<pre><code class="hljs inform7"><span class="hljs-comment">[client]</span>
-rgw frontends = civetweb port=<span class="hljs-comment">[::]</span>:80</code></pre>
-<h3 id="添加-MONITORS"><a href="#添加-MONITORS" class="headerlink" title="添加 MONITORS"></a>添加 MONITORS</h3><p>Ceph 存储集群需要至少一个 Monitor 才能运行。为达到高可用，典型的 Ceph 存储集群会运行多个 Monitors，这样在单个 Monitor 失败时不会影响 Ceph 存储集群的可用性。Ceph 使用 PASOX 算法，此算法要求有多半 monitors（即 1 、 2:3 、 3:4 、 3:5 、 4:6 等 ）形成法定人数。</p>
-<p>新增两个监视器到 Ceph 集群。</p>
-<pre><code class="hljs crmsh">ceph-deploy mon add &#123;ceph-<span class="hljs-keyword">node</span><span class="hljs-title">&#125;</span></code></pre>
-<p>例如：</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">ceph</span>-deploy mon add node<span class="hljs-number">2</span> node<span class="hljs-number">3</span></code></pre>
-<p>新增 Monitor 后，Ceph 会自动开始同步并形成法定人数。你可以用下面的命令检查法定人数状态：</p>
-<pre><code class="hljs ada">ceph quorum_status <span class="hljs-comment">--format json-pretty</span></code></pre>
-<div class="note note-info">
-            <p>Tips: 当你的 Ceph 集群运行着多个 monitor 时，各 monitor 主机上都<strong>应该</strong>配置 NTP ，而且要确保这些 monitor 位于 NTP 服务的同一级。</p>
-          </div>
-<p>当你的 Ceph 集群运行着多个 monitor 时，各 monitor 主机上都<strong>应该</strong>配置 NTP ，而且要确保这些 monitor 位于 NTP 服务的同一级。</p>
-<h2 id="存入-检出对象数据"><a href="#存入-检出对象数据" class="headerlink" title="存入/检出对象数据"></a>存入/检出对象数据</h2><p>要把对象存入 Ceph 存储集群，客户端必须做到：</p>
-<ol>
-<li>指定对象名</li>
-<li>指定<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/pools">存储池</a></li>
-</ol>
-<p>Ceph 客户端检出最新集群运行图，用 CRUSH 算法计算出如何把对象映射到<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/operations/placement-groups">归置组</a>，然后动态地计算如何把归置组分配到 OSD 。要定位对象，只需要对象名和存储池名字即可，例如：</p>
-<pre><code class="hljs dust"><span class="xml">ceph osd map </span><span class="hljs-template-variable">&#123;poolname&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;object-name&#125;</span></code></pre>
-<p>练习：定位某个对象</p>
-<p>作为练习，我们先创建一个对象，用 <code>rados put</code> 命令加上对象名、一个有数据的测试文件路径、并指定存储池。例如：</p>
-<pre><code class="hljs applescript">echo &#123;Test-data&#125; &gt; testfile.txt
-rados <span class="hljs-keyword">put</span> &#123;object-<span class="hljs-built_in">name</span>&#125; &#123;<span class="hljs-built_in">file</span>-path&#125; <span class="hljs-comment">--pool=data</span>
-rados <span class="hljs-keyword">put</span> test-object<span class="hljs-number">-1</span> testfile.txt <span class="hljs-comment">--pool=data</span></code></pre>
-<p>为确认 Ceph 存储集群存储了此对象，可执行：</p>
-<pre><code class="hljs haskell"><span class="hljs-title">rados</span> -p <span class="hljs-class"><span class="hljs-keyword">data</span> ls</span></code></pre>
-<p>现在，定位对象：</p>
-<pre><code class="hljs puppet">ceph osd <span class="hljs-keyword">map</span> &#123;pool-<span class="hljs-literal">name</span>&#125; &#123;object-<span class="hljs-literal">name</span>&#125;
-<span class="hljs-keyword">ceph</span> <span class="hljs-keyword">osd</span> <span class="hljs-keyword">map</span> <span class="hljs-keyword">data</span> <span class="hljs-keyword">test</span>-object-1</code></pre>
-<p>Ceph 应该会输出对象的位置，例如：</p>
-<pre><code class="hljs routeros">osdmap e537<span class="hljs-built_in"> pool </span><span class="hljs-string">&#x27;data&#x27;</span> (0) object <span class="hljs-string">&#x27;test-object-1&#x27;</span> -&gt; pg 0.d1743484 (0.4) -&gt; up [1,0] acting [1,0]</code></pre>
-<p>用<code>rados rm</code> 命令可删除此测试对象，例如：</p>
-<pre><code class="hljs powershell">rados <span class="hljs-built_in">rm</span> <span class="hljs-built_in">test-object</span><span class="hljs-literal">-1</span> -<span class="hljs-literal">-pool</span>=<span class="hljs-keyword">data</span></code></pre>
-<p>随着集群的运行，对象位置可能会动态改变。 Ceph 有动态均衡机制，无需手动干预即可完成。</p>
-<h1 id="块设备快速入门"><a href="#块设备快速入门" class="headerlink" title="块设备快速入门"></a>块设备快速入门</h1><p>要实践本手册，你必须先完成<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-ceph-deploy">存储集群快速入门</a> ，并确保 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-21"><em>Ceph 存储集群</em></a>处于 <code>active + clean</code> 状态，这样才能使用 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-38"><em>Ceph 块设备</em></a>。</p>
-<div class="note note-primary">
-            <p>Ceph 块设备也叫 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-39"><em>RBD</em></a> 或 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-rados"><em>RADOS</em></a> 块设备。</p>
-          </div> 
-<p><img src="\img\ceph-deploy3.png" srcset="/img/loading.gif" alt="img"></p>
-<p>你可以在虚拟机上运行 <code>ceph-client</code> 节点，但是不能在与 Ceph 存储集群（除非它们也用 VM ）相同的物理节点上执行下列步骤。详情见 <a target="_blank" rel="noopener" href="http://wiki.ceph.com/FAQs/How_Can_I_Give_Ceph_a_Try%3F">FAQ</a> 。</p>
-<h2 id="安装-CEPH"><a href="#安装-CEPH" class="headerlink" title="安装 CEPH"></a>安装 CEPH</h2><ol>
-<li><p>确认你使用了合适的内核版本，详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/os-recommendations">操作系统推荐</a>。</p>
-<pre><code class="hljs properties"><span class="hljs-attr">lsb_release</span> <span class="hljs-string">-a</span>
-<span class="hljs-attr">uname</span> <span class="hljs-string">-r</span></code></pre>
-</li>
-<li><p>在管理节点上，通过 <code>ceph-deploy</code> 把 Ceph 安装到 <code>ceph-client</code> 节点。</p>
-<pre><code class="hljs sql">ceph-deploy <span class="hljs-keyword">install</span> ceph-<span class="hljs-keyword">client</span></code></pre>
-</li>
-<li><p>在管理节点上，用 <code>ceph-deploy</code> 把 Ceph 配置文件和 <code>ceph.client.admin.keyring</code> 拷贝到 <code>ceph-client</code> 。</p>
-<pre><code class="hljs axapta">ceph-deploy admin ceph-<span class="hljs-keyword">client</span></code></pre>
-<p><code>ceph-deploy</code> 工具会把密钥环复制到 <code>/etc/ceph</code> 目录，要确保此密钥环文件有读权限（如 <code>sudo chmod +r /etc/ceph/ceph.client.admin.keyring</code> ）。</p>
-</li>
-</ol>
-<h2 id="配置块设备"><a href="#配置块设备" class="headerlink" title="配置块设备"></a>配置块设备</h2><ol>
-<li><p>在 <code>ceph-client</code> 节点上创建一个块设备 image 。</p>
-<pre><code class="hljs gradle">rbd create foo --<span class="hljs-keyword">size</span> <span class="hljs-number">4096</span> [-m &#123;mon-IP&#125;] [-k <span class="hljs-regexp">/path/</span>to/ceph.client.admin.keyring]</code></pre>
-</li>
-<li><p>在 <code>ceph-client</code> 节点上，把 image 映射为块设备。</p>
-<pre><code class="hljs sqf">sudo rbd map foo --<span class="hljs-built_in">name</span> client.<span class="hljs-built_in">admin</span> [-m &#123;mon-IP&#125;] [-k /path/<span class="hljs-keyword">to</span>/ceph.client.<span class="hljs-built_in">admin</span>.keyring]</code></pre>
-</li>
-<li><p>在 <code>ceph-client</code> 节点上，创建文件系统后就可以使用块设备了。</p>
-<pre><code class="hljs awk">sudo mkfs.ext4 -m0 <span class="hljs-regexp">/dev/</span>rbd<span class="hljs-regexp">/rbd/</span>foo</code></pre>
-<p>此命令可能耗时较长。</p>
-</li>
-<li><p>在 <code>ceph-client</code> 节点上挂载此文件系统。</p>
-<pre><code class="hljs awk">sudo mkdir <span class="hljs-regexp">/mnt/</span>ceph-block-device
-sudo mount <span class="hljs-regexp">/dev/</span>rbd<span class="hljs-regexp">/rbd/</span>foo <span class="hljs-regexp">/mnt/</span>ceph-block-device
-cd <span class="hljs-regexp">/mnt/</span>ceph-block-device</code></pre>
-</li>
-</ol>
-<p>详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rbd/rbd">块设备</a> 。</p>
-<h1 id="CEPH-文件系统快速入门"><a href="#CEPH-文件系统快速入门" class="headerlink" title="CEPH 文件系统快速入门"></a>CEPH 文件系统快速入门</h1><p>开始实践 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-45"><em>Ceph 文件系统</em></a>入门手册前，必须先完成<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-ceph-deploy">存储集群快速入门</a>。在管理节点上完成此入门。</p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
-<li><p>确认你使用了合适的内核版本，详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/os-recommendations">操作系统推荐</a>。</p>
-<pre><code class="hljs properties"><span class="hljs-attr">lsb_release</span> <span class="hljs-string">-a</span>
-<span class="hljs-attr">uname</span> <span class="hljs-string">-r</span></code></pre>
-</li>
-<li><p>在管理节点上，通过 <code>ceph-deploy</code> 把 Ceph 安装到 <code>ceph-client</code> 节点上。</p>
-<pre><code class="hljs sql">ceph-deploy <span class="hljs-keyword">install</span> ceph-<span class="hljs-keyword">client</span></code></pre>
-</li>
-<li><p>确保 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-21"><em>Ceph 存储集群</em></a>在运行，且处于 <code>active + clean</code> 状态。同时，确保至少有一个 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-63"><em>Ceph 元数据服务器</em></a>在运行。</p>
-<pre><code class="hljs puppet">ceph -s [-<span class="hljs-keyword">m</span> &#123;monitor-<span class="hljs-literal">ip</span>-address&#125;] [-<span class="hljs-keyword">k</span> &#123;<span class="hljs-built_in">path</span>/to/ceph.client.admin.keyring&#125;]</code></pre>
-</li>
-</ol>
-<h2 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h2><p>虽然已创建了元数据服务器（<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-ceph-deploy">存储集群快速入门</a>），但如果你没有创建存储池和文件系统，它是不会变为活动状态的。参见 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/cephfs/createfs/"><em>创建 Ceph 文件系统</em></a> 。</p>
-<pre><code class="hljs pgsql">ceph osd pool <span class="hljs-keyword">create</span> cephfs_data &lt;pg_num&gt;
-ceph osd pool <span class="hljs-keyword">create</span> cephfs_metadata &lt;pg_num&gt;
-ceph fs <span class="hljs-built_in">new</span> &lt;fs_name&gt; cephfs_metadata cephfs_data</code></pre>
-<h2 id="创建密钥文件"><a href="#创建密钥文件" class="headerlink" title="创建密钥文件"></a>创建密钥文件</h2><p>Ceph 存储集群默认启用认证，你应该有个包含密钥的配置文件（但不是密钥环本身）。用下述方法获取某一用户的密钥：</p>
-<ol>
-<li><p>在密钥环文件中找到与某用户对应的密钥，例如：</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">cat</span> <span class="hljs-selector-tag">ceph</span><span class="hljs-selector-class">.client</span><span class="hljs-selector-class">.admin</span><span class="hljs-selector-class">.keyring</span></code></pre>
-</li>
-<li><p>找到用于挂载 Ceph 文件系统的用户，复制其密钥。大概看起来如下所示：</p>
-<pre><code class="hljs ini"><span class="hljs-section">[client.admin]</span>
-   <span class="hljs-attr">key</span> = AQCj2YpRiAe6CxAA7/ETt7Hcl9IyxyYciVs47w==</code></pre>
-</li>
-<li><p>打开文本编辑器。</p>
-</li>
-<li><p>把密钥粘帖进去，大概像这样：</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">AQCj2YpRiAe6CxAA7</span>/ETt<span class="hljs-number">7</span>Hcl<span class="hljs-number">9</span>IyxyYciVs<span class="hljs-number">47</span>w==</code></pre>
-</li>
-<li><p>保存文件，并把其用户名 <code>name</code> 作为一个属性（如 <code>admin.secret</code> ）。</p>
-</li>
-<li><p>确保此文件对用户有合适的权限，但对其他用户不可见。</p>
-</li>
-</ol>
-<h2 id="内核驱动"><a href="#内核驱动" class="headerlink" title="内核驱动"></a>内核驱动</h2><p>把 Ceph FS 挂载为内核驱动。</p>
-<pre><code class="hljs awk">sudo mkdir <span class="hljs-regexp">/mnt/my</span>cephfs
-sudo mount -t ceph &#123;ip-address-of-monitor&#125;:<span class="hljs-number">6789</span>:<span class="hljs-regexp">/ /m</span>nt/mycephfs</code></pre>
-<p>Ceph 存储集群默认需要认证，所以挂载时需要指定用户名 <code>name</code> 和<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-cephfs/#id3">创建密钥文件</a>一节中创建的密钥文件 <code>secretfile</code> ，例如：</p>
-<pre><code class="hljs angelscript">sudo mount -t ceph <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">6789</span>:/ /mnt/mycephfs -o name=admin,secretfile=admin.secret</code></pre>
-<div class="note note-primary">
-            <p>从管理节点而非服务器节点挂载 Ceph FS 文件系统，详情见 <a target="_blank" rel="noopener" href="http://tracker.ceph.com/projects/ceph/wiki/How_Can_I_Give_Ceph_a_Try">FAQ</a> 。</p>
-          </div>
-<h2 id="用户空间文件系统（-FUSE-）"><a href="#用户空间文件系统（-FUSE-）" class="headerlink" title="用户空间文件系统（ FUSE ）"></a>用户空间文件系统（ FUSE ）</h2><p>把 Ceph FS 挂载为用户空间文件系统（ FUSE ）。</p>
-<pre><code class="hljs jboss-cli">sudo mkdir ~<span class="hljs-string">/mycephfs</span>
-sudo ceph-fuse -m &#123;ip-address-of-monitor&#125;<span class="hljs-function">:6789</span> ~<span class="hljs-string">/mycephfs</span></code></pre>
-<p>Ceph 存储集群默认要求认证，需指定相应的密钥环文件，除非它在默认位置（即 <code>/etc/ceph</code> ）：</p>
-<pre><code class="hljs angelscript">sudo ceph-fuse -k ./ceph.client.admin.keyring -m <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>:<span class="hljs-number">6789</span> ~/mycephfs</code></pre>
-<h2 id="附加信息"><a href="#附加信息" class="headerlink" title="附加信息"></a>附加信息</h2><p>附加信息见 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/cephfs/">Ceph FS</a> 。 Ceph FS 还不像 Ceph 块设备和 Ceph 对象存储那么稳定，如果遇到问题请参考<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/cephfs/troubleshooting">故障排除</a>。</p>
-<h1 id="CEPH对象存储快速入门"><a href="#CEPH对象存储快速入门" class="headerlink" title="CEPH对象存储快速入门"></a>CEPH对象存储快速入门</h1><p>从 firefly（v0.80）起，Ceph 存储集群显著地简化了 Ceph 对象网关的安装和配置。网关守护进程内嵌了 Civetweb，无需额外安装 web 服务器或配置 FastCGI。此外，可以直接 使用 <code>ceph-deploy</code> 来安装网关软件包、生成密钥、配置数据目录以及创建一个网关实例。</p>
-<div class="note note-info">
-            <p>Civetweb 默认使用 <code>7480</code> 端口。要么直接打开 <code>7480</code> 端口，要么在你的 Ceph 配置文件中设置首选端口（例如 <code>80</code> 端口）。</p>
-          </div>
-<p>要使用 Ceph 对象网关，请执行下列步骤：</p>
-<h2 id="安装-CEPH-对象网关"><a href="#安装-CEPH-对象网关" class="headerlink" title="安装 CEPH 对象网关"></a>安装 CEPH 对象网关</h2><ol>
-<li><p>在 <code>client-node</code> 上执行预安装步骤。如果你打算使用 Civetweb 的默认端口 <code>7480</code> ，必须通过 <code>firewall-cmd</code> 或 <code>iptables</code> 来打开它。详情见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-start-preflight">预检</a>。</p>
-</li>
-<li><p>从管理节点的工作目录，在 <code>client-node</code> 上安装 Ceph 对象网关软件包。例如：</p>
-<pre><code class="hljs xml">ceph-deploy install --rgw <span class="hljs-tag">&lt;<span class="hljs-name">client-node</span>&gt;</span> [<span class="hljs-tag">&lt;<span class="hljs-name">client-node</span>&gt;</span> ...]</code></pre>
-</li>
-</ol>
-<h2 id="新建-CEPH-对象网关实例"><a href="#新建-CEPH-对象网关实例" class="headerlink" title="新建 CEPH 对象网关实例"></a>新建 CEPH 对象网关实例</h2><p>从管理节点的工作目录，在 <code>client-node</code> 上新建一个 Ceph 对象网关实例。例如：</p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph-deploy rgw create</span></code></pre>
-<p>一旦网关开始运行，你就可以通过 <code>7480</code> 端口来访问它（比如 <code>http://client-node:7480</code> ）。</p>
-<h2 id="配置-CEPH-对象网关实例"><a href="#配置-CEPH-对象网关实例" class="headerlink" title="配置 CEPH 对象网关实例"></a>配置 CEPH 对象网关实例</h2><ol>
-<li><p>通过修改 Ceph 配置文件可以更改默认端口（比如改成 <code>80</code> ）。增加名为 <code>[client.rgw.&lt;client-node&gt;]</code> 的小节，把 <code>&lt;client-node&gt;</code> 替换成你自己 Ceph 客户端节点的短名称（即 <code>hostname -s</code> 的输出）。例如，你的节点名就是 <code>client-node</code> ，在 <code>[global]</code> 节后增加一个类似于下面的小节：</p>
-<pre><code class="hljs crmsh">[client.rgw.client-<span class="hljs-keyword">node</span><span class="hljs-title">]</span>
-<span class="hljs-title">rgw_frontends</span> = <span class="hljs-string">&quot;civetweb port=80&quot;</span></code></pre>
-<div class="note note-primary">
-            <p>确保在 <code>rgw_frontends</code> 键值对的 <code>port=&lt;port-number&gt;</code> 中没有空格。</p>
-          </div>
-<div class="note note-danger">
-            <p>如果你打算使用 80 端口，确保 Apache 服务器没有在使用该端口，否则会和 Civetweb 冲突。出现这种情况时我们建议移除 Apache 服务。</p>
-          </div>
-</li>
-<li><p>为了使新端口的设置生效，需要重启 Ceph 对象网关。在 RHEL 7 和 Fedora 上 ，执行：</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">sudo</span> <span class="hljs-selector-tag">systemctl</span> <span class="hljs-selector-tag">restart</span> <span class="hljs-selector-tag">ceph-radosgw</span><span class="hljs-selector-class">.service</span></code></pre>
-<p>在 RHEL 6 和 Ubuntu 上，执行：</p>
-<pre><code class="hljs routeros">sudo<span class="hljs-built_in"> service </span>radosgw restart <span class="hljs-attribute">id</span>=rgw.&lt;short-hostname&gt;</code></pre>
-</li>
-<li><p>最后，检查节点的防火墙，确保你所选用的端口（例如 <code>80</code> 端口）处于开放状态。如果没有，把该端口加入放行规则并重载防火墙的配置。例如：</p>
-<pre><code class="hljs brainfuck"><span class="hljs-comment">sudo</span> <span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">list</span><span class="hljs-literal">-</span><span class="hljs-comment">all</span> <span class="hljs-comment">sudo</span> <span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">zone=public</span> --<span class="hljs-comment">add</span><span class="hljs-literal">-</span><span class="hljs-comment">port</span>
-<span class="hljs-comment">80/tcp</span> --<span class="hljs-comment">permanent</span>
-<span class="hljs-comment">sudo</span> <span class="hljs-comment">firewall</span><span class="hljs-literal">-</span><span class="hljs-comment">cmd</span> --<span class="hljs-comment">reload</span></code></pre>
-<p>关于使用 <code>firewall-cmd</code> 或 <code>iptables</code> 配置防火墙的详细信息，请参阅<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/quick-start-preflight">预检</a>。</p>
-<p>你应该可以生成一个未授权的请求，并收到应答。例如，一个如下不带参数的请求：</p>
-<pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>&lt;client-node&gt;:<span class="hljs-number">80</span></code></pre>
-<p>应该收到这样的应答：</p>
-<pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">ListAllMyBucketsResult</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://s3.amazonaws.com/doc/2006-03-01/&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">Owner</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>anonymous<span class="hljs-tag">&lt;/<span class="hljs-name">ID</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">DisplayName</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">DisplayName</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">Owner</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">Buckets</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">Buckets</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ListAllMyBucketsResult</span>&gt;</span></code></pre>
-<p>更多管理和 API 细节请参阅 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/radosgw/config">Ceph 对象网关的配置</a> 指南。</p>
-</li>
-</ol>
+<p>我们建议额外分配一定空间专门用作osd存储，以及日志存储，并且将其挂载到<code>/var/lib/ceph/osd/ceph-&#123;osd_num&#125;</code></p>
+<pre><code class="hljs crystal">sudo mkfs.xfs /dev/&#123;DEV&#125;
+sudo mount /dev/&#123;DEV&#125; /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-$<span class="hljs-title">ID</span></span></code></pre>
+<p>如果你像笔者一样粗心，忘了将osd存储和os分开，那么只能进行如下操作</p>
+<pre><code class="hljs crystal">sudo mount /dev/sda1 /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-0</span></code></pre>
+<pre><code class="hljs crystal">ceph-authtool --create-keyring /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-$<span class="hljs-title">ID</span>/<span class="hljs-title">keyring</span> \</span>
+     --name osd.$ID --add-key $OSD_SECRET 
+ceph-osd -i $ID --mkfs --osd-uuid $UUID <span class="hljs-comment">#初始化OSD初始目录</span>
+chown -R <span class="hljs-symbol">ceph:</span>ceph /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-$<span class="hljs-title">ID</span> <span class="hljs-comment">#目录拥有者，谨慎执行，否则sudo容易挂</span></span></code></pre>
+<p>启动osd</p>
+<pre><code class="hljs routeros">systemctl <span class="hljs-builtin-name">enable</span> ceph-osd@<span class="hljs-variable">$ID</span>
+systemctl start ceph-osd@<span class="hljs-variable">$ID</span></code></pre>
+<p>​    检查osd是否启动 ceph -s</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">cluster:</span>
+  <span class="hljs-attr">id:</span>     <span class="hljs-string">250a1431-6cf3-4d0b-a964-361cd8d10dad</span>
+  <span class="hljs-attr">health:</span> <span class="hljs-string">HEALTH_WARN</span>
+          <span class="hljs-literal">no</span> <span class="hljs-string">active</span> <span class="hljs-string">mgr</span>
+          <span class="hljs-number">1</span> <span class="hljs-string">monitors</span> <span class="hljs-string">have</span> <span class="hljs-string">not</span> <span class="hljs-string">enabled</span> <span class="hljs-string">msgr2</span>
+ 
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">mon:</span> <span class="hljs-number">1</span> <span class="hljs-string">daemons,</span> <span class="hljs-string">quorum</span> <span class="hljs-string">ceph-master</span> <span class="hljs-string">(age</span> <span class="hljs-string">72m)</span>
+  <span class="hljs-attr">mgr:</span> <span class="hljs-literal">no</span> <span class="hljs-string">daemons</span> <span class="hljs-string">active</span>
+  <span class="hljs-attr">osd: 1 osds:</span> <span class="hljs-number">0</span> <span class="hljs-string">up,</span> <span class="hljs-number">0</span> <span class="hljs-string">in</span>
+ 
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">pools:</span>   <span class="hljs-number">0</span> <span class="hljs-string">pools,</span> <span class="hljs-number">0</span> <span class="hljs-string">pgs</span>
+  <span class="hljs-attr">objects:</span> <span class="hljs-number">0</span> <span class="hljs-string">objects,</span> <span class="hljs-number">0</span> <span class="hljs-string">B</span>
+  <span class="hljs-attr">usage:</span>   <span class="hljs-number">0</span> <span class="hljs-string">B</span> <span class="hljs-string">used,</span> <span class="hljs-number">0</span> <span class="hljs-string">B</span> <span class="hljs-string">/</span> <span class="hljs-number">0</span> <span class="hljs-string">B</span> <span class="hljs-string">avail</span>
+  <span class="hljs-attr">pgs:</span></code></pre>
+<p>这就说明我们搭建了一个osd。</p>
 <hr>
 <h1 id="Build-amp-Make-编译源码"><a href="#Build-amp-Make-编译源码" class="headerlink" title="Build &amp;Make:编译源码"></a>Build &amp;Make:编译源码</h1><p><span id="here">您到站了！</span></p>
 <p><del>版本14.2.12：Nautilus</del></p>
@@ -837,7 +808,8 @@ sudo ./<span class="hljs-keyword">install</span>-deps.sh <span class="hljs-comme
 sudo ./do_cmake.sh -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_SEASTAR=<span class="hljs-keyword">ON</span> -DWITH_MGR_DASHBOARD_FRONTEND=<span class="hljs-keyword">OFF</span> -DWITH_PYTHON2=<span class="hljs-keyword">OFF</span> -DWITH_PYTHON3=<span class="hljs-keyword">ON</span> -DMGR_PYTHON_VERSION=<span class="hljs-number">3</span> <span class="hljs-comment">#这一步 如果这部报错就试试 sudo ./run-make-check.sh 只要最后build文件夹有makefile就可以了，我们不需要调试信息，需要seastar，不需要前端，采用python3</span>
 cd <span class="hljs-keyword">build</span>
 sudo make -j4 vstart<span class="hljs-comment"># 保证能运行test cluster就行，这里-j4是线程数，根据实际情况设定</span>
-sudo make -j4 <span class="hljs-keyword">all</span> <span class="hljs-comment">#编译所有组件，需要很多空间，根据需要进行</span></code></pre>
+sudo make -j4 <span class="hljs-keyword">all</span> <span class="hljs-comment">#编译所有组件，需要很多空间，根据需要进行</span>
+sudo make <span class="hljs-keyword">install</span> <span class="hljs-comment">#别忘了进行安装</span></code></pre>
 <p>缺啥补啥 (lib+XX+-dev格式)</p>
 <p>比如笔者装了以下库 </p>
 <pre><code class="hljs cmake">sudo apt <span class="hljs-keyword">install</span> libhwloc-dev
@@ -1172,36 +1144,6 @@ The following tests FAILED:
 Errors <span class="hljs-keyword">while</span> running CTest
 </code></pre>
 <p>上面报错，是因为它们是trivial的，dmclock的api甚至还没开发出来。emoji~</p>
-<hr>
-<h2 id="利用虚拟机搭建集群"><a href="#利用虚拟机搭建集群" class="headerlink" title="利用虚拟机搭建集群"></a>利用虚拟机搭建集群</h2><p>官方的最低要求是 <strong>3</strong> Monitors + <strong>2</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">虚拟机节点名称</th>
-<th style="text-align:center">职责</th>
-<th style="text-align:center">IP地址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">ceph-master (source-code compiled)</td>
-<td style="text-align:center">mon + osd</td>
-<td style="text-align:center">192.168.161.129</td>
-</tr>
-<tr>
-<td style="text-align:center">ceph-node1</td>
-<td style="text-align:center">mon+mgr+osd</td>
-<td style="text-align:center">192.168.161.130</td>
-</tr>
-<tr>
-<td style="text-align:center">ceph-node2</td>
-<td style="text-align:center">mon+mgr+osd</td>
-<td style="text-align:center">192.168.161.131</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 <h2 id="调试集群，添加日志"><a href="#调试集群，添加日志" class="headerlink" title="调试集群，添加日志"></a>调试集群，添加日志</h2><p>我们可以在配置文件针对特定模块生成调试日志。但这可能产生超过1GB的日志文件。调试会影响集群的性能。</p>
 <p>所以必须保证你磁盘有足够的空间。</p>
@@ -1648,7 +1590,7 @@ sharedscripts</code></pre>
 </tbody>
 </table>
 </div>
-<h2 id="操作集群的三种方法"><a href="#操作集群的三种方法" class="headerlink" title="操作集群的三种方法"></a>操作集群的三种方法</h2><h2 id="1-Systemd"><a href="#1-Systemd" class="headerlink" title="1.Systemd."></a>1.Systemd.</h2><p>Systemd 是 Linux 系统工具，用来启动<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html">守护进程</a>，已成为大多数发行版的标准配置。包括启动，检查，列举systemd，以及停止。</p>
+<h2 id="操作集群的三种方法"><a href="#操作集群的三种方法" class="headerlink" title="操作集群的三种方法"></a>操作集群的三种方法</h2><h2 id="1-Systemd-（推荐）"><a href="#1-Systemd-（推荐）" class="headerlink" title="1.Systemd.（推荐）"></a>1.Systemd.（推荐）</h2><p>Systemd 是 Linux 系统工具，用来启动<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html">守护进程</a>，已成为大多数发行版的标准配置。包括启动，检查，列举systemd，以及停止。</p>
 <pre><code class="hljs nginx"><span class="hljs-attribute">sudo</span> systemctl start ceph.target       <span class="hljs-comment"># start all daemons</span>
 
 sudo systemctl status ceph-osd@<span class="hljs-number">12</span>      <span class="hljs-comment"># check status of osd.12</span>
@@ -3264,6 +3206,17 @@ auth<span class="hljs-built_in"> client </span>required = none</code></pre>
 <p>The <a href="mailto:ceph-devel%40vger.kernel.org">ceph-devel@vger.kernel.org</a> list is for discussion and patch review for the Linux kernel Ceph client component. Subscribe by sending a message to <code>majordomo@vger.kernel.org</code> with the line:</p>
 <pre><code class="hljs ebnf"><span class="hljs-attribute">subscribe ceph-devel</span></code></pre>
 <p>in the body of the message.</p>
+<hr>
+<h1 id="Trouble-Shooting-Runtime"><a href="#Trouble-Shooting-Runtime" class="headerlink" title="Trouble Shooting: Runtime"></a>Trouble Shooting: Runtime</h1><pre><code class="hljs apache"><span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">47</span>.<span class="hljs-number">856064</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind unable to bind to <span class="hljs-number">101.67.163.20:6789</span>: (<span class="hljs-number">99</span>) Cannot assign requested address
+<span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">47</span>.<span class="hljs-number">856085</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind was unable to bind. Trying again in <span class="hljs-number">5</span> seconds
+<span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">52</span>.<span class="hljs-number">856281</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind unable to bind to <span class="hljs-number">101.67.163.20:6789</span>: (<span class="hljs-number">99</span>) Cannot assign requested address
+<span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">52</span>.<span class="hljs-number">856319</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind was unable to bind. Trying again in <span class="hljs-number">5</span> seconds
+<span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">57</span>.<span class="hljs-number">856622</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind unable to bind to <span class="hljs-number">101.67.163.20:6789</span>: (<span class="hljs-number">99</span>) Cannot assign requested address
+<span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">57</span>.<span class="hljs-number">856657</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind was unable to bind after <span class="hljs-number">3</span> attempts: (<span class="hljs-number">99</span>) Cannot assign requested address
+<span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">57</span>.<span class="hljs-number">856670</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> unable to bind monitor to <span class="hljs-number">101.67.163.20:6789</span>/<span class="hljs-number">0</span>
+<span class="hljs-attribute">failed</span>: &#x27;ssh ceph-<span class="hljs-number">10</span> ulimit -n <span class="hljs-number">32768</span>;  /usr/bin/ceph-mon -i a --pid-file /var/run/ceph/mon.a.pid -c /etc/ceph/ceph.conf --cluster ceph &#x27;
+</code></pre>
+<p>这是由于ip地址更换的原因，检查一下。</p>
 
             </div>
             <hr>
@@ -3510,7 +3463,7 @@ auth<span class="hljs-built_in"> client </span>required = none</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "「当前最流行的分布式存储系统」——Ceph尝鲜&nbsp;",
+        "Ceph手动配置集群部署&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

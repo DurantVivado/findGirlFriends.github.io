@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>神奇的多指针 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>神奇的多指针 【cover 脑筋急转弯💡】 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.9k 字
+      4.7k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      36
+      61
        分钟
     </span>
   
@@ -239,24 +239,32 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">神奇的多指针</h1>
+            <h1 style="display: none">神奇的多指针 【cover 脑筋急转弯💡】</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="多指针问题"><a href="#多指针问题" class="headerlink" title="多指针问题"></a>多指针问题</h1><hr>
+              <h1 id="多指针问题-amp-脑筋急转弯"><a href="#多指针问题-amp-脑筋急转弯" class="headerlink" title="多指针问题&amp;脑筋急转弯"></a>多指针问题&amp;脑筋急转弯</h1><hr>
 <blockquote>
 <ol>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum/">四数之和</a></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum/">四数之和</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></p>
+</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-compression/">压缩字符串</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/linked-list-cycle-ii/">环形链表II（快慢指针）（Medium）</a></li>
 </ol>
-<p>75.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a></p>
-<p>1574.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></p>
-<ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-compression/">压缩字符串</a></p>
+<h3 id="脑筋急转弯系列"><a href="#脑筋急转弯系列" class="headerlink" title="脑筋急转弯系列"></a>脑筋急转弯系列</h3><ol>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/next-permutation/">下一个排列（即C++内置next_permutation）(Medium)</a></p>
 </li>
-<li><p>环形链表II（快慢指针）</p>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-k-digits/">移掉k位数字（Medium）</a></p>
 </li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-duplicate-letters/">去除重复字母（Medium）</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/create-maximum-number/">拼接最大数（hard）</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/smallest-subsequence-of-distinct-characters/">不同字符的最小子序列（Medium）</a></li>
 </ol>
 </blockquote>
-<p>很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。</p>
+<h1 id="多指针问题"><a href="#多指针问题" class="headerlink" title="多指针问题"></a>多指针问题</h1><p>很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。</p>
 <p>比如求链表到数第N个节点，以及判断链表中是否有环。</p>
 <p>首先我们介绍Floyd判圈法</p>
 <h2 id="Floyd判圈法"><a href="#Floyd判圈法" class="headerlink" title="Floyd判圈法"></a>Floyd判圈法</h2><p><strong>想法</strong></p>
@@ -298,7 +306,78 @@ h+2(C−h)
 <hr>
 <p>这是一道非常经典的多指针题目，题目的条件设计的是如此特殊，以至于 用多指针恰到好处。</p>
 <p>原因是：1. 四个数而不是任意多的数，因此可以用有限多的指针进行记录。2. 题目要求求所有不重复的结果，指针可以在数组上滑动，自然能产生不同结果，去重是多指针的特长。3.这道题不适合用dfs，原因是dfs会产生很多分支$O(2^N)$量级，很容易TLE。而使用多指针，时间复杂度为$O(n^3)$。</p>
-<p>下面按照个人思路进行讲解:</p>
+<p>为了避免枚举到重复四元组，则需要保证每一重循环枚举到的元素不小于其上一重循环枚举到的元素，且在同一重循环中不能多次枚举到相同的元素。</p>
+<p>为了实现上述要求，可以对数组进行排序，并且在循环过程中遵循以下两点：</p>
+<ul>
+<li><p>每一种循环枚举到的下标必须大于上一重循环枚举到的下标；</p>
+</li>
+<li><p>同一重循环中，如果当前元素与上一个元素相同，则跳过当前元素。</p>
+</li>
+</ul>
+<p>我们再分情况讨论：</p>
+<p>使用两重循环分别枚举前两个数，然后在两重循环枚举到的数之后使用双指针枚举剩下的两个数。假设两重循环枚举到的前两个数分别位于下标$i$ 和 $j$，其中 $i&lt;j$。初始时，左右指针分别指向下标 $j+1$ 和下标 $n-1$。每次计算四个数的和，并进行如下操作：</p>
+<ul>
+<li><p>如果和等于 $target$，则将枚举到的四个数加到答案中，然后将左指针右移直到遇到不同的数，将右指针左移直到遇到不同的数；</p>
+</li>
+<li><p>如果和小于 $target$，则将左指针右移一位；</p>
+</li>
+<li><p>如果和大于 $target$，则将右指针左移一位。</p>
+</li>
+</ul>
+<p>具体的剪枝可以看代码。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">fourSum</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; quadruplets;
+        <span class="hljs-keyword">if</span> (nums.size() &lt; <span class="hljs-number">4</span>) &#123;
+            <span class="hljs-keyword">return</span> quadruplets;
+        &#125;
+        sort(nums.begin(), nums.end());
+        <span class="hljs-keyword">int</span> length = nums.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; length - <span class="hljs-number">3</span>; i++) &#123;
+            <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>]) &#123;
+                <span class="hljs-keyword">continue</span>;
+            &#125;
+            <span class="hljs-keyword">if</span> (nums[i] + nums[i + <span class="hljs-number">1</span>] + nums[i + <span class="hljs-number">2</span>] + nums[i + <span class="hljs-number">3</span>] &gt; target) &#123;
+                <span class="hljs-keyword">break</span>;<span class="hljs-comment">//剪枝</span>
+            &#125;
+            <span class="hljs-keyword">if</span> (nums[i] + nums[length - <span class="hljs-number">3</span>] + nums[length - <span class="hljs-number">2</span>] + nums[length - <span class="hljs-number">1</span>] &lt; target) &#123;
+                <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//下一层迭代的的条件</span>
+            &#125;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; length - <span class="hljs-number">2</span>; j++) &#123;
+                <span class="hljs-keyword">if</span> (j &gt; i + <span class="hljs-number">1</span> &amp;&amp; nums[j] == nums[j - <span class="hljs-number">1</span>]) &#123;
+                    <span class="hljs-keyword">continue</span>;
+                &#125;
+                <span class="hljs-keyword">if</span> (nums[i] + nums[j] + nums[j + <span class="hljs-number">1</span>] + nums[j + <span class="hljs-number">2</span>] &gt; target) &#123;
+                    <span class="hljs-keyword">break</span>;
+                &#125;
+                <span class="hljs-keyword">if</span> (nums[i] + nums[j] + nums[length - <span class="hljs-number">2</span>] + nums[length - <span class="hljs-number">1</span>] &lt; target) &#123;
+                    <span class="hljs-keyword">continue</span>;
+                &#125;
+                <span class="hljs-keyword">int</span> left = j + <span class="hljs-number">1</span>, right = length - <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">while</span> (left &lt; right) &#123;
+                    <span class="hljs-keyword">int</span> sum = nums[i] + nums[j] + nums[left] + nums[right];
+                    <span class="hljs-keyword">if</span> (sum == target) &#123;
+                        quadruplets.push_back(&#123;nums[i], nums[j], nums[left], nums[right]&#125;);
+                        <span class="hljs-keyword">while</span> (left &lt; right &amp;&amp; nums[left] == nums[left + <span class="hljs-number">1</span>]) &#123;
+                            left++;
+                        &#125;
+                        left++;
+                        <span class="hljs-keyword">while</span> (left &lt; right &amp;&amp; nums[right] == nums[right - <span class="hljs-number">1</span>]) &#123;
+                            right--;
+                        &#125;
+                        right--;
+                    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &lt; target) &#123;
+                        left++;
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        right--;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> quadruplets;
+    &#125;
+&#125;;</code></pre>
 <hr>
 <h2 id="75-颜色分类"><a href="#75-颜色分类" class="headerlink" title="75.颜色分类"></a>75.颜色分类</h2><p>给定一个包含红色、白色和蓝色，一共 n 个元素的数组，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。</p>
 <p>此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。</p>
@@ -476,6 +555,127 @@ h+2(C−h)
 <li>时间复杂度：$O(N)$，其中 $N$ 是 <code>chars</code> 的长度。</li>
 <li>空间复杂度：$O(1)$，三个指针的占用空间。</li>
 </ul>
+<h1 id="脑筋急转弯"><a href="#脑筋急转弯" class="headerlink" title="脑筋急转弯"></a>脑筋急转弯</h1><p>推荐题解：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-k-digits/solution/yi-zhao-chi-bian-li-kou-si-dao-ti-ma-ma-zai-ye-b-5/">一招吃遍力扣四道题，妈妈再也不用担心我被套路啦～</a></p>
+<p>有一种思想叫<strong>正难则反</strong>。下面这几题就可以很好体现。</p>
+<p>比如<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-operations-to-reduce-x-to-zero/">1658. 将 x 减到 0 的最小操作数</a>，题目问的是不断移除两端的数，使得x刚好减到0，我们倒过来想，所谓操作数最小，不就是两端的移去的数最少吗？也就是中间那部分最大。所以我们只要用一个<strong>滑动窗口</strong>，保证窗口的和为$sum-x$且长度最大即可，问题迎刃而解。</p>
+<p>比如说 ，<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/remove-k-digits/">402. 移掉K位数字</a>，移除的反面是添加，我们添加「移除剩下来的数」，移除的数「直接跳过」就好了。这道题的本质是单调栈。</p>
+<p>然后我们看一下402的升级版，<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/create-maximum-number/">321. 拼接最大数</a>，一个数组变成了两个数组，要从某个两个数组里挑选k个数，反过来想就是两个数组移除$d = n+m-k$个数，使得结果最大，这样我们可以分别枚举两个数组分别移除$i$，和$d-i$个数，函数就是402稍微从剩下最小数改变成最大数。然后用归并排序类似的合并就好了。</p>
+<hr>
+<h4 id="321-拼接最大数"><a href="#321-拼接最大数" class="headerlink" title="321. 拼接最大数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/create-maximum-number/">321. 拼接最大数</a></h4><p>给定长度分别为 <code>m</code> 和 <code>n</code> 的两个数组，其元素由 <code>0-9</code> 构成，表示两个自然数各位上的数字。现在从这两个数组中选出 <code>k (k &lt;= m + n)</code> 个数字拼接成一个新的数，要求从同一个数组中取出的数字保持其在原数组中的相对顺序。</p>
+<p>求满足该条件的最大数。结果返回一个表示该最大数的长度为 <code>k</code> 的数组。</p>
+<p><strong>说明:</strong> 请尽可能地优化你算法的时间和空间复杂度。</p>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs angelscript">输入:
+nums1 = [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>]
+nums2 = [<span class="hljs-number">9</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>, <span class="hljs-number">3</span>]
+k = <span class="hljs-number">5</span>
+输出:
+[<span class="hljs-number">9</span>, <span class="hljs-number">8</span>, <span class="hljs-number">6</span>, <span class="hljs-number">5</span>, <span class="hljs-number">3</span>]</code></pre>
+<p><strong>示例 2:</strong></p>
+<pre><code class="hljs angelscript">输入:
+nums1 = [<span class="hljs-number">6</span>, <span class="hljs-number">7</span>]
+nums2 = [<span class="hljs-number">6</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>]
+k = <span class="hljs-number">5</span>
+输出:
+[<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>]</code></pre>
+<p><strong>示例 3:</strong></p>
+<pre><code class="hljs angelscript">输入:
+nums1 = [<span class="hljs-number">3</span>, <span class="hljs-number">9</span>]
+nums2 = [<span class="hljs-number">8</span>, <span class="hljs-number">9</span>]
+k = <span class="hljs-number">3</span>
+输出:
+[<span class="hljs-number">9</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>]</code></pre>
+<hr>
+<p>按照上述思路我们需要注意的是，因为返回数组，所以不用考虑前导0问题，然后合并的时候如果两个数相等，我们要继续比较后面的数，直到两个数不等或者到达数组尾部，比如<code>9,8,3</code>和<code>3,4,6,5</code>，k = 7, 我们希望得到<code>9,8,3,4,6,5,3</code>。</p>
+<p><strong>代码</strong></p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">removeKdigits</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp;num, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-comment">//去除k个数使得结果最大 402稍微改一下</span>
+    <span class="hljs-keyword">int</span> n = num.size();
+    <span class="hljs-keyword">if</span>(n &lt;= k) <span class="hljs-keyword">return</span> &#123;&#125;;
+    <span class="hljs-keyword">if</span>(k == <span class="hljs-number">0</span> ) <span class="hljs-keyword">return</span> num;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; res;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+    &#123;
+        <span class="hljs-keyword">int</span> cur = num[i];
+        <span class="hljs-keyword">int</span> nex = (i+<span class="hljs-number">1</span>&lt;n)?num[i+<span class="hljs-number">1</span>]:<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(k&gt;<span class="hljs-number">0</span> &amp;&amp; !res.empty()&amp;&amp;cur &gt; res.back())
+        &#123;
+            res.pop_back();
+            k--;    
+        &#125;
+        <span class="hljs-keyword">if</span>(k==<span class="hljs-number">0</span> ||cur &gt;= nex) 
+        &#123;
+            res.push_back(num[i]);
+        &#125;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(k&gt;<span class="hljs-number">0</span>) k--;
+    &#125;
+    <span class="hljs-keyword">while</span>(!res.empty()&amp;&amp;k &gt; <span class="hljs-number">0</span>) &#123;res.pop_back();k--;&#125;
+    <span class="hljs-keyword">return</span> res;
+
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">larger</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp;a, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp;b)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">int</span> n = a.size();
+        <span class="hljs-comment">//比较两个数组的大小，长度相同</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        <span class="hljs-keyword">if</span>(a[i]&lt;b[i]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a[i]&gt;b[i]) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp;s1, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp;s2)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//类似于归并排序的合并</span>
+        <span class="hljs-keyword">int</span> m = s1.size(), n = s2.size();
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; ret;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(i&lt;m&amp;&amp;j&lt;n)
+        &#123;
+            <span class="hljs-keyword">if</span>(s1[i]&gt;s2[j])
+            ret.push_back(s1[i++]);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(s1[i]&lt;s2[j])
+            ret.push_back(s2[j++]);
+            <span class="hljs-keyword">else</span>&#123;
+                <span class="hljs-comment">//如果两数相等，再超逐个比较下一位</span>
+                <span class="hljs-keyword">int</span> a = i, b = j;
+                <span class="hljs-keyword">while</span>(s1[a]==s2[b]) &#123;
+                    <span class="hljs-keyword">if</span>(a+<span class="hljs-number">1</span> &lt; m) a++;                      
+                    <span class="hljs-keyword">if</span>(b+<span class="hljs-number">1</span> &lt; n) b++;
+                    <span class="hljs-keyword">if</span>(a+<span class="hljs-number">1</span>==m &amp;&amp; b+<span class="hljs-number">1</span>==n) <span class="hljs-keyword">break</span>;
+                &#125;
+                <span class="hljs-keyword">if</span>(s1[a] &gt; s2[b]) ret.push_back(s1[i++]);
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(s1[a] &lt; s2[b]) ret.push_back(s2[j++]);
+                <span class="hljs-keyword">else</span>&#123;
+                    ret.push_back(s1[i++]);
+                    ret.push_back(s2[j++]);
+                    &#125;
+                &#125;
+        &#125;
+        <span class="hljs-keyword">while</span>(i&lt;m)
+            ret.push_back(s1[i++]);
+        <span class="hljs-keyword">while</span>(j&lt;n)
+            ret.push_back(s2[j++]);    
+        <span class="hljs-keyword">return</span> ret;
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">maxNumber</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums1, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums2, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> m = nums1.size(), n = nums2.size();
+        k = n+m-k;<span class="hljs-comment">//算出要移去多少个数</span>
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; s1,s2,s3,res;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;= k;i++)<span class="hljs-comment">//暴力枚举</span>
+        &#123;
+            <span class="hljs-keyword">if</span>(i&gt;m||(k-i)&gt;n) <span class="hljs-keyword">continue</span>;
+            s1 = removeKdigits(nums1,i);<span class="hljs-comment">//取i个数且最大,402函数改一下</span>
+            s2 = removeKdigits(nums2,k-i);
+            s3 = merge(s1,s2);<span class="hljs-comment">//合并</span>
+             <span class="hljs-keyword">if</span>(res.empty()||larger(s3,res)) res = s3;
+             
+        &#125;
+
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;
+</code></pre>
 
             </div>
             <hr>
@@ -506,9 +706,9 @@ h+2(C−h)
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+                      <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">解华容道</span>
+                        <span class="hidden-mobile">Markdown那些不为人知的酷炫特效</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -516,8 +716,8 @@ h+2(C−h)
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-30-sorting-magic/">
-                        <span class="hidden-mobile">【面试向】排序算法</span>
+                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
+                        <span class="hidden-mobile">动态规划</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -718,7 +918,7 @@ h+2(C−h)
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "神奇的多指针&nbsp;",
+        "神奇的多指针 【cover 脑筋急转弯💡】&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

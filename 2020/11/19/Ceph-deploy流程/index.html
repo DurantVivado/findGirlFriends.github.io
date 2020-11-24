@@ -1,0 +1,1029 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>Ceph-deploy流程 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-19 00:00" pubdate>
+        2020年11月19日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      60
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Ceph-deploy流程</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Ceph-deploy流程"><a href="#Ceph-deploy流程" class="headerlink" title="Ceph-deploy流程"></a>Ceph-deploy流程</h1><p>本文介绍了借助Ceph-deploy工具安装Ceph并搭建集群的过程。按照下文的步骤，你可以快速搭建一个基础的Ceph环境，并且了解Ceph集群的组成和工作原理。文章首先会简单介绍Ceph及其安装和环境部署方法，接着给出了预备环境的搭建过程，最后详细地列出了Ceph的安装及配置过程。本文附录还给出了Ceph的编译过程示例。</p>
+<h2 id="1-Ceph基础"><a href="#1-Ceph基础" class="headerlink" title="1  Ceph基础"></a>1  Ceph基础</h2><h3 id="1-1-Ceph介绍"><a href="#1-1-Ceph介绍" class="headerlink" title="1.1 Ceph介绍"></a>1.1 Ceph介绍</h3><p>Ceph 是一个可靠的、自动重均衡、自动恢复的分布式存储系统，根据场景划分可以将 Ceph 分为三大块，分别是对象存储、块设备存储和文件系统服务。三种应用场景都在底层的RADOS之上运行，最后都会被转换成对象存储在各个pool的placement group(PG)中。</p>
+<p>Ceph 的核心组件包括 Ceph OSD、Ceph Monitor、Ceph Manager和 Ceph MDS。</p>
+<ul>
+<li><em>Ceph OSD</em>：OSD 的英文全称是 Object Storage Device，它的主要功能是存储数据、复制数据、平衡数据、恢复数据等，Ceph OSD 的架构实现由物理磁盘驱动器、Linux文件系统和 Ceph OSD 服务组成。</li>
+<li><em>Ceph Monitor</em>：负责监视 Ceph 集群，维护Ceph 集群的健康状态，同时维护着 Ceph 集群中的各种 Map 图，比如 OSD Map、Monitor Map、PG Map 和 CRUSH Map。</li>
+<li><em>Ceph  Manager</em>: 负责跟踪运行时指标和Ceph集群的当前状态，包括存储利用率、当前性能指标和系统负载。</li>
+<li><em>Ceph MDS</em>：全称是 Ceph MetaData Server，主要保存的文件系统服务的元数据，但对象存储和块存储设备是不需要使用该服务的。</li>
+</ul>
+<p>对于一个用于对象存储的Ceph集群来说，它至少需要部署一个Monitor服务、一个Manager服务和一个OSD服务。其中，这些组件可以部署在同一台机器，即一个机器可以拥有多个角色（服务）。</p>
+<p>若要保证数据可靠性，系统中应当有多个OSD节点，以实现副本或纠删码功能。Ceph默认的策略是3副本，这意味着在该策略下集群中至少要有3个OSD节点才能正常运作。（副本策略和纠删码配置均可更改）</p>
+<h3 id="1-2-Ceph的安装方法"><a href="#1-2-Ceph的安装方法" class="headerlink" title="1.2 Ceph的安装方法"></a>1.2 Ceph的安装方法</h3><p>Ceph主要编写的语言是C++，其代码规模可达100+万行，同时Ceph涉及的依赖软件众多，任何一个环节出问题都有可能导致Ceph安装失败，这对新手来说是一个挑战。</p>
+<p> Ceph的安装方法有以下三种：</p>
+<ol>
+<li>手动编译安装。官方提供了依赖软件的安装脚本，源码中还自带CMake规则，生成对应makfile后由make调用gcc/g++编译完成。理论上Ceph的编译安装过程可以使用自动化工具简单几步就完成，但不同机器的系统和环境不同，先前安装的软件或者环境变量设置不当也有可能会给安装过程带来一些障碍。手动编译是比较容易出问题的，也是耗时最长的。一般来说在使用官方版本入门探索时不推荐手动安装。若要修改源代码，则必须使用手动方法安装。具体的手动编译安装流程见文章附录。</li>
+<li>使用包管理工具安装。官方及各大开源镜像站都提供了官方标准版本的软件源，我们可以添加对应的密钥和仓库链接后，使用系统自带的包管理工具轻松安装。如Ubuntu/Debian中的apt，CentOS/RHEL中的yum。这种方法简单方便，但要注意只能安装官方标准版本。</li>
+<li><p>使用部署工具安装。下文提及的自动化部署工具中带有Ceph组件的安装功能，如Ceph-deploy，它本质上还是调用包管理工具进行安装。（Docker等容器方法暂不在讨论范围之内）</p>
+<p>简而言之，除了有修改源代码的需求外，一般优先推荐使用方法2或方法3安装Ceph。</p>
+</li>
+</ol>
+<h3 id="1-3-Ceph的部署方法"><a href="#1-3-Ceph的部署方法" class="headerlink" title="1.3 Ceph的部署方法"></a>1.3 Ceph的部署方法</h3><p>Ceph是一个分布式存储系统，这意味着还需要一系列的配置文件、设置来告诉系统中的节点分别如何工作。在每一台节点上分别手动配置是可行的，但过程繁琐且复杂，还容易出问题，一般不推荐。下面我们介绍几种用于部署Ceph的自动化工具。</p>
+<ol>
+<li>Cephadm：它是在Ceph官方在新版本Octopus（15）中推行的全新部署工具。Cephadm完美支持新的编排API、CLI和仪表盘特性，可用于快速部署Octopus及更新版本的Ceph集群。Cephadm更加简单，且不依赖其它自动化部署工具，但该工具不支持部署旧版本的Ceph（如14的Nautilus），所有Ceph进程也是运行在容器中的，意味着在修改源码的情况下还需要制作新的镜像，比较麻烦。官方文档中指出，Cephadm暂时不推荐用于生产环境。</li>
+<li>Rook：可以把Ceph部署在Kubernetes集群中运行。与1类似的是，Ceph也是运行在容器中的。</li>
+<li>Ceph-deploy：在v14 Nautilus及之前的官方推荐部署工具（目前已不再维护）。其原理是借助ssh集中控制集群主机，让它们分别执行特定命令和传输配置文件。通过Ceph-deploy安装的Ceph是直接运行在目的主机的操作系统上的（而非容器），同时Ceph的安装与集群的部署是可以分开进行的。</li>
+<li><p>其它：ceph-ansible、DeepSea、puppet-ceph等工具都需要第三方部署工具的支持。</p>
+<p>假设我们有Ceph源代码修改的需求，1和2的容器运行环境会让事情变得更加复杂（如重新制作镜像并上传），使得快速修改代码后测试也变得困难，因此我们暂不采用。而Ceph-deploy工具比较灵活，无论是使用官方标准版本Ceph进行入门探索，亦或是测试修改源码后的Ceph，它都有较好的支持。虽然官方已不再维护，但对于一般科研用途而言，Ceph-deploy工具已经能够满足需求，可以帮助用户快速搭建出一个简单的Ceph集群。下文中我们将着重介绍基于Ceph-deploy的安装和部署流程。</p>
+</li>
+</ol>
+<h2 id="2-预备条件"><a href="#2-预备条件" class="headerlink" title="2  预备条件"></a>2  预备条件</h2><p>下文将在Ubuntu 18.04的环境下，选择Ceph v14.2.13（Nautilus）作为目标版本，以使用Ceph-deploy 2.0.1安装和部署带3个OSD的Ceph纠删码集群为例，一步步地引导读者搭建出一个基础的Ceph环境。</p>
+<p>要实现这一目标，我们需要准备3台机器，其中1台同时充当用于控制部署的admin_node。部署的控制也可以在另一个存储节点上进行，但这里为了方便理解我们指定node_0来控制部署流程。注意：经测试发现，当前版本的Ceph只能使用物理块设备来部署存储服务，因此每个存储节点都需要除系统盘外的额外一块空硬盘供Ceph使用，该硬盘将被重新格式化。</p>
+<p>本文中的示例集群如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>IP地址</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node_0</td>
+<td>192.168.248.100</td>
+<td>deploy_admin  / monitor / manager / osd_0</td>
+</tr>
+<tr>
+<td>node_1</td>
+<td>192.168.248.101</td>
+<td>osd_1</td>
+</tr>
+<tr>
+<td>node_2</td>
+<td>192.168.248.102</td>
+<td>osd_2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 我们将在虚拟机中进行演示，其中每个主机都含有8 GiB的RAM，60 GB的系统盘以及10 GB的数据盘。</p>
+<p>（小技巧：我们可以先在1台虚拟机上配置好通用的预备环境，再克隆出另外的2台，随后调整部分配置后即可（如IP、主机名等）。克隆后记得重新生成网卡MAC地址）</p>
+<h2 id="3-预备环境配置"><a href="#3-预备环境配置" class="headerlink" title="3  预备环境配置"></a>3  预备环境配置</h2><h3 id="3-1-网络配置"><a href="#3-1-网络配置" class="headerlink" title="3.1 网络配置"></a>3.1 网络配置</h3><p>所有节点都需要执行以下步骤。</p>
+<ol>
+<li><p>IP配置。最简单的方法是在GUI的设置中直接修改网络配置，也可以手动修改网络配置文件。这一步我们不再赘述。</p>
+</li>
+<li><p>修改主机名。修改文件 /etc/hostname ，把内容替换为对应的主机名。重启后生效。</p>
+<pre><code class="hljs bash">$  sudo vim /etc/hostname   <span class="hljs-comment"># 以node_0为例，替换为如下内容</span>
+    node_0</code></pre>
+</li>
+<li><p>添加域名映射。修改 /etc/hosts ，添加对应映射内容：</p>
+ <pre><code class="hljs bash">$  sudo vim /etc/hosts   <span class="hljs-comment"># 添加如下内容</span>
+192.168.248.100 node_0
+192.168.248.101 node_1
+192.168.248.102 node_2</code></pre>
+</li>
+</ol>
+<h3 id="3-2-软件仓库配置"><a href="#3-2-软件仓库配置" class="headerlink" title="3.2 软件仓库配置"></a>3.2 软件仓库配置</h3><p>所有节点都需要执行以下步骤。</p>
+<ol>
+<li>建议使用国内软件源，如阿里、网易、清华、中科大、华科开源镜像站等，在后面安装包时能获得更好的体验。最简单的方法是在GUI中的“软件与更新”设置中选择国内源，手动配置则具体见 <a target="_blank" rel="noopener" href="http://mirrors.ustc.edu.cn/help/ubuntu.html">http://mirrors.ustc.edu.cn/help/ubuntu.html</a></li>
+<li><p>配置国内Ceph源。以中科大镜像站为例：</p>
+ <pre><code class="hljs bash">$  wget -q -O- <span class="hljs-string">&#x27;http://mirrors.ustc.edu.cn/ceph/keys/release.asc&#x27;</span> | sudo apt-key add -
+$  <span class="hljs-built_in">echo</span> deb http://mirrors.ustc.edu.cn/ceph/debian-nautilus/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
+$  vim ~/.bashrc  <span class="hljs-comment"># 添加如下内容</span>
+<span class="hljs-built_in">export</span> CEPH_DEPLOY_REPO_URL=http://mirrors.ustc.edu.cn/ceph/debian-nautilus/ 
+<span class="hljs-built_in">export</span> CEPH_DEPLOY_GPG_URL=http://mirrors.ustc.edu.cn/ceph/keys/release.asc
+$  <span class="hljs-built_in">source</span> ~/.bashrc
+$  sudo apt update</code></pre>
+</li>
+</ol>
+<p>注意：其中URL处的“debian-nautilus”可以根据不同的目标Ceph版本和操作系统更改为不同的对应名称。</p>
+<h3 id="3-3-Ceph专门用户"><a href="#3-3-Ceph专门用户" class="headerlink" title="3.3 Ceph专门用户"></a>3.3 Ceph专门用户</h3><p>我们将创建 cephuser 用户作为Ceph运行专门的用户。所有节点都需要执行以下步骤。</p>
+<pre><code class="hljs bash">$  sudo useradd cephuser -m -d /home/cephuser -s /bin/bash
+$  sudo passwd cephuser  <span class="hljs-comment"># 输入密码</span>
+$  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;cephuser ALL = (root) NOPASSWD:ALL&quot;</span> | sudo tee /etc/sudoers.d/cephuser
+$  sudo chmod 0440 /etc/sudoers.d/cephuser
+$  su cephuser</code></pre>
+<h3 id="3-4-安装支撑软件"><a href="#3-4-安装支撑软件" class="headerlink" title="3.4 安装支撑软件"></a>3.4 安装支撑软件</h3><p>所有节点都需要执行以下步骤。</p>
+<ul>
+<li><p>安装ssh服务端</p>
+  <pre><code class="hljs bash">$  sudo apt-get install openssh-server</code></pre>
+</li>
+<li><p>安装python，用于执行ceph-deploy受控端的脚本</p>
+  <pre><code class="hljs bash">$  sudo apt install python-minimal</code></pre>
+</li>
+</ul>
+<h3 id="3-5-使用ntp校准时间"><a href="#3-5-使用ntp校准时间" class="headerlink" title="3.5 使用ntp校准时间"></a>3.5 使用ntp校准时间</h3><p>分布式系统对时间尤其敏感，若系统中各个节点时间误差很大，有可能造成系统奔溃。我们使用ntp来校准时间，保证每台主机的时间对齐。所有节点都需要执行以下步骤。</p>
+<ul>
+<li><p>安装ntp</p>
+  <pre><code class="hljs bash">$  sudo apt install ntp</code></pre>
+</li>
+<li><p>启动ntp服务</p>
+  <pre><code class="hljs bash">$  sudo /etc/init.d/ntp restart 
+$  sudo systemctl <span class="hljs-built_in">enable</span> ntp.service</code></pre>
+</li>
+<li><p>添加阿里云ntp服务器</p>
+  <pre><code class="hljs bash">$  sudo vim /etc/ntp.conf
+    <span class="hljs-comment"># 末尾添加 server ntp.aliyun.com</span>
+$  sudo /etc/init.d/ntp restart</code></pre>
+</li>
+</ul>
+<h3 id="3-6-配置ssh无密码访问"><a href="#3-6-配置ssh无密码访问" class="headerlink" title="3.6 配置ssh无密码访问"></a>3.6 配置ssh无密码访问</h3><p>Ceph-deploy需要管理节点获得其它节点的ssh无密码访问权限。以下步骤只需在admin_node（node_0）上执行。</p>
+<ul>
+<li><p>创建密钥，一路回车选择默认值即可。</p>
+  <pre><code class="hljs bash">$  ssh-keygen</code></pre>
+</li>
+<li><p>把公钥复制到其它节点</p>
+  <pre><code class="hljs bash">$  ssh-copy-id node_1
+$  ssh-copy-id node_2</code></pre>
+</li>
+<li><p>配置ssh登录的默认指定用户名，为ceph-deploy做准备。</p>
+  <pre><code class="hljs bash">$  vim ~/.ssh/config  <span class="hljs-comment"># 添加如下内容</span>
+Host node_1
+ Hostname node_1
+ User cephuser
+Host node_2
+ Hostname node_2
+ User cephuser</code></pre>
+</li>
+</ul>
+<h2 id="4-Ceph的安装与部署"><a href="#4-Ceph的安装与部署" class="headerlink" title="4  Ceph的安装与部署"></a>4  Ceph的安装与部署</h2><p>以下步骤如没有特别申明，均只需在admin_node（node_0）上执行。</p>
+<h3 id="4-1-安装ceph-deploy"><a href="#4-1-安装ceph-deploy" class="headerlink" title="4.1 安装ceph-deploy"></a>4.1 安装ceph-deploy</h3><ul>
+<li><p>前面已配置过ceph源，直接使用apt安装</p>
+  <pre><code class="hljs bash">$  sudo apt install ceph-deploy</code></pre>
+</li>
+<li><p>创建保存配置文件的工作环境</p>
+  <pre><code class="hljs bash">$  mkdir ~/ceph_cluster
+$  <span class="hljs-built_in">cd</span> ~/ceph_cluster/</code></pre>
+</li>
+</ul>
+<h3 id="4-2-安装ceph"><a href="#4-2-安装ceph" class="headerlink" title="4.2 安装ceph"></a>4.2 安装ceph</h3><p>下面命令采用了ceph-deploy远程控制的方式安装仓库中的官方标准版本。若需要从本地（修改后）源码安装，请查看附录中的编译安装部分。</p>
+<pre><code class="hljs bash">$  ceph-deploy install --no-adjust-repos node_0 node_1 node_2</code></pre>
+<p>由于我们已在前面配置好了国内ceph源，所以使用—no-adjust-repos参数防止覆盖。</p>
+<p>若安装成功，可在各个节点上分别打印出ceph的版本号。</p>
+<pre><code class="hljs bash">$  ceph -v
+ceph version 14.2.13 (1778d63e55dbff6cedb071ab7d367f8f52a8699f) nautilus (stable)</code></pre>
+<h3 id="4-3-部署MON节点"><a href="#4-3-部署MON节点" class="headerlink" title="4.3 部署MON节点"></a>4.3 部署MON节点</h3><p>此次规划在 node_0 上部署 mon、mgr、osd 进程，node_1 和 node_2 仅部署 osd 进程。在 node_0 节点上执行，创建 1 个 MON 服务进程，配置并同步 ceph.conf 配置文件，不部署日志盘和缓存盘。 </p>
+<ul>
+<li><p>创建集群配置，其中     —cluster-network和 —public-network参数指定集群的子网，若不配置后面执行Ceph-deploy时可能会出错。</p>
+  <pre><code class="hljs bash">$  ceph-deploy new --cluster-network 192.168.248.0/24 --public-network 192.168.248.0/24 node_0</code></pre>
+</li>
+</ul>
+<p>命令末尾的node_0 为打算部署 mon 的节点。执行成功后会在当前目录下会自动生成：ceph.conf、ceph.mon.keyring 两个文件外加一个 log 文件。</p>
+<ul>
+<li><p>部署MON节点，并收集密钥</p>
+  <pre><code class="hljs bash">$  ceph-deploy mon create-initial</code></pre>
+</li>
+</ul>
+<p>执行完之后，本地目录下会生成若干keyring结尾的密钥文件</p>
+<ul>
+<li><p>同步集群配置文件及admin keyring文件</p>
+  <pre><code class="hljs bash">$  ceph-deploy admin node_0
+$  ceph-deploy admin node_1
+$  ceph-deploy admin node_2</code></pre>
+</li>
+<li><p>检查配置是否成功</p>
+  <pre><code class="hljs bash">$  ceph -s
+  cluster:
+    id:     f564cb33-e2c7-44cb-a645-df9d20824667
+    health: HEALTH_OK
+ 
+  services:
+    mon: 1 daemons, quorum node_0 (age 31s)
+    mgr: no daemons active
+    osd: 0 osds: 0 up, 0 <span class="hljs-keyword">in</span>
+ 
+  data:
+    pools:   0 pools, 0 pgs
+    objects: 0 objects, 0 B
+    usage:   0 B used, 0 B / 0 B avail
+    pgs:</code></pre>
+</li>
+</ul>
+<p>若出现：</p>
+<pre><code class="hljs bash">[errno 2] error connecting to the cluster</code></pre>
+<p>则是文件权限的问题，可以通过下面命令更改文件夹权限</p>
+<pre><code class="hljs bash">$  sudo chown cephuser:cephuser -R /etc/ceph</code></pre>
+<p>或  加sudo执行ceph </p>
+<h3 id="4-4-部署MGR节点"><a href="#4-4-部署MGR节点" class="headerlink" title="4.4 部署MGR节点"></a>4.4 部署MGR节点</h3><pre><code class="hljs bash">$  ceph-deploy mgr create node_0</code></pre>
+<ul>
+<li><p>检查配置是否成功</p>
+  <pre><code class="hljs bash">$  ceph -s
+  cluster:
+    id:     f564cb33-e2c7-44cb-a645-df9d20824667
+    health: HEALTH_OK
+ 
+  services:
+    mon: 1 daemons, quorum node_0 (age 111s)
+    mgr: node_0(active, since 2s)
+    osd: 0 osds: 0 up, 0 <span class="hljs-keyword">in</span>
+ 
+  data:
+    pools:   0 pools, 0 pgs
+    objects: 0 objects, 0 B
+    usage:   0 B used, 0 B / 0 B avail
+    pgs:</code></pre>
+</li>
+</ul>
+<p>可以看到，mgr服务已运行在node_0上。</p>
+<h3 id="4-5-部署OSD节点"><a href="#4-5-部署OSD节点" class="headerlink" title="4.5 部署OSD节点"></a>4.5 部署OSD节点</h3><p>本节只举例在使用磁盘 sdb 作为 OSD 数据盘的情况。</p>
+<ul>
+<li><p>先清除数据盘的格式与文件系统（在所有存储节点上执行）</p>
+  <pre><code class="hljs bash">$  sudo wipefs -af /dev/sdb</code></pre>
+</li>
+<li><p>分别在三个节点上创建OSD</p>
+  <pre><code class="hljs bash">$  ceph-deploy osd create --data /dev/sdb node_0
+$  ceph-deploy osd create --data /dev/sdb node_1 
+$  ceph-deploy osd create --data /dev/sdb node_2</code></pre>
+</li>
+<li><p>检查配置是否成功</p>
+  <pre><code class="hljs bash">$  ceph -s
+  cluster:
+    id:     f564cb33-e2c7-44cb-a645-df9d20824667
+    health: HEALTH_OK
+ 
+  services:
+    mon: 1 daemons, quorum node_0 (age 3m)
+    mgr: node_0(active, since 95s)
+    osd: 3 osds: 3 up (since 5s), 3 <span class="hljs-keyword">in</span> (since 5s)
+ 
+  data:
+    pools:   0 pools, 0 pgs
+    objects: 0 objects, 0 B
+    usage:   3.0 GiB used, 27 GiB / 30 GiB avail
+    pgs:</code></pre>
+</li>
+</ul>
+<p>可以看到，我们成功启动了3个OSD，整个ceph集群获得了30 GiB的存储空间。</p>
+<h3 id="4-6-配置纠删码池"><a href="#4-6-配置纠删码池" class="headerlink" title="4.6 配置纠删码池"></a>4.6 配置纠删码池</h3><p>至此我们的Ceph还没有存储任何的数据。下面我们将配置一个使用纠删码的池。</p>
+<ul>
+<li><p>创建自定义纠删码配置，以2+1的RS code配置为例</p>
+  <pre><code class="hljs bash">$  ceph osd erasure-code-profile <span class="hljs-built_in">set</span> toy_ec k=2 m=1</code></pre>
+</li>
+<li><p>查看配置</p>
+  <pre><code class="hljs bash">$  ceph osd erasure-code-profile get toy_ec
+crush-device-class=
+crush-failure-domain=host
+crush-root=default
+jerasure-per-chunk-alignment=<span class="hljs-literal">false</span>
+k=2
+m=1
+plugin=jerasure
+technique=reed_sol_van
+w=8</code></pre>
+</li>
+<li><p>创建EC池</p>
+  <pre><code class="hljs bash">$  ceph osd pool create ecpool 16 16 erasure toy_ec
+pool <span class="hljs-string">&#x27;ecpool&#x27;</span> created</code></pre>
+</li>
+<li><p>启用对象存储应用</p>
+  <pre><code class="hljs bash">$  ceph osd pool application <span class="hljs-built_in">enable</span> ecpool rgw
+enabled application <span class="hljs-string">&#x27;rgw&#x27;</span> on pool <span class="hljs-string">&#x27;ecpool&#x27;</span></code></pre>
+</li>
+<li><p>测试ecpool</p>
+  <pre><code class="hljs bash">$  <span class="hljs-built_in">echo</span> ABCDEFGHI | rados --pool ecpool put NYAN -</code></pre>
+</li>
+<li><p>获取对象</p>
+  <pre><code class="hljs bash">$  rados --pool ecpool get NYAN -
+ABCDEFGHI</code></pre>
+</li>
+</ul>
+<p>若正常输出内容，就意味着我们的Ceph基础集群搭建成功了。</p>
+<p>如果需要进一步部署块存储、对象存储、文件存储三大组件，可参考官方文档（见参考资料6）。</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li>Ceph - a     scalable distributed storage system, <a target="_blank" rel="noopener" href="https://github.com/ceph/ceph">https://github.com/ceph/ceph</a></li>
+<li>BUG #13137:Ceph-deploy had failed to create cluster in LXC container, <a target="_blank" rel="noopener" href="https://tracker.ceph.com/issues/13137">https://tracker.ceph.com/issues/13137</a></li>
+<li>Ceph实战教程(一)让Ceph集群运行起来, <a target="_blank" rel="noopener" href="https://blog.51cto.com/happylab/2474943">https://blog.51cto.com/happylab/2474943</a></li>
+<li>Ceph v12.2     Luminous基于ubuntu16.04集群部署, <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011581513">https://segmentfault.com/a/1190000011581513</a></li>
+<li>Ceph Deployment - Ceph Documentation, <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/nautilus/rados/deployment/">https://docs.ceph.com/en/nautilus/rados/deployment/</a></li>
+<li>Installation (ceph-deploy) — Ceph Documentation, <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/nautilus/start/">https://docs.ceph.com/en/nautilus/start/</a></li>
+<li>分布式存储（Ceph）环境搭建指导书Ubuntu 18.04.3, <a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/forum/thread-40539-1-1.html">https://bbs.huaweicloud.com/forum/thread-40539-1-1.html</a> </li>
+</ol>
+<hr>
+<h2 id="附录-Ceph编译安装"><a href="#附录-Ceph编译安装" class="headerlink" title="附录  Ceph编译安装"></a>附录  Ceph编译安装</h2><p>下面我们以在 Ubuntu 18.04 上编译安装Ceph 14.2.13为例，演示如何正确编译Ceph源代码。</p>
+<p>值得一提的是，官方提供的安装脚本有点小问题，若直接按照官方README步骤安装，可能会有很多麻烦。为了避免安装过程中出现错误，我们首先需要配置一点东西。</p>
+<h3 id="1-环境配置"><a href="#1-环境配置" class="headerlink" title="#1 环境配置"></a>#1 环境配置</h3><p>建议读者至少留50 GB的磁盘空闲空间用于编译和安装Ceph。</p>
+<ul>
+<li>配置Ubuntu国内源，见3.2小节。</li>
+<li><p>增加toolchain-r源，为部分高版本的依赖工具链做准备。</p>
+  <pre><code class="hljs bash">$  wget http://mirror.cs.uchicago.edu/ubuntu-toolchain-r/key.pgp
+$  sudo apt-key add key.pgp
+$  sudo vim /etc/apt/sources.list.d/toolchain.list  <span class="hljs-comment"># 添加如下内容</span>
+deb [arch=amd64 lang=none] http://mirror.cs.uchicago.edu/ubuntu-toolchain-r bionic main
+$  sudo apt update</code></pre>
+</li>
+<li><p>修改为国内pypi源。修改 ~/.pip/pip.conf ，替换为以下内容。若不存在则新建该文件（夹）。</p>
+  <pre><code class="hljs ini"><span class="hljs-section">[global]</span>
+<span class="hljs-attr">index-url</span> = https://pypi.doubanio.com/simple
+<span class="hljs-section">[install]</span>
+<span class="hljs-attr">trusted-host</span> = pypi.doubanio.com</code></pre>
+</li>
+<li><p>安装curl</p>
+  <pre><code class="hljs bash">$  sudo apt install curl</code></pre>
+</li>
+<li><p>安装nodejs、npm（为ceph-dashboard组件准备）</p>
+</li>
+</ul>
+<p>我们使用nvm来获取较新稳定版本的nodejs和npm。</p>
+<pre><code class="hljs bash">$  curl -o- https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+$  nvm install --lts  <span class="hljs-comment"># 需重新打开终端，nvm才能生效</span></code></pre>
+<p>检验是否安装成功<br><pre><code class="hljs bash">$  npm -v
+6.14.8
+$  node -v
+v14.15.0</code></pre></p>
+<p>我们更换国内npm源以获得更好的体验</p>
+<pre><code class="hljs bash">$  npm install -g cnpm --registry=https://registry.npm.taobao.org</code></pre>
+<p>检验是否安装成功</p>
+<pre><code class="hljs bash">$  cnpm -v
+cnpm@6.1.1 (/home/yao/.nvm/versions/node/v14.15.0/lib/node_modules/cnpm/lib/parse_argv.js)
+npm@6.14.8 (/home/yao/.nvm/versions/node/v14.15.0/lib/node_modules/cnpm/node_modules/npm/lib/npm.js)
+node@14.15.0 (/home/yao/.nvm/versions/node/v14.15.0/bin/node)
+npminstall@3.28.0 (/home/yao/.nvm/versions/node/v14.15.0/lib/node_modules/cnpm/node_modules/npminstall/lib/index.js)
+prefix=/home/yao/.nvm/versions/node/v14.15.0 
+linux x64 5.4.0-42-generic 
+registry=https://r.npm.taobao.org</code></pre>
+<ul>
+<li><p>安装angular（为ceph-dashboard组件准备）</p>
+  <pre><code class="hljs bash">$  cnpm install -g @angular/cli
+$  ng --version</code></pre>
+</li>
+</ul>
+<h3 id="2-编译源码"><a href="#2-编译源码" class="headerlink" title="#2 编译源码"></a>#2 编译源码</h3><ul>
+<li>获取源码。我们选择从中科大镜像站上下载tar包，其中链接末尾的版本号可更改为想要获取的指定版本数字。</li>
+</ul>
+<p>（若使用本地修改后的源代码进行编译可跳过）</p>
+<pre><code class="hljs bash">$  wget http://mirrors.ustc.edu.cn/ceph/tarballs/ceph-14.2.13.tar.gz
+$  tar -zxvf ceph-14.2.13.tar.gz -C ~ <span class="hljs-comment"># 解压tar包</span></code></pre>
+<ul>
+<li><p>安装依赖软件</p>
+  <pre><code class="hljs bash">$  <span class="hljs-built_in">cd</span> ~/ceph-14.2.13
+$  sudo ./install-deps.sh</code></pre>
+</li>
+<li><p>生成makefile</p>
+  <pre><code class="hljs bash">$  ./do_cmake.sh</code></pre>
+<p>  值得一提的是，默认编译的版本是debug版本，各种调试信息的输出可能会大大降低ceph的性能。若要编译非debug版本，应在调用cmake时传递参数<code>-DCMAKE_BUILD_TYPE=RelWithDebInfo</code></p>
+<p>  我们还可以添加参数<code>-DWITH_MGR_DASHBOARD_FRONTEND=OFF</code>来跳过前端控制台dashboard（减少后面的编译和安装时间）。</p>
+</li>
+<li><p>开始编译</p>
+  <pre><code class="hljs bash">$  <span class="hljs-built_in">cd</span> build
+$  sudo make -j4</code></pre>
+<p>  其中j后面的数字代表make多线程编译的线程数（建议设置为CPU物理核心个数）。若编译进程无故中断，重新执行上述make命令以继续即可。注意：有时候线程数过多会导致频繁奔溃，适当减少线程数可能效果会更好。</p>
+</li>
+<li><p>安装到系统</p>
+  <pre><code class="hljs bash">$  sudo make install
+$  sudo ldconfig</code></pre>
+</li>
+<li><p>验证是否安装成功</p>
+  <pre><code class="hljs bash">$  ceph -v
+ceph version 14.2.13 (1778d63e55dbff6cedb071ab7d367f8f52a8699f) nautilus (stable)</code></pre>
+</li>
+</ul>
+<p>如果顺利将显示所安装ceph的版本号。至此，编译安装成功。</p>
+<h3 id="3-备注"><a href="#3-备注" class="headerlink" title="#3 备注"></a>#3 备注</h3><p>截止至本文完成时，Ceph官方的libboost软件仓库部分针对Ubuntu 16.04 (Xenial) 的安装包丢失，因此在Ubuntu 16.04上编译安装Ceph 14.2.13时会遇到依赖环境安装失败的情况（可能暂时无法解决）。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/%E5%AE%9E%E8%B7%B5/">实践</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/ceph/">ceph</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">日语名谚语系列</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/15/Linux%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Ceph-deploy流程&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

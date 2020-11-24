@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.6k 字
+      4.5k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      52
+      65
        分钟
     </span>
   
@@ -254,6 +254,9 @@
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/island-perimeter/">463. 岛屿的周长</a> （Easy）</li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/max-area-of-island/">695. 岛屿的最大面积</a> （Medium）</li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/making-a-large-island/">827. 最大人工岛</a> （Hard）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-ladder/">单词接龙I</a>（Medium）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-ladder-ii/">单词接龙II</a> (Hard)</li>
+<li>双向bfs。</li>
 </ul>
 <hr>
 <h2 id="1-被围绕的区域"><a href="#1-被围绕的区域" class="headerlink" title="1.被围绕的区域"></a>1.被围绕的区域</h2><p>给定一个二维的矩阵，包含 ‘X’ 和 ‘O’（字母 O）。</p>
@@ -601,6 +604,125 @@
 <p>一般用dfs，在时间和空间上表现更好。</p>
 <p>「并查集」：我们可以将所有边按照长度进行排序并依次添加进并查集，直到左上角和右下角连通为止。</p>
 <p>「最短路」：我们可以使用任一单源最短路径的算法（例如 Dijkstra 算法），只需要在维护当前路径长度时，将其修改为题目中的定义即可。</p>
+<hr>
+<h2 id="DFS与BFS结合"><a href="#DFS与BFS结合" class="headerlink" title="DFS与BFS结合"></a>DFS与BFS结合</h2><h4 id="126-单词接龙-II"><a href="#126-单词接龙-II" class="headerlink" title="126. 单词接龙 II"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-ladder-ii/">126. 单词接龙 II</a></h4><p>给定两个单词（<em>beginWord</em> 和 <em>endWord</em>）和一个字典 <em>wordList</em>，找出所有从 <em>beginWord</em> 到 <em>endWord</em> 的最短转换序列。转换需遵循如下规则：</p>
+<ol>
+<li>每次转换只能改变一个字母。</li>
+<li>转换后得到的单词必须是字典中的单词。</li>
+</ol>
+<p><strong>说明:</strong></p>
+<ul>
+<li>如果不存在这样的转换序列，返回一个空列表。</li>
+<li>所有单词具有相同的长度。</li>
+<li>所有单词只由小写字母组成。</li>
+<li>字典中不存在重复的单词。</li>
+<li>你可以假设 <em>beginWord</em> 和 <em>endWord</em> 是非空的，且二者不相同。</li>
+</ul>
+<p><strong>示例 1:</strong></p>
+<pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+beginWord = <span class="hljs-string">&quot;hit&quot;</span>,
+endWord = <span class="hljs-string">&quot;cog&quot;</span>,
+wordList = [<span class="hljs-string">&quot;hot&quot;</span>,<span class="hljs-string">&quot;dot&quot;</span>,<span class="hljs-string">&quot;dog&quot;</span>,<span class="hljs-string">&quot;lot&quot;</span>,<span class="hljs-string">&quot;log&quot;</span>,<span class="hljs-string">&quot;cog&quot;</span>]
+
+<span class="hljs-section">输出:</span>
+[
+  [<span class="hljs-string">&quot;hit&quot;</span>,<span class="hljs-string">&quot;hot&quot;</span>,<span class="hljs-string">&quot;dot&quot;</span>,<span class="hljs-string">&quot;dog&quot;</span>,<span class="hljs-string">&quot;cog&quot;</span>],
+  [<span class="hljs-string">&quot;hit&quot;</span>,<span class="hljs-string">&quot;hot&quot;</span>,<span class="hljs-string">&quot;lot&quot;</span>,<span class="hljs-string">&quot;log&quot;</span>,<span class="hljs-string">&quot;cog&quot;</span>]
+]</code></pre>
+<p><strong>示例 2:</strong></p>
+<pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+beginWord = <span class="hljs-string">&quot;hit&quot;</span>
+endWord = <span class="hljs-string">&quot;cog&quot;</span>
+wordList = [<span class="hljs-string">&quot;hot&quot;</span>,<span class="hljs-string">&quot;dot&quot;</span>,<span class="hljs-string">&quot;dog&quot;</span>,<span class="hljs-string">&quot;lot&quot;</span>,<span class="hljs-string">&quot;log&quot;</span>]
+
+<span class="hljs-section">输出: []</span>
+
+<span class="hljs-section">解释: endWord &quot;cog&quot; 不在字典中，所以不存在符合要求的转换序列。</span></code></pre>
+<hr>
+<p>这题与 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-ladder/">单词接龙I</a>不同之处在于，要求的是所有最短路径，这是一个比较棘手的问题，不过即便碰到我们也要知道怎么做。在构建完图之后（注意我们不需要再添加“*”过渡节点），我们进行广义优先搜索。</p>
+<p>我们采用$cost$数组，其中第i个元素表示 beginWord对应的点到达第i个点的转换次数，初始状态为无穷大。开始将beginWord对应的路径压入队列。</p>
+<p>我们设当前节点为$curr_list$，它保存的是<strong><em>路径</em></strong>，周围与之相邻的节点为$neigh$，记$end $为$curr_list$ 最后一个元素。</p>
+<p>若队列不为空则，更新当前路径，若</p>
+<ul>
+<li>$curr == end,$则将当前路径加入到答案之中</li>
+<li>否则， 遍历邻近节点，检查$cost[neigh]&gt;=cost[curr]+1$， 如果满足，我们就将$neigh$加入到队列中，并且更新$cost[neigh] = cost[curr] +1$.  否则这个节点已经被访问过，不需要考虑。</li>
+</ul>
+<p>C++代码</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+
+    <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-built_in">string</span>,<span class="hljs-keyword">int</span>&gt; word2num;<span class="hljs-comment">//词梯对应的id</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">unordered_set</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; edges; <span class="hljs-comment">//图的所有变</span>
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; dis;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt; res;
+        
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isClose</span><span class="hljs-params">(<span class="hljs-built_in">string</span> &amp;a, <span class="hljs-built_in">string</span> &amp;b)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//判断两单词是不是只有一个字母不同，只能用引用传参</span>
+        <span class="hljs-keyword">int</span> n = a.size();
+        <span class="hljs-keyword">int</span> diff = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        <span class="hljs-keyword">if</span>(a[i]!=b[i])&#123; 
+            diff++;
+            <span class="hljs-keyword">if</span>(diff &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> diff == <span class="hljs-number">1</span>;
+    &#125;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&gt; <span class="hljs-title">findLadders</span><span class="hljs-params">(<span class="hljs-built_in">string</span> beginWord, <span class="hljs-built_in">string</span> endWord, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&amp; wordList)</span> </span>&#123;
+        <span class="hljs-comment">//建立图</span>
+        wordList.push_back(beginWord);
+        <span class="hljs-keyword">int</span> n = wordList.size();
+        edges.resize(n);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        &#123;
+            word2num[wordList[i]] = i;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = i+<span class="hljs-number">1</span>;j &lt; n;j++)
+            <span class="hljs-keyword">if</span>(isClose(wordList[i],wordList[j]))
+            &#123;
+                
+                edges[i].insert(j);
+                edges[j].insert(i);
+            &#125;
+        &#125;
+        dis.resize(n,INT_MAX);
+        
+        <span class="hljs-keyword">if</span>(!word2num.count(endWord)) <span class="hljs-keyword">return</span> &#123;&#125;;
+        
+        <span class="hljs-keyword">int</span> start = word2num[beginWord], end = word2num[endWord]; 
+        dis[start] = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// dfs会超时，我们采用广搜算法</span>
+        <span class="hljs-built_in">queue</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; bfs; <span class="hljs-comment">//元素为数组的列队</span>
+        bfs.push(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&#123;start&#125;); 
+        <span class="hljs-keyword">while</span>(!bfs.empty())
+        &#123;
+            <span class="hljs-keyword">auto</span> curr_list = bfs.front(); bfs.pop();
+            <span class="hljs-keyword">int</span> curr = curr_list.back(); <span class="hljs-comment">//当前节点</span>
+            <span class="hljs-keyword">if</span>(curr == end)
+            &#123;
+                <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt; tmp;
+                <span class="hljs-comment">//转化为string加入到答案</span>
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;ss: curr_list) tmp.push_back(wordList[ss]);
+                res.push_back(tmp); 
+                <span class="hljs-comment">// min_dis = min(min_dis,(int)curr_list.size());</span>
+                <span class="hljs-keyword">continue</span>;
+            &#125;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;neigh:edges[curr])
+            &#123;
+                <span class="hljs-keyword">if</span>(dis[neigh] &gt;= dis[curr] + <span class="hljs-number">1</span>)
+                &#123;<span class="hljs-comment">//避免重复访问</span>
+                    dis[neigh] = dis[curr] + <span class="hljs-number">1</span>;
+                    curr_list.push_back(neigh);
+                    bfs.push(curr_list); <span class="hljs-comment">//当前列表添加到队尾</span>
+                    curr_list.pop_back();<span class="hljs-comment">//注意及时pop_back，否则会重复添加邻近节点</span>
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-comment">//将序号变为string输出</span>
+        <span class="hljs-keyword">return</span> res;
+        &#125;
+&#125;;</code></pre>
+<p>这样做并不需要比较各路径的长度，tmp一定最短路径， 为什么？</p>
+<p>提示：$dis[neigh] &gt;= dis[curr] + 1$</p>
 
             </div>
             <hr>
@@ -635,9 +757,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/02/20201002-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95II-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
+                      <a href="/2020/09/27/ML4_DecisionTree/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">机器学习算法II 神经网络</span>
+                        <span class="hidden-mobile">机器学习算法I 决策树</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -645,8 +767,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/27/ML4_DecisionTree/">
-                        <span class="hidden-mobile">机器学习算法I 决策树</span>
+                      <a href="/2020/09/23/2020-9-23-binary_tree/">
+                        <span class="hidden-mobile">必须掌握数据结构-树</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

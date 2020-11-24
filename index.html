@@ -188,24 +188,24 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/21/Ceph%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">「当前最流行的分布式存储系统」——Ceph尝鲜</a>
+        <a href="/2020/10/21/Ceph%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">Ceph手动配置集群部署</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/21/Ceph%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+        <a href="/2020/10/21/Ceph%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">
           
           
             
           
-          当前最流行的分布式存储系统——Ceph尝鲜
+          
+            TODO: 最近一次更新 : 2020/11/21 21:11
+          
+当前最流行的分布式存储系统——Ceph尝鲜
 首先介绍一些使用的网站备查，建议保存到chrome收藏夹！
 Ceph中国社区：包括中文文档（非最新），以及新闻等。
 最新的英文文档：最新的英文文档，包括nautilus和Octopus版本，你一定不想错过！
 API文档
-快速安装入门：适合新手，包括基础的配置等。
-Ceph源码：喜欢git的筒子可以看这儿，包括编译步骤。
-官方的问题tracker：
-官方的
+快速安装入门：适合新手，
         </a>
       </p>
 
@@ -294,6 +294,247 @@ Ceph源码：喜欢git的筒子可以看这儿，包括编译步骤。
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/11/19/Ceph%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8F%8A%E7%BC%93%E5%AD%98%E6%9B%BF%E6%8D%A2%E6%9C%BA%E5%88%B6/">CEPH 数据分布及缓存替换机制</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/19/Ceph%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8F%8A%E7%BC%93%E5%AD%98%E6%9B%BF%E6%8D%A2%E6%9C%BA%E5%88%B6/">
+          
+          
+            
+          
+          Ceph数据分布及缓存替换机制
+2020/11/17 by Chongyu Hu
+
+缓存替换机制LRU算法：最近最少使用，时间局部性原理。
+LFU算法：最近不经常使用，SDD访问模型。
+ARC算法，同时考虑了LRU和LFU的长处，同时使用两个队列对缓存中页面进行管理：
+
+MRU (Most Recently Used) 队列保存最近访问过的页面
+MFU（Most Frequently Used）队
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-19 00:00" pubdate>
+              2020-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E7%90%86%E8%AE%BA/">理论</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">日语名谚语系列</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">
+          
+          
+            
+          
+          毎日放送－日本の諺每日一句日语谚语，让你口语和写作更地道一点吧。
+1.　失敗は成功の元。　しっぱいはせいこうのもと。失败是成功之母。2.　習うより慣れよ。习惯成自然。3.　今日の後に今日なし。光阴似箭，日月如梭。4.　急がは回れ。欲速则不达。5.　人は見かけによらず。人不可貌相。6.　覆水盆に返らず。ふくすいぼんにかえらず。覆水难收。7.　石の上にも三年。功夫不负有心人。8.　努力に勝る天才なし。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-19 00:00" pubdate>
+              2020-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AF%AD/">日语</a>
+            
+              <a href="/categories/%E6%97%A5%E8%AF%AD/%E6%96%87%E5%8C%96/">文化</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%97%A5%E8%AF%AD/">日语</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">Ceph-deploy流程</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">
+          
+          
+            
+          
+          Ceph-deploy流程本文介绍了借助Ceph-deploy工具安装Ceph并搭建集群的过程。按照下文的步骤，你可以快速搭建一个基础的Ceph环境，并且了解Ceph集群的组成和工作原理。文章首先会简单介绍Ceph及其安装和环境部署方法，接着给出了预备环境的搭建过程，最后详细地列出了Ceph的安装及配置过程。本文附录还给出了Ceph的编译过程示例。
+1  Ceph基础1.1 Ceph介绍Ceph 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-19 00:00" pubdate>
+              2020-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E5%AE%9E%E8%B7%B5/">实践</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/15/Linux%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/"></a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/15/Linux%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+          
+          
+            
+          
+          Linux 文件系统brfts , xfs, ext4
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-15 21:44" pubdate>
+              2020-11-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">纠删码综述</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">
+          
+          
+            
+          
+          纠删码在存储系统的应用
+2017年更新
+
+摘要随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本论文介绍了当前典型和常见的纠删码技术的发展现状，从评价纠删码性能的各项重要指标的角度详细地对比和分析了现有的纠删码技术，给出了不同纠删码在容错能力与磁盘要求、空间利用率、编码效率、更新效率、重构效率等方面的不足和可能的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-15 00:00" pubdate>
+              2020-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%BB%BC%E8%BF%B0/">综述</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/11/05/2020-11-04-designing-ds/">设计类问题如何解决</a>
       </h1>
 
@@ -305,8 +546,12 @@ Ceph源码：喜欢git的筒子可以看这儿，包括编译步骤。
           
           设计类题目如何解决
 设计类题目占比并不大，题目难度也不大。但是一旦碰到了，我们也要直到如何解决！
+设计类问题会使我们对部分数据结构的内在实现由更深入的了解，类似于阅读java源码。
 
-
+707. 设计链表622. 设计循环队列208. 实现 Trie (前缀树) （※）
+981. 基于时间的键值存储 - 力扣（LeetCode）
+460. LFU缓存 - 力扣（LeetCode）
+341. 扁平化嵌
         </a>
       </p>
 
@@ -441,290 +686,6 @@ Ceph项目最早起源于Sage就读博士期间的工作（最早的成果于200
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/ceph/">ceph</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/26/Shell/">Shell 从入门到放弃</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/26/Shell/">
-          
-          
-            
-          
-          Shell 从入门到放弃
-Shell 是一个用 C 语言编写的程序，它是用户使用 Linux 的桥梁。Shell 既是一种命令语言，又是一种程序设计语言。
-Shell 是指一种应用程序，这个应用程序提供了一个界面，用户通过这个界面访问操作系统内核的服务。
-Ken Thompson 的 sh 是第一种 Unix Shell，Windows Explorer 是一个典型的图形界面 Shell。
-
-Sh
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-26 00:00" pubdate>
-              2020-10-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/shell/">shell</a>
-            
-              <a href="/categories/shell/CLI/">CLI</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/shell/">shell</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/24/CMake%20%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">Cmake学习</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/24/CMake%20%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">
-          
-          
-            
-          
-          CMake 蹦迪指南CMake方式编译生成库文件以简单的例子来来看看CMake的语法,创建一个  test项目，项目结构如下 ├── test目录 │   ├── CMakeLists.txt │   ├── include目录 │   │   ├── myprint.h │   ├── src 目录 │   │   ├── myprint.cpp │   ├── lib目录 │   ├── bi
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-24 00:00" pubdate>
-              2020-10-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/cmake/">cmake</a>
-            
-              <a href="/categories/cmake/%E7%BC%96%E8%AF%91/">编译</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Cmake/">Cmake</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/18/VIMdict/">VIM命令查询</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/18/VIMdict/">
-          
-          
-            
-          
-          VIM命令查询本1.1 Vim的几种模式
-正常模式：可以使用快捷键命令，或按:输入命令行。
-插入模式：可以输入文本，在正常模式下，按i、a、o等都可以进入插入模式。
-可视模式：正常模式下按v可以进入可视模式， 在可视模式下，移动光标可以选择文本。按V进入可视行模式， 总是整行整行的选中。ctrl+v进入可视块模式。
-替换模式：正常模式下，按R进入。
-
-2. 启动Vim
-vim -c cmd fil
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-18 00:00" pubdate>
-              2020-10-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">linux实用技巧</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vim/">vim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/16/2020-10-16-prefix_sum/">数组和字符串的🆒skr操作——前缀和</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/16/2020-10-16-prefix_sum/">
-          
-          
-            
-          
-          前缀和
-
-和为k的子数组(Medium)
-
-
-
-每个元音包含最长的子字符串(Medium)
-
-
-1248. 统计「优美子数组」
-LCP 19：秋叶收藏集
-
-
-什么是前缀和？前缀和是一个数组的某项下标之前(包括此项元素)的所有数组元素的和。 
-设$p[]$为前缀和数组，$a[]$为原数组，根据这句话可以得到前缀和的定义式和递推式:
-
-
-
-
-
-定义式
-递推式
-
-
-
-
-一维前缀和
-$p[i]=\sum\
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-16 00:00" pubdate>
-              2020-10-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
-            
-              <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/08/Hadoop%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Hadoop环境配置</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/08/Hadoop%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-          
-          
-            
-          
-          Hadoop环境配置单机模式的操作方法默认情况下，Hadoop被配置成以非分布式模式运行的一个独立Java进程。这对调试非常有帮助。
-下面的实例将已解压的 conf 目录拷贝作为输入，查找并显示匹配给定正则表达式的条目。输出写入到指定的output目录。
-$ mkdir input
-$ cp conf/*.xml input
-$ bin/hadoop jar hadoop-*-examples.j
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-08 00:00" pubdate>
-              2020-10-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/hadoop/">hadoop</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E6%9E%B6%E6%9E%84/">分布式存储架构</a>
             
           </div>
         

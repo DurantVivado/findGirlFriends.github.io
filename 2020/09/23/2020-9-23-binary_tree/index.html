@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.3k 字
+      7.9k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      102
+      110
        分钟
     </span>
   
@@ -1068,6 +1068,69 @@ dp[v]=dp[v]+(dp[u]+sz[u])</script><p>同时 更新ans数组。</p>
 &#125;;</code></pre>
 <p>这里有个细节，就是0不一定是根节点，但是题目说了是双向图，无论是从哪个子节点均可以遍历整个树，牢记！</p>
 <hr>
+<h2 id="完全二叉树"><a href="#完全二叉树" class="headerlink" title="完全二叉树"></a>完全二叉树</h2><ol>
+<li>完全二叉树节点个数</li>
+</ol>
+<p>完全二叉树除了底层不满以外，其它层均满节点，且底层的第一个节点一定是最左边的节点。设完全二叉树的层数为$h$,那么二叉树的节点数$N\in[2^h,2^{h+1}-1]$. 红黑树和AVL树均属于完全二叉树。</p>
+<p>因为节点数的最大最小值知道，完全二叉树经常可以和二分查找和位运算结合起来。</p>
+<p>如何判断第k个节点是否存在？</p>
+<p>具体做法是，根据节点个数范围的上下界得到当前需要判断的节点个数k，如果第 k 个节点存在，则节点个数一定大于或等于 k，如果第 k 个节点不存在，则节点个数一定小于 k，由此可以将查找的范围缩小一半，直到得到节点个数。</p>
+<p>如何判断第 k 个节点是否存在呢？如果第 k 个节点位于第 h 层，则 k 的二进制表示包含 h+1 位，其中最高位是 1，其余各位从高到低表示从根节点到第 k 个节点的路径，0 表示移动到左子节点，1 表示移动到右子节点。通过位运算得到第 k 个节点对应的路径，判断该路径对应的节点是否存在，即可判断第 k 个节点是否存在。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">countNodes</span><span class="hljs-params">(TreeNode* root)</span> </span>&#123;
+     <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;   
+     <span class="hljs-comment">//完全二叉树最后一层的第一个节点一定是最左边的节点，其余层均为满二叉树</span>
+     <span class="hljs-comment">//1.首先计算二叉树的层数</span>
+     <span class="hljs-keyword">int</span> level = <span class="hljs-number">0</span>;
+     TreeNode* node = root;
+     <span class="hljs-keyword">while</span>(node-&gt;left)
+     &#123;
+        node = node-&gt;left;
+        level++;
+         
+     &#125;
+     <span class="hljs-built_in">cout</span>&lt;&lt;level&lt;&lt;<span class="hljs-built_in">endl</span>;
+     <span class="hljs-comment">//2.进行二分法搜索，设h = level，那么树的节点范围为[2^h, 2^(h+1)-1]</span>
+     <span class="hljs-keyword">int</span> low = <span class="hljs-number">1</span>&lt;&lt;level, high =( <span class="hljs-number">1</span>&lt;&lt;(level+<span class="hljs-number">1</span>))<span class="hljs-number">-1</span>;
+     <span class="hljs-keyword">while</span>(low &lt; high)
+     &#123;
+         <span class="hljs-keyword">int</span> mid = low + ((high-low+<span class="hljs-number">1</span>)&gt;&gt;<span class="hljs-number">1</span>);
+        <span class="hljs-comment">// printf(&quot;low:%d,high:%d,mid:%d\n&quot;,low,high,mid);</span>
+        <span class="hljs-keyword">if</span>(exists(root, level, mid))
+        &#123;<span class="hljs-comment">//如果存在这个节点，那么总节点数一定大于mid</span>
+            low = mid;
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            high = mid<span class="hljs-number">-1</span>;
+        &#125;
+        
+     &#125;
+     <span class="hljs-keyword">return</span> low; <span class="hljs-comment">//low == high</span>
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">exists</span><span class="hljs-params">(TreeNode* root, <span class="hljs-keyword">int</span> level, <span class="hljs-keyword">int</span> k)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//核心函数：判断节点是否存在，采用位运算</span>
+        <span class="hljs-keyword">int</span> bits = <span class="hljs-number">1</span>&lt;&lt;(level<span class="hljs-number">-1</span>);
+        TreeNode *node = root;
+        <span class="hljs-keyword">while</span>(node &amp;&amp; bits &gt;<span class="hljs-number">0</span> )
+        &#123;
+            <span class="hljs-keyword">if</span>(!(bits &amp; k))
+            &#123;
+                node = node-&gt;left;
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                node = node-&gt;right;
+            &#125;
+            bits&gt;&gt;=<span class="hljs-number">1</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> node!=<span class="hljs-literal">nullptr</span>;
+
+    &#125;
+
+&#125;;</code></pre>
+<hr>
 <h2 id="二叉树的线索化-（待完善）"><a href="#二叉树的线索化-（待完善）" class="headerlink" title="二叉树的线索化*（待完善）"></a>二叉树的线索化*（待完善）</h2><blockquote>
 <p>二叉树转换为链表的方式，了解就行,参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014492609/article/details/40477795#">https://blog.csdn.net/u014492609/article/details/40477795#</a></p>
 </blockquote>
@@ -1151,9 +1214,9 @@ dp[v]=dp[v]+(dp[u]+sz[u])</script><p>同时 更新ans数组。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/27/ML4_DecisionTree/">
+                      <a href="/2020/09/27/2020-8-12-dfs-bfs/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">机器学习算法I 决策树</span>
+                        <span class="hidden-mobile">双胞胎DFS与BFS</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
