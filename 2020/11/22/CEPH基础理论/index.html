@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>ceph踩坑学习 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>CEPH 基础介绍 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -179,8 +179,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-10-28 00:00" pubdate>
-        2020年10月28日 凌晨
+      <time datetime="2020-11-22 00:00" pubdate>
+        2020年11月22日 凌晨
       </time>
     </span>
   
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10.5k 字
+      12k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      118
+      136
        分钟
     </span>
   
@@ -239,10 +239,10 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">ceph踩坑学习</h1>
+            <h1 style="display: none">CEPH 基础介绍</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="CEPH预踩坑学习"><a href="#CEPH预踩坑学习" class="headerlink" title="CEPH预踩坑学习"></a>CEPH预踩坑学习</h1><hr>
+              <h1 id="CEPH基础理论学习"><a href="#CEPH基础理论学习" class="headerlink" title="CEPH基础理论学习"></a>CEPH基础理论学习</h1><hr>
 <h1 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h1><h2 id="1-Ceph简介"><a href="#1-Ceph简介" class="headerlink" title="1 Ceph简介"></a><strong>1 Ceph简介</strong></h2><blockquote>
 <p>Ceph是一个统一的分布式存储系统，设计初衷是提供较好的性能、可靠性和可扩展性。它是一个统一的存储系统，既支持传统的块、文件存储协议，例如SAN和NAS，也支持新兴的对象存储协议，如S3和Swift，这使得Ceph理论上可以满足时下一切主流的存储应用的要求。</p>
 </blockquote>
@@ -703,6 +703,82 @@
 <p><strong>扩容后</strong></p>
 <p><img src="CEPH踩坑学习/2099201-9e324e87c6d086f3.png" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>说明</strong><br>每个OSD上分布很多PG, 并且每个PG会自动散落在不同的OSD上。如果扩容那么相应的PG会进行迁移到新的OSD上，保证PG数量的均衡。</p>
+<h3 id="PG状态及其含义"><a href="#PG状态及其含义" class="headerlink" title="PG状态及其含义"></a>PG状态及其含义</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">PG状态</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">down</td>
+<td style="text-align:center">PG处于失效状态，PG处于离线状态</td>
+</tr>
+<tr>
+<td style="text-align:center">repair</td>
+<td style="text-align:center">PG正在被检查，被发现的任何不一致都将尽可能的被修复</td>
+</tr>
+<tr>
+<td style="text-align:center">peering（等待互联）</td>
+<td style="text-align:center">PG处于 peering 过程中, peering 由主 osd 发起的使存放 PG 副本的所有 OSD 就 PG 的所有对象和元素数据的状态达成一致的过程, peering 过程完成后, 主 OSD 就可以接受客户端写请求.</td>
+</tr>
+<tr>
+<td style="text-align:center">active</td>
+<td style="text-align:center">当 ceph 完成 peering 过程, pg 将会变成 active, active 状态意味着 pg 中的数据变得可用, 主 pg 将可执行读写操作 .</td>
+</tr>
+<tr>
+<td style="text-align:center">clean</td>
+<td style="text-align:center">干净态。前不存在待修复的对象， Acting Set和Up Set内容一致，并且大小等于存储池的副本数</td>
+</tr>
+<tr>
+<td style="text-align:center">replay（重做）</td>
+<td style="text-align:center">某OSD崩溃后，PG正在等待客户端重新发起操作</td>
+</tr>
+<tr>
+<td style="text-align:center">degraded</td>
+<td style="text-align:center">1.PG 处于 active+degraded 原因是因为 OSD 是处于活跃, 但并没有完成所有的对象副本写入, PG 中部分对象的副本数量未达到规定的数量.当 OSD 重新上线, OSD 将会重新恢复,  假如 OSD DOWN 并且 degraded 状态持续, CEPH 会标记 DOWN OSD, 并会对集群迁移相关 OSD 的数据, 对应时间由<code>mon osd down out interval</code> 参数决定 .</td>
+</tr>
+<tr>
+<td style="text-align:center">inconsistent</td>
+<td style="text-align:center">PG副本出现不一致, 对象大小不正确或者恢复借宿后某个副本出现对象丢失现象</td>
+</tr>
+<tr>
+<td style="text-align:center">recovering</td>
+<td style="text-align:center">ceph 设备故障容忍在一定范围的软件与硬件问题, 当 OSD 变 DOWN, 那么包含该 OSD 的 PG 副本都会有问题, 当 OSD 恢复, OSD 对应的 PG 将会更新 并反映出当前状态, 在一段时间周期后, OSD 将会恢复 recovering 状态</td>
+</tr>
+<tr>
+<td style="text-align:center">back filling</td>
+<td style="text-align:center">当新 OSD 加入集群, CRUSH 将会为集群新添加的 OSD 重新分配 PG, 强制新的 OSD 接受重新分配的 PG 并把一定数量的负载转移到新 OSD 中,back filling OSD 会在后台处理, 当 backfilling 完成, 新的 OSD 完成后, 将开始对请求进行服务</td>
+</tr>
+<tr>
+<td style="text-align:center">remapped</td>
+<td style="text-align:center">当 pg 改变, 数据从旧的 osd 迁移到新的 osd, 新的主 osd 应该请求将会花费一段时间, 在这段时间内, 将会继续向旧主 osd 请求服务, 直到 PG 迁移完成, 当数据迁移完成, mapping 将会使用新的 OSD 响应主 OSD 服务</td>
+</tr>
+<tr>
+<td style="text-align:center">stale（旧）</td>
+<td style="text-align:center">当 ceph 使用 heartbeat 确认主机与进程是否运行, ceph osd daemon 可能由于网络临时故障, 获得一个卡住状态 (stuck state) 没有得到心跳回应 默认, osd daemon 会每 0.5 秒报告 PG, up 状态, 启动与故障分析, 假如 PG 中主 OSD 因为故障没有回应 monitor 或者其他 OSD 报告 主 osd down, 那么 monitor 将会标记 PG stale</td>
+</tr>
+<tr>
+<td style="text-align:center">scrubbing</td>
+<td style="text-align:center">scrubbing（清理中）, PG 在做一致性校验</td>
+</tr>
+<tr>
+<td style="text-align:center">inactive</td>
+<td style="text-align:center">inactive ：PG 很长时间没有显示为 active 状态, (不可执行读写请求), PG 不可以执行读写, 因为等待 OSD 更新数据到最新的备份状态</td>
+</tr>
+<tr>
+<td style="text-align:center">unclean</td>
+<td style="text-align:center">unclean：PG 很长时间都不是 clean 状态 (不可以完成之前恢复的操作), PG 包含对象没有完成相应的复制副本数量, 通常都要执行恢复操作。</td>
+</tr>
+<tr>
+<td style="text-align:center">stale（新）</td>
+<td style="text-align:center">stale：PG 状态很长时间没有被 ceph-osd 更新过, 标识存储在该 GP 中的节点显示为 DOWN, PG 处于 unknown 状态, 因为 OSD 没有报告 monitor 由 mon osd report timeout 定义超时时间</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 <h2 id="3-Ceph心跳机制"><a href="#3-Ceph心跳机制" class="headerlink" title="3 Ceph心跳机制"></a>3 Ceph心跳机制</h2><p>心跳是用于节点间检测对方是否故障的，以便及时发现故障节点进入相应的故障处理流程。</p>
 <p><strong>问题：</strong></p>
@@ -992,13 +1068,121 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/9398">多对象事务语义支持参考</a></p>
 </blockquote>
 <h2 id="磁盘数据结构"><a href="#磁盘数据结构" class="headerlink" title="磁盘数据结构"></a>磁盘数据结构</h2><p>BlueStore习惯上磁盘格式用<code>_t</code>结尾而内存格式不以<code>_t</code>结尾并且只有首大写字母。所有元数据被设计成可以和用户数据分开存放，以键值对形式存放在$kvDB$中。</p>
-<h3 id="PG"><a href="#PG" class="headerlink" title="PG"></a>PG</h3><p>ceph对所有存储资源进行池化管理，Ceph将任意类型的前端数据都抽象为对象，每一个对象 采用一定的策略可以生成一个全局唯一的对象标识符（$ObjectID,OID$）基于此策略的对象标识最终可以形成一个扁平的寻址空间，从而大大提高索引效率。</p>
+<h3 id="PG"><a href="#PG" class="headerlink" title="PG"></a>PG</h3><p>ceph对所有存储资源进行池化管理。资源池(pool), 是一个虚拟概念，表示一组CRUSH规则的约束条件。比如我们可以针对不同的pool指定不同的备份策略，针对时延敏感的应用采用副本策略，而在一些不重要的应用采用纠删码。Ceph将任意类型的前端数据都抽象为对象，每一个对象 采用一定的策略可以生成一个全局唯一的对象标识符（$ObjectID,OID$）基于此策略的对象标识最终可以形成一个扁平的寻址空间，从而大大提高索引效率。</p>
 <p>为了实现不同pool之间的策略隔离，Ceph引入了一个中间结构，称为PG，（归置组），实现两级映射。</p>
 <ul>
 <li>第一级映射是静态的，负责将任何前端类型 的应用数据按照固定的大小进行分割·编号作为伪随机哈希函数的输入，均匀映射至PG，以实现负载均衡。</li>
-<li>第二集映射实现PG到OSD的映射，这级映射仍采用伪随机哈希函数，但是除输入的五安居唯一的PGID外，还引入了集群拓扑，并且使用CRUSH规则对计算过程进行调整，以帮助PG在不同OSD之间进行灵活迁移，进而实现数据可靠性和自动平衡等。</li>
+<li>第二集映射实现PG到OSD的映射，这级映射仍采用伪随机哈希函数，但是除输入的五安居唯一的PGID外，还引入了集群拓扑，并且使用CRUSH规则对计算过程进行调整，以帮助PG在不同OSD之间进行灵活迁移，进而实现数据可靠性和自动平衡等。最终pool以PG作为基本单位进行组织。</li>
 </ul>
 <p>为了维持扁平的寻址空间。PG也有一个全局唯一的ID——$PGID$，所有的pool由Monitor统一管理，集群内唯一pool-id。事实上，为了保证Monitor分布一致性，采用Paxos算法，我们只需要为pool内每个PG分配一个pool内唯一的编号即可。</p>
+<blockquote>
+<p>思考：如何使得同一个pool下的不同的PG低n位相同？</p>
+<p>首先由特定类型的Client根据其操作的对象名计算出一个32位的哈希值，然后根据其操作的对象名计算出一个32位的哈希值，然后根据归属的pool及此时的哈希值，通过简单的计算，比如取模，即可找到最终承载该对象的PG。</p>
+<p>我们发现如果pool内的PG数目如果能写成$2^n$形式，那么其低n比特都是相同的。我们将$2^n-1$称为PG的<strong>掩码</strong>。否则，若PG不能写成$2^n$的形式，则不能保证针对不同的输入低n比特相同这一“稳定”的性质。（比如有12个PG，那么对于属于同一个pool的PGID只有低两位相同）</p>
+<p>因此一种行之有效的方法是用掩码代替取模。取hash低n-1位，即$hash\&amp;(2^n-1)$ .但这种映射存在问题，如果PG数目不能被2整除，那么采用这种方式会导致空穴，也就是取模结果没有实际PG对应。</p>
+<p>比如一个pool有12个PG，n=4，但是12-15这些值都浪费了：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们可以想办法压缩空间 ，$hash\&amp;(2^{n-1}-1)$，使得不能被2整除的PGID仍能被合理映射。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>如果$hash\&amp;(2^{n}-1)&lt;pg_num$，那么可以直接返回$hash\&amp;(2^n-1)$.</p>
+<p>否则，我们返回$hash\&amp;(2^{n-1}-1)$.</p>
+<p>在参考书上被称为稳定哈希（stable hash）。</p>
+</blockquote>
+<p>Ceph主要设计理念之一是高扩展性。当集群中PG增加，新的PG会被随机均匀地映射至所有OSD上。作为stable hash的输入的PG数目已经发生变化，导致某些对象从旧PG重新映射至新PG，因此需要转移这部分对象，我们称为<strong>PG分裂</strong>。</p>
+<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><p>BlueStore中的对象非常类似于文件，其最基本单元是<strong>逻辑段</strong>（extent）.</p>
+<p>可以写成 $\{offset, length , data\}$，</p>
+<ul>
+<li>offset表示对象逻辑偏移，从0开始编址</li>
+<li>逻辑段长度</li>
+<li>抽象数据类型</li>
+</ul>
+<p>—-更新中</p>
 <p>参考资料</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cc3ece850433">https://www.jianshu.com/p/cc3ece850433</a></p>
 <hr>
@@ -1014,7 +1198,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
                     
                       <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
                     
-                      <a class="hover-with-bg" href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+                      <a class="hover-with-bg" href="/categories/ceph/%E7%90%86%E8%AE%BA/">理论</a>
                     
                   </div>
                 
@@ -1035,18 +1219,12 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/03/2020113-Ceph-Mon-%E8%AF%A6%E8%A7%A3/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Ceph-Mon 详解</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/10/26/Shell/">
-                        <span class="hidden-mobile">Shell 从入门到放弃</span>
+                      <a href="/2020/11/19/Ceph%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8F%8A%E7%BC%93%E5%AD%98%E6%9B%BF%E6%8D%A2%E6%9C%BA%E5%88%B6/">
+                        <span class="hidden-mobile">CEPH 数据分布及缓存替换机制</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -1247,7 +1425,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "ceph踩坑学习&nbsp;",
+        "CEPH 基础介绍&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
