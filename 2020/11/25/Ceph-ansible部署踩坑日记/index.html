@@ -1,0 +1,954 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>【推荐】Ceph-ansible部署集群 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-25 18:00" pubdate>
+        2020年11月25日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      26
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">【推荐】Ceph-ansible部署集群</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Ceph-ansible部署踩坑日记"><a href="#Ceph-ansible部署踩坑日记" class="headerlink" title="Ceph-ansible部署踩坑日记"></a>Ceph-ansible部署踩坑日记</h1><blockquote>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://docs.ceph.com/projects/ceph-ansible/en/latest/">https://docs.ceph.com/projects/ceph-ansible/en/latest/</a></p>
+</blockquote>
+<h1 id="Quick-Deployment-快速部署"><a href="#Quick-Deployment-快速部署" class="headerlink" title="Quick Deployment:快速部署"></a>Quick Deployment:快速部署</h1><div class="note note-danger">
+            <p>Important:</p><p>ceph-deploy 不再经常性维护， 并且在高于Nautilus的版本没有进行过测试。不推荐使用! </p>
+          </div>
+<p><strong>Cephadm</strong>：Cephadm完美支持新的编排API、CLI和仪表盘特性，可用于快速部署Octopus及更新版本的Ceph集群。Cephadm更加简单，且不依赖其它自动化部署工具，但该工具不支持部署旧版本的Ceph（如14的Nautilus），所有Ceph进程也是运行在容器中的，意味着在修改源码的情况下还需要制作新的镜像，比较麻烦。<strong>官方文档中指出，Cephadm暂时不推荐用于生产环境。</strong></p>
+<p><strong>Rook</strong>：可以把Ceph部署在Kubernetes集群中运行。与1类似的是，Ceph也是运行在容器中的。</p>
+<blockquote>
+<p>上述的两种方法都是容器部署</p>
+</blockquote>
+<p>第三方部署工具</p>
+<p>【推荐👍】 <strong>ceph-ansible</strong>. 它被广泛使用。ceph-ansible未与Nautlius和Octopus中引入的新的Orchestrator API集成在一起，这意味着更新的管理功能和仪表板集成不可用。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SUSE/DeepSea">DeepSea</a>使用Salt安装Ceph。</p>
+<p><a target="_blank" rel="noopener" href="https://jaas.ai/ceph-mon">jaas.ai/ceph-mon</a>使用Juju安装Ceph。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/openstack/puppet-ceph">github.com/openstack/puppet-ceph</a> 通过Puppet安装Ceph。</p>
+<p>官方的最低要求是 <strong>1</strong> Monitors + <strong>3</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
+<p>在运行ceph-mon守护程序的每个节点上，还应该设置一个ceph-mgr守护程序。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">虚拟机节点名称</th>
+<th style="text-align:center">职责</th>
+<th style="text-align:center">IP地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ceph-master (w/ source-code compiled)</td>
+<td style="text-align:center">mon0 + mgr0+osd0(部署节点)</td>
+<td style="text-align:center">192.168.161.134</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-node1</td>
+<td style="text-align:center">mon1+mgr1</td>
+<td style="text-align:center">192.168.161.130</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-node2</td>
+<td style="text-align:center">mon2+mgr2</td>
+<td style="text-align:center">192.168.161.131</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-osd1</td>
+<td style="text-align:center">osd1</td>
+<td style="text-align:center">192.168.161.132</td>
+</tr>
+<tr>
+<td style="text-align:center">ceph-osd2</td>
+<td style="text-align:center">osd2</td>
+<td style="text-align:center">192.168.161.133</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="note note-primary">
+            <p>小技巧：我们可以先在1台虚拟机上配置好通用的预备环境，再克隆出另外的2台，随后调整部分配置后即可（如IP、主机名等）。克隆后记得重新生成网卡MAC地址</p>
+          </div>
+<h3 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h3><p>关闭firewalld，设置selinux为disabled状态，设置ssh免密登录，配置时钟同步服务。</p>
+<blockquote>
+</blockquote>
+<pre><code class="hljs nginx"><span class="hljs-attribute">sudo</span> ufw status<span class="hljs-comment">#查看防火墙状态 active:开启 inactive：关闭</span></code></pre>
+<pre><code class="hljs puppet"><span class="hljs-comment"># mon作为控制节点</span>
+sudo apt install openssh-server
+ssh-keygen -t rsa 
+ssh-copy-<span class="hljs-keyword">id</span> &#123;<span class="hljs-built_in">hostname</span>&#125;@&#123;ip&#125;<span class="hljs-comment">#复制密钥到各节点</span>
+<span class="hljs-keyword">ssh</span> &#123;<span class="hljs-built_in">hostname</span>&#125;@&#123;ip&#125;</code></pre>
+<p>mon节点作为时钟同步节点</p>
+<pre><code class="hljs stylus">sudo apt install ntp
+sudo vim /etc/ntp.conf
+#在/etc/ntp.conf添加
+<span class="hljs-selector-id">#server</span> <span class="hljs-number">127.127</span>.<span class="hljs-number">1.0</span>
+<span class="hljs-selector-id">#fudge</span> <span class="hljs-number">127.127</span>.<span class="hljs-number">1.0</span> stratum <span class="hljs-number">10</span>
+#并注释下列四行
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">0</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">1</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">2</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
+<span class="hljs-selector-id">#pool</span> <span class="hljs-number">3</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst</code></pre>
+<p>在其它节点</p>
+<pre><code class="hljs routeros">sudo apt install ntpdate openssh-server --assume-yes
+sudo /etc/init.d<span class="hljs-built_in">/ntp </span>restart 
+sudo systemctl <span class="hljs-builtin-name">enable</span> ntp.service #启动ntp
+sudo ntpdate &#123;mon-hostname&#125;</code></pre>
+<p>会得到矫正的时间</p>
+<pre><code class="hljs routeros">Nov 06:31:02 ntpdate[8540]: adjust time<span class="hljs-built_in"> server </span>192.168.161.129 offset 0.097653 sec</code></pre>
+<p>有可能出现 name or server not known 错误</p>
+<p>在每个节点 \etc\hosts 加入所有其它节点映射，比如</p>
+<pre><code class="hljs accesslog"><span class="hljs-number">192.168.161.129</span>  ceph-master</code></pre>
+<p>再ping 或者 nslookup测试一下就行。</p>
+<div class="note note-warning">
+            <p>不要在同一个节点同时安装ntp和ntpdate</p>
+          </div>
+<p>另一种方法是直接和aliyun服务器同步，在ntp.conf末尾加上<code>server ntp.aliyun.com</code></p>
+<p>再重启</p>
+<pre><code class="hljs routeros">sudo /etc/init.d<span class="hljs-built_in">/ntp </span>restart</code></pre>
+<h2 id="ceph-ansible-😁"><a href="#ceph-ansible-😁" class="headerlink" title="ceph-ansible 😁"></a>ceph-ansible <a target="_blank" rel="noopener" href="https://docs.ceph.com/projects/ceph-ansible/en/latest/index.html#configuration-and-usage">😁</a></h2><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zyxnhr/p/10543814.html">https://www.cnblogs.com/zyxnhr/p/10543814.html</a> 写的非常细致。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuzhupeng/article/details/106767126">https://blog.csdn.net/liuzhupeng/article/details/106767126</a></p>
+</blockquote>
+<p> 三要素：inventory file, playbook and configuration。</p>
+<p>Dependency: <code>python2</code>所有节点</p>
+<p>首先测试能否连通其它节点</p>
+<pre><code class="hljs routeros">ansible all -m<span class="hljs-built_in"> ping </span>#注意这儿不能加sudo，否则会permission denied</code></pre>
+<p>如果没有问题</p>
+<pre><code class="hljs arcade">node1 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
+    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
+        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
+&#125;
+node2 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
+    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
+        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python3&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
+&#125;
+node3 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
+    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
+        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python3&quot;</span>
+    &#125;,
+    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
+&#125;</code></pre>
+<ol>
+<li><h3 id="我们首先安装ceph-ansble"><a href="#我们首先安装ceph-ansble" class="headerlink" title="我们首先安装ceph-ansble."></a>我们首先安装ceph-ansble.</h3></li>
+</ol>
+<pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ceph/</span>ceph-ansible.git
+git checkout <span class="hljs-variable">$branch</span> <span class="hljs-comment">#默认master分支</span>
+pip install -r requirements.txt 
+sudo apt install ansible
+</code></pre>
+<ol>
+<li><h3 id="再配置inventory"><a href="#再配置inventory" class="headerlink" title="再配置inventory"></a>再配置inventory</h3></li>
+</ol>
+<p>在 /etc/ansible/下创建<code>hosts</code>文件，clients节点不应该与mon osd等重叠。在最新版本，还需要设置<code>[monitoring]</code>. 个人感觉和mon节点设成一样就行了。</p>
+<pre><code class="hljs csharp">[<span class="hljs-meta">mons</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">osds</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">rgws</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">clients</span>]
+node4
+node5
+
+[<span class="hljs-meta">mgrs</span>]
+node1
+node2
+node3
+
+[<span class="hljs-meta">monitoring</span>]
+node1
+node2
+node3</code></pre>
+<ol>
+<li><strong>然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件</strong></li>
+</ol>
+<pre><code class="hljs stylus">#除了site<span class="hljs-selector-class">.yml</span>.sample，all<span class="hljs-selector-class">.yml</span>.sample是必须要修改的之外，其他文件根据要安装的角色自行修改
+
+cp site<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> site.yml
+
+cp group_vars/osds<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/osds.yml
+
+cp group_vars/clients<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/clients.yml
+
+cp group_vars/mons<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/mons.yml
+
+cp group_vars/mgrs<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/mgrs.yml
+
+cp group_vars/all<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/all.yml</code></pre>
+<ol>
+<li><h3 id="配置all-yml"><a href="#配置all-yml" class="headerlink" title="配置all.yml"></a>配置all.yml</h3></li>
+</ol>
+<p>我们需要修改osds.yml部分：</p>
+<pre><code class="hljs yaml"><span class="hljs-string">--</span>
+<span class="hljs-attr">dummy:</span>
+<span class="hljs-attr">ceph_release_num:</span>
+  <span class="hljs-attr">octopus:</span> <span class="hljs-number">15</span>
+<span class="hljs-attr">cluster:</span> <span class="hljs-string">ceph-test</span>
+<span class="hljs-attr">ceph_origin:</span> <span class="hljs-string">repository</span>
+<span class="hljs-attr">ceph_repository:</span> <span class="hljs-string">community</span>
+<span class="hljs-attr">ceph_mirror:</span> <span class="hljs-string">https://mirrors.aliyun.com/ceph/</span>
+<span class="hljs-attr">ceph_stable_key:</span> <span class="hljs-string">https://mirrors.aliyun.com/ceph/keys/release.asc</span>
+<span class="hljs-attr">ceph_stable_release:</span> <span class="hljs-string">octopus</span>
+<span class="hljs-attr">monitor_interface:</span> <span class="hljs-string">ens33</span>
+<span class="hljs-attr">monitor_address:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.161</span><span class="hljs-number">.135</span>
+<span class="hljs-attr">ip_version:</span> <span class="hljs-string">ipv4</span>
+<span class="hljs-attr">public_network:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.161</span><span class="hljs-number">.0</span><span class="hljs-string">/24</span>
+<span class="hljs-attr">cluster_network:</span> <span class="hljs-string">&quot;<span class="hljs-template-variable">&#123;&#123; public_network | regex_replace(&#x27; &#x27;, &#x27;&#x27;) &#125;&#125;</span>&quot;</span>
+<span class="hljs-attr">osd_mkfs_type:</span> <span class="hljs-string">xfs</span>
+<span class="hljs-attr">osd_mkfs_options_xfs:</span> <span class="hljs-string">-f</span> <span class="hljs-string">-i</span> <span class="hljs-string">size=2048</span>
+<span class="hljs-attr">osd_mount_options_xfs:</span> <span class="hljs-string">noatime,largeio,inode64,swalloc</span>
+<span class="hljs-attr">osd_objectstore:</span> <span class="hljs-string">bluestore</span>
+<span class="hljs-attr">dashboard_enabled:</span> <span class="hljs-literal">False</span></code></pre>
+<p>devices：指定osd使用的硬盘</p>
+<p>osd_scenario：collocated启用并置journal  【笔者没有找到】</p>
+<p>下面是一些trick</p>
+<pre><code class="hljs elixir"><span class="hljs-variable">$ </span>sudo fdisk -l <span class="hljs-comment">#查看磁盘信息</span></code></pre>
+<p>查看你的更改</p>
+<pre><code class="hljs vim">$<span class="hljs-keyword">grep</span> -v <span class="hljs-string">&#x27;^#&#x27;</span> <span class="hljs-keyword">all</span>.yml | <span class="hljs-keyword">grep</span> -v <span class="hljs-string">&#x27;^&amp;&#x27;</span> <span class="hljs-keyword">all</span>.yml</code></pre>
+<p>或者查看所有修改后文件</p>
+<pre><code class="hljs \">grep -Ev &quot;^$|^\s*#&quot;  *.yml</code></pre>
+<ol>
+<li><h3 id="配置osd"><a href="#配置osd" class="headerlink" title="配置osd"></a>配置osd</h3></li>
+</ol>
+<pre><code class="hljs arcade">devices:
+   - <span class="hljs-regexp">/dev/</span>vdb
+   - <span class="hljs-regexp">/dev/</span>vdc
+   - <span class="hljs-regexp">/dev/</span>vdd</code></pre>
+<ol>
+<li><h3 id="定义ansible的入口文件"><a href="#定义ansible的入口文件" class="headerlink" title="定义ansible的入口文件"></a>定义ansible的入口文件</h3></li>
+</ol>
+<pre><code class="hljs vala">- hosts:
+  - mons
+<span class="hljs-meta">#  - agents</span>
+  - osds
+<span class="hljs-meta">#  - mdss</span>
+<span class="hljs-meta">#  - rgws</span>
+<span class="hljs-meta">#  - nfss</span>
+<span class="hljs-meta">#  - restapis</span>
+<span class="hljs-meta">#  - rbdmirrors</span>
+  - clients
+  - mgrs
+<span class="hljs-meta">#  - iscsi-gws</span></code></pre>
+<ol>
+<li><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3></li>
+</ol>
+<pre><code class="hljs 1c">ansible-playbook  site.yml <span class="hljs-meta">#注意同样没有sudo</span></code></pre>
+<pre><code class="hljs routeros">PLAY RECAP *********************************************************************
+node1                      : <span class="hljs-attribute">ok</span>=340  <span class="hljs-attribute">changed</span>=33   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=547  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
+node2                      : <span class="hljs-attribute">ok</span>=109  <span class="hljs-attribute">changed</span>=12   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=261  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
+node3                      : <span class="hljs-attribute">ok</span>=112  <span class="hljs-attribute">changed</span>=12   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=260  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
+
+
+INSTALLER STATUS ***************************************************************
+Install Ceph Monitor           : Complete (0:00:32)
+Install Ceph Manager           : Complete (0:00:09)
+Install Ceph OSD               : Complete (0:00:34)
+Install Ceph<span class="hljs-built_in"> Client </span>           : Complete (0:00:31)
+
+</code></pre>
+<p>如果<code>failed=1</code>那就说明安装失败，你需要根据错误进行修改，如果打印的信息太少，你可以使用</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">ansible-playbook</span> <span class="hljs-selector-tag">-vvv</span> <span class="hljs-selector-tag">site</span><span class="hljs-selector-class">.yml</span></code></pre>
+<p>来打印更多信息。</p>
+<ol>
+<li><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a><strong>测试</strong></h3></li>
+</ol>
+<p>接下来我们看看集群健康状况 ，在ceph-mon节点执行</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph -s</span></code></pre>
+<p>有可能会提示ceph RADOS object not found. 笔者怀疑是 /etc/ceph/下的conf文件名不是ceph所以导致无法识别出集群，后来干脆把集群名字改成<code>ceph</code>。是不是很傻X呢？</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">cluster</span>:
+  <span class="hljs-attribute">id</span>:     <span class="hljs-number">0</span>d<span class="hljs-number">3</span>c<span class="hljs-number">793</span>b-<span class="hljs-number">1</span>ee<span class="hljs-number">0</span>-<span class="hljs-number">43</span>ca-<span class="hljs-number">8</span>f<span class="hljs-number">28</span>-<span class="hljs-number">6</span>dbf<span class="hljs-number">695578</span>cf
+  <span class="hljs-attribute">health</span>: HEALTH_OK
+ 
+<span class="hljs-attribute">services</span>:
+  <span class="hljs-attribute">mon</span>: <span class="hljs-number">1</span> daemons, quorum node<span class="hljs-number">2</span> (age <span class="hljs-number">5</span>m)
+  <span class="hljs-attribute">mgr</span>: node<span class="hljs-number">2</span>(active, since <span class="hljs-number">5</span>m)
+  <span class="hljs-attribute">mds</span>: cephfs:<span class="hljs-number">1</span> &#123;<span class="hljs-number">0</span>=node<span class="hljs-number">3</span>=up:active&#125; <span class="hljs-number">2</span> up:standby
+  <span class="hljs-attribute">osd</span>: <span class="hljs-number">3</span> osds: <span class="hljs-number">3</span> up (since <span class="hljs-number">3</span>m), <span class="hljs-number">3</span> in (since <span class="hljs-number">4</span>m)
+ 
+<span class="hljs-attribute">task</span> status:
+  <span class="hljs-attribute">scrub</span> status:
+      <span class="hljs-attribute">mds</span>.node<span class="hljs-number">3</span>: idle
+ 
+<span class="hljs-attribute">data</span>:
+  <span class="hljs-attribute">pools</span>:   <span class="hljs-number">3</span> pools, <span class="hljs-number">65</span> pgs
+  <span class="hljs-attribute">objects</span>: <span class="hljs-number">22</span> objects, <span class="hljs-number">2</span>.<span class="hljs-number">2</span> KiB
+  <span class="hljs-attribute">usage</span>:   <span class="hljs-number">3</span>.<span class="hljs-number">0</span> GiB used, <span class="hljs-number">57</span> GiB / <span class="hljs-number">60</span> GiB avail
+  <span class="hljs-attribute">pgs</span>:     <span class="hljs-number">65</span> active+clean</code></pre>
+<p>以及<code>sudo fidsk -l</code> 查看osd分配磁盘。</p>
+<p>查看osd 拓扑。这有助于我们理解CRUSH算法。</p>
+<pre><code class="hljs dos">sudo ceph osd <span class="hljs-built_in">tree</span></code></pre>
+<pre><code class="hljs lsl">ID  CLASS  WEIGHT   TYPE NAME       STATUS  REWEIGHT  PRI-AFF
+<span class="hljs-number">-1</span>         <span class="hljs-number">0.05846</span>  root <span class="hljs-section">default</span>                             
+<span class="hljs-number">-5</span>         <span class="hljs-number">0.01949</span>      host node3                           
+ <span class="hljs-number">1</span>    ssd  <span class="hljs-number">0.01949</span>          osd<span class="hljs-number">.1</span>       up   <span class="hljs-number">1.00000</span>  <span class="hljs-number">1.00000</span>
+<span class="hljs-number">-3</span>         <span class="hljs-number">0.01949</span>      host node4                           
+ <span class="hljs-number">0</span>    ssd  <span class="hljs-number">0.01949</span>          osd<span class="hljs-number">.0</span>       up   <span class="hljs-number">1.00000</span>  <span class="hljs-number">1.00000</span>
+<span class="hljs-number">-7</span>         <span class="hljs-number">0.01949</span>      host node5                           
+ <span class="hljs-number">2</span>    ssd  <span class="hljs-number">0.01949</span>          osd<span class="hljs-number">.2</span>       up   <span class="hljs-number">1.00000</span>  <span class="hljs-number">1.00000</span>
+</code></pre>
+<p>EOF</p>
+<hr>
+<p>优质博文参考：<a target="_blank" rel="noopener" href="https://blog.51cto.com/14210294/2353243">https://blog.51cto.com/14210294/2353243</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zyxnhr/p/10543814.html">https://www.cnblogs.com/zyxnhr/p/10543814.html</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ceph/">ceph</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/22/CEPH%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">
+                        <span class="hidden-mobile">CEPH 基础介绍</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【推荐】Ceph-ansible部署集群&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

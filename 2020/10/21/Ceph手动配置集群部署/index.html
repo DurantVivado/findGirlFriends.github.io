@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>【推荐】Ceph手动配置集群部署 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>【推荐】Ceph手动配置集群部署&amp;编译源码 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      21.3k 字
+      19.8k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      292
+      271
        分钟
     </span>
   
@@ -239,11 +239,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">【推荐】Ceph手动配置集群部署</h1>
+            <h1 style="display: none">【推荐】Ceph手动配置集群部署&amp;编译源码</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
-            <p>TODO: 最近一次更新 : 2020/11/21 21:11</p>
+            <p>TODO: 最近一次更新 : 2020/11/26 21:11</p>
           </div>
 <h1 id="当前最流行的分布式存储系统——Ceph尝鲜"><a href="#当前最流行的分布式存储系统——Ceph尝鲜" class="headerlink" title="当前最流行的分布式存储系统——Ceph尝鲜"></a>当前最流行的分布式存储系统——Ceph尝鲜</h1><blockquote>
 <p>首先介绍一些使用的网站备查，建议保存到chrome收藏夹！</p>
@@ -367,261 +367,9 @@
 <li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/troubleshooting/memory-profiling/">Memory Profiling</a></li>
 <li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/troubleshooting/cpu-profiling/">CPU Profiling</a></li>
 </ul>
-<h1 id="Quick-Deployment-快速部署"><a href="#Quick-Deployment-快速部署" class="headerlink" title="Quick Deployment:快速部署"></a>Quick Deployment:快速部署</h1><div class="note note-danger">
-            <p>Important:</p><p>ceph-deploy 不再经常性维护， 并且在高于Nautilus的版本没有进行过测试。不推荐使用!</p>
-          </div>
-<p><strong>Cephadm</strong>：Cephadm完美支持新的编排API、CLI和仪表盘特性，可用于快速部署Octopus及更新版本的Ceph集群。Cephadm更加简单，且不依赖其它自动化部署工具，但该工具不支持部署旧版本的Ceph（如14的Nautilus），所有Ceph进程也是运行在容器中的，意味着在修改源码的情况下还需要制作新的镜像，比较麻烦。<strong>官方文档中指出，Cephadm暂时不推荐用于生产环境。</strong></p>
-<p><strong>Rook</strong>：可以把Ceph部署在Kubernetes集群中运行。与1类似的是，Ceph也是运行在容器中的。</p>
-<blockquote>
-<p>上述的两种方法都是容器部署</p>
-</blockquote>
-<p>第三方部署工具</p>
-<p>【推荐👍】 <strong>ceph-ansible</strong>. 它被广泛使用。ceph-ansible未与Nautlius和Octopus中引入的新的Orchestrator API集成在一起，这意味着更新的管理功能和仪表板集成不可用。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/SUSE/DeepSea">DeepSea</a>使用Salt安装Ceph。</p>
-<p><a target="_blank" rel="noopener" href="https://jaas.ai/ceph-mon">jaas.ai/ceph-mon</a>使用Juju安装Ceph。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/openstack/puppet-ceph">github.com/openstack/puppet-ceph</a> 通过Puppet安装Ceph。</p>
-<p>官方的最低要求是 <strong>3</strong> Monitors + <strong>3</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
-<p>在运行ceph-mon守护程序的每个节点上，还应该设置一个ceph-mgr守护程序。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">虚拟机节点名称</th>
-<th style="text-align:center">职责</th>
-<th style="text-align:center">IP地址</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">ceph-master (w/ source-code compiled)</td>
-<td style="text-align:center">mon0 + mgr0+osd0(部署节点)</td>
-<td style="text-align:center">192.168.161.134</td>
-</tr>
-<tr>
-<td style="text-align:center">ceph-node1</td>
-<td style="text-align:center">mon1+mgr1</td>
-<td style="text-align:center">192.168.161.130</td>
-</tr>
-<tr>
-<td style="text-align:center">ceph-node2</td>
-<td style="text-align:center">mon2+mgr2</td>
-<td style="text-align:center">192.168.161.131</td>
-</tr>
-<tr>
-<td style="text-align:center">ceph-osd1</td>
-<td style="text-align:center">osd1</td>
-<td style="text-align:center">192.168.161.132</td>
-</tr>
-<tr>
-<td style="text-align:center">ceph-osd2</td>
-<td style="text-align:center">osd2</td>
-<td style="text-align:center">192.168.161.133</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="note note-primary">
-            <p>小技巧：我们可以先在1台虚拟机上配置好通用的预备环境，再克隆出另外的2台，随后调整部分配置后即可（如IP、主机名等）。克隆后记得重新生成网卡MAC地址</p>
-          </div>
-<h3 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h3><p>关闭firewalld，设置selinux为disabled状态，设置ssh免密登录，配置时钟同步服务。</p>
-<blockquote>
-<p>参考：<a target="_blank" rel="noopener" href="https://blog.51cto.com/14210294/2353243">https://blog.51cto.com/14210294/2353243</a></p>
-</blockquote>
-<pre><code class="hljs nginx"><span class="hljs-attribute">sudo</span> ufw status<span class="hljs-comment">#查看防火墙状态 active:开启 inactive：关闭</span></code></pre>
-<pre><code class="hljs puppet"><span class="hljs-comment"># mon作为控制节点</span>
-sudo apt install openssh-server
-ssh-keygen -t rsa 
-ssh-copy-<span class="hljs-keyword">id</span> &#123;<span class="hljs-built_in">hostname</span>&#125;@&#123;ip&#125;<span class="hljs-comment">#复制密钥到各节点</span>
-<span class="hljs-keyword">ssh</span> &#123;<span class="hljs-built_in">hostname</span>&#125;@&#123;ip&#125;</code></pre>
-<p>mon节点作为时钟同步节点</p>
-<pre><code class="hljs stylus">sudo apt install ntp
-sudo vim /etc/ntp.conf
-#在/etc/ntp.conf添加
-<span class="hljs-selector-id">#server</span> <span class="hljs-number">127.127</span>.<span class="hljs-number">1.0</span>
-<span class="hljs-selector-id">#fudge</span> <span class="hljs-number">127.127</span>.<span class="hljs-number">1.0</span> stratum <span class="hljs-number">10</span>
-#并注释下列四行
-<span class="hljs-selector-id">#pool</span> <span class="hljs-number">0</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
-<span class="hljs-selector-id">#pool</span> <span class="hljs-number">1</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
-<span class="hljs-selector-id">#pool</span> <span class="hljs-number">2</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst
-<span class="hljs-selector-id">#pool</span> <span class="hljs-number">3</span><span class="hljs-selector-class">.ubuntu</span><span class="hljs-selector-class">.pool</span><span class="hljs-selector-class">.ntp</span><span class="hljs-selector-class">.org</span> iburst</code></pre>
-<p>在其它节点</p>
-<pre><code class="hljs routeros">sudo apt install ntpdate
-sudo /etc/init.d<span class="hljs-built_in">/ntp </span>restart 
-sudo systemctl <span class="hljs-builtin-name">enable</span> ntp.service #启动ntp
-sudo ntpdate &#123;mon-hostname&#125;</code></pre>
-<p>会得到矫正的时间</p>
-<pre><code class="hljs routeros">Nov 06:31:02 ntpdate[8540]: adjust time<span class="hljs-built_in"> server </span>192.168.161.129 offset 0.097653 sec</code></pre>
-<p>有可能出现 name or server not known 错误</p>
-<p>在每个节点 \etc\hosts 加入所有其它节点映射，比如</p>
-<pre><code class="hljs accesslog"><span class="hljs-number">192.168.161.129</span>  ceph-master</code></pre>
-<p>再ping 或者 nslookup测试一下就行。</p>
-<div class="note note-warning">
-            <p>不要在同一个节点同时安装ntp和ntpdate</p>
-          </div>
-<p>另一种方法是直接和aliyun服务器同步，在ntp.conf末尾加上<code>server ntp.aliyun.com</code></p>
-<p>再重启</p>
-<pre><code class="hljs routeros">sudo /etc/init.d<span class="hljs-built_in">/ntp </span>restart</code></pre>
-<p>测试能否连通其它节点</p>
-<pre><code class="hljs routeros">ansible all -m<span class="hljs-built_in"> ping </span>#注意这儿不能加sudo，否则会permission denied</code></pre>
-<p>如果没有问题</p>
-<pre><code class="hljs arcade">node1 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
-    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
-        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python&quot;</span>
-    &#125;,
-    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
-    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
-&#125;
-node2 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
-    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
-        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python3&quot;</span>
-    &#125;,
-    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
-    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
-&#125;
-node3 | <span class="hljs-function"><span class="hljs-params">SUCCESS</span> =&gt;</span> &#123;
-    <span class="hljs-string">&quot;ansible_facts&quot;</span>: &#123;
-        <span class="hljs-string">&quot;discovered_interpreter_python&quot;</span>: <span class="hljs-string">&quot;/usr/bin/python3&quot;</span>
-    &#125;,
-    <span class="hljs-string">&quot;changed&quot;</span>: <span class="hljs-literal">false</span>,
-    <span class="hljs-string">&quot;ping&quot;</span>: <span class="hljs-string">&quot;pong&quot;</span>
-&#125;</code></pre>
-<h2 id="ceph-ansible-😁"><a href="#ceph-ansible-😁" class="headerlink" title="ceph-ansible 😁"></a>ceph-ansible <a target="_blank" rel="noopener" href="https://docs.ceph.com/projects/ceph-ansible/en/latest/index.html#configuration-and-usage">😁</a></h2><blockquote>
-<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zyxnhr/p/10543814.html">https://www.cnblogs.com/zyxnhr/p/10543814.html</a> 写的非常细致。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liuzhupeng/article/details/106767126">https://blog.csdn.net/liuzhupeng/article/details/106767126</a></p>
-</blockquote>
-<p> 三要素：inventory file, playbook and configuration。</p>
-<p>Dependency: <code>python2</code>所有节点</p>
-<ol>
-<li><h3 id="我们首先安装ceph-ansble"><a href="#我们首先安装ceph-ansble" class="headerlink" title="我们首先安装ceph-ansble."></a>我们首先安装ceph-ansble.</h3></li>
-</ol>
-<pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/ceph/</span>ceph-ansible.git
-git checkout <span class="hljs-variable">$branch</span> <span class="hljs-comment">#默认master分支</span>
-pip install -r requirements.txt 
-sudo apt install ansible
-</code></pre>
-<ol>
-<li><h3 id="再配置inventory"><a href="#再配置inventory" class="headerlink" title="再配置inventory"></a>再配置inventory</h3></li>
-</ol>
-<p>在 /etc/ansible/</p>
-<pre><code class="hljs csharp">[<span class="hljs-meta">mons</span>]
-node1
-node2
-node3
-
-[<span class="hljs-meta">osds</span>]
-node1
-node2
-node3
-
-[<span class="hljs-meta">rgws</span>]
-node1
-node2
-node3
-
-[<span class="hljs-meta">clients</span>]
-node1
-node2
-node3
-
-[<span class="hljs-meta">mgrs</span>]
-node1
-node2
-node3</code></pre>
-<ol>
-<li><h3 id="然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件"><a href="#然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件" class="headerlink" title="然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件"></a>然后在下载下来的ansible目录下拷贝文件，根据节点的角色拷贝具体的文件</h3></li>
-</ol>
-<pre><code class="hljs stylus">#除了site<span class="hljs-selector-class">.yml</span>.sample，all<span class="hljs-selector-class">.yml</span>.sample是必须要修改的之外，其他文件根据要安装的角色自行修改
-
-cp site<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> site.yml
-
-cp group_vars/osds<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/osds.yml
-
-cp group_vars/clients<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/clients.yml
-
-cp group_vars/mons<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/mons.yml
-
-cp group_vars/mgrs<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/mgrs.yml
-
-cp group_vars/all<span class="hljs-selector-class">.yml</span><span class="hljs-selector-class">.sample</span> group_vars/all.yml</code></pre>
-<ol>
-<li><h3 id="配置all-yml"><a href="#配置all-yml" class="headerlink" title="配置all.yml"></a>配置all.yml</h3></li>
-</ol>
-<p>我们需要修改osds.yml部分：</p>
-<pre><code class="hljs yaml"><span class="hljs-string">--</span>
-<span class="hljs-attr">dummy:</span>
-<span class="hljs-attr">ceph_release_num:</span>
-  <span class="hljs-attr">octopus:</span> <span class="hljs-number">15</span>
-<span class="hljs-attr">cluster:</span> <span class="hljs-string">ceph-test</span>
-<span class="hljs-attr">ceph_origin:</span> <span class="hljs-string">repository</span>
-<span class="hljs-attr">ceph_repository:</span> <span class="hljs-string">community</span>
-<span class="hljs-attr">ceph_mirror:</span> <span class="hljs-string">https://mirrors.aliyun.com/ceph/</span>
-<span class="hljs-attr">ceph_stable_key:</span> <span class="hljs-string">https://mirrors.aliyun.com/ceph/keys/release.asc</span>
-<span class="hljs-attr">ceph_stable_release:</span> <span class="hljs-string">octopus</span>
-<span class="hljs-attr">monitor_interface:</span> <span class="hljs-string">ens33</span>
-<span class="hljs-attr">monitor_address:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.161</span><span class="hljs-number">.135</span>
-<span class="hljs-attr">ip_version:</span> <span class="hljs-string">ipv4</span>
-<span class="hljs-attr">public_network:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.161</span><span class="hljs-number">.0</span><span class="hljs-string">/24</span>
-<span class="hljs-attr">cluster_network:</span> <span class="hljs-string">&quot;<span class="hljs-template-variable">&#123;&#123; public_network | regex_replace(&#x27; &#x27;, &#x27;&#x27;) &#125;&#125;</span>&quot;</span>
-<span class="hljs-attr">osd_mkfs_type:</span> <span class="hljs-string">xfs</span>
-<span class="hljs-attr">osd_mkfs_options_xfs:</span> <span class="hljs-string">-f</span> <span class="hljs-string">-i</span> <span class="hljs-string">size=2048</span>
-<span class="hljs-attr">osd_mount_options_xfs:</span> <span class="hljs-string">noatime,largeio,inode64,swalloc</span>
-<span class="hljs-attr">osd_objectstore:</span> <span class="hljs-string">bluestore</span></code></pre>
-<p>devices：指定osd使用的硬盘</p>
-<p>osd_scenario：启用并置journal  【笔者没有找到】</p>
-<p>下面是一些trick</p>
-<pre><code class="hljs elixir"><span class="hljs-variable">$ </span>sudo fdisk -l <span class="hljs-comment">#查看磁盘信息</span></code></pre>
-<p>查看你的更改</p>
-<pre><code class="hljs vim">$<span class="hljs-keyword">grep</span> -v <span class="hljs-string">&#x27;^#&#x27;</span> <span class="hljs-keyword">all</span>.yml | <span class="hljs-keyword">grep</span> -v <span class="hljs-string">&#x27;^&amp;&#x27;</span> <span class="hljs-keyword">all</span>.yml</code></pre>
-<p>或者查看所有修改后文件</p>
-<pre><code class="hljs \">grep -Ev &quot;^$|^\s*#&quot;  *.yml</code></pre>
-<ol>
-<li><h3 id="配置osd"><a href="#配置osd" class="headerlink" title="配置osd"></a>配置osd</h3></li>
-</ol>
-<pre><code class="hljs arcade">devices:
-   - <span class="hljs-regexp">/dev/</span>vdb
-   - <span class="hljs-regexp">/dev/</span>vdc
-   - <span class="hljs-regexp">/dev/</span>vdd</code></pre>
-<ol>
-<li><h3 id="定义ansible的入口文件"><a href="#定义ansible的入口文件" class="headerlink" title="定义ansible的入口文件"></a>定义ansible的入口文件</h3></li>
-</ol>
-<pre><code class="hljs vala">- hosts:
-  - mons
-<span class="hljs-meta">#  - agents</span>
-  - osds
-<span class="hljs-meta">#  - mdss</span>
-<span class="hljs-meta">#  - rgws</span>
-<span class="hljs-meta">#  - nfss</span>
-<span class="hljs-meta">#  - restapis</span>
-<span class="hljs-meta">#  - rbdmirrors</span>
-  - clients
-  - mgrs
-<span class="hljs-meta">#  - iscsi-gws</span></code></pre>
-<ol>
-<li><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3></li>
-</ol>
-<pre><code class="hljs 1c">ansible-playbook  site.yml <span class="hljs-meta">#注意同样没有sudo</span></code></pre>
-<pre><code class="hljs routeros">PLAY RECAP *********************************************************************
-node1                      : <span class="hljs-attribute">ok</span>=340  <span class="hljs-attribute">changed</span>=33   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=547  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
-node2                      : <span class="hljs-attribute">ok</span>=109  <span class="hljs-attribute">changed</span>=12   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=261  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
-node3                      : <span class="hljs-attribute">ok</span>=112  <span class="hljs-attribute">changed</span>=12   <span class="hljs-attribute">unreachable</span>=0    <span class="hljs-attribute">failed</span>=0    <span class="hljs-attribute">skipped</span>=260  <span class="hljs-attribute">rescued</span>=0    <span class="hljs-attribute">ignored</span>=0   
-
-
-INSTALLER STATUS ***************************************************************
-Install Ceph Monitor           : Complete (0:00:32)
-Install Ceph Manager           : Complete (0:00:09)
-Install Ceph OSD               : Complete (0:00:34)
-Install Ceph<span class="hljs-built_in"> Client </span>           : Complete (0:00:31)
-
-</code></pre>
-<p>如果<code>failed=1</code>那就说明安装失败，你需要根据错误进行修改，如果打印的信息太少，你可以使用</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">ansible-playbook</span> <span class="hljs-selector-tag">-vvv</span> <span class="hljs-selector-tag">site</span><span class="hljs-selector-class">.yml</span></code></pre>
-<p>来打印更多信息。</p>
-<p>接下来我们看看集群健康状况 </p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph -s</span></code></pre>
-<p>有可能会提示ceph RADOS object not found.</p>
 <hr>
 <p>当然如果你想更加细致的开发ceph，建议进行<strong>手动部署</strong>！</p>
-<h2 id="手动部署"><a href="#手动部署" class="headerlink" title="手动部署"></a>手动部署</h2><h2 id="1-部署ceph-mon"><a href="#1-部署ceph-mon" class="headerlink" title="1. 部署ceph-mon"></a>1. 部署ceph-mon</h2><p>安装完成之后在<code>/etc/ceph</code>目录下新建文件<code>ceph.conf</code>，内容大致如下，根据实际情况进行修改即可：</p>
+<h1 id="A-Manual-Deploymeny手动部署💪"><a href="#A-Manual-Deploymeny手动部署💪" class="headerlink" title="A. Manual Deploymeny手动部署💪"></a>A. <em>Manual Deploymeny</em>手动部署💪</h1><h2 id="1-部署ceph-mon"><a href="#1-部署ceph-mon" class="headerlink" title="1. 部署ceph-mon"></a>1. 部署ceph-mon</h2><p>安装完成之后在<code>/etc/ceph</code>目录下新建文件<code>ceph.conf</code>，内容大致如下，根据实际情况进行修改即可：</p>
 <pre><code class="hljs routeros">[global]
 fsid = &#123;cluster-id&#125;
 mon initial members = &#123;hostname&#125;[, &#123;hostname&#125;]
@@ -769,7 +517,7 @@ systemctl start ceph-osd@<span class="hljs-variable">$ID</span></code></pre>
   <span class="hljs-attr">pgs:</span></code></pre>
 <p>这就说明我们搭建了一个osd。</p>
 <hr>
-<h1 id="Build-amp-Make-编译源码"><a href="#Build-amp-Make-编译源码" class="headerlink" title="Build &amp;Make:编译源码"></a>Build &amp;Make:编译源码</h1><p><span id="here">您到站了！</span></p>
+<h1 id="B-Build-amp-Make-编译源码"><a href="#B-Build-amp-Make-编译源码" class="headerlink" title="B. Build &amp;Make:编译源码"></a>B. <em>Build &amp;Make</em>:编译源码</h1><p><span id="here">您到站了！</span></p>
 <p><del>版本14.2.12：Nautilus</del></p>
 <p>版本15.2.5：Octopus √ （最新版）</p>
 <blockquote>
@@ -1070,7 +818,7 @@ with preprocessed <span class="hljs-keyword">source</span> <span class="hljs-key
 </code></pre>
 <p>重新编译</p>
 <hr>
-<h1 id="Way-to-development…"><a href="#Way-to-development…" class="headerlink" title="Way to development…"></a>Way to development…</h1><p>好的在这里假设你编译源码成功了！</p>
+<h1 id="C-Way-to-development…"><a href="#C-Way-to-development…" class="headerlink" title="C. Way to development…"></a>C. <em>Way to development…</em></h1><p>好的在这里假设你编译源码成功了！</p>
 <p>先不要庆祝</p>
 <p>好戏才刚刚开始！</p>
 <h2 id="测试集群"><a href="#测试集群" class="headerlink" title="测试集群"></a>测试集群</h2><pre><code class="hljs shell">../src/vstart.sh --debug --new -x --localhost --bluestore # 启动本地集群 采用bluestore对象存储
@@ -1887,58 +1635,6 @@ sudo <span class="hljs-keyword">stop</span> ceph-mds-<span class="hljs-keyword">
 <tr>
 <td>BLUESTORE_DISK_SIZE_MISMATCH</td>
 <td>使用BlueStore的一个或多个OSD在物理设备的大小和跟踪其大小的元数据之间存在内部不一致。将来可能导致OSD崩溃</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="设备运行状况"><a href="#设备运行状况" class="headerlink" title="设备运行状况"></a>设备运行状况</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -3207,7 +2903,8 @@ auth<span class="hljs-built_in"> client </span>required = none</code></pre>
 <pre><code class="hljs ebnf"><span class="hljs-attribute">subscribe ceph-devel</span></code></pre>
 <p>in the body of the message.</p>
 <hr>
-<h1 id="Trouble-Shooting-Runtime"><a href="#Trouble-Shooting-Runtime" class="headerlink" title="Trouble Shooting: Runtime"></a>Trouble Shooting: Runtime</h1><pre><code class="hljs apache"><span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">47</span>.<span class="hljs-number">856064</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind unable to bind to <span class="hljs-number">101.67.163.20:6789</span>: (<span class="hljs-number">99</span>) Cannot assign requested address
+<h1 id="Trouble-Shooting-Runtime"><a href="#Trouble-Shooting-Runtime" class="headerlink" title="Trouble Shooting: Runtime"></a>Trouble Shooting: Runtime</h1><ol>
+<li><pre><code class="hljs apache"><span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">47</span>.<span class="hljs-number">856064</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind unable to bind to <span class="hljs-number">101.67.163.20:6789</span>: (<span class="hljs-number">99</span>) Cannot assign requested address
 <span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">47</span>.<span class="hljs-number">856085</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind was unable to bind. Trying again in <span class="hljs-number">5</span> seconds
 <span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">52</span>.<span class="hljs-number">856281</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind unable to bind to <span class="hljs-number">101.67.163.20:6789</span>: (<span class="hljs-number">99</span>) Cannot assign requested address
 <span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">52</span>.<span class="hljs-number">856319</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> accepter.accepter.bind was unable to bind. Trying again in <span class="hljs-number">5</span> seconds
@@ -3216,7 +2913,12 @@ auth<span class="hljs-built_in"> client </span>required = none</code></pre>
 <span class="hljs-attribute">2015</span>-<span class="hljs-number">11</span>-<span class="hljs-number">23</span> <span class="hljs-number">13</span>:<span class="hljs-number">23</span>:<span class="hljs-number">57</span>.<span class="hljs-number">856670</span> <span class="hljs-number">7</span>f<span class="hljs-number">4</span>a<span class="hljs-number">5</span>a<span class="hljs-number">36</span>a<span class="hljs-number">7</span>a<span class="hljs-number">0</span> -<span class="hljs-number">1</span> unable to bind monitor to <span class="hljs-number">101.67.163.20:6789</span>/<span class="hljs-number">0</span>
 <span class="hljs-attribute">failed</span>: &#x27;ssh ceph-<span class="hljs-number">10</span> ulimit -n <span class="hljs-number">32768</span>;  /usr/bin/ceph-mon -i a --pid-file /var/run/ceph/mon.a.pid -c /etc/ceph/ceph.conf --cluster ceph &#x27;
 </code></pre>
+</li>
+</ol>
 <p>这是由于ip地址更换的原因，检查一下。</p>
+<p>2.</p>
+<p>sudo 执行很慢，可以改/etc/hosts </p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mouseleo/p/9302301.html">https://www.cnblogs.com/mouseleo/p/9302301.html</a></p>
 
             </div>
             <hr>
@@ -3463,7 +3165,7 @@ auth<span class="hljs-built_in"> client </span>required = none</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【推荐】Ceph手动配置集群部署&nbsp;",
+        "【推荐】Ceph手动配置集群部署&编译源码&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

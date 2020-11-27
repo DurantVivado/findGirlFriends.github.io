@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.8k 字
+      4.9k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      60
+      61
        分钟
     </span>
   
@@ -395,6 +395,9 @@ $  <span class="hljs-built_in">cd</span> ~/ceph_cluster/</code></pre>
 <h3 id="4-2-安装ceph"><a href="#4-2-安装ceph" class="headerlink" title="4.2 安装ceph"></a>4.2 安装ceph</h3><p>下面命令采用了ceph-deploy远程控制的方式安装仓库中的官方标准版本。若需要从本地（修改后）源码安装，请查看附录中的编译安装部分。</p>
 <pre><code class="hljs bash">$  ceph-deploy install --no-adjust-repos node_0 node_1 node_2</code></pre>
 <p>由于我们已在前面配置好了国内ceph源，所以使用—no-adjust-repos参数防止覆盖。</p>
+<p>如果出现问题：</p>
+<pre><code class="hljs oxygene">Runtime Error: <span class="hljs-keyword">module</span> <span class="hljs-keyword">platform</span> <span class="hljs-keyword">has</span> no attribute <span class="hljs-string">&#x27;linux_distribution&#x27;</span>.</code></pre>
+<p>python3.7以后<code>platform.linux_distribution()</code>被移除了. 而笔者用的是3.8. </p>
 <p>若安装成功，可在各个节点上分别打印出ceph的版本号。</p>
 <pre><code class="hljs bash">$  ceph -v
 ceph version 14.2.13 (1778d63e55dbff6cedb071ab7d367f8f52a8699f) nautilus (stable)</code></pre>

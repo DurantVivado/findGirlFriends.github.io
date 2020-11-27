@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-26 17:45" pubdate>
+        2020年11月26日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Ceph-纠删码操作"><a href="#Ceph-纠删码操作" class="headerlink" title="Ceph 纠删码操作"></a>Ceph 纠删码操作</h1><p>Ceph官方文档<br><a target="_blank" rel="noopener" href="http://ceph.com/docs/master/architecture/#erasure-coding">http://ceph.com/docs/master/architecture/#erasure-coding</a><br><a target="_blank" rel="noopener" href="http://ceph.com/docs/master/rados/operations/erasure-code/">http://ceph.com/docs/master/rados/operations/erasure-code/</a><br><a target="_blank" rel="noopener" href="http://ceph.com/docs/master/dev/erasure-coded-pool/">http://ceph.com/docs/master/dev/erasure-coded-pool/</a><br>RedHat的Inktank Ceph存储新增纠删码、分层部署<br><a target="_blank" rel="noopener" href="http://www.searchstorage.com.cn/showcontent_83783.htm">http://www.searchstorage.com.cn/showcontent_83783.htm</a><br>纠删码：确保RAID失效后的数据可用性<br><a target="_blank" rel="noopener" href="http://storage.it168.com/a2011/0816/1233/000001233286_1.shtml">http://storage.it168.com/a2011/0816/1233/000001233286_1.shtml</a><br>存储系统中的纠删码（Erasure Codes）<br><a target="_blank" rel="noopener" href="http://www.tuicool.com/articles/v6Bjuq">http://www.tuicool.com/articles/v6Bjuq</a></p>
+<p>第2章 纠删码概念和原理<br>2.1 概念<br>按照误码控制的不同功能，可分为检错码、纠错码和纠删码等。<br>检错码仅具备识别错码功能 而无纠正错码功能；<br>纠错码不仅具备识别错码功能，同时具备纠正错码功能；<br>纠删码则不仅具备识别错码和纠正错码的功能，而且当错码超过纠正范围时可把无法纠错的信息删除。<br>2.2 原理<br>比如 K=3 M=2 K+M=5<br>这个意思是：<br>K原始数据盘个数或恢复数据需要的磁盘个数<br>M校验盘个数或允许出故障的盘个数<br>使用编码算法，通过K个原始数据生成K+M个新数据<br>通过任何K个新数据都能还原出原始的K个数据<br>即允许M个数据盘出故障，数据仍然不会丢失；</p>
+<p>第3章 Ceph纠删码介绍<br>Ceph纠删码即Ceph Erasure。<br>3.1 Ceph纠删码用途<br>用更少的空间实现存储，即节约空间；<br>纠删码实现了高速的计算，但有2个缺点，一个是速度慢，一个是只支持对象的部分操作（比如：不支持局部写）。纠删码的缺点现在已经有解决办法。<br>3.2 Ceph纠删码库<br>Ceph的默认纠删码库是Jerasure，即Jerasure库；<br>当管理员创建一个erasure-coded后端时，可以指定数据块和代码块参数。<br>Jerasure库是第三方提供的中间件。<br>Jerasure库可以在外网上搜索到。<br>Ceph环境安装时，已经默认安装了Jerasure库。<br>3.3 Ceph纠删码数据存储<br>在erasure coded pool中，每个数据对象都被存放在K+M块中。对象被分成K个数据库和M个编码块；erasure coded pool的大小被定义成K+M块，每个块存储在一个OSD中；块的顺序号作为object的属性保存在对象中。<br>3.3.1 编码块读写<br>例如:创建5个OSDs (K=3 M=2)的erasure coded pool，允许损坏2个(M = 2)；<br>对象 NYAN 内容是 ABCDEFGHI ；<br>NYAN写入pool时，纠删码函数把NYAN分3个数据块：第1个是ABC,第2个是DEF，第3个是GHI；如果NYAN的长度不是K的倍数，NYAN会被填充一些内容；<br>纠删码函数也创建2个编码块：第4个是YXY，第5个是GQC；</p>
+<p><img src="https://img-blog.csdn.net/20141229163616422?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"></p>
+<p>每个块都被存储在osd中；对象中的块有相同的名字 (NYAN)但存储在不通的osd中。除了名字外，这些块都有一个序号，需要保存在对象属性中 (shard_t)<br>比如，块1包含ABC保存在OSD5中；块4包含YXY保存在OSD3中。<br>当从erasure coded pool中读取对象NYAN时，纠删码函数读取3个块：块1(ABC)/块3(GHI)/块4(YXY)；然后重建原始对象内容ABCDEFGHI；<br>纠删码函数被告知：块2和块5丢失；块5不能读取是因为OSD4损坏了；块3不能读取，是因为OSD2太慢了。</p>
+<p><img src="https://img-blog.csdn.net/20141229173516084?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"></p>
+<p>3.3.2 间断全写<br>在erasure coded pool中,主OSD负责所有的写操作；它负责K+M块的编码，并写到其他OSD中。它还负责维护一个权威的pg log版本。<br>下图中，一个erasure coded是K=2/M=1,3个OSD节点，2个是K的节点，1个是M的节点；pg分别在OSD1/OSD2/OSD3中；<br>一个对象被编码保存在这些OSD中：<br>块D1v1(数据块1,版本1)在OSD1中；<br>块D2v1(数据块2,版本1)在OSD2中；<br>块C1v1(编码块1,版本1)在OSD3中；<br>在每个OSD中的PG log是一致的(1,1 是epoch 1, version 1)；</p>
+<p><img src="https://img-blog.csdn.net/20141229173909928?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"></p>
+<p>OSD1是主节点，接收客户端的WRITE FULL请求，即全部重写对象，而不是部分的替换；<br>创建了Version 2 (v2)对象去替换version 1 (v1)对象；<br>主节点OSD1负责编码写入3个块:<br>块D1v2 (数据块1 版本2)在OSD1中；<br>块D2v2 (数据块2 版本2)在OSD2中；<br>块C1v2 (编码块1 版本2)在OSD3中；<br>每个块都被写到目标OSD中，包括主OSD节点；主OSD节点负责存储块，并且负责维护一个权威的PG log版本；<br>当OSD接到写入块的指令时，它也创建一个PG log作为回应；<br>例如， 只要OSD3存储C1v2,它就添加一个条目1,2 ( i.e. epoch 1, version 2 )到log中；<br>因为OSD工作是异步的，一些块可能还在写入 (比如 D2v2 )，但其他块已经写入完成并返回相应了 (比如 C1v1 and D1v1).</p>
+<p><img src="https://img-blog.csdn.net/20141229174028968?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>如果一切正常，每一个OSD上的块都写入成，则log的last_complete指针从1,1 改为1,2。</p>
+<p><img src="https://img-blog.csdn.net/20141229174123203?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>最后，保存以前版本块的文件将会被删除： D1v1 on OSD1, D2v1on OSD2 and C1v1 on OSD3。</p>
+<p><img src="https://img-blog.csdn.net/20141229174413271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>但是意外有时也会发生。如果OSD1损坏了，而D2v2还在写入，则object的version 2 就是局部写入: OSD3有一个块但是不够恢复其他块。丢失了2个块： D1v2 和D2v2，可是the erasure coding参数是K=2/M=1,要求至少2个块可用才能重建第3个块。 这时，OSD4成为主节点，并发现last_complete log记录是1,1 ，这将是新权威的记录头。</p>
+<p><img src="https://img-blog.csdn.net/20141229174503144?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>节点OSD3中的Log记录1,2和节点OSD4中新的权威log记录不一致：OSD3中的Log被丢弃，C1v2块被删除。D1v1块被重建（在scrubbing时使用纠删码函数重建）并保存到新的主节点OSD4中。</p>
+<p><img src="https://img-blog.csdn.net/20141229174636234?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>3.4 使用范围<br>3.4.1 冷数据<br>1、主要存储1G以上的对象，比如镜像、映像等，这些数据10%都是每月读取一次；<br>2、新对象每天添加，但是这些对象添加后不修改；<br>3、这些数据，平均读1万次，写一次。<br>4、创建一个replicated pool作为erasure coded pool的ceche分层；当一个对象一周没有访问时，可以把该对象降级(把该对象从replicated pool移动到erasure-coded pool中)；当然也可以相反的调整；<br>5、erasure-coded pool为冷数据设计，适合慢的硬件设备，访问比较少的数据；replicated pool为快速设备和快速访问设计的。<br>3.4.2 廉价多数据中心存储<br>十个专用网络链接的数据中心，每个数据中心包含相同大小的存储空间，但没有电源备份和无空气冷却系统。<br>创建这样一个erasure-coded pool，同时允许3个节点损坏而数据不丢失；数据块为6(K=6),而编码块为3(M=3)；其开销是50%<br>而创建同样的复制池，其开销为400%(4个副本);</p>
+<p>第4章 Ceph纠删码实例<br>Ceph pool要保证部分osd损坏时数据不丢失(一般情况下一个disk设置为一个osd)；默认情况下创建pool时rule类型选择replicated，即object在多个disk中拷贝保存；pool的另一种rule类型是erasure，这种pool可以节省空间；<br>最简单的erasure coded pool等价与RAID5；要求至少3个节点；即k=2 m=1 默认的erasure就是这种情况</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool 18 12 erasure</code></pre>
+<p>其中：18是pgp_num 12是pg_num（pgp_num必须大于pg_num）<br>4.1 数据读写<br>读写字符串ABCDEFGHI</p>
+<pre><code class="hljs jboss-cli"><span class="hljs-keyword">echo</span> ABCDEFGHI | rados <span class="hljs-params">--pool</span> ecpool put NYAN - <span class="hljs-comment">#将字符串放到ecpool</span>
+rados <span class="hljs-params">--pool</span> ecpool get NYAN -<span class="hljs-comment">#从ecpool中取字符串</span></code></pre>
+<p>读写文件test.txt</p>
+<pre><code class="hljs cmake">rados -p ecpool put <span class="hljs-keyword">test</span> <span class="hljs-keyword">test</span>.txt
+rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-keyword">file</span>.txt</code></pre>
+<p>4.2 纠删码池不支持部分功能<br>比如不支持“部分写”<br>不支持rbd创建镜像</p>
+<pre><code class="hljs sql"><span class="hljs-comment"># rbd create xxx -p ecpool --size 1024</span>
+rbd: <span class="hljs-keyword">create</span> <span class="hljs-keyword">error</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
+librbd: <span class="hljs-keyword">error</span> adding image <span class="hljs-keyword">to</span> <span class="hljs-keyword">directory</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
+<span class="hljs-comment"># rbd import secureCRT5.rar secureCRT5 -p ecpool</span>
+rbd: image <span class="hljs-keyword">creation</span> <span class="hljs-keyword">failed</span>
+Importing image: <span class="hljs-number">0</span>% complete...failed.
+librbd: <span class="hljs-keyword">error</span> adding image <span class="hljs-keyword">to</span> <span class="hljs-keyword">directory</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
+rbd: <span class="hljs-keyword">import</span> <span class="hljs-keyword">failed</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
+</code></pre>
+<p>4.3 纠删码profile<br>1、 默认profile<br>默认的erasure code profile允许有一个OSD损坏；它等价于2个备份节点的replicated pool；相当于erasure pool用1.5TB代替replicated pool用 2TB存储1TB数据。</p>
+<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-keyword">ls</span>
+ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-built_in">get</span> default</code></pre>
+<p>结果显示如下，最小的erasure pool 类型</p>
+<pre><code class="hljs ini"><span class="hljs-attr">directory</span>=/usr/lib/ceph/erasure-code
+<span class="hljs-attr">k</span>=<span class="hljs-number">2</span>
+<span class="hljs-attr">m</span>=<span class="hljs-number">1</span>
+<span class="hljs-attr">plugin</span>=jerasure
+<span class="hljs-attr">technique</span>=reed_sol_van</code></pre>
+<p>2、 添加profile<br>创建pool时选择合适的profile是很重要的，因为pool创建后就不能修改了；如果两个pool的profile不同，则创建新pool时，则所有的object都要从旧pool中移动到新pool。<br>Profile最重要的参数是K/M和ruleset-failure-domain，因为他们定义的存储开销和数据持久性。<br>例如：我们想构建这样的一种架构，允许2个disk损坏，存储开销损失40%，那么我们可以这样创建profile</p>
+<pre><code class="hljs routeros">ceph osd erasure-code-profile <span class="hljs-builtin-name">set</span> myprofile <span class="hljs-attribute">k</span>=3 <span class="hljs-attribute">m</span>=2 \
+ <span class="hljs-attribute">ruleset-failure-domain</span>=rack</code></pre>
+<p>注: ruleset-failure-domain有osd, host, chassis, rack, row等选项<br>ruleset-failure-domain=rack表示：该CRUSH规则确保2个块不存储在同一个机架rack上。<br>3、 根据profile创建erasure pool</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool 12 12 erasure myprofile
+echo ABCDEFGHI | rados --pool ecpool put NYAN -
+rados --pool ecpool <span class="hljs-builtin-name">get</span> NYAN -</code></pre>
+<p>4、 删除profile</p>
+<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> rm <span class="hljs-keyword">profile</span></code></pre>
+<p>4.4 Ceche tier弥补erasure的缺陷<br>和replicated pools相比，erasure pool需要更多的资源，并且缺少一些功能（比如部分写）；为了克服这些局限性，建议在erasure pool上添加一个ceche tier层。ceche tier能解决erasure pool缺失功能的问题，也能解决erasure pool性能低的问题。<br>这就是radhat的ice现在炒作的纠删码、存储分层。<br>假设hot-storage是一个快速存储池，即是一个快速的replicated pools。具体命令如下：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool 12 12 erasure #(这就是我们的erasure<span class="hljs-built_in"> pool </span><span class="hljs-attribute">k</span>=2 <span class="hljs-attribute">m</span>=1)
+ceph osd<span class="hljs-built_in"> pool </span>create hot-storage 128 (这个就是我们的cache tier，它是高速的)
+ceph osd tier <span class="hljs-builtin-name">add</span> ecpool hot-storage
+ceph osd tier cache-mode hot-storage writeback
+ceph osd tier set-overlay ecpool hot-storage</code></pre>
+<p>以writeback模式把hot-storage pool作为ecpool 的tier，这样对ecpool的读写实际上使用的是hot-storage pool，并且能用到hot-storage pool的灵活性和速度。<br>由于erasure不支持部分写，故在ecpool中无法创建RBD image；设置了erasure pool的tier分层pool后，就可以创建在ecpool创建RBD image了。（没有添加ceche tier时，无法用rbd创建镜像，前边已经提过）。</p>
+<pre><code class="hljs angelscript">rbd --pool ecpool create --size <span class="hljs-number">10</span> myvolume
+rbd <span class="hljs-keyword">import</span> <span class="hljs-number">1.</span>txt <span class="hljs-number">1.</span>txt -p ecpool
+rbd ls -p ecpool</code></pre>
+<p>说明：操作ecpool和hot-storage效果一样，但是实际数据存放的位置，根据情况而定：1周以上不使用，则存放在ecpool，经常使用，则存放在hot-storage。</p>
+<p>第5章 Ceph纠删码和Cache分层<br>纠删码和Cache分层是两个紧密联系的功能。这2个功能是redhat收购Ceph后一直重视的功能。<br>纠删码提高了存储容量，却降低了速度；而Cache分层刚好解决了这个问题；<br>原理架构如下：</p>
+<p><img src="https://img-blog.csdn.net/20141229174730954?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>Cache分层的分层部署不只解决纠删码速度慢的问题，当然还解决一些其他问题，下次再讨论。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/25/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">
+                        <span class="hidden-mobile">【推荐】Ceph-ansible部署集群</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

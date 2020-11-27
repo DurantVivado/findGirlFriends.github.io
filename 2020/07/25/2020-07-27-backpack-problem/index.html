@@ -377,8 +377,8 @@ dp[j] = \max(dp[j-w[i-1]]+v[i-1],dp[j])</script><p>注意后面的dp[j]其实是
 0&lt;V≤200000&lt;V≤20000
 0&lt;vi,wi,si≤20000</code></p>
 <p>当数据范围变得极大，使用二进制将<code>TLE</code>，我们必须优化，这里有一种优化方式是单调队列优化。</p>
-<p>因为我们需要的是$ dp[j], dp[v+j], dp[2<em>v+j], dp[3</em>v+j], … , dp[k*v+j] $ 中的最大值，我们通过维护一个单调队列来维护这些数中最大值。</p>
-<p>单调队列问题，最重要的两点<br>1）维护队列元素的个数，如果不能继续入队，弹出队头元素<br>2）维护队列的单调性，即：尾值$ &gt;= dp[j + k<em>v] - k</em>w$</p>
+<p>因为我们需要的是$dp[j], dp[v+j], dp[2<em>v+j], dp[3</em>v+j], … , dp[k*v+j]$ 中的最大值，我们通过维护一个单调队列来维护这些数中最大值。</p>
+<p>单调队列问题，最重要的两点<br>1）维护队列元素的个数，如果不能继续入队，弹出队头元素<br>2）维护队列的单调性，即：尾值$&gt;= dp[j + k<em>v] - k</em>w$</p>
 <p>本题中，队列中元素的个数应该为 $s+1$ 个，即 $0 - s $个物品 $i$. 为了方便大家理解，我举例进行说明。</p>
 <pre><code class="hljs cpp">
 <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N_MAX = <span class="hljs-number">20010</span>;
@@ -910,8 +910,8 @@ dp[i-1][j+nums[i]],j<sum-nums[i]
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-08-1-representation_of_graph/">
-                        <span class="hidden-mobile">再也不想做图类题目了</span>
+                      <a href="/2020/07/21/2020-08-19-manacher/">
+                        <span class="hidden-mobile">东方不败->回文问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

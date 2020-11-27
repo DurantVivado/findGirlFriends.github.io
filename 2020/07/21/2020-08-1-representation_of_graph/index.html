@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      3.9k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      39
+      49
        分钟
     </span>
   
@@ -244,6 +244,7 @@
             <div class="markdown-body" id="post-body">
               <h1 id="图的表示和图算法"><a href="#图的表示和图算法" class="headerlink" title="图的表示和图算法"></a>图的表示和图算法</h1><ul>
 <li><del>DFS&amp;BFS</del>(在相应专题讲)</li>
+<li>拓扑排序</li>
 <li>Dijkstra</li>
 <li>Floyd算法</li>
 <li>Bellman-Ford算法</li>
@@ -302,6 +303,71 @@
 <p><a target="_blank" rel="noopener" href="https://baike.baidu.com/pic/二分图/9089095/0/d52a2834349b033b409ef0b114ce36d3d539bd42?fr=lemma&amp;ct=single"><img src="\img\nonbipartite graph.jpg" srcset="/img/loading.gif" alt="img"></a></p>
 <p>上图中U和V和W构造的点集所形成的的圈长度为奇数，所以不是二分图。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26822029/article/details/90382581">https://blog.csdn.net/qq_26822029/article/details/90382581</a></p>
+<h2 id="XI-拓扑排序"><a href="#XI-拓扑排序" class="headerlink" title="XI.拓扑排序"></a>XI.拓扑排序</h2><blockquote>
+<p>LC 课程表问题系列：207 210</p>
+<p>核心特性，对于图G中任何一条有向边$(u,v)$，$u$在排列中都出现在$v$的前面，这样的排列称为「拓扑排序」。</p>
+</blockquote>
+<p>对一个有向无环图(Directed Acyclic Graph简称DAG)G进行拓扑排序，是将G中所有顶点排成一个线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在线性序列中出现在v之前。通常，这样的线性序列称为满足拓扑次序(Topological Order)的序列，简称拓扑序列。简单的说，由某个集合上的一个偏序得到该集合上的一个全序，这个操作称之为<strong>拓扑排序</strong>。</p>
+<p>在图论中，由一个有向无环图的顶点组成的序列，当且仅当满足下列条件时，称为该图的一个拓扑排序（英语：Topological sorting）：</p>
+<ul>
+<li>每个顶点出现且只出现一次；</li>
+<li>若A在序列中排在B的前面，则在图中不存在从B到A的路径。</li>
+<li>若图中存在环，则不存在拓扑排序</li>
+</ul>
+<p><strong><em>重点</em></strong>：如何判断有无环：如果某个节点的相邻节点处于探索状态（在visited中），但还未加入拓扑序列，则说明有环。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">graph</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self,num</span>):</span>
+        self.graph = defaultdict(list)
+        self.visited = &#123;&#125; 
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addEdge</span>(<span class="hljs-params">self,u,v</span>):</span>
+        self.graph[u].append(v)
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span>:</span>
+        
+        
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">canFinish</span>(<span class="hljs-params">self, numCourses: int, prerequisites: [[int]]</span>) -&gt; bool:</span>
+        g = graph(numCourses+<span class="hljs-number">1</span>)   
+        topo_sort = []
+        <span class="hljs-keyword">for</span> lists <span class="hljs-keyword">in</span> prerequisites:
+            g.visited[lists[<span class="hljs-number">0</span>]] = <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">for</span> i,it <span class="hljs-keyword">in</span> zip(range(<span class="hljs-number">1</span>,len(lists)), lists):
+                g.graph[lists[i]].append(lists[<span class="hljs-number">0</span>])
+                g.visited[lists[i]] = <span class="hljs-literal">False</span>
+                
+        isLoop = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prerequisites <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> prerequisites[<span class="hljs-number">0</span>]: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-comment">#只要存在一种拓扑排序，返回true</span>
+        <span class="hljs-comment">#定义三种状态，未探索，探索中以及已经探索</span>
+        <span class="hljs-comment">#A-&gt;B: 表示A是B的先修课</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dfs</span>(<span class="hljs-params">vertex</span>):</span>
+            <span class="hljs-keyword">nonlocal</span> isLoop
+            <span class="hljs-keyword">if</span> isLoop: <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> vertex <span class="hljs-keyword">in</span> g.graph.keys():
+                g.visited[vertex] = <span class="hljs-literal">True</span> <span class="hljs-comment">#标记为已经访问</span>
+                topo_sort.append(vertex)
+                <span class="hljs-keyword">return</span> <span class="hljs-comment">#如果已经访问则跳过</span>
+            g.visited[vertex] = <span class="hljs-literal">True</span> <span class="hljs-comment">#标记为已经访问</span>
+            <span class="hljs-keyword">for</span> neigbor <span class="hljs-keyword">in</span> g.graph[vertex]:<span class="hljs-comment">#遍历邻接顶点</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> g.visited[neigbor] :
+                    dfs(neigbor)
+                <span class="hljs-keyword">elif</span> <span class="hljs-keyword">not</span> neigbor <span class="hljs-keyword">in</span> topo_sort:<span class="hljs-comment">#如果某个节点的相邻节点处于探索状态（在visited中），但还未加入拓扑序列，则说明有环</span>
+                    isLoop = <span class="hljs-literal">True</span>
+                    <span class="hljs-keyword">return</span> 
+            topo_sort.append(vertex)
+        
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> g.graph.keys():
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> isLoop <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> g.visited[v]:
+                dfs(v)
+                
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> isLoop</code></pre>
+<blockquote>
+<p>复杂度分析</p>
+</blockquote>
+<p>时间复杂度: $O(n+m)$，其中 $n$ 为课程数，$m$ 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。</p>
+<p>空间复杂度: $O(n+m)$。题目中是以列表形式给出的先修课程关系，为了对图进行深度优先搜索，我们需要存储成邻接表的形式，空间复杂度为 $O(n+m)$。在深度优先搜索的过程中，我们需要最多 $O(n)$ 的栈空间（递归）进行深度优先搜索，并且还需要若干个 $O(n)$ 的空间存储节点状态、最终答案等。</p>
 <hr>
 <h1 id="Dijsktra算法"><a href="#Dijsktra算法" class="headerlink" title="Dijsktra算法"></a>Dijsktra算法</h1><blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/FrozaFerrari/xue-tu-lun-ni-zhen-di-liao-xie-zui-duan-lu-ma-post">参考：米奇妙妙屋</a></p>
@@ -511,9 +577,9 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/25/2020-07-27-backpack-problem/">
+                      <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">做一只可爱的小🐖背包 Cover「背包九讲」</span>
+                        <span class="hidden-mobile">Markdown那些不为人知的酷炫特效</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -521,8 +587,8 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-08-19-manacher/">
-                        <span class="hidden-mobile">东方不败->回文问题</span>
+                      <a href="/2020/07/21/2020-7-30-pointers/">
+                        <span class="hidden-mobile">神奇的多指针 【cover 脑筋急转弯💡】</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

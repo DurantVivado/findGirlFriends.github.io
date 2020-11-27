@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>【面试向】排序算法 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>【面试向】十种排序算法 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.8k 字
+      6.8k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      36
+      84
        分钟
     </span>
   
@@ -239,16 +239,33 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">【面试向】排序算法</h1>
+            <h1 style="display: none">【面试向】十种排序算法</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
             <p>排序算法及例题</p>
           </div>
-<h1 id="面试基础之排序算法"><a href="#面试基础之排序算法" class="headerlink" title="面试基础之排序算法"></a>面试基础之排序算法</h1><blockquote>
+<h1 id="面试基础之十种排序算法"><a href="#面试基础之十种排序算法" class="headerlink" title="面试基础之十种排序算法"></a>面试基础之十种排序算法</h1><blockquote>
 <p>包括冒泡排序，选择排序，插入排序，希尔排序，归并排序，快速排序，堆排序，计数排序，桶排序，基数排序。研究它们算法，以及最好最坏平均时间复杂度和空间复杂度，是否为就地替换以及稳定性。</p>
+<p>推荐阅读：<em><a target="_blank" rel="noopener" href="https://github.com/hustcc/JS-Sorting-Algorithm">https://github.com/hustcc/JS-Sorting-Algorithm</a></em></p>
 </blockquote>
 <p><img src="..\img\Sorting comparation.png" srcset="/img/loading.gif" alt="Sorting comparation"></p>
+<p><strong>复杂度</strong></p>
+<p>平方阶 (O(n2)) 排序 各类简单排序：直接插入、直接选择和冒泡排序。</p>
+<p>线性对数阶 (O(nlog2n)) 排序 快速排序、堆排序和归并排序；</p>
+<p>O(n1+§)) 排序，§ 是介于 0 和 1 之间的常数。 希尔排序</p>
+<p>线性阶 (O(n)) 排序 基数排序，此外还有桶、箱排序。</p>
+<p><strong>关于稳定性</strong></p>
+<p>稳定的排序算法：冒泡排序、插入排序、归并排序和基数排序。</p>
+<p>不是稳定的排序算法：选择排序、快速排序、希尔排序、堆排序。</p>
+<p><strong>名词解释</strong>：</p>
+<ul>
+<li>n：数据规模</li>
+<li>k：”桶”的个数</li>
+<li>In-place：占用常数内存，不占用额外内存</li>
+<li>Out-place：占用额外内存</li>
+<li>稳定性：排序后 2 个相等键值的顺序和排序之前它们的顺序相同</li>
+</ul>
 <p>题目</p>
 <ul>
 <li><ol>
@@ -256,20 +273,76 @@
 </ol>
 </li>
 <li>1606.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-servers-that-handled-most-number-of-requests/">找到处理最多请求的服务器</a>(Hard)</li>
+<li>207</li>
+<li>210</li>
 </ul>
 <hr>
-<h2 id="1-快速排序"><a href="#1-快速排序" class="headerlink" title="1. 快速排序"></a>1. 快速排序</h2><blockquote>
+<h2 id="1-1-冒泡排序"><a href="#1-1-冒泡排序" class="headerlink" title="1.1 冒泡排序"></a>1.1 冒泡排序</h2><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><p>冒泡排序（Bubble Sort）也是一种简单直观的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢”浮”到数列的顶端。</p>
+<p>作为最简单的排序算法之一，冒泡排序给我的感觉就像 Abandon 在单词书里出现的感觉一样，每次都在第一页第一位，所以最熟悉。冒泡排序还有一种优化算法，就是立一个 flag，当在一趟序列遍历中元素没有发生交换，则证明该序列已经有序。但这种改进对于提升性能来说并没有什么太大作用。</p>
+<h3 id="1-算法步骤"><a href="#1-算法步骤" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><p>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</p>
+<p>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。这步做完后，最后的元素会是最大的数。</p>
+<p>针对所有的元素重复以上的步骤，除了最后一个。</p>
+<p>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</p>
+<h3 id="2-动图演示"><a href="#2-动图演示" class="headerlink" title="2. 动图演示"></a>2. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/bubbleSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="3-什么时候最快"><a href="#3-什么时候最快" class="headerlink" title="3. 什么时候最快"></a>3. 什么时候最快</h3><p>当输入的数据已经是正序时（都已经是正序了，我还要你冒泡排序有何用啊）。</p>
+<h3 id="4-什么时候最慢"><a href="#4-什么时候最慢" class="headerlink" title="4. 什么时候最慢"></a>4. 什么时候最慢</h3><p>当输入的数据是反序时（写一个 for 循环反序输出数据不就行了，干嘛要用你冒泡排序呢，我是闲的吗）。</p>
+<hr>
+<h2 id="1-2-选择排序"><a href="#1-2-选择排序" class="headerlink" title="1.2 选择排序"></a>1.2 选择排序</h2><h3 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h3><p>选择排序是一种简单直观的排序算法，无论什么数据进去都是 O(n²) 的时间复杂度。所以用到它的时候，数据规模越小越好。唯一的好处可能就是不占用额外的内存空间了吧。</p>
+<h3 id="1-算法步骤-1"><a href="#1-算法步骤-1" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><p>首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置。</p>
+<p>再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。</p>
+<p>重复第二步，直到所有元素均排序完毕。</p>
+<h3 id="2-动图演示-1"><a href="#2-动图演示-1" class="headerlink" title="2. 动图演示"></a>2. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/selectionSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<hr>
+<h2 id="1-3-插入排序"><a href="#1-3-插入排序" class="headerlink" title="1.3 插入排序"></a>1.3 插入排序</h2><h3 id="-2"><a href="#-2" class="headerlink" title=" "></a> </h3><p>插入排序的代码实现虽然没有冒泡排序和选择排序那么简单粗暴，但它的原理应该是最容易理解的了，因为只要打过扑克牌的人都应该能够秒懂。插入排序是一种最简单直观的排序算法，它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+<p>插入排序和冒泡排序一样，也有一种优化算法，叫做拆半插入。</p>
+<h3 id="1-算法步骤-2"><a href="#1-算法步骤-2" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><p>将第一待排序序列第一个元素看做一个有序序列，把第二个元素到最后一个元素当成是未排序序列。</p>
+<p>从头到尾依次扫描未排序序列，将扫描到的每个元素插入有序序列的适当位置。（如果待插入的元素与有序序列中的某个元素相等，则将待插入元素插入到相等元素的后面。）</p>
+<h3 id="2-动图演示-2"><a href="#2-动图演示-2" class="headerlink" title="2. 动图演示"></a>2. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/insertionSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<hr>
+<h2 id="1-4-希尔排序"><a href="#1-4-希尔排序" class="headerlink" title="1.4 希尔排序"></a>1.4 希尔排序</h2><h3 id="-3"><a href="#-3" class="headerlink" title=" "></a> </h3><p>希尔排序，也称递减增量排序算法，是插入排序的一种更高效的改进版本。但希尔排序是非稳定排序算法。</p>
+<p>希尔排序是基于插入排序的以下两点性质而提出改进方法的：</p>
+<ul>
+<li>插入排序在对几乎已经排好序的数据操作时，效率高，即可以达到线性排序的效率；</li>
+<li>但插入排序一般来说是低效的，因为插入排序每次只能将数据移动一位；</li>
+</ul>
+<p>希尔排序的基本思想是：先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，待整个序列中的记录”基本有序”时，再对全体记录进行依次直接插入排序。</p>
+<h3 id="1-算法步骤-3"><a href="#1-算法步骤-3" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><p>选择一个增量序列 t1，t2，……，tk，其中 ti &gt; tj, tk = 1；</p>
+<p>按增量序列个数 k，对序列进行 k 趟排序；</p>
+<p>每趟排序，根据对应的增量 ti，将待排序列分割成若干长度为 m 的子序列，分别对各子表进行直接插入排序。仅增量因子为 1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。</p>
+<h3 id="2-动图演示-3"><a href="#2-动图演示-3" class="headerlink" title="2. 动图演示"></a>2. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/Sorting_shellsort_anim.gif" srcset="/img/loading.gif" alt="img"></p>
+<hr>
+<h2 id="1-5-归并排序"><a href="#1-5-归并排序" class="headerlink" title="1.5 归并排序"></a>1.5 归并排序</h2><h3 id="-4"><a href="#-4" class="headerlink" title=" "></a> </h3><p>归并排序（Merge sort）是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。</p>
+<p>作为一种典型的<strong>分而治之</strong>思想的算法应用，归并排序的实现由两种方法：</p>
+<ul>
+<li>自上而下的递归（所有递归的方法都可以用迭代重写，所以就有了第 2 种方法）；</li>
+<li>自下而上的迭代；</li>
+</ul>
+<p>说实话，我不太理解这句话。意思是 JavaScript 编译器内存太小，递归太深容易造成内存溢出吗？还望有大神能够指教。</p>
+<p>和选择排序一样，归并排序的性能不受输入数据的影响，但表现比选择排序好的多，因为始终都是 O(nlogn) 的时间复杂度。代价是需要额外的内存空间。</p>
+<h3 id="2-算法步骤"><a href="#2-算法步骤" class="headerlink" title="2. 算法步骤"></a>2. 算法步骤</h3><ol>
+<li>申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列；</li>
+<li>设定两个指针，最初位置分别为两个已经排序序列的起始位置；</li>
+<li>比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置；</li>
+<li>重复步骤 3 直到某一指针达到序列尾；</li>
+<li>将另一序列剩下的所有元素直接复制到合并序列尾。</li>
+</ol>
+<h3 id="3-动图演示"><a href="#3-动图演示" class="headerlink" title="3. 动图演示"></a>3. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/mergeSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<hr>
+<h2 id="1-6-快速排序"><a href="#1-6-快速排序" class="headerlink" title="1.6 快速排序"></a>1.6 快速排序</h2><blockquote>
 <p>面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)</p>
 </blockquote>
-<p>快速排序非常神奇但是很容易忘记，因此需要经常记忆。</p>
+<p>快速排序非常神奇但是很容易忘记，因此需要经常记忆。在大多数情况下都比平均时间复杂度为 O(n logn) 的排序算法表现要更好。</p>
+<blockquote>
+<p><em>快速排序的最坏运行情况是 O(n²)，比如说顺序数列的快排。但它的平摊期望时间是 O(nlogn)，且 O(nlogn) 记号中隐含的常数因子很小，比复杂度稳定等于 O(nlogn) 的归并排序要小很多。所以，对绝大多数顺序性较弱的随机数列而言，快速排序总是优于归并排序。</em></p>
+</blockquote>
 <p>快速排序$a[l…r]$是一个典型的分治算法，参考《算法导论》第七章P95。</p>
-<ul>
-<li><strong>分解</strong>，将数组$a[l…r]$以$q$为分阶段划分为两个数组。使得一个数组元素完全小于另一个，即$a[l…q-1]\le a[q]\le a[q+1…r]$</li>
-<li><strong>解决，</strong>通过递归调用快速排序，对子数组进行排序</li>
-<li><strong>合并</strong>，因为子数组是按原址排序的，所以不需要合并操作。</li>
-</ul>
-<p>由此可以发现每次经过「划分」操作后，我们一定可以确定一个元素的最终位置，即 $x$最终位置为 $q$，并且保证 $a[l⋯q−1] $中的每个元素小于等于 $a[q]$，且 $a[q]$ 小于等于 $a[q+1⋯r]$ 中的每个元素。所以只要某次划分的 $q$为倒数第 $k$ 个下标的时候，我们就已经找到了答案。 我们只关心这一点，至于 $a[l⋯q−1] $和 $a[q+1⋯r]$ 是否是有序的，我们不关心。</p>
-<p>因此我们可以改进快速排序算法来解决这个问题：在分解的过程当中，我们会对子数组进行划分，如果划分得到的 $q$ 正好就是我们需要的下标，就直接返回 $a[q]$；否则，如果 $q$ 比目标下标小，就递归右子区间，否则递归左子区间。这样就可以把原来递归两个区间变成只递归一个区间，提高了时间效率。这就是「快速选择」算法。</p>
+<h3 id="1-算法步骤-4"><a href="#1-算法步骤-4" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><ol>
+<li>从数列中挑出一个元素，称为 “基准”（pivot）;</li>
+<li>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</li>
+<li>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序；</li>
+</ol>
+<h3 id="2-动图演示-4"><a href="#2-动图演示-4" class="headerlink" title="2. 动图演示"></a>2. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/quickSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="3-代码"><a href="#3-代码" class="headerlink" title="3. 代码"></a>3. 代码</h3><p>随机分区</p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">quickSelect</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; a, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r, <span class="hljs-keyword">int</span> index)</span> </span>&#123;
@@ -304,17 +377,78 @@
     &#125;
 &#125;;
 </code></pre>
+<p>递归版本</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quick_sort_recursive</span><span class="hljs-params">(T arr[], <span class="hljs-keyword">int</span> start, <span class="hljs-keyword">int</span> end)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (start &gt;= end)
+        <span class="hljs-keyword">return</span>;
+    T mid = arr[end];
+    <span class="hljs-keyword">int</span> left = start, right = end - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (left &lt; right) &#123; <span class="hljs-comment">//在整个范围内搜寻比枢纽元值小或大的元素，然后将左侧元素与右侧元素交换</span>
+        <span class="hljs-keyword">while</span> (arr[left] &lt; mid &amp;&amp; left &lt; right) <span class="hljs-comment">//试图在左侧找到一个比枢纽元更大的元素</span>
+            left++;
+        <span class="hljs-keyword">while</span> (arr[right] &gt;= mid &amp;&amp; left &lt; right) <span class="hljs-comment">//试图在右侧找到一个比枢纽元更小的元素</span>
+            right--;
+        <span class="hljs-built_in">std</span>::swap(arr[left], arr[right]); <span class="hljs-comment">//交换元素</span>
+    &#125;
+    <span class="hljs-keyword">if</span> (arr[left] &gt;= arr[end])
+        <span class="hljs-built_in">std</span>::swap(arr[left], arr[end]);
+    <span class="hljs-keyword">else</span>
+        left++;
+    quick_sort_recursive(arr, start, left - <span class="hljs-number">1</span>);
+    quick_sort_recursive(arr, left + <span class="hljs-number">1</span>, end);
+&#125;
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt; 
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quick_sort</span><span class="hljs-params">(T arr[], <span class="hljs-keyword">int</span> len)</span> </span>&#123;
+    quick_sort_recursive(arr, <span class="hljs-number">0</span>, len - <span class="hljs-number">1</span>);
+&#125;</code></pre>
+<p>迭代版本</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Range</span> &#123;</span>
+    <span class="hljs-keyword">int</span> start, end;
+    Range(<span class="hljs-keyword">int</span> s = <span class="hljs-number">0</span>, <span class="hljs-keyword">int</span> e = <span class="hljs-number">0</span>) &#123;
+        start = s, end = e;
+    &#125;
+&#125;;
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">quick_sort</span><span class="hljs-params">(T arr[], <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> len)</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (len &lt;= <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span>; 
+    <span class="hljs-comment">// r[]模擬堆疊,p為數量,r[p++]為push,r[--p]為pop且取得元素</span>
+    Range r[len];
+    <span class="hljs-keyword">int</span> p = <span class="hljs-number">0</span>;
+    r[p++] = Range(<span class="hljs-number">0</span>, len - <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">while</span> (p) &#123;
+        Range range = r[--p];
+        <span class="hljs-keyword">if</span> (range.start &gt;= range.end)
+            <span class="hljs-keyword">continue</span>;
+        T mid = arr[range.end];
+        <span class="hljs-keyword">int</span> left = range.start, right = range.end - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (left &lt; right) &#123;
+            <span class="hljs-keyword">while</span> (arr[left] &lt; mid &amp;&amp; left &lt; right) left++;
+            <span class="hljs-keyword">while</span> (arr[right] &gt;= mid &amp;&amp; left &lt; right) right--;
+            <span class="hljs-built_in">std</span>::swap(arr[left], arr[right]);
+        &#125;
+        <span class="hljs-keyword">if</span> (arr[left] &gt;= arr[range.end])
+            <span class="hljs-built_in">std</span>::swap(arr[left], arr[range.end]);
+        <span class="hljs-keyword">else</span>
+            left++;
+        r[p++] = Range(range.start, left - <span class="hljs-number">1</span>);
+        r[p++] = Range(left + <span class="hljs-number">1</span>, range.end);
+    &#125;
+&#125;</code></pre>
+<hr>
 <p>​        </p>
-<h2 id="2-堆排序"><a href="#2-堆排序" class="headerlink" title="2. 堆排序"></a>2. 堆排序</h2><blockquote>
+<h2 id="1-7-堆排序"><a href="#1-7-堆排序" class="headerlink" title="1.7. 堆排序"></a>1.7. 堆排序</h2><blockquote>
 <p>1606.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-servers-that-handled-most-number-of-requests/">找到处理最多请求的服务器</a>(Hard)</p>
 </blockquote>
 <hr>
 <p>堆是一种数据结构，类似于树。它最好最坏，平均时间复杂度都是$O(\log n)$，也是不稳定排序。</p>
 <blockquote>
 <p>堆是具有以下性质的完全二叉树：每个结点的值都大于或等于其左右孩子结点的值，称为大顶堆；或者每个结点的值都小于或等于其左右孩子结点的值，称为小顶堆。</p>
-<p><img src="\img\heap.png" srcset="/img/loading.gif" alt="img"></p>
 </blockquote>
-<p>堆排序的原理如下，大顶堆排序对应升序，小顶堆排序对应降序。以大顶堆为例，我们将数组的N个元素构建成大顶堆，那么整个序列的最大值就是堆的根节点，我们将根节点与堆最后一个节点进行交换，再对余下的（N-1）个元素进行相同的操作，直到整个堆只有一个节点。</p>
+<h3 id="1-算法步骤-5"><a href="#1-算法步骤-5" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><p>堆排序的原理如下，大顶堆排序对应升序，小顶堆排序对应降序。以大顶堆为例，我们将数组的N个元素构建成大顶堆，那么整个序列的最大值就是堆的根节点，我们将根节点与堆最后一个节点进行交换，再对余下的（N-1）个元素进行相同的操作，直到整个堆只有一个节点。</p>
+<h3 id="2-动画演示"><a href="#2-动画演示" class="headerlink" title="2.动画演示"></a>2.动画演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/heapSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2019/03/Sorting_heapsort_anim.gif" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>代码（大顶堆）</strong></p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
     <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">maxHeapify</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> len)</span> </span>&#123;
@@ -401,12 +535,200 @@
 
 （<span class="hljs-number">4</span>）sort_heap()对整个堆排序
 排序之后的元素就不再是一个合法的堆了。</code></pre>
-<h2 id="3-归并排序"><a href="#3-归并排序" class="headerlink" title="3. 归并排序"></a>3. 归并排序</h2><p>归并排序是典型的divide and conquer思想。</p>
-<h2 id="x-拓扑排序"><a href="#x-拓扑排序" class="headerlink" title="x.拓扑排序"></a>x.拓扑排序</h2><blockquote>
+<hr>
+<h2 id="1-8-计数排序"><a href="#1-8-计数排序" class="headerlink" title="1.8 计数排序"></a>1.8 计数排序</h2><h3 id="-5"><a href="#-5" class="headerlink" title=" "></a> </h3><p>计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</p>
+<ol>
+<li>计数排序的特征</li>
+</ol>
+<p>当输入的元素是 n 个 0 到 k 之间的整数时，它的运行时间是 Θ(n + k)。计数排序不是比较排序，排序的速度快于任何比较排序算法。</p>
+<p>由于用来计数的数组C的长度取决于待排序数组中数据的范围（等于待排序数组的最大值与最小值的差加上1），这使得计数排序对于数据范围很大的数组，需要大量时间和内存。例如：计数排序是用来排序0到100之间的数字的最好的算法，但是它不适合按字母顺序排序人名。但是，计数排序可以用在基数排序中的算法来排序数据范围很大的数组。</p>
+<p>通俗地理解，例如有 10 个年龄不同的人，统计出有 8 个人的年龄比 A 小，那 A 的年龄就排在第 9 位,用这个方法可以得到其他每个人的位置,也就排好了序。当然，年龄有重复时需要特殊处理（保证稳定性），这就是为什么最后要反向填充目标数组，以及将每个数字的统计减去 1 的原因。</p>
+<h3 id="1-算法步骤-6"><a href="#1-算法步骤-6" class="headerlink" title="1. 算法步骤"></a>1. 算法步骤</h3><ul>
+<li>（1）找出待排序的数组中最大和最小的元素</li>
+<li>（2）统计数组中每个值为i的元素出现的次数，存入数组C的第i项</li>
+<li>（3）对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）</li>
+<li>（4）反向填充目标数组：将每个元素i放在新数组的第C(i)项，每放一个元素就将C(i)减去1</li>
+</ul>
+<h3 id="2-动图演示-5"><a href="#2-动图演示-5" class="headerlink" title="2. 动图演示"></a>2. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/countingSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="-6"><a href="#-6" class="headerlink" title=" "></a> </h2><hr>
+<h2 id="1-9-桶排序"><a href="#1-9-桶排序" class="headerlink" title="1.9 桶排序"></a>1.9 桶排序</h2><p>桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。为了使桶排序更加高效，我们需要做到这两点：</p>
+<ol>
+<li>在额外空间充足的情况下，尽量增大桶的数量</li>
+<li>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中</li>
+</ol>
+<p>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。</p>
+<h3 id="1-什么时候最快"><a href="#1-什么时候最快" class="headerlink" title="1. 什么时候最快"></a>1. 什么时候最快</h3><p>当输入的数据可以均匀的分配到每一个桶中。</p>
+<h3 id="2-什么时候最慢"><a href="#2-什么时候最慢" class="headerlink" title="2. 什么时候最慢"></a>2. 什么时候最慢</h3><p>当输入的数据被分配到了同一个桶中。</p>
+<h3 id="3-示意图"><a href="#3-示意图" class="headerlink" title="3. 示意图"></a>3. 示意图</h3><p>元素分布在桶中：</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2019/03/Bucket_sort_1.svg_.png" srcset="/img/loading.gif" alt="img"></p>
+<p>然后，元素在每个桶中排序：</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2019/03/Bucket_sort_2.svg_.png" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iterator&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> BUCKET_NUM = <span class="hljs-number">10</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ListNode</span>&#123;</span>
+        explicit ListNode(int i=0):mData(i),mNext(NULL)&#123;&#125;
+        ListNode* mNext;
+        <span class="hljs-keyword">int</span> mData;
+&#125;;
+
+<span class="hljs-function">ListNode* <span class="hljs-title">insert</span><span class="hljs-params">(ListNode* head,<span class="hljs-keyword">int</span> val)</span></span>&#123;
+        ListNode dummyNode;
+        ListNode *newNode = <span class="hljs-keyword">new</span> ListNode(val);
+        ListNode *pre,*curr;
+        dummyNode.mNext = head;
+        pre = &amp;dummyNode;
+        curr = head;
+        <span class="hljs-keyword">while</span>(<span class="hljs-literal">NULL</span>!=curr &amp;&amp; curr-&gt;mData&lt;=val)&#123;
+                pre = curr;
+                curr = curr-&gt;mNext;
+        &#125;
+        newNode-&gt;mNext = curr;
+        pre-&gt;mNext = newNode;
+        <span class="hljs-keyword">return</span> dummyNode.mNext;
+&#125;
+
+
+<span class="hljs-function">ListNode* <span class="hljs-title">Merge</span><span class="hljs-params">(ListNode *head1,ListNode *head2)</span></span>&#123;
+        ListNode dummyNode;
+        ListNode *dummy = &amp;dummyNode;
+        <span class="hljs-keyword">while</span>(<span class="hljs-literal">NULL</span>!=head1 &amp;&amp; <span class="hljs-literal">NULL</span>!=head2)&#123;
+                <span class="hljs-keyword">if</span>(head1-&gt;mData &lt;= head2-&gt;mData)&#123;
+                        dummy-&gt;mNext = head1;
+                        head1 = head1-&gt;mNext;
+                &#125;<span class="hljs-keyword">else</span>&#123;
+                        dummy-&gt;mNext = head2;
+                        head2 = head2-&gt;mNext;
+                &#125;
+                dummy = dummy-&gt;mNext;
+        &#125;
+        <span class="hljs-keyword">if</span>(<span class="hljs-literal">NULL</span>!=head1) dummy-&gt;mNext = head1;
+        <span class="hljs-keyword">if</span>(<span class="hljs-literal">NULL</span>!=head2) dummy-&gt;mNext = head2;
+       
+        <span class="hljs-keyword">return</span> dummyNode.mNext;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">BucketSort</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n,<span class="hljs-keyword">int</span> arr[])</span></span>&#123;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;ListNode*&gt; <span class="hljs-title">buckets</span><span class="hljs-params">(BUCKET_NUM,(ListNode*)(<span class="hljs-number">0</span>))</span></span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;++i)&#123;
+                <span class="hljs-keyword">int</span> index = arr[i]/BUCKET_NUM;
+                ListNode *head = buckets.at(index);
+                buckets.at(index) = insert(head,arr[i]);
+        &#125;
+        ListNode *head = buckets.at(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;BUCKET_NUM;++i)&#123;
+                head = Merge(head,buckets.at(i));
+        &#125;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>;i&lt;n;++i)&#123;
+                arr[i] = head-&gt;mData;
+                head = head-&gt;mNext;
+        &#125;
+&#125;</code></pre>
+<hr>
+<h2 id="1-10-基数排序"><a href="#1-10-基数排序" class="headerlink" title="1.10 基数排序"></a>1.10 基数排序</h2><h3 id="分类-算法"><a href="#分类-算法" class="headerlink" title="分类 算法"></a><em>分类</em> <a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote_genre/algorithm">算法</a></h3><p>基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。由于整数也可以表达字符串（比如名字或日期）和特定格式的浮点数，所以基数排序也不是只能使用于整数。</p>
+<h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><p>以LSD为例，假设原来有一串数值如下所示：</p>
+<p>73, 22, 93, 43, 55, 14, 28, 65, 39, 81</p>
+<ol>
+<li>首先根据个位数的数值，在走访数值时将它们分配至编号0到9的桶子中：</li>
+</ol>
+<pre><code class="hljs basic"><span class="hljs-number">0</span>
+
+<span class="hljs-symbol">1 </span><span class="hljs-number">81</span>
+
+<span class="hljs-symbol">2 </span><span class="hljs-number">22</span>
+
+<span class="hljs-symbol">3 </span><span class="hljs-number">73</span> <span class="hljs-number">93</span> <span class="hljs-number">43</span>
+
+<span class="hljs-symbol">4 </span><span class="hljs-number">14</span>
+
+<span class="hljs-symbol">5 </span><span class="hljs-number">55</span> <span class="hljs-number">65</span>
+
+<span class="hljs-number">6</span>
+
+<span class="hljs-number">7</span>
+
+<span class="hljs-symbol">8 </span><span class="hljs-number">28</span>
+
+<span class="hljs-symbol">9 </span><span class="hljs-number">39</span></code></pre>
+<ol>
+<li>接下来将这些桶子中的数值重新串接起来，成为以下的数列：</li>
+</ol>
+<p>81, 22, 73, 93, 43, 14, 55, 65, 28, 39</p>
+<p>接着再进行一次分配，这次是根据十位数来分配：</p>
+<pre><code class="hljs 0">0
+
+1 14
+
+2 22 28
+
+3 39
+
+4 43
+
+5 55
+
+6 65
+
+7 73
+
+8 81
+
+9 93</code></pre>
+<ol>
+<li>接下来将这些桶子中的数值重新串接起来，成为以下的数列：</li>
+</ol>
+<p>14, 22, 28, 39, 43, 55, 65, 73, 81, 93</p>
+<p>这时候整个数列已经排序完毕；如果排序的对象有三位数以上，则持续进行以上的动作直至最高位数为止。</p>
+<p>LSD的基数排序适用于位数小的数列，如果位数多的话，使用MSD的效率会比较好。MSD的方式与LSD相反，是由高位数为基底开始进行分配，但在分配之后并不马上合并回一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/数组">数组</a>中，而是在每个“桶子”中建立“子桶”，将每个桶子中的数值按照下一数位的值分配到“子桶”中。在进行完最低位数的分配后再合并回单一的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/数组">数组</a>中。</p>
+<h3 id="1-基数排序-vs-计数排序-vs-桶排序"><a href="#1-基数排序-vs-计数排序-vs-桶排序" class="headerlink" title="1. 基数排序 vs 计数排序 vs 桶排序"></a>1. 基数排序 vs 计数排序 vs 桶排序</h3><p>基数排序有两种方法：</p>
+<p>这三种排序算法都利用了桶的概念，但对桶的使用方法上有明显差异：</p>
+<ul>
+<li>基数排序：根据键值的每位数字来分配桶；</li>
+<li>计数排序：每个桶只存储单一键值；</li>
+<li>桶排序：每个桶存储一定范围的数值；</li>
+</ul>
+<h3 id="2-LSD-基数排序动图演示"><a href="#2-LSD-基数排序动图演示" class="headerlink" title="2. LSD 基数排序动图演示"></a>2. LSD 基数排序动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/radixSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="3-代码-1"><a href="#3-代码-1" class="headerlink" title="3. 代码"></a>3. 代码</h3><pre><code class="hljs cpp">
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">RadixSort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;<span class="hljs-comment">//LSD</span>
+    <span class="hljs-keyword">int</span> n = nums.size();
+    <span class="hljs-keyword">int</span> <span class="hljs-built_in">exp</span> = <span class="hljs-number">1</span>;<span class="hljs-comment">//exp就是基数，每次扩大为10倍</span>
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">buf</span><span class="hljs-params">(n)</span></span>;<span class="hljs-comment">//</span>
+    <span class="hljs-keyword">int</span> maxVal = *max_element(nums.begin(), nums.end());<span class="hljs-comment">//maxval为最大的元素</span>
+
+    <span class="hljs-keyword">while</span> (maxVal &gt;= <span class="hljs-built_in">exp</span>) &#123; <span class="hljs-comment">//可以免去计算最大元素的位数</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">cnt</span><span class="hljs-params">(<span class="hljs-number">10</span>)</span></span>;<span class="hljs-comment">//桶</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;
+            <span class="hljs-keyword">int</span> digit = (nums[i] / <span class="hljs-built_in">exp</span>) % <span class="hljs-number">10</span>;<span class="hljs-comment">//计算数每一位在桶内数量</span>
+            cnt[digit]++; 
+        &#125;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
+            cnt[i] += cnt[i - <span class="hljs-number">1</span>];<span class="hljs-comment">//这里相当于求前缀和，统计之前总共有多少数字</span>
+        &#125;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;
+            <span class="hljs-keyword">int</span> digit = (nums[i] / <span class="hljs-built_in">exp</span>) % <span class="hljs-number">10</span>;<span class="hljs-comment">//从后往前</span>
+            buf[cnt[digit] - <span class="hljs-number">1</span>] = nums[i];<span class="hljs-comment">//更新buf，这里buf下标0相当于个位</span>
+            cnt[digit]--;
+        &#125;
+        copy(buf.begin(), buf.end(), nums.begin());<span class="hljs-comment">//更新nums数组</span>
+        <span class="hljs-built_in">exp</span> *= <span class="hljs-number">10</span>;<span class="hljs-comment">//基底乘10</span>
+    &#125;
+
+&#125;
+</code></pre>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>时间效率: 设待排序列为n个记录，d个关键码，关键码的取值范围为radix，则进行链式基数排序的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/时间复杂度">时间复杂度</a>为O(d(n+radix))，其中，一趟分配时间复杂度为O(n)，一趟收集时间复杂度为O(radix)，共进行d趟分配和收集。</li>
+<li>空间效率：需要2*radix个指向队列的辅助空间，以及用于<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/静态链表">静态链表</a>的n个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/指针">指针</a>。</li>
+</ul>
+<hr>
+<h2 id="XI-拓扑排序"><a href="#XI-拓扑排序" class="headerlink" title="XI.拓扑排序"></a>XI.拓扑排序</h2><blockquote>
 <p>LC 课程表问题系列：207 210</p>
 <p>核心特性，对于图G中任何一条有向边$(u,v)$，$u$在排列中都出现在$v$的前面，这样的排列称为「拓扑排序」。</p>
 </blockquote>
-<p>对一个有向无环图(Directed Acyclic Graph简称DAG)G进行拓扑排序，是将G中所有顶点排成一个线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在线性序列中出现在v之前。通常，这样的线性序列称为满足拓扑次序(Topological Order)的序列，简称拓扑序列。简单的说，由某个集合上的一个偏序得到该集合上的一个全序，这个操作称之为拓扑排序。</p>
+<p>对一个有向无环图(Directed Acyclic Graph简称DAG)G进行拓扑排序，是将G中所有顶点排成一个线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在线性序列中出现在v之前。通常，这样的线性序列称为满足拓扑次序(Topological Order)的序列，简称拓扑序列。简单的说，由某个集合上的一个偏序得到该集合上的一个全序，这个操作称之为<strong>拓扑排序</strong>。</p>
 <p>在图论中，由一个有向无环图的顶点组成的序列，当且仅当满足下列条件时，称为该图的一个拓扑排序（英语：Topological sorting）：</p>
 <ul>
 <li>每个顶点出现且只出现一次；</li>
@@ -467,8 +789,8 @@
 </blockquote>
 <p>时间复杂度: $O(n+m)$，其中 $n$ 为课程数，$m$ 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。</p>
 <p>空间复杂度: $O(n+m)$。题目中是以列表形式给出的先修课程关系，为了对图进行深度优先搜索，我们需要存储成邻接表的形式，空间复杂度为 $O(n+m)$。在深度优先搜索的过程中，我们需要最多 $O(n)$ 的栈空间（递归）进行深度优先搜索，并且还需要若干个 $O(n)$ 的空间存储节点状态、最终答案等。</p>
-<hr>
-<h2 id="跳跃表（Skip-list）实现排序"><a href="#跳跃表（Skip-list）实现排序" class="headerlink" title="跳跃表（Skip list）实现排序"></a>跳跃表（Skip list）实现排序</h2><p>跳跃表是一种<strong>随机化</strong>的数据结构，基于<strong>并联</strong>的链表，其效率相当于二叉查找树，查找和删除均为$O(logn)$。有序的链表加上附加的前进链接。</p>
+<h2 id="-7"><a href="#-7" class="headerlink" title=" "></a> </h2><hr>
+<h2 id="XII-跳跃表（Skip-list）实现排序"><a href="#XII-跳跃表（Skip-list）实现排序" class="headerlink" title="XII 跳跃表（Skip list）实现排序"></a>XII 跳跃表（Skip list）实现排序</h2><p>跳跃表是一种<strong>随机化</strong>的数据结构，基于<strong>并联</strong>的链表，其效率相当于二叉查找树，查找和删除均为$O(logn)$。有序的链表加上附加的前进链接。</p>
 <p><strong>节点和跳跃表的数据结构定义</strong></p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">nodeStructure</span>  </span>
 <span class="hljs-class">&#123;</span>  
@@ -493,7 +815,7 @@
 	<span class="hljs-keyword">return</span> node;
 &#125;</code></pre>
 <p>一个跳表的结构特征：<br>（1）一个跳表由多个层（level）组成；<br>（2）每一层都是一个有序的链表；<br>（3）第1层包含所有的元素；<br>（4）如果元素x出现在第i层，则所有比i小的层都包含x；<br>（5）第i层的元素通过一个down指针指向下一层拥有相同值的元素；<br>（6）在每一层中都包含-1和1两个元素，分别表示INT_MIN和INT_MAX；<br>（7）Top指针指向最高层的第一个元素。</p>
-<p><img src="../img/skiplist.png" srcset="/img/loading.gif" alt="image-20201019143619660" style="zoom:67%;" /></p>
+<p><img src="\img\skiplist.png" srcset="/img/loading.gif" alt=""></p>
 <p>跳跃列表的增加是以随机化的方式进行的，所以在列表中的查找可以快速的跳过部分列表(因此得名)。</p>
 <p>跳表的插入需要三个步骤：<br>（1）查找到在每层待插入位置；<br>（2）随机产生一个层数；<br>（3）从高层至下插入，插入时算法和普通链表的插入完全相同。</p>
 <pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">search</span><span class="hljs-params">(skiplist *sl,<span class="hljs-keyword">int</span> key)</span>  <span class="hljs-comment">//搜索指定key的value  </span></span>
@@ -512,6 +834,7 @@
 </code></pre>
 <p>删除节点操作和插入类似，找到每层需要删除的位置，之后删除操作和普通链表一样。</p>
 <p>注：如果该节点的level是最大的，则需更新跳表的level。</p>
+<hr>
 
             </div>
             <hr>
@@ -542,9 +865,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+                      <a href="/2020/07/21/2020-7-30-pointers/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">解华容道</span>
+                        <span class="hidden-mobile">神奇的多指针 【cover 脑筋急转弯💡】</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -552,8 +875,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-8-1-sliding-windows/">
-                        <span class="hidden-mobile">滑动窗口，滑动的艺术</span>
+                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
+                        <span class="hidden-mobile">动态规划</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -754,7 +1077,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【面试向】排序算法&nbsp;",
+        "【面试向】十种排序算法&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
