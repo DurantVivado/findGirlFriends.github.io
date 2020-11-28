@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.8k 字
+      3.9k 字
     </span>
   
 
@@ -243,7 +243,7 @@
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
-            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p>
+            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第二章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/?s">官方CRUSH教程</a>。</p>
           </div>
 <h1 id="浅析CRUSH算法"><a href="#浅析CRUSH算法" class="headerlink" title="浅析CRUSH算法"></a>浅析CRUSH算法</h1><h1 id="1-CRUSH背景"><a href="#1-CRUSH背景" class="headerlink" title="1. CRUSH背景"></a>1. CRUSH背景</h1><p>大部分存储系统将数据写入到存储设备之后，数据很少在设备之间相互移动，这会导致一个潜在问题，即使是一个数据分布趋于完美的系统，随着时间的迁移，新的空闲设备不断加入，老设备不断退出，数据变得不均匀。<br>一种可行方案是将数据以足够小的粒度打散，均匀分布于整个存储系统，这样做有两个问题:</p>
 <ul>
