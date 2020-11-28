@@ -258,7 +258,7 @@
 <p><a target="_blank" rel="noopener" href="https://github.com/SUSE/DeepSea">DeepSea</a>使用Salt安装Ceph。</p>
 <p><a target="_blank" rel="noopener" href="https://jaas.ai/ceph-mon">jaas.ai/ceph-mon</a>使用Juju安装Ceph。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/openstack/puppet-ceph">github.com/openstack/puppet-ceph</a> 通过Puppet安装Ceph。</p>
-<p>官方的最低要求是 <strong>1</strong> Monitors + <strong>3</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
+<p>官方的最低要求是 <strong>3</strong> Monitors + <strong>3</strong> Managers + <strong>3</strong> OSDs 。 我们尝试用虚拟机搭建最小集群。</p>
 <p>在运行ceph-mon守护程序的每个节点上，还应该设置一个ceph-mgr守护程序。</p>
 <div class="table-container">
 <table>
@@ -302,8 +302,6 @@
             <p>小技巧：我们可以先在1台虚拟机上配置好通用的预备环境，再克隆出另外的2台，随后调整部分配置后即可（如IP、主机名等）。克隆后记得重新生成网卡MAC地址</p>
           </div>
 <h3 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h3><p>关闭firewalld，设置selinux为disabled状态，设置ssh免密登录，配置时钟同步服务。</p>
-<blockquote>
-</blockquote>
 <pre><code class="hljs nginx"><span class="hljs-attribute">sudo</span> ufw status<span class="hljs-comment">#查看防火墙状态 active:开启 inactive：关闭</span></code></pre>
 <pre><code class="hljs puppet"><span class="hljs-comment"># mon作为控制节点</span>
 sudo apt install openssh-server
@@ -575,7 +573,7 @@ Install Ceph<span class="hljs-built_in"> Client </span>           : Complete (0:
                     
                       <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">CEPH 纠删码操作</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

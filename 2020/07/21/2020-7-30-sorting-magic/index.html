@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.8k 字
+      7.3k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      84
+      91
        分钟
     </span>
   
@@ -247,17 +247,26 @@
           </div>
 <h1 id="面试基础之十种排序算法"><a href="#面试基础之十种排序算法" class="headerlink" title="面试基础之十种排序算法"></a>面试基础之十种排序算法</h1><blockquote>
 <p>包括冒泡排序，选择排序，插入排序，希尔排序，归并排序，快速排序，堆排序，计数排序，桶排序，基数排序。研究它们算法，以及最好最坏平均时间复杂度和空间复杂度，是否为就地替换以及稳定性。</p>
+<p>排序不能只是为了解决排序而已，有时候利用排序的思想可以解决意想不到的的问题哦！</p>
 <p>推荐阅读：<em><a target="_blank" rel="noopener" href="https://github.com/hustcc/JS-Sorting-Algorithm">https://github.com/hustcc/JS-Sorting-Algorithm</a></em></p>
 </blockquote>
 <p><img src="..\img\Sorting comparation.png" srcset="/img/loading.gif" alt="Sorting comparation"></p>
 <p><strong>复杂度</strong></p>
-<p>平方阶 (O(n2)) 排序 各类简单排序：直接插入、直接选择和冒泡排序。</p>
-<p>线性对数阶 (O(nlog2n)) 排序 快速排序、堆排序和归并排序；</p>
-<p>O(n1+§)) 排序，§ 是介于 0 和 1 之间的常数。 希尔排序</p>
-<p>线性阶 (O(n)) 排序 基数排序，此外还有桶、箱排序。</p>
+<ul>
+<li><p>平方阶$O(n^2)$ 排序 各类简单排序：直接插入、直接选择和冒泡排序。</p>
+</li>
+<li><p>线性对数阶$O(nlogn)$ 排序 快速排序、堆排序和归并排序,希尔排序；</p>
+</li>
+<li><p>线性阶$ O(n)$ 排序 计数排序，基数排序，此外还有桶、箱排序。</p>
+</li>
+</ul>
 <p><strong>关于稳定性</strong></p>
-<p>稳定的排序算法：冒泡排序、插入排序、归并排序和基数排序。</p>
-<p>不是稳定的排序算法：选择排序、快速排序、希尔排序、堆排序。</p>
+<ul>
+<li><p>稳定的排序算法：冒泡排序、插入排序、归并排序和基数排序。</p>
+</li>
+<li><p>不是稳定的排序算法：选择排序、快速排序、希尔排序、堆排序。</p>
+</li>
+</ul>
 <p><strong>名词解释</strong>：</p>
 <ul>
 <li>n：数据规模</li>
@@ -266,15 +275,18 @@
 <li>Out-place：占用额外内存</li>
 <li>稳定性：排序后 2 个相等键值的顺序和排序之前它们的顺序相同</li>
 </ul>
-<p>题目</p>
+<p><strong>题目</strong></p>
 <ul>
 <li><ol>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/top-k-frequent-elements/">前k个高频元素</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/top-k-frequent-elements/">前k个高频元素</a><strong>（堆排序）</strong></li>
 </ol>
 </li>
-<li>1606.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-servers-that-handled-most-number-of-requests/">找到处理最多请求的服务器</a>(Hard)</li>
-<li>207</li>
-<li>210</li>
+<li><h4 id="215-数组中的第K个最大元素-快排板子"><a href="#215-数组中的第K个最大元素-快排板子" class="headerlink" title="215. 数组中的第K个最大元素 快排板子"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/kth-largest-element-in-an-array/">215. 数组中的第K个最大元素</a> 快排板子</h4></li>
+<li><h4 id="207-课程表（拓扑排序）"><a href="#207-课程表（拓扑排序）" class="headerlink" title="207. 课程表（拓扑排序）"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/course-schedule/">207. 课程表</a>（拓扑排序）</h4></li>
+<li><h4 id="210-课程表-II（拓扑排序）"><a href="#210-课程表-II（拓扑排序）" class="headerlink" title="210. 课程表 II（拓扑排序）"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/course-schedule-ii/">210. 课程表 II</a>（拓扑排序）</h4></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-pairs/">493. 翻转对</a>（Hard）<strong>归并排序板子</strong></p>
+</li>
+<li>1606.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-servers-that-handled-most-number-of-requests/">找到处理最多请求的服务器</a>(Hard) （堆排序思想）</li>
 </ul>
 <hr>
 <h2 id="1-1-冒泡排序"><a href="#1-1-冒泡排序" class="headerlink" title="1.1 冒泡排序"></a>1.1 冒泡排序</h2><h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><p>冒泡排序（Bubble Sort）也是一种简单直观的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢”浮”到数列的顶端。</p>
@@ -327,6 +339,77 @@
 <li>将另一序列剩下的所有元素直接复制到合并序列尾。</li>
 </ol>
 <h3 id="3-动图演示"><a href="#3-动图演示" class="headerlink" title="3. 动图演示"></a>3. 动图演示</h3><p><img src="https://www.runoob.com/wp-content/uploads/2019/03/mergeSort.gif" srcset="/img/loading.gif" alt="img"></p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">mergePair</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(l &gt;= r<span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> mid = (l+r)&gt;&gt;<span class="hljs-number">1</span>;
+        <span class="hljs-comment">//进行局部排序</span>
+        <span class="hljs-keyword">int</span> leftSum = mergePair(nums,l,mid);
+        <span class="hljs-keyword">int</span> rightSum = mergePair(nums,mid,r);
+        <span class="hljs-keyword">int</span> m = mid, n = r;
+        <span class="hljs-keyword">int</span> pl = l, pr = mid, sumPair = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">//合并两个排序数组</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">sorted</span><span class="hljs-params">(r-l+<span class="hljs-number">1</span>)</span></span>;
+        <span class="hljs-keyword">while</span>(pl &lt; m &amp;&amp; pr &lt; n)
+        &#123;
+            <span class="hljs-keyword">if</span>((<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>) nums[pl] &gt; (<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>)nums[pr]*<span class="hljs-number">2</span>) &#123;
+                <span class="hljs-comment">// cout&lt;&lt;pl&lt;&lt;&quot;,&quot;&lt;&lt;pr&lt;&lt;endl;</span>
+                sumPair += (m-pl);
+                pr++;
+            &#125;
+            
+            <span class="hljs-keyword">else</span> pl++;
+        &#125;
+        pl = l; pr = mid;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(pl &lt; m &amp;&amp; pr &lt; n)
+        &#123;
+            <span class="hljs-keyword">if</span>(nums[pl] &gt; nums[pr]) 
+            &#123;
+                sorted[i++] = nums[pr++];
+            &#125;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(nums[pl] &lt; nums[pr])
+            &#123;
+                sorted[i++] = nums[pl++];
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                sorted[i++] = nums[pr++];
+                sorted[i++] = nums[pl++];
+            &#125;
+            
+        &#125;
+        <span class="hljs-keyword">while</span>(pl &lt; m)
+        &#123;
+            sorted[i++] = nums[pl++];
+        &#125;
+        <span class="hljs-keyword">while</span>(pr &lt; n)
+        &#123;
+            sorted[i++] = nums[pr++];
+        &#125;
+        <span class="hljs-comment">//更新nums</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = l;i &lt; r;i++) 
+            nums[i] = sorted[i-l];
+
+        <span class="hljs-keyword">return</span> sumPair+leftSum+rightSum;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">reversePairs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;
+        n = nums.size();
+        <span class="hljs-keyword">if</span>(!n) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        <span class="hljs-comment">//采用归并排序，采用分治思想,前提是数组已经有序</span>
+        <span class="hljs-comment">// cout&lt;&lt;endl;/</span>
+ 
+        <span class="hljs-keyword">return</span> mergePair(nums,<span class="hljs-number">0</span>,n);
+    &#125;
+&#125;;</code></pre>
+<p>上面是根据493.写的归并板子，我们可以提取出几个优化的点：</p>
+<ul>
+<li>数组传递应该均采用引用传参！</li>
+<li>在更新nums时候我们选择 <code>vector&lt;int&gt; sorted(r-l+1);</code>然后直接按下标赋值；而不是 <code>vector&lt;int&gt; sorted;</code>再进行<code>push_back</code>。 前者可以帮助我们节省大量时间，比如493 亲测帮助笔者节省了一倍时间。</li>
+<li>遇到INT_MAX这样的问题直接long long就好了，不需要多想。</li>
+</ul>
 <hr>
 <h2 id="1-6-快速排序"><a href="#1-6-快速排序" class="headerlink" title="1.6 快速排序"></a>1.6 快速排序</h2><blockquote>
 <p>面试要点：平均时间复杂度$O(N\log N)$，最好情况$O(N\log N)$，最坏情况$O(N^2)$,空间复杂度O($\log N$)</p>
@@ -720,8 +803,8 @@
 </code></pre>
 <p><strong>复杂度分析</strong></p>
 <ul>
-<li>时间效率: 设待排序列为n个记录，d个关键码，关键码的取值范围为radix，则进行链式基数排序的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/时间复杂度">时间复杂度</a>为O(d(n+radix))，其中，一趟分配时间复杂度为O(n)，一趟收集时间复杂度为O(radix)，共进行d趟分配和收集。</li>
-<li>空间效率：需要2*radix个指向队列的辅助空间，以及用于<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/静态链表">静态链表</a>的n个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/指针">指针</a>。</li>
+<li>时间效率: 设待排序列为$n$个记录，$d$个关键码，关键码的取值范围为$radix$，则进行链式基数排序的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/时间复杂度">时间复杂度</a>为$O(d(n+radix))$，其中，一趟分配时间复杂度为$O(n)$，一趟收集时间复杂度为$O(radix)$，共进行d趟分配和收集。</li>
+<li>空间效率：需要$2*radix$个指向队列的辅助空间，以及用于<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/静态链表">静态链表</a>的n个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/指针">指针</a>。</li>
 </ul>
 <hr>
 <h2 id="XI-拓扑排序"><a href="#XI-拓扑排序" class="headerlink" title="XI.拓扑排序"></a>XI.拓扑排序</h2><blockquote>
@@ -790,7 +873,10 @@
 <p>时间复杂度: $O(n+m)$，其中 $n$ 为课程数，$m$ 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。</p>
 <p>空间复杂度: $O(n+m)$。题目中是以列表形式给出的先修课程关系，为了对图进行深度优先搜索，我们需要存储成邻接表的形式，空间复杂度为 $O(n+m)$。在深度优先搜索的过程中，我们需要最多 $O(n)$ 的栈空间（递归）进行深度优先搜索，并且还需要若干个 $O(n)$ 的空间存储节点状态、最终答案等。</p>
 <h2 id="-7"><a href="#-7" class="headerlink" title=" "></a> </h2><hr>
-<h2 id="XII-跳跃表（Skip-list）实现排序"><a href="#XII-跳跃表（Skip-list）实现排序" class="headerlink" title="XII 跳跃表（Skip list）实现排序"></a>XII 跳跃表（Skip list）实现排序</h2><p>跳跃表是一种<strong>随机化</strong>的数据结构，基于<strong>并联</strong>的链表，其效率相当于二叉查找树，查找和删除均为$O(logn)$。有序的链表加上附加的前进链接。</p>
+<h2 id="XII-跳跃表（Skip-list）实现排序"><a href="#XII-跳跃表（Skip-list）实现排序" class="headerlink" title="XII 跳跃表（Skip list）实现排序"></a>XII 跳跃表（Skip list）实现排序</h2><blockquote>
+<h4 id="1206-设计跳表-这一题可以帮助我们快速理解跳表原理。"><a href="#1206-设计跳表-这一题可以帮助我们快速理解跳表原理。" class="headerlink" title="1206. 设计跳表  这一题可以帮助我们快速理解跳表原理。"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/design-skiplist/">1206. 设计跳表  </a>这一题可以帮助我们快速理解跳表原理。</h4></blockquote>
+<p>跳跃表是一种<strong>随机化</strong>的数据结构，基于<strong>并联</strong>的链表，其效率相当于二叉查找树，查找和删除均为$O(logn)$。有序的链表加上附加的前进链接。</p>
+<p><img src="/img/1506_skiplist.gif" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>节点和跳跃表的数据结构定义</strong></p>
 <pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">nodeStructure</span>  </span>
 <span class="hljs-class">&#123;</span>  
@@ -865,9 +951,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-30-pointers/">
+                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">神奇的多指针 【cover 脑筋急转弯💡】</span>
+                        <span class="hidden-mobile">动态规划</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -875,8 +961,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
-                        <span class="hidden-mobile">动态规划</span>
+                      <a href="/2020/07/19/2020-07-19-damn_blog/">
+                        <span class="hidden-mobile">Durant终于有个家写写东西了</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

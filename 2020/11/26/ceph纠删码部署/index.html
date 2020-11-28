@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>Durant Thorvalds 的米奇妙妙屋</title>
+  <title>CEPH 纠删码操作 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -179,8 +179,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-11-26 17:45" pubdate>
-        2020年11月26日 下午
+      <time datetime="2020-11-26 00:00" pubdate>
+        2020年11月26日 凌晨
       </time>
     </span>
   
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      34
+      35
        分钟
     </span>
   
@@ -239,78 +239,251 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">CEPH 纠删码操作</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Ceph-纠删码操作"><a href="#Ceph-纠删码操作" class="headerlink" title="Ceph 纠删码操作"></a>Ceph 纠删码操作</h1><p>Ceph官方文档<br><a target="_blank" rel="noopener" href="http://ceph.com/docs/master/architecture/#erasure-coding">http://ceph.com/docs/master/architecture/#erasure-coding</a><br><a target="_blank" rel="noopener" href="http://ceph.com/docs/master/rados/operations/erasure-code/">http://ceph.com/docs/master/rados/operations/erasure-code/</a><br><a target="_blank" rel="noopener" href="http://ceph.com/docs/master/dev/erasure-coded-pool/">http://ceph.com/docs/master/dev/erasure-coded-pool/</a><br>RedHat的Inktank Ceph存储新增纠删码、分层部署<br><a target="_blank" rel="noopener" href="http://www.searchstorage.com.cn/showcontent_83783.htm">http://www.searchstorage.com.cn/showcontent_83783.htm</a><br>纠删码：确保RAID失效后的数据可用性<br><a target="_blank" rel="noopener" href="http://storage.it168.com/a2011/0816/1233/000001233286_1.shtml">http://storage.it168.com/a2011/0816/1233/000001233286_1.shtml</a><br>存储系统中的纠删码（Erasure Codes）<br><a target="_blank" rel="noopener" href="http://www.tuicool.com/articles/v6Bjuq">http://www.tuicool.com/articles/v6Bjuq</a></p>
-<p>第2章 纠删码概念和原理<br>2.1 概念<br>按照误码控制的不同功能，可分为检错码、纠错码和纠删码等。<br>检错码仅具备识别错码功能 而无纠正错码功能；<br>纠错码不仅具备识别错码功能，同时具备纠正错码功能；<br>纠删码则不仅具备识别错码和纠正错码的功能，而且当错码超过纠正范围时可把无法纠错的信息删除。<br>2.2 原理<br>比如 K=3 M=2 K+M=5<br>这个意思是：<br>K原始数据盘个数或恢复数据需要的磁盘个数<br>M校验盘个数或允许出故障的盘个数<br>使用编码算法，通过K个原始数据生成K+M个新数据<br>通过任何K个新数据都能还原出原始的K个数据<br>即允许M个数据盘出故障，数据仍然不会丢失；</p>
-<p>第3章 Ceph纠删码介绍<br>Ceph纠删码即Ceph Erasure。<br>3.1 Ceph纠删码用途<br>用更少的空间实现存储，即节约空间；<br>纠删码实现了高速的计算，但有2个缺点，一个是速度慢，一个是只支持对象的部分操作（比如：不支持局部写）。纠删码的缺点现在已经有解决办法。<br>3.2 Ceph纠删码库<br>Ceph的默认纠删码库是Jerasure，即Jerasure库；<br>当管理员创建一个erasure-coded后端时，可以指定数据块和代码块参数。<br>Jerasure库是第三方提供的中间件。<br>Jerasure库可以在外网上搜索到。<br>Ceph环境安装时，已经默认安装了Jerasure库。<br>3.3 Ceph纠删码数据存储<br>在erasure coded pool中，每个数据对象都被存放在K+M块中。对象被分成K个数据库和M个编码块；erasure coded pool的大小被定义成K+M块，每个块存储在一个OSD中；块的顺序号作为object的属性保存在对象中。<br>3.3.1 编码块读写<br>例如:创建5个OSDs (K=3 M=2)的erasure coded pool，允许损坏2个(M = 2)；<br>对象 NYAN 内容是 ABCDEFGHI ；<br>NYAN写入pool时，纠删码函数把NYAN分3个数据块：第1个是ABC,第2个是DEF，第3个是GHI；如果NYAN的长度不是K的倍数，NYAN会被填充一些内容；<br>纠删码函数也创建2个编码块：第4个是YXY，第5个是GQC；</p>
-<p><img src="https://img-blog.csdn.net/20141229163616422?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"></p>
-<p>每个块都被存储在osd中；对象中的块有相同的名字 (NYAN)但存储在不通的osd中。除了名字外，这些块都有一个序号，需要保存在对象属性中 (shard_t)<br>比如，块1包含ABC保存在OSD5中；块4包含YXY保存在OSD3中。<br>当从erasure coded pool中读取对象NYAN时，纠删码函数读取3个块：块1(ABC)/块3(GHI)/块4(YXY)；然后重建原始对象内容ABCDEFGHI；<br>纠删码函数被告知：块2和块5丢失；块5不能读取是因为OSD4损坏了；块3不能读取，是因为OSD2太慢了。</p>
-<p><img src="https://img-blog.csdn.net/20141229173516084?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"></p>
-<p>3.3.2 间断全写<br>在erasure coded pool中,主OSD负责所有的写操作；它负责K+M块的编码，并写到其他OSD中。它还负责维护一个权威的pg log版本。<br>下图中，一个erasure coded是K=2/M=1,3个OSD节点，2个是K的节点，1个是M的节点；pg分别在OSD1/OSD2/OSD3中；<br>一个对象被编码保存在这些OSD中：<br>块D1v1(数据块1,版本1)在OSD1中；<br>块D2v1(数据块2,版本1)在OSD2中；<br>块C1v1(编码块1,版本1)在OSD3中；<br>在每个OSD中的PG log是一致的(1,1 是epoch 1, version 1)；</p>
-<p><img src="https://img-blog.csdn.net/20141229173909928?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"></p>
-<p>OSD1是主节点，接收客户端的WRITE FULL请求，即全部重写对象，而不是部分的替换；<br>创建了Version 2 (v2)对象去替换version 1 (v1)对象；<br>主节点OSD1负责编码写入3个块:<br>块D1v2 (数据块1 版本2)在OSD1中；<br>块D2v2 (数据块2 版本2)在OSD2中；<br>块C1v2 (编码块1 版本2)在OSD3中；<br>每个块都被写到目标OSD中，包括主OSD节点；主OSD节点负责存储块，并且负责维护一个权威的PG log版本；<br>当OSD接到写入块的指令时，它也创建一个PG log作为回应；<br>例如， 只要OSD3存储C1v2,它就添加一个条目1,2 ( i.e. epoch 1, version 2 )到log中；<br>因为OSD工作是异步的，一些块可能还在写入 (比如 D2v2 )，但其他块已经写入完成并返回相应了 (比如 C1v1 and D1v1).</p>
-<p><img src="https://img-blog.csdn.net/20141229174028968?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>如果一切正常，每一个OSD上的块都写入成，则log的last_complete指针从1,1 改为1,2。</p>
-<p><img src="https://img-blog.csdn.net/20141229174123203?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>最后，保存以前版本块的文件将会被删除： D1v1 on OSD1, D2v1on OSD2 and C1v1 on OSD3。</p>
-<p><img src="https://img-blog.csdn.net/20141229174413271?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>但是意外有时也会发生。如果OSD1损坏了，而D2v2还在写入，则object的version 2 就是局部写入: OSD3有一个块但是不够恢复其他块。丢失了2个块： D1v2 和D2v2，可是the erasure coding参数是K=2/M=1,要求至少2个块可用才能重建第3个块。 这时，OSD4成为主节点，并发现last_complete log记录是1,1 ，这将是新权威的记录头。</p>
-<p><img src="https://img-blog.csdn.net/20141229174503144?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>节点OSD3中的Log记录1,2和节点OSD4中新的权威log记录不一致：OSD3中的Log被丢弃，C1v2块被删除。D1v1块被重建（在scrubbing时使用纠删码函数重建）并保存到新的主节点OSD4中。</p>
-<p><img src="https://img-blog.csdn.net/20141229174636234?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>3.4 使用范围<br>3.4.1 冷数据<br>1、主要存储1G以上的对象，比如镜像、映像等，这些数据10%都是每月读取一次；<br>2、新对象每天添加，但是这些对象添加后不修改；<br>3、这些数据，平均读1万次，写一次。<br>4、创建一个replicated pool作为erasure coded pool的ceche分层；当一个对象一周没有访问时，可以把该对象降级(把该对象从replicated pool移动到erasure-coded pool中)；当然也可以相反的调整；<br>5、erasure-coded pool为冷数据设计，适合慢的硬件设备，访问比较少的数据；replicated pool为快速设备和快速访问设计的。<br>3.4.2 廉价多数据中心存储<br>十个专用网络链接的数据中心，每个数据中心包含相同大小的存储空间，但没有电源备份和无空气冷却系统。<br>创建这样一个erasure-coded pool，同时允许3个节点损坏而数据不丢失；数据块为6(K=6),而编码块为3(M=3)；其开销是50%<br>而创建同样的复制池，其开销为400%(4个副本);</p>
-<p>第4章 Ceph纠删码实例<br>Ceph pool要保证部分osd损坏时数据不丢失(一般情况下一个disk设置为一个osd)；默认情况下创建pool时rule类型选择replicated，即object在多个disk中拷贝保存；pool的另一种rule类型是erasure，这种pool可以节省空间；<br>最简单的erasure coded pool等价与RAID5；要求至少3个节点；即k=2 m=1 默认的erasure就是这种情况</p>
-<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool 18 12 erasure</code></pre>
-<p>其中：18是pgp_num 12是pg_num（pgp_num必须大于pg_num）<br>4.1 数据读写<br>读写字符串ABCDEFGHI</p>
-<pre><code class="hljs jboss-cli"><span class="hljs-keyword">echo</span> ABCDEFGHI | rados <span class="hljs-params">--pool</span> ecpool put NYAN - <span class="hljs-comment">#将字符串放到ecpool</span>
-rados <span class="hljs-params">--pool</span> ecpool get NYAN -<span class="hljs-comment">#从ecpool中取字符串</span></code></pre>
+              <div class="note note-primary">
+            <p>您必须先部署一个ceph集群，才能进行纠删码操作。</p>
+          </div>
+<h1 id="Ceph-纠删码操作"><a href="#Ceph-纠删码操作" class="headerlink" title="Ceph 纠删码操作"></a>Ceph 纠删码操作</h1><h2 id="Official-Documentation"><a href="#Official-Documentation" class="headerlink" title="Official Documentation"></a>Official Documentation</h2><p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code/#creating-a-sample-erasure-coded-pool">erasure code</a></p>
+<hr>
+<p>K ——数据块数。</p>
+<p>M——编码块数。</p>
+<h2 id="1-Ceph纠删码库"><a href="#1-Ceph纠删码库" class="headerlink" title="1 Ceph纠删码库"></a>1 Ceph纠删码库</h2><p>Ceph的默认纠删码库是Jerasure，即Jerasure库；除此之外还有 Clay, ISA-L, LRC, Shec(Octopus版本15.2.5).<br>当管理员创建一个erasure-coded后端时，可以指定数据块和代码块参数。Jerasure库是第三方提供的中间件。Ceph环境安装时，已经默认安装了Jerasure库。</p>
+<h2 id="1-1-一个简单的纠删码池样例"><a href="#1-1-一个简单的纠删码池样例" class="headerlink" title="1.1 一个简单的纠删码池样例"></a>1.1 一个简单的纠删码池样例</h2><p>最简单的erasure pool等效于RAID5，至少需要3个主机：</p>
+<pre><code class="hljs routeros">$ ceph osd<span class="hljs-built_in"> pool </span>create ecpool erasure
+pool <span class="hljs-string">&#x27;ecpool&#x27;</span> created
+$ echo ABCDEFGHI | rados --pool ecpool put NYAN -
+$ rados --pool ecpool <span class="hljs-builtin-name">get</span> NYAN -
+ABCDEFGHI</code></pre>
+<h2 id="1-2-获取纠删码配置文件"><a href="#1-2-获取纠删码配置文件" class="headerlink" title="1.2 获取纠删码配置文件"></a>1.2 获取纠删码配置文件</h2><p>最简单的 k = 2, m = 2, 允许两个节点同时失效。相当于三副本，但是空间节省了。</p>
+<pre><code class="hljs routeros">$ ceph osd erasure-code-profile <span class="hljs-builtin-name">get</span> default
+<span class="hljs-attribute">k</span>=2
+<span class="hljs-attribute">m</span>=2
+<span class="hljs-attribute">plugin</span>=jerasure
+<span class="hljs-attribute">crush-failure-domain</span>=host
+<span class="hljs-attribute">technique</span>=reed_sol_van</code></pre>
+<p>选择正确的配置文件很重要，因为在创建池之后无法对其进行修改：需要创建具有不同配置文件的新池，并且将先前池中的所有对象都移到新的池中。</p>
+<p>概要文件的最重要参数是<em>K</em>，<em>M</em>和 <em>rush-failure域，</em>因为它们定义了存储开销和数据持久性。例如，如果所需的架构必须承受两个机架的损失，而存储开销(m/k*100%)为开销的67％，则可以定义以下配置文件：</p>
+<pre><code class="hljs routeros">$ ceph osd erasure-code-profile <span class="hljs-builtin-name">set</span> myprofile \
+   <span class="hljs-attribute">k</span>=3 \
+   <span class="hljs-attribute">m</span>=2 \
+   <span class="hljs-attribute">crush-failure-domain</span>=rack
+$ ceph osd<span class="hljs-built_in"> pool </span>create ecpool erasure myprofile
+$ echo ABCDEFGHI | rados --pool ecpool put NYAN -
+$ rados --pool ecpool <span class="hljs-builtin-name">get</span> NYAN -
+ABCDEFGHI</code></pre>
+<p>该<em>NYAN</em>对象将在三个（被划分<em>K = 3</em>）和两个附加 <em>的块</em>将被创建（<em>M = 2</em>）。<em>M</em>的值定义了在不丢失任何数据的情况下可以同时丢失多少个OSD。所述<code>crush-failure-domain=rack</code>将创建一个CRUSH规则，以确保没有两个<code>chunks</code>被存储在同一个机架。</p>
+<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-keyword">ls</span> #显示所有<span class="hljs-keyword">profile</span>
+ceph osd erasure-code-<span class="hljs-keyword">profile</span> rm &#123;profilr&#125; #删除特定<span class="hljs-keyword">profile</span></code></pre>
 <p>读写文件test.txt</p>
 <pre><code class="hljs cmake">rados -p ecpool put <span class="hljs-keyword">test</span> <span class="hljs-keyword">test</span>.txt
 rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-keyword">file</span>.txt</code></pre>
-<p>4.2 纠删码池不支持部分功能<br>比如不支持“部分写”<br>不支持rbd创建镜像</p>
-<pre><code class="hljs sql"><span class="hljs-comment"># rbd create xxx -p ecpool --size 1024</span>
-rbd: <span class="hljs-keyword">create</span> <span class="hljs-keyword">error</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
-librbd: <span class="hljs-keyword">error</span> adding image <span class="hljs-keyword">to</span> <span class="hljs-keyword">directory</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
-<span class="hljs-comment"># rbd import secureCRT5.rar secureCRT5 -p ecpool</span>
-rbd: image <span class="hljs-keyword">creation</span> <span class="hljs-keyword">failed</span>
-Importing image: <span class="hljs-number">0</span>% complete...failed.
-librbd: <span class="hljs-keyword">error</span> adding image <span class="hljs-keyword">to</span> <span class="hljs-keyword">directory</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
-rbd: <span class="hljs-keyword">import</span> <span class="hljs-keyword">failed</span>: (<span class="hljs-number">95</span>) Operation <span class="hljs-keyword">not</span> supported
-</code></pre>
-<p>4.3 纠删码profile<br>1、 默认profile<br>默认的erasure code profile允许有一个OSD损坏；它等价于2个备份节点的replicated pool；相当于erasure pool用1.5TB代替replicated pool用 2TB存储1TB数据。</p>
-<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-keyword">ls</span>
-ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-built_in">get</span> default</code></pre>
-<p>结果显示如下，最小的erasure pool 类型</p>
-<pre><code class="hljs ini"><span class="hljs-attr">directory</span>=/usr/lib/ceph/erasure-code
-<span class="hljs-attr">k</span>=<span class="hljs-number">2</span>
-<span class="hljs-attr">m</span>=<span class="hljs-number">1</span>
-<span class="hljs-attr">plugin</span>=jerasure
-<span class="hljs-attr">technique</span>=reed_sol_van</code></pre>
-<p>2、 添加profile<br>创建pool时选择合适的profile是很重要的，因为pool创建后就不能修改了；如果两个pool的profile不同，则创建新pool时，则所有的object都要从旧pool中移动到新pool。<br>Profile最重要的参数是K/M和ruleset-failure-domain，因为他们定义的存储开销和数据持久性。<br>例如：我们想构建这样的一种架构，允许2个disk损坏，存储开销损失40%，那么我们可以这样创建profile</p>
-<pre><code class="hljs routeros">ceph osd erasure-code-profile <span class="hljs-builtin-name">set</span> myprofile <span class="hljs-attribute">k</span>=3 <span class="hljs-attribute">m</span>=2 \
- <span class="hljs-attribute">ruleset-failure-domain</span>=rack</code></pre>
-<p>注: ruleset-failure-domain有osd, host, chassis, rack, row等选项<br>ruleset-failure-domain=rack表示：该CRUSH规则确保2个块不存储在同一个机架rack上。<br>3、 根据profile创建erasure pool</p>
-<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool 12 12 erasure myprofile
-echo ABCDEFGHI | rados --pool ecpool put NYAN -
-rados --pool ecpool <span class="hljs-builtin-name">get</span> NYAN -</code></pre>
-<p>4、 删除profile</p>
-<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> rm <span class="hljs-keyword">profile</span></code></pre>
-<p>4.4 Ceche tier弥补erasure的缺陷<br>和replicated pools相比，erasure pool需要更多的资源，并且缺少一些功能（比如部分写）；为了克服这些局限性，建议在erasure pool上添加一个ceche tier层。ceche tier能解决erasure pool缺失功能的问题，也能解决erasure pool性能低的问题。<br>这就是radhat的ice现在炒作的纠删码、存储分层。<br>假设hot-storage是一个快速存储池，即是一个快速的replicated pools。具体命令如下：</p>
-<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool 12 12 erasure #(这就是我们的erasure<span class="hljs-built_in"> pool </span><span class="hljs-attribute">k</span>=2 <span class="hljs-attribute">m</span>=1)
-ceph osd<span class="hljs-built_in"> pool </span>create hot-storage 128 (这个就是我们的cache tier，它是高速的)
-ceph osd tier <span class="hljs-builtin-name">add</span> ecpool hot-storage
-ceph osd tier cache-mode hot-storage writeback
-ceph osd tier set-overlay ecpool hot-storage</code></pre>
-<p>以writeback模式把hot-storage pool作为ecpool 的tier，这样对ecpool的读写实际上使用的是hot-storage pool，并且能用到hot-storage pool的灵活性和速度。<br>由于erasure不支持部分写，故在ecpool中无法创建RBD image；设置了erasure pool的tier分层pool后，就可以创建在ecpool创建RBD image了。（没有添加ceche tier时，无法用rbd创建镜像，前边已经提过）。</p>
-<pre><code class="hljs angelscript">rbd --pool ecpool create --size <span class="hljs-number">10</span> myvolume
-rbd <span class="hljs-keyword">import</span> <span class="hljs-number">1.</span>txt <span class="hljs-number">1.</span>txt -p ecpool
-rbd ls -p ecpool</code></pre>
-<p>说明：操作ecpool和hot-storage效果一样，但是实际数据存放的位置，根据情况而定：1周以上不使用，则存放在ecpool，经常使用，则存放在hot-storage。</p>
-<p>第5章 Ceph纠删码和Cache分层<br>纠删码和Cache分层是两个紧密联系的功能。这2个功能是redhat收购Ceph后一直重视的功能。<br>纠删码提高了存储容量，却降低了速度；而Cache分层刚好解决了这个问题；<br>原理架构如下：</p>
-<p><img src="https://img-blog.csdn.net/20141229174730954?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbml1YW54aW5z/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" srcset="/img/loading.gif" alt="img"><br>Cache分层的分层部署不只解决纠删码速度慢的问题，当然还解决一些其他问题，下次再讨论。</p>
+<p>更多信息在 <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code-profile">erasure code profiles</a></p>
+<p><img src="/img/nyan.png" srcset="/img/loading.gif" alt="img"></p>
+<h2 id="1-3-写覆盖"><a href="#1-3-写覆盖" class="headerlink" title="1.3 写覆盖"></a>1.3 写覆盖</h2><p>默认情况下，纠删码池仅适用于执行完整对象写入和追加的RGW之类的用途。</p>
+<p>自从luminous版本，每个池设置启用对纠删码池的<strong>部分写</strong>入。这使RBD和CephFS将其数据存储在纠删码池中：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> ec_pool allow_ec_overwrites <span class="hljs-literal">true</span></code></pre>
+<p>这是针对bluestore的osd，这是因为bluestore的校验和用于检测deep-scrub 期间的bitrot和其它损坏。除了不安全之外，overwrite还将降低性能。</p>
+<p>纠删码不支持<code>omap</code>,因此需要和RBD和CephFS一起使用，必须指示它们将数据存储在ec池中，并将元数据存储在复制池中。对于RBD，这意味着<code>--data-pool</code>在图像创建过程中使用纠删码池：</p>
+<pre><code class="hljs brainfuck"><span class="hljs-comment">rbd</span> <span class="hljs-comment">create</span> --<span class="hljs-comment">size</span> <span class="hljs-comment">1G</span> --<span class="hljs-comment">data</span><span class="hljs-literal">-</span><span class="hljs-comment">pool</span> <span class="hljs-comment">ec_pool</span> <span class="hljs-comment">replicated_pool/image_name</span>
+<span class="hljs-comment"></span></code></pre>
+<p>对于CephFS，可以在文件系统创建过程中或通过<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephfs/file-layouts">文件布局</a>将纠删码池设置为默认数据池。</p>
+<h2 id="1-4-缓存层"><a href="#1-4-缓存层" class="headerlink" title="1.4 缓存层"></a>1.4 缓存层</h2><p>纠删码比副本需要更多资源，并且缺失<code>omap</code>这样的功能。为了克服这些限制，需要设置一个<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/cache-tiering">缓存层</a></p>
+<pre><code class="hljs dsconfig">$ <span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">tier </span><span class="hljs-string">add </span><span class="hljs-string">ecpool </span><span class="hljs-string">hot-storage</span>
+<span class="hljs-string">$</span> <span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">tier </span><span class="hljs-string">cache-mode </span><span class="hljs-string">hot-storage </span><span class="hljs-string">writeback</span>
+<span class="hljs-string">$</span> <span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">tier </span><span class="hljs-built_in">set-overlay</span> <span class="hljs-string">ecpool </span><span class="hljs-string">hot-storage</span></code></pre>
+<p>将放置热存储池的ecpool 在<em>写回</em> 模式。提供灵活性和速度。</p>
+<h2 id="1-5-恢复"><a href="#1-5-恢复" class="headerlink" title="1.5 恢复"></a>1.5 恢复</h2><p>如果纠删码池丢失了一些碎片，则必须从其他碎片中恢复它们。通常，这涉及读取其余分片，重建数据并将其写入新对等方。在Octopus中，只要至少有<em>K个</em>碎片可用，擦除编码池就可以恢复。（使用少于<em>K个分</em>片，您实际上已经丢失了数据！）</p>
+<p>在使用Octopus之前，即使<em>min_size</em>大于<em>K</em>，擦除编码池也至少需要<em>min_size分</em>片可用。（我们通常建议min_size为<em>K + 2</em>或更大，以防止写入和数据丢失。）这种保守的决定是在设计新的池模式时出于谨慎考虑而做出的，但是这也意味着丢失OSD但没有数据丢失的池无法进行操作恢复并开始活动，而无需手动干预来更改<em>min_size</em>。</p>
+<h2 id="2-OSD-erasure-code-profile-参数"><a href="#2-OSD-erasure-code-profile-参数" class="headerlink" title="2 OSD erasure-code-profile 参数"></a>2 OSD erasure-code-profile 参数</h2><p>通用</p>
+<pre><code class="hljs routeros">ceph osd erasure-code-profile <span class="hljs-builtin-name">set</span> &#123;name&#125; \
+     [&#123;<span class="hljs-attribute">directory</span>=directory&#125;] \
+     [&#123;<span class="hljs-attribute">plugin</span>=plugin&#125;] \
+     [&#123;<span class="hljs-attribute">stripe_unit</span>=stripe_unit&#125;] \
+     [&#123;<span class="hljs-attribute">key</span>=value&#125; <span class="hljs-built_in">..</span>.] \
+     [--force]</code></pre>
+<ul>
+<li><p><code>&#123;directory&#125;:string</code></p>
+<p>设置从中加载擦除代码插件的<strong>目录</strong>名称. 默认<code>/ usr / lib / ceph / erasure-code</code></p>
+</li>
+<li><p><code>crush-failure-domain=&#123;bucket-type&#125;</code></p>
+<p>确保一个桶两个数据块没有相同的容灾域. 它被用于创建 CRUSH 规则 <strong>step chooseleaf host</strong>. 默认host。</p>
+</li>
+<li><p><code>crush-device-class=&#123;device-class&#125;</code></p>
+<p>使用CRUSH映射中的Crush设备类名称，将布局限制为特定类（例如 <code>ssd</code>或<code>hdd</code>）的设备。</p>
+</li>
+<li><p><code>&#123;plugin&#125;:string</code></p>
+<p>默认: <code>jerasure</code> ,  可选<code>isa\ lrc \shec\clay</code></p>
+</li>
+</ul>
+<h2 id="2-1-jerasure"><a href="#2-1-jerasure" class="headerlink" title="2.1 jerasure"></a>2.1 jerasure</h2><pre><code class="hljs sql">ceph osd erasure-code-profile <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; \
+     <span class="hljs-keyword">plugin</span>=jerasure \
+     k=&#123;<span class="hljs-keyword">data</span>-chunks&#125; \
+     m=&#123;coding-chunks&#125; \
+     technique=&#123;reed_sol_van|reed_sol_r6_op|cauchy_orig|cauchy_good|liberation|blaum_roth|liber8tion&#125; \
+     [crush-root=&#123;root&#125;] \
+     [crush-<span class="hljs-keyword">failure</span>-<span class="hljs-keyword">domain</span>=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;] \
+     [crush-device-<span class="hljs-keyword">class</span>=&#123;device-<span class="hljs-keyword">class</span>&#125;] \
+     [<span class="hljs-keyword">directory</span>=&#123;<span class="hljs-keyword">directory</span>&#125;] \
+     [<span class="hljs-comment">--force]</span></code></pre>
+<p>我们可以选择具体技术<code>technique</code>。更灵活的技术是<em>reed_sol_van</em>：足以设置<em>k</em>和<em>m</em>。该<em>cauchy_good</em>技术可以更快，但你需要选择的<em>PACKETSIZE</em> 小心。从只能使用<em>m = 2</em>进行配置的意义上来说，所有<em>reed_sol_r6_op</em>，<em>liberation</em>， <em>blaum_roth</em>，<em>liber8tion</em>都是<em>RAID6</em>等效项。</p>
+<h2 id="2-2-ISA"><a href="#2-2-ISA" class="headerlink" title="2.2 ISA"></a>2.2 ISA</h2><pre><code class="hljs sql">ceph osd erasure-code-profile <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; \
+     <span class="hljs-keyword">plugin</span>=isa \
+     technique=&#123;reed_sol_van|cauchy&#125; \
+     [k=&#123;<span class="hljs-keyword">data</span>-chunks&#125;] \
+     [m=&#123;coding-chunks&#125;] \
+     [crush-root=&#123;root&#125;] \
+     [crush-<span class="hljs-keyword">failure</span>-<span class="hljs-keyword">domain</span>=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;] \
+     [crush-device-<span class="hljs-keyword">class</span>=&#123;device-<span class="hljs-keyword">class</span>&#125;] \
+     [<span class="hljs-keyword">directory</span>=&#123;<span class="hljs-keyword">directory</span>&#125;] \
+     [<span class="hljs-comment">--force]</span></code></pre>
+<h2 id="2-3-LRC"><a href="#2-3-LRC" class="headerlink" title="2.3 LRC"></a>2.3 LRC</h2><pre><code class="hljs sql">ceph osd erasure-code-profile <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; \
+     <span class="hljs-keyword">plugin</span>=lrc \
+     k=&#123;<span class="hljs-keyword">data</span>-chunks&#125; \
+     m=&#123;coding-chunks&#125; \
+     l=&#123;locality&#125; \
+     [crush-root=&#123;root&#125;] \
+     [crush-locality=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;] \
+     [crush-<span class="hljs-keyword">failure</span>-<span class="hljs-keyword">domain</span>=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;] \
+     [crush-device-<span class="hljs-keyword">class</span>=&#123;device-<span class="hljs-keyword">class</span>&#125;] \
+     [<span class="hljs-keyword">directory</span>=&#123;<span class="hljs-keyword">directory</span>&#125;] \
+     [<span class="hljs-comment">--force]</span></code></pre>
+<p><em>LRC</em>创建本地校验块，使用更少的存活OSD。例如，如果<em>lrc</em>配置为 <em>k = 8</em>，<em>m = 4</em>和<em>l = 4</em>，它将为每4个OSD创建一个额外的奇偶校验块。当1个OSD丢失时，只能使用4个OSD（而不是8个）来恢复它。</p>
+<h2 id="2-4-SHEC"><a href="#2-4-SHEC" class="headerlink" title="2.4 SHEC"></a>2.4 SHEC</h2><pre><code class="hljs sql">ceph osd erasure-code-profile <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; \
+     <span class="hljs-keyword">plugin</span>=shec \
+     [k=&#123;<span class="hljs-keyword">data</span>-chunks&#125;] \
+     [m=&#123;coding-chunks&#125;] \
+     [c=&#123;durability-estimator&#125;] \
+     [crush-root=&#123;root&#125;] \
+     [crush-<span class="hljs-keyword">failure</span>-<span class="hljs-keyword">domain</span>=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;] \
+     [crush-device-<span class="hljs-keyword">class</span>=&#123;device-<span class="hljs-keyword">class</span>&#125;] \
+     [<span class="hljs-keyword">directory</span>=&#123;<span class="hljs-keyword">directory</span>&#125;] \
+     [<span class="hljs-comment">--force]</span></code></pre>
+<ul>
+<li><p><code>c=&#123;durability-estimator&#125;:int</code></p>
+<p>奇偶校验块的数量，每个奇偶校验块包括其计算范围内的每个数据块。该数字用作<strong>耐久性估算器</strong>。例如，如果c = 2，则2个OSD可以关闭而不会丢失数据。默认为2.</p>
+</li>
+</ul>
+<h2 id="2-5-CLAY"><a href="#2-5-CLAY" class="headerlink" title="2.5 CLAY"></a>2.5 CLAY</h2><p>全称是coupled-layer.  此编码目标是在修复时减少网络带宽和磁盘IO。</p>
+<p>令d为修复时沟通的OSD数量。比如Jerasure中k=8，m=4，修复1GiB数据</p>
+<p>需要下载8GiB数据。</p>
+<p>在clay中允许设置d， $k+1\le d\le k+m-1$。默认情况下$d=k+m-1$，这将最大化节省网络带宽和磁盘IO。比如 k = 8, m = 4, d = 11. <em>则</em>当单个OSD发生故障时，将沟通d = 11 osds并从每个插件中下载250MiB，导致总下载量为11 X 250MiB = 2.75GiB。下面提供了更多常规参数。当对存储量达到TB级的信息的机架进行维修时，好处是巨大的。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Plugin</th>
+<th style="text-align:left">磁盘IO总量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Jeraure</td>
+<td style="text-align:left">$kS$</td>
+</tr>
+<tr>
+<td style="text-align:left">Clay</td>
+<td style="text-align:left">$dS/(d−k+1)=(k+m−1)S/m$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其中<em>S</em>是正在修复的单个OSD上存储的数据量。在上表中，我们使用了<em>d</em>的最大可能值，因为这将导致从OSD故障恢复所需的最小数据下载量。</p>
+<pre><code class="hljs sql">ceph osd erasure-code-profile <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; \
+     <span class="hljs-keyword">plugin</span>=clay \
+     k=&#123;<span class="hljs-keyword">data</span>-chunks&#125; \
+     m=&#123;coding-chunks&#125; \
+     [d=&#123;helper-chunks&#125;] \
+     [scalar_mds=&#123;<span class="hljs-keyword">plugin</span>-<span class="hljs-keyword">name</span>&#125;] \
+     [technique=&#123;technique-<span class="hljs-keyword">name</span>&#125;] \
+     [crush-<span class="hljs-keyword">failure</span>-<span class="hljs-keyword">domain</span>=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;] \
+     [<span class="hljs-keyword">directory</span>=&#123;<span class="hljs-keyword">directory</span>&#125;] \
+     [<span class="hljs-comment">--force]</span></code></pre>
+<ul>
+<li><p><code>d=&#123;helper-chunks&#125;</code></p>
+<p>恢复单个块期间请求发送数据的OSD数量。需要选择<em>d</em>，以使k + 1 &lt;= d &lt;= k + m-1。在较大的<em>d</em>，节省越多。默认 k + m -1.</p>
+</li>
+<li><p><code>scalar_mds=&#123;jerasure|isa|shec&#125;</code></p>
+<p><strong>scalar_mds</strong>指定在分层构造中用作构建块的插件。可以是<em>jerasure</em>，<em>isa</em>，<em>shec之一</em></p>
+</li>
+<li><p><code>technique=&#123;technique&#125;</code></p>
+<p><strong>technique</strong>指定将在指定的“ scalar_mds”插件中采用的技术。支持的技术是’reed_sol_van’，’reed_sol_r6_op’，’cauchy_orig’，’cauchy_good’，’liber8tion’用于jerasure，’reed_sol_van’，’cauchy’用于isa和’single’，’multiple’用于shec。</p>
+<p>默认reed_sol_van (for jerasure, isa), single (for shec)</p>
+</li>
+</ul>
+<blockquote>
+<h2 id="MORE"><a href="#MORE" class="headerlink" title="MORE"></a>MORE</h2><p>Clay代码是矢量代码，因此能够节省磁盘IO和网络带宽，并且能够以称为子块的更精细的粒度查看和操作块中的数据。Clay代码的块中子块的数量由下式给出：</p>
+<blockquote>
+<p>子块计数= $q^{(k+m)/q}$， $q=d−k+1$</p>
+</blockquote>
+<p>在OSD修复期间，从可用OSD请求的帮助者信息只是块的一小部分。实际上，修复期间访问的块内子块的数量由下式给出：</p>
+<blockquote>
+<p>修复子块计数= $\frac{sub—-chunk \: count}{q}$</p>
+</blockquote>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><ol>
+<li>对于<em>k = 4</em>，<em>m = 2</em>，<em>d = 5的配置</em>，子块计数为8，修复子块计数为4。因此，在修复期间仅读取一半的块。</li>
+<li>当<em>k = 8</em>，<em>m = 4</em>，<em>d = 11时</em>，子块计数为64，修复子块计数为16。从可用OSD中读取四分之一的块以修复故障块。</li>
+</ol>
+<h2 id="如何在给定工作量的情况下选择配置"><a href="#如何在给定工作量的情况下选择配置" class="headerlink" title="如何在给定工作量的情况下选择配置"></a>如何在给定工作量的情况下选择配置</h2><p>块中所有子块中只有几个子块被读取。这些子块不必连续存储在块中。为了获得最佳的磁盘IO性能，读取连续的数据很有帮助。因此，建议您选择条带大小，以使子块大小足够大。</p>
+<p>对于给定的条带大小（这是基于固定的工作负载），选择<code>k</code>，<code>m</code>，<code>d</code>使得：</p>
+<blockquote>
+<p>子块大小= $\frac{stripe-size}{k sub-chunk count}$ = 4KB，8KB，12KB…</p>
+</blockquote>
+<ol>
+<li>对于条带大小较大的大型工作负载，很容易选择k，m，d。例如，考虑大小为64MB的条带大小，选择<em>k = 16</em>，<em>m = 4</em>和<em>d = 19</em>将导致子块计数为1024，子块大小为4KB。</li>
+<li>对于较小的工作负载，<em>k = 4</em>，<em>m = 2</em>是一个很好的配置，可同时带来网络和磁盘IO的好处。</li>
+</ol>
+<h2 id="与LRC的比较"><a href="#与LRC的比较" class="headerlink" title="与LRC的比较"></a>与LRC的比较</h2><p>还设计了本地可恢复代码（LRC），以便在网络带宽方面节省单个OSD恢复期间的磁盘IO。但是，LRC的重点是使修复（d）期间接触的OSD数量保持最少，但这是以存储开销为代价的。clay代码有一个存储开销 m/k。在<em>lrc</em>的情况下，除奇偶校验外，它还存储（k + m）/ d个奇偶<code>m</code>校验，从而导致存储开销（m +（k + m）/ d）/ k。两个<em>粘土</em>和<em>LRC</em> 可以从任何的故障中恢复<code>m</code>的OSD。</p>
+<blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参量</th>
+<th style="text-align:left">磁盘IO，存储开销（LRC）</th>
+<th style="text-align:left">磁盘IO，存储开销（CLAY）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">（k = 10，m = 4）</td>
+<td style="text-align:left">7 * S，0.6（d = 7）</td>
+<td style="text-align:left">3.25 * S，0.4（d = 13）</td>
+</tr>
+<tr>
+<td style="text-align:left">（k = 16，m = 4）</td>
+<td style="text-align:left">4 * S，0.5625（d = 4）</td>
+<td style="text-align:left">4.75 * S，0.25（d = 19）</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<p><code>S</code>是恢复单个OSD的存储数据量。</p>
+</blockquote>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/ceph/">ceph</a>
+                    
+                  </div>
                 
               </div>
               
@@ -320,6 +493,12 @@ rbd ls -p ecpool</code></pre>
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2020/11/27/A%20first%20glance%20at%20CRUSH/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">浅析CRUSH算法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -527,7 +706,7 @@ rbd ls -p ecpool</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "&nbsp;",
+        "CEPH 纠删码操作&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
