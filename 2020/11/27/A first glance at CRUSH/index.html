@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.1k 字
+      4.6k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      55
+      60
        分钟
     </span>
   
@@ -310,7 +310,7 @@ max_item = <span class="hljs-number">-1</span>
 <li><code>root</code></li>
 </ul>
 <p><img src="/img/cluster_mapdemo.png" srcset="/img/loading.gif" alt="image-20201128211039048"></p>
-<h2 id="3-2-数据分布策略——Placement-Rule"><a href="#3-2-数据分布策略——Placement-Rule" class="headerlink" title="3.2 数据分布策略——Placement Rule"></a>3.2 数据分布策略——Placement Rule</h2><p>CRUSH算法的核心包括三个步骤：TAKE，SELECT和EMIT。<br>$TAKE (a)$：从cluster_map选择指定编号的bucket并放入工作向量作为下一级SELECT的输入。系统默认采用root作为输入。</p>
+<h2 id="3-2-数据分布策略——Placement-Rule"><a href="#3-2-数据分布策略——Placement-Rule" class="headerlink" title="3.2 数据分布策略——Placement Rule"></a>3.2 数据分布策略——Placement Rule</h2><p>CRUSH算法的核心包括三个步骤：TAKE，SELECT和EMIT。<br>$TAKE(a)$：从cluster_map选择指定编号的bucket并放入工作向量作为下一级SELECT的输入。系统默认采用root作为输入。</p>
 <p><img src="/img/crush1.png" srcset="/img/loading.gif" style="zoom:67%;" /></p>
 <p>$SELECT(n,t)$:从bucket随机选择指定类型和数量的item。n: number，t: type。type可以设为 容灾域类型，比如rack 或host。Ceph当前支持两种备份策略——多副本和纠删码，相应的有两种选择方法first n 和 indep. 主要区别是纠删码要求结果是有序的。</p>
 <ul>
@@ -320,15 +320,31 @@ max_item = <span class="hljs-number">-1</span>
 </li>
 <li>CRUSH采用深度优先搜索方式遍历所有副本。</li>
 </ul>
-<p><img src="../img/crush2.png" srcset="/img/loading.gif" style="zoom:67%;" /></p>
+<p><img src="/img/crush2.png" srcset="/img/loading.gif" style="zoom:67%;" /></p>
 <p>我们下面再看一下选择算法。</p>
-<p><img src="../img/crush4.png" srcset="/img/loading.gif" alt="image-20201129194851670"></p>
+<p><img src="/img/crush4.png" srcset="/img/loading.gif" alt="image-20201129194851670"></p>
 <ul>
 <li>（左图）first n：比如 n = 6， select(6, disk), 当第二个item被拒绝，其余节点会填充空位。尝试次数f 将更新 副本编号r。</li>
 <li>（右图）每一个队列有概率上独立的顺序，这儿$f_r = 1, r’=r+f_rn=8$，对应device:h，因此会用h进行“填充”。</li>
 </ul>
 <p>因为在容灾域模式下会产生递归调用，所以还需要限制产生递归调用时作为下一级输入的全局尝试次数（<code>choose_total_tries</code>），因为这个限制会导致递归调用时全局尝试次数成倍增长，按照递归的概念，多次递归后这个全局尝试次数应该成指数增长，但是实际上至多调用一次，所以这里是将原始尝试次数放大N倍后作为下一级输入的全局尝试数，实现上采用一个布尔变量（<code>chooseleaf_descent_once</code>,i.e. “first n”）进行控制，如果为真，则在产生递归调用至多重试一次，否则则不进行重试，由调用者自身进行重试。N由<code>chooseleaf_vary_r</code>进行决定。</p>
-<p><img src="../img/crush5.png" srcset="/img/loading.gif" alt="image-20201129195221719" style="zoom:67%;" /></p>
+<p><img src="/img/crush5.png" srcset="/img/loading.gif" alt="image-20201129195221719" style="zoom:67%;" /></p>
+<p>这儿的$b.c(r’,x)$即为第二节谈到的 Bucket Choose ， 我们采用Straw2算法。<br>如果得到的结果不是目标类型，则继续向下递归。并设置重试标记$retry_bucket$为true.</p>
+<p><img src="/img/crush6.png" srcset="/img/loading.gif" alt="image-20201129195537731" style="zoom:67%;" /></p>
+<p>冲突（Collision）： 选中的条目已经存在于输出条目列表之中。<br>OSD过载或失效：</p>
+<ol>
+<li>由于集群规模较小，导致集群PG总数有限，CRUSH输入不够。</li>
+<li>CRUSH本身缺陷，每次选择是单个条目被选中的独立概率，但是CRUSH所要求的副本策略使得针对同一个输入、多个副本直接的选择变成了条件概率。</li>
+</ol>
+<p>在老的CRUSH实现，为了避免每次回到初始输入的bucket下重试，可以在当前的bucket下直接进行重试。此时同样需要对局部尝试次数进行限制，称为(<code>choose_local_retries</code>)。</p>
+<p>$Overload(o,x)$</p>
+<p>除了由容量计算得到的真实权重之外，Ceph还设置了可以人工调整的权重（reweight）。算法正常选中一个OSD之后，最后还基于此reweight进行一次过载测试，如果测试失败，则将仍然拒绝该item。<br>我们可以通过设置reweight介于[0,0x10000]之间，如果为0就不能通过测试，为0x10000就是一定会通过测试。在实际应用中通过降低过载OSD或者增加空闲reweight都可以触发数据在OSD之间重新分布。并且可以区分暂时失效的OSD和永久失效的OSD。</p>
+<p><img src="/img/reweight.png" srcset="/img/loading.gif" alt="reweight" style="zoom:67%;" /></p>
+<p>$EMIT$:输出最终选择结果给上级调用者并返回。</p>
+<p><img src="/img/crush8.png" srcset="/img/loading.gif" alt="image-20201129195731168" style="zoom:67%;" /></p>
+<p>总结</p>
+<p>我们以firstn为例展示从指定bucket查找指定数量item的过程。</p>
+<p><img src="/img/crush9.png" srcset="/img/loading.gif" alt="image-20201129195815305"></p>
 <hr>
 <h1 id="4-操作CRUSH"><a href="#4-操作CRUSH" class="headerlink" title="4 操作CRUSH"></a>4 操作CRUSH</h1><p>1 查看osd tree （含权重）</p>
 <pre><code class="hljs dos">ceph osd <span class="hljs-built_in">tree</span></code></pre>
