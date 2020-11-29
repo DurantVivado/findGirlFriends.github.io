@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>浅析CRUSH算法 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>A First Galance At Crush - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.9k 字
+      4.1k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      52
+      55
        分钟
     </span>
   
@@ -239,7 +239,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">浅析CRUSH算法</h1>
+            <h1 style="display: none">A First Galance At Crush</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
@@ -311,7 +311,7 @@ max_item = <span class="hljs-number">-1</span>
 </ul>
 <p><img src="/img/cluster_mapdemo.png" srcset="/img/loading.gif" alt="image-20201128211039048"></p>
 <h2 id="3-2-数据分布策略——Placement-Rule"><a href="#3-2-数据分布策略——Placement-Rule" class="headerlink" title="3.2 数据分布策略——Placement Rule"></a>3.2 数据分布策略——Placement Rule</h2><p>CRUSH算法的核心包括三个步骤：TAKE，SELECT和EMIT。<br>$TAKE (a)$：从cluster_map选择指定编号的bucket并放入工作向量作为下一级SELECT的输入。系统默认采用root作为输入。</p>
-<p><img src="/img/crush1.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/img/crush1.png" srcset="/img/loading.gif" style="zoom:67%;" /></p>
 <p>$SELECT(n,t)$:从bucket随机选择指定类型和数量的item。n: number，t: type。type可以设为 容灾域类型，比如rack 或host。Ceph当前支持两种备份策略——多副本和纠删码，相应的有两种选择方法first n 和 indep. 主要区别是纠删码要求结果是有序的。</p>
 <ul>
 <li><p>$f$在这里表示失败的尝试数，初始设为0.</p>
@@ -320,7 +320,15 @@ max_item = <span class="hljs-number">-1</span>
 </li>
 <li>CRUSH采用深度优先搜索方式遍历所有副本。</li>
 </ul>
-<p><img src="/img/crush2.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="../img/crush2.png" srcset="/img/loading.gif" style="zoom:67%;" /></p>
+<p>我们下面再看一下选择算法。</p>
+<p><img src="../img/crush4.png" srcset="/img/loading.gif" alt="image-20201129194851670"></p>
+<ul>
+<li>（左图）first n：比如 n = 6， select(6, disk), 当第二个item被拒绝，其余节点会填充空位。尝试次数f 将更新 副本编号r。</li>
+<li>（右图）每一个队列有概率上独立的顺序，这儿$f_r = 1, r’=r+f_rn=8$，对应device:h，因此会用h进行“填充”。</li>
+</ul>
+<p>因为在容灾域模式下会产生递归调用，所以还需要限制产生递归调用时作为下一级输入的全局尝试次数（<code>choose_total_tries</code>），因为这个限制会导致递归调用时全局尝试次数成倍增长，按照递归的概念，多次递归后这个全局尝试次数应该成指数增长，但是实际上至多调用一次，所以这里是将原始尝试次数放大N倍后作为下一级输入的全局尝试数，实现上采用一个布尔变量（<code>chooseleaf_descent_once</code>,i.e. “first n”）进行控制，如果为真，则在产生递归调用至多重试一次，否则则不进行重试，由调用者自身进行重试。N由<code>chooseleaf_vary_r</code>进行决定。</p>
+<p><img src="../img/crush5.png" srcset="/img/loading.gif" alt="image-20201129195221719" style="zoom:67%;" /></p>
 <hr>
 <h1 id="4-操作CRUSH"><a href="#4-操作CRUSH" class="headerlink" title="4 操作CRUSH"></a>4 操作CRUSH</h1><p>1 查看osd tree （含权重）</p>
 <pre><code class="hljs dos">ceph osd <span class="hljs-built_in">tree</span></code></pre>
@@ -611,6 +619,8 @@ choose_args 4 &#123;
                     
                       <a class="hover-with-bg" href="/tags/%E7%90%86%E8%AE%BA/">理论</a>
                     
+                      <a class="hover-with-bg" href="/tags/crush/">crush</a>
+                    
                   </div>
                 
               </div>
@@ -834,7 +844,7 @@ choose_args 4 &#123;
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "浅析CRUSH算法&nbsp;",
+        "A First Galance At Crush&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
