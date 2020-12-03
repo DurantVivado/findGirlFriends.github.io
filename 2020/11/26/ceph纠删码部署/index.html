@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>CEPH 纠删码操作 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>CEPH 纠删码操作&amp;API - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.8k 字
+      3.9k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      35
+      48
        分钟
     </span>
   
@@ -239,16 +239,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">CEPH 纠删码操作</h1>
+            <h1 style="display: none">CEPH 纠删码操作&amp;API</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
             <p>您必须先部署一个ceph集群，才能进行纠删码操作。</p>
           </div>
-<h1 id="Ceph-纠删码操作"><a href="#Ceph-纠删码操作" class="headerlink" title="Ceph 纠删码操作"></a>Ceph 纠删码操作</h1><h2 id="Official-Documentation"><a href="#Official-Documentation" class="headerlink" title="Official Documentation"></a>Official Documentation</h2><p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code/#creating-a-sample-erasure-coded-pool">erasure code</a></p>
+<h1 id="Part-I"><a href="#Part-I" class="headerlink" title="Part I"></a>Part I</h1><h2 id="Ceph-纠删码操作"><a href="#Ceph-纠删码操作" class="headerlink" title="Ceph 纠删码操作"></a>Ceph 纠删码操作</h2><h2 id="Official-Documentation"><a href="#Official-Documentation" class="headerlink" title="Official Documentation"></a>Official Documentation</h2><p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code/#creating-a-sample-erasure-coded-pool">erasure code</a></p>
 <hr>
-<p>K ——数据块数。</p>
+<h2 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h2><p>K ——数据块数。</p>
 <p>M——编码块数。</p>
+<p>N——条带中块的个数，$N=K+M$。</p>
+<p>块（chunk）——将对象基于纠删码进行编码时，每次编码将产生若干大小的块（要求是有序的），Ceph通过数量相等的PG将这些块分别存储至不同的OSD之中。每次编码时，序号相同的块总是由同一个PG负责存储。</p>
+<p>条带（stripe）——如果待编码的对象太大，无法一次性完成，那么可以分成多次进行，每次完成编码的部分称为一个条带。其大小为k*块大小。</p>
+<p>分片（shard）——同一个对象所有序号相同的块位于同一个PG之上，它们组成的对象的一个分片。</p>
+<p>rate——空间利用率，即$K/N$</p>
 <h2 id="1-Ceph纠删码库"><a href="#1-Ceph纠删码库" class="headerlink" title="1 Ceph纠删码库"></a>1 Ceph纠删码库</h2><p>Ceph的默认纠删码库是Jerasure，即Jerasure库；除此之外还有 Clay, ISA-L, LRC, Shec(Octopus版本15.2.5).<br>当管理员创建一个erasure-coded后端时，可以指定数据块和代码块参数。Jerasure库是第三方提供的中间件。Ceph环境安装时，已经默认安装了Jerasure库。</p>
 <h2 id="1-1-一个简单的纠删码池样例"><a href="#1-1-一个简单的纠删码池样例" class="headerlink" title="1.1 一个简单的纠删码池样例"></a>1.1 一个简单的纠删码池样例</h2><p>最简单的erasure pool等效于RAID5，至少需要3个主机：</p>
 <pre><code class="hljs routeros">$ ceph osd<span class="hljs-built_in"> pool </span>create ecpool erasure
@@ -269,7 +274,7 @@ ABCDEFGHI</code></pre>
    <span class="hljs-attribute">k</span>=3 \
    <span class="hljs-attribute">m</span>=2 \
    <span class="hljs-attribute">crush-failure-domain</span>=rack
-$ ceph osd<span class="hljs-built_in"> pool </span>create ecpool erasure myprofile
+$ ceph osd<span class="hljs-built_in"> pool </span>create ecpool 128 erasure myprofile #128在这类是PG的数量
 $ echo ABCDEFGHI | rados --pool ecpool put NYAN -
 $ rados --pool ecpool <span class="hljs-builtin-name">get</span> NYAN -
 ABCDEFGHI</code></pre>
@@ -280,7 +285,8 @@ ceph osd erasure-code-<span class="hljs-keyword">profile</span> rm &#123;profilr
 <pre><code class="hljs cmake">rados -p ecpool put <span class="hljs-keyword">test</span> <span class="hljs-keyword">test</span>.txt
 rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-keyword">file</span>.txt</code></pre>
 <p>更多信息在 <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code-profile">erasure code profiles</a></p>
-<p><img src="/img/nyan.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="../img/nyan.png" srcset="/img/loading.gif" alt="img"></p>
+<p>上图展示的是一种最简单的情况，我们称之为“满条带写”，向k=3，m=2的纠删码存储池写入NYAN对象。针对同一个逻辑PG，将对象分片并写入不同的PG实例。每个PG实例都认为字节保存的是一个完整而独立的对象。因此其保存的内容在逻辑上是连续的，以块大小为单位。5个OSD最终都向名为“NYAN”的对象写入三个字节，它们在对象内的逻辑地址都为[0,2]。</p>
 <h2 id="1-3-写覆盖"><a href="#1-3-写覆盖" class="headerlink" title="1.3 写覆盖"></a>1.3 写覆盖</h2><p>默认情况下，纠删码池仅适用于执行完整对象写入和追加的RGW之类的用途。</p>
 <p>自从luminous版本，每个池设置启用对纠删码池的<strong>部分写</strong>入。这使RBD和CephFS将其数据存储在纠删码池中：</p>
 <pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> ec_pool allow_ec_overwrites <span class="hljs-literal">true</span></code></pre>
@@ -462,6 +468,104 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
 </blockquote>
 <p><code>S</code>是恢复单个OSD的存储数据量。</p>
 </blockquote>
+<h2 id="覆盖写思考"><a href="#覆盖写思考" class="headerlink" title="覆盖写思考"></a>覆盖写思考</h2><p>因为数据更新必须以条带为单位进行，如果覆盖写的起始或者结束位置没有进行条带对齐，那么不足一个完整条带的部分，其写入只能通过“读取完整条带→修改数据→基于条带重新计算校验数据→写入（被修改部分和校验和）”。这个过程被称为RMW。</p>
+<p>整个RMW过程补齐读阶段最耗时，由两种解决思路：1. 减少RMW次数，2.如果RMW不可避免，那么尽量减少补齐读的数据量。一种常见的做法是引入写缓存。将驻留于缓存的写操作进行合并。 另外是尽可能减少读的次数，基于被修改写的数据范围预先计算出需要执行补齐读的块，而不是每次都执行满条带写。</p>
+<h2 id="Scrub的问题"><a href="#Scrub的问题" class="headerlink" title="Scrub的问题"></a>Scrub的问题</h2><p>Scrub指数据扫描，通过读取对象数据并重新计算校验和，再与之前存储在对象属性的校验和进行比对，以判断有无静默错误（磁盘自身无法感知的错误）。目前Ceph纠删码没有自动修复功能。</p>
+<p>例如对象大小为4MB，那么每4KB原始数据采用CRC32生成固定四个字节的校验和，则整个对象的校验和最大只能是4KB，这显然无法直接使用对象扩展属性存储，而只能使用对象的omap存储(kv pairs)，但是纠删码目前不支持omap! </p>
+<p>Ceph中纠删码一直未达到商业水平，无外乎以下几个原因：</p>
+<ul>
+<li>相较于多副本，纠删码实现更复杂</li>
+<li>相较于多副本，纠删码性能较差，尤其是读性能。其最适合的场景一般是追加写或者删除。</li>
+</ul>
+<p>这也是笔者的研究方向，路漫漫其修远兮，吾将上下而求索。</p>
+<hr>
+<h1 id="Part-II"><a href="#Part-II" class="headerlink" title="Part II"></a>Part II</h1><h2 id="纠删码库介绍"><a href="#纠删码库介绍" class="headerlink" title="纠删码库介绍"></a>纠删码库介绍</h2><h2 id="1-Jerasure"><a href="#1-Jerasure" class="headerlink" title="1 Jerasure"></a>1 Jerasure</h2><p>2007 James给出了RS-RAID一个开源实现。<a target="_blank" rel="noopener" href="http://jerasure.org/jerasure/jerasure">official</a> ，<a target="_blank" rel="noopener" href="https://github.com/tsuraan/Jerasure">github</a></p>
+<p>Jerasure库包括以下5个模块：</p>
+<ul>
+<li><code>galois.h/.c</code>提供伽罗华域的算术运算。</li>
+<li><code>jerasure.h/.c</code>提供了绝大部分的核心函数。包括矩阵的编解码，位矩阵变换，矩阵转置和位矩阵转置。</li>
+<li><code>reedsol.h/.c</code>支持RS编解码和优化和的RS码。</li>
+<li><code>caucy.h/.c</code> 支持Caucy RS编解码和最优Caucy编码。</li>
+<li><code>caucy_best_r6.h/.c</code> 基于Caucy矩阵的RAID-6优化。</li>
+<li><code>liberation.h/.c</code> 支持Liberartion RAID-6编码, Blaum-Roth 编码，和Liber8tion RAID-6编码。 Liberation是一种低密度MDS。这三种编码采用位矩阵来实现，其性能远优于现有的RS和EVENNODD，在某种情况下也优于RDP编码。</li>
+</ul>
+<p>下标汇总了Jerasure-2.0库常见的参数和其含义：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">k</td>
+<td style="text-align:center">数据盘个数</td>
+</tr>
+<tr>
+<td style="text-align:center">m</td>
+<td style="text-align:center">校验盘个数</td>
+</tr>
+<tr>
+<td style="text-align:center">w</td>
+<td style="text-align:center">字长</td>
+</tr>
+<tr>
+<td style="text-align:center">packetsize</td>
+<td style="text-align:center">包大小</td>
+</tr>
+<tr>
+<td style="text-align:center">size</td>
+<td style="text-align:center">每个盘待编码或者解码的字节数</td>
+</tr>
+<tr>
+<td style="text-align:center">matrix</td>
+<td style="text-align:center">编码矩阵</td>
+</tr>
+<tr>
+<td style="text-align:center">bitmatrix</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">dataptrs</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">erasures</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">erased</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">schdule</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">row k ones</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">dm ids</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>针对RAID-6，Jerasure作了两类优化：</p>
+<ul>
+<li><p>对乘2运算进行优化</p>
+</li>
+<li><p>直接对编码矩阵进行改造，得到最小密度RAID6. 这类矩阵很稀疏，计算量较少。目前有三种</p>
+<ul>
+<li>Liberation: 要求W必须是素数</li>
+<li>Blaum-Roth: 要求W+1必须是素数</li>
+<li>Lber8tion: 要求W必须等于8</li>
+</ul>
+<p>这三种编码效率相当。</p>
+</li>
+</ul>
 
             </div>
             <hr>
@@ -494,9 +598,9 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/27/A%20first%20glance%20at%20CRUSH/">
+                      <a href="/2020/11/26/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">A First Galance At Crush</span>
+                        <span class="hidden-mobile">下一代对象存储引擎BlueStore</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -706,7 +810,7 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "CEPH 纠删码操作&nbsp;",
+        "CEPH 纠删码操作&API&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

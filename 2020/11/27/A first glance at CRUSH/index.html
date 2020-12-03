@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.6k 字
+      6.1k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      60
+      80
        分钟
     </span>
   
@@ -243,9 +243,13 @@
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
-            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第二章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/?s">官方CRUSH教程</a>。</p>
+            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第一章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/?s">官方CRUSH教程</a>。</p>
           </div>
-<h1 id="浅析CRUSH算法"><a href="#浅析CRUSH算法" class="headerlink" title="浅析CRUSH算法"></a>浅析CRUSH算法</h1><h1 id="1-CRUSH背景"><a href="#1-CRUSH背景" class="headerlink" title="1. CRUSH背景"></a>1. CRUSH背景</h1><p>大部分存储系统将数据写入到存储设备之后，数据很少在设备之间相互移动，这会导致一个潜在问题，即使是一个数据分布趋于完美的系统，随着时间的迁移，新的空闲设备不断加入，老设备不断退出，数据变得不均匀。<br>一种可行方案是将数据以足够小的粒度打散，均匀分布于整个存储系统，这样做有两个问题:</p>
+<h1 id="浅析CRUSH算法"><a href="#浅析CRUSH算法" class="headerlink" title="浅析CRUSH算法"></a>浅析CRUSH算法</h1><blockquote>
+<p>论文地址：</p>
+<p><a target="_blank" rel="noopener" href="https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf</a></p>
+</blockquote>
+<h1 id="1-CRUSH背景"><a href="#1-CRUSH背景" class="headerlink" title="1. CRUSH背景"></a>1. CRUSH背景</h1><p>大部分存储系统将数据写入到存储设备之后，数据很少在设备之间相互移动，这会导致一个潜在问题，即使是一个数据分布趋于完美的系统，随着时间的迁移，新的空闲设备不断加入，老设备不断退出，数据变得不均匀。<br>一种可行方案是将数据以足够小的粒度打散，均匀分布于整个存储系统，这样做有两个问题:</p>
 <ul>
 <li>如果设备数量发生变化， 如何最小化迁移量使得整个系统尽快恢复平衡。</li>
 <li>在大型（PB以上）分布式存储系统，为保证数据可靠性一般采用多副本或者纠删码，如何合理分布它们。。</li>
@@ -347,7 +351,7 @@ max_item = <span class="hljs-number">-1</span>
 <p><img src="/img/crush9.png" srcset="/img/loading.gif" alt="image-20201129195815305"></p>
 <hr>
 <h1 id="4-操作CRUSH"><a href="#4-操作CRUSH" class="headerlink" title="4 操作CRUSH"></a>4 操作CRUSH</h1><p>1 查看osd tree （含权重）</p>
-<pre><code class="hljs dos">ceph osd <span class="hljs-built_in">tree</span></code></pre>
+<pre><code class="hljs dos">sudo ceph osd <span class="hljs-built_in">tree</span></code></pre>
 <pre><code class="hljs lsl">ID  CLASS  WEIGHT   TYPE NAME       STATUS  REWEIGHT  PRI-AFF
 <span class="hljs-number">-1</span>         <span class="hljs-number">0.05846</span>  root <span class="hljs-section">default</span>                             
 <span class="hljs-number">-5</span>         <span class="hljs-number">0.01949</span>      host node3                           
@@ -358,7 +362,7 @@ max_item = <span class="hljs-number">-1</span>
  <span class="hljs-number">2</span>    ssd  <span class="hljs-number">0.01949</span>          osd<span class="hljs-number">.2</span>       up   <span class="hljs-number">1.00000</span>  <span class="hljs-number">1.00000</span></code></pre>
 <p><code>ID</code>: 每个节点在集群唯一ID。<code>class</code>：每个节点的类别。<code>weight</code>:每个节点的权重。</p>
 <p>2 查看整个集群空间利用率</p>
-<pre><code class="hljs dos">ceph osd df <span class="hljs-built_in">tree</span></code></pre>
+<pre><code class="hljs dos">sudo ceph osd df <span class="hljs-built_in">tree</span></code></pre>
 <pre><code class="hljs angelscript">ID  CLASS  WEIGHT   REWEIGHT  SIZE    RAW USE  DATA     OMAP    META      AVAIL   %USE  VAR   PGS  STATUS  TYPE NAME     
 <span class="hljs-number">-1</span>         <span class="hljs-number">0.05998</span>         -  <span class="hljs-number">60</span> GiB  <span class="hljs-number">3.0</span> GiB  <span class="hljs-number">2.4</span> MiB  <span class="hljs-number">59</span> KiB   <span class="hljs-number">3.0</span> GiB  <span class="hljs-number">57</span> GiB  <span class="hljs-number">5.01</span>  <span class="hljs-number">1.00</span>    -          root <span class="hljs-keyword">default</span>  
 <span class="hljs-number">-5</span>         <span class="hljs-number">0.00999</span>         -  <span class="hljs-number">20</span> GiB  <span class="hljs-number">1.0</span> GiB  <span class="hljs-number">824</span> KiB  <span class="hljs-number">18</span> KiB  <span class="hljs-number">1024</span> MiB  <span class="hljs-number">19</span> GiB  <span class="hljs-number">5.01</span>  <span class="hljs-number">1.00</span>    -              host node3
@@ -370,11 +374,11 @@ max_item = <span class="hljs-number">-1</span>
                        TOTAL  <span class="hljs-number">60</span> GiB  <span class="hljs-number">3.0</span> GiB  <span class="hljs-number">2.4</span> MiB  <span class="hljs-number">61</span> KiB   <span class="hljs-number">3.0</span> GiB  <span class="hljs-number">57</span> GiB  <span class="hljs-number">5.01</span>                                   
 MIN/MAX VAR: <span class="hljs-number">1.00</span>/<span class="hljs-number">1.00</span>  STDDEV: <span class="hljs-number">0</span></code></pre>
 <h2 id="4-1-Rules"><a href="#4-1-Rules" class="headerlink" title="4.1 Rules"></a>4.1 Rules</h2><p>查看集群的rules</p>
-<pre><code class="hljs crmsh">ceph osd crush <span class="hljs-keyword">rule</span> ls</code></pre>
+<pre><code class="hljs crmsh">sudo ceph osd crush <span class="hljs-keyword">rule</span> ls</code></pre>
 <pre><code class="hljs ebnf"><span class="hljs-attribute">replicated_rule</span>
 <span class="hljs-attribute">ecpool</span></code></pre>
 <p>你也能打印出rules的细节</p>
-<pre><code class="hljs crmsh">ceph osd crush <span class="hljs-keyword">rule</span> dump</code></pre>
+<pre><code class="hljs crmsh">sudo ceph osd crush <span class="hljs-keyword">rule</span> dump</code></pre>
 <pre><code class="hljs json">[
     &#123;
         <span class="hljs-attr">&quot;rule_id&quot;</span>: <span class="hljs-number">0</span>,
@@ -433,15 +437,15 @@ MIN/MAX VAR: <span class="hljs-number">1.00</span>/<span class="hljs-number">1.0
 ]
 </code></pre>
 <h2 id="4-2-Device-class"><a href="#4-2-Device-class" class="headerlink" title="4.2 Device class"></a>4.2 Device class</h2><p>可以通过以下命令设置device的类别（<code>hdd</code>, <code>ssd</code>, or <code>nvme</code>）</p>
-<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-built_in">set-device-class</span> &lt;<span class="hljs-string">class&gt;</span> &lt;<span class="hljs-string">osd-name&gt;</span> [...]</code></pre>
+<pre><code class="hljs dsconfig"><span class="hljs-string">sudo </span><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-built_in">set-device-class</span> &lt;<span class="hljs-string">class&gt;</span> &lt;<span class="hljs-string">osd-name&gt;</span> [...]</code></pre>
 <p>可以通过以下命令更改为其它类别</p>
-<pre><code class="hljs ruby">ceph osd crush rm-device-<span class="hljs-class"><span class="hljs-keyword">class</span> &lt;osd-<span class="hljs-title">name</span>&gt; [...]</span></code></pre>
+<pre><code class="hljs ruby">sudo ceph osd crush rm-device-<span class="hljs-class"><span class="hljs-keyword">class</span> &lt;osd-<span class="hljs-title">name</span>&gt; [...]</span></code></pre>
 <p>如果我们想创建新的placement rule</p>
-<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-string">rule </span><span class="hljs-built_in">create-replicated</span> &lt;<span class="hljs-string">rule-name&gt;</span> &lt;<span class="hljs-string">root&gt;</span> &lt;<span class="hljs-string">failure-domain&gt;</span> &lt;<span class="hljs-string">class&gt;</span></code></pre>
+<pre><code class="hljs dsconfig"><span class="hljs-string">sudo </span><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-string">rule </span><span class="hljs-built_in">create-replicated</span> &lt;<span class="hljs-string">rule-name&gt;</span> &lt;<span class="hljs-string">root&gt;</span> &lt;<span class="hljs-string">failure-domain&gt;</span> &lt;<span class="hljs-string">class&gt;</span></code></pre>
 <p>对于pool而言就是</p>
-<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> &lt;pool-name&gt; crush_rule &lt;rule-name&gt;</code></pre>
+<pre><code class="hljs routeros">sudo ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> &lt;pool-name&gt; crush_rule &lt;rule-name&gt;</code></pre>
 <p>通过为使用中的每个仅包含该类设备的设备类创建一个“影子” CRUSH层次结构来实现设备类。然后，CRUSH规则可以在影子层次结构上分布数据。</p>
-<pre><code class="hljs ada">ceph osd crush tree <span class="hljs-comment">--show-shadow</span></code></pre>
+<pre><code class="hljs ada">sudo ceph osd crush tree <span class="hljs-comment">--show-shadow</span></code></pre>
 <pre><code class="hljs lsl">ID  CLASS  WEIGHT   TYPE NAME         
 <span class="hljs-number">-2</span>    ssd  <span class="hljs-number">0.05846</span>  root <span class="hljs-section">default</span>~ssd  
 <span class="hljs-number">-6</span>    ssd  <span class="hljs-number">0.01949</span>      host node3~ssd
@@ -464,38 +468,38 @@ MIN/MAX VAR: <span class="hljs-number">1.00</span>/<span class="hljs-number">1.0
 <li>Per-pool权重集，针对数据池的权重集。</li>
 </ul>
 <h2 id="4-4-修改CRUSH-Map"><a href="#4-4-修改CRUSH-Map" class="headerlink" title="4.4 修改CRUSH Map"></a>4.4 修改CRUSH Map</h2><p>要在正在运行的群集的CRUSH映射中添加或移动OSD，请执行以下操作：</p>
-<pre><code class="hljs sql">ceph osd crush <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; &#123;weight&#125; root=&#123;root&#125; [&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">name</span>&#125; ...]</code></pre>
+<pre><code class="hljs sql">sudo ceph osd crush <span class="hljs-keyword">set</span> &#123;<span class="hljs-keyword">name</span>&#125; &#123;weight&#125; root=&#123;root&#125; [&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">type</span>&#125;=&#123;<span class="hljs-keyword">bucket</span>-<span class="hljs-keyword">name</span>&#125; ...]</code></pre>
 <p>{name}指osd名称</p>
 <h2 id="4-5-调整OSD权重¶"><a href="#4-5-调整OSD权重¶" class="headerlink" title="4.5 调整OSD权重¶"></a>4.5 调整OSD权重<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/#adjust-osd-weight">¶</a></h2><p>要在正在运行的群集的CRUSH映射中调整OSD的CRUSH权重，请执行以下操作：</p>
-<pre><code class="hljs dust"><span class="xml">ceph osd crush reweight </span><span class="hljs-template-variable">&#123;name&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;weight&#125;</span></code></pre>
+<pre><code class="hljs dust"><span class="xml">sudo ceph osd crush reweight </span><span class="hljs-template-variable">&#123;name&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;weight&#125;</span></code></pre>
 <p>要从正在运行的群集的CRUSH映射中删除OSD，请执行以下操作：</p>
-<pre><code class="hljs routeros">ceph osd crush <span class="hljs-builtin-name">remove</span> &#123;name&#125;</code></pre>
-<p>要在正在运行的集群的CRUSH映射中添加存储桶，请执行以下 命令：<code>ceph osd crush add-bucket</code></p>
-<pre><code class="hljs smali">ceph osd crush<span class="hljs-built_in"> add-bucket </span>&#123;bucket-name&#125; &#123;bucket-type&#125;</code></pre>
+<pre><code class="hljs routeros">sudo ceph osd crush <span class="hljs-builtin-name">remove</span> &#123;name&#125;</code></pre>
+<p>要在正在运行的集群的CRUSH映射中添加存储桶，请执行以下 命令：<code>sudo ceph osd crush add-bucket</code></p>
+<pre><code class="hljs smali">sudo ceph osd crush<span class="hljs-built_in"> add-bucket </span>&#123;bucket-name&#125; &#123;bucket-type&#125;</code></pre>
 <p>要将存储桶移动到CRUSH地图层次结构中的其他位置或位置，请执行以下操作：</p>
-<pre><code class="hljs sqf">ceph osd crush <span class="hljs-built_in">move</span> &#123;bucket-<span class="hljs-built_in">name</span>&#125; &#123;bucket-<span class="hljs-built_in">type</span>&#125;=&#123;bucket-<span class="hljs-built_in">name</span>&#125;, [...]</code></pre>
+<pre><code class="hljs sqf">sudo ceph osd crush <span class="hljs-built_in">move</span> &#123;bucket-<span class="hljs-built_in">name</span>&#125; &#123;bucket-<span class="hljs-built_in">type</span>&#125;=&#123;bucket-<span class="hljs-built_in">name</span>&#125;, [...]</code></pre>
 <p>要从CRUSH层次结构中删除存储桶，请执行以下操作：</p>
-<pre><code class="hljs routeros">ceph osd crush <span class="hljs-builtin-name">remove</span> &#123;bucket-name&#125;</code></pre>
+<pre><code class="hljs routeros">sudo ceph osd crush <span class="hljs-builtin-name">remove</span> &#123;bucket-name&#125;</code></pre>
 <h2 id="4-6-创建一个Compat权重集"><a href="#4-6-创建一个Compat权重集" class="headerlink" title="4.6 创建一个Compat权重集"></a>4.6 创建一个Compat权重集</h2><p>要创建<em>兼容的权重集</em>：</p>
-<pre><code class="hljs livecodeserver">ceph osd crush weight-<span class="hljs-built_in">set</span> <span class="hljs-built_in">create</span>-compat</code></pre>
+<pre><code class="hljs livecodeserver">sudo ceph osd crush weight-<span class="hljs-built_in">set</span> <span class="hljs-built_in">create</span>-compat</code></pre>
 <p>兼容重量组的重量可以通过以下方式调整：</p>
-<pre><code class="hljs applescript">ceph osd crush weight-<span class="hljs-keyword">set</span> reweight-compat &#123;<span class="hljs-built_in">name</span>&#125; &#123;weight&#125;</code></pre>
+<pre><code class="hljs applescript">sudo ceph osd crush weight-<span class="hljs-keyword">set</span> reweight-compat &#123;<span class="hljs-built_in">name</span>&#125; &#123;weight&#125;</code></pre>
 <p>可以用以下方法删除：</p>
-<pre><code class="hljs routeros">ceph osd crush weight-<span class="hljs-builtin-name">set</span> rm-compat</code></pre>
+<pre><code class="hljs routeros">sudo ceph osd crush weight-<span class="hljs-builtin-name">set</span> rm-compat</code></pre>
 <h2 id="4-7-创建per-pool的权重集"><a href="#4-7-创建per-pool的权重集" class="headerlink" title="4.7 创建per-pool的权重集"></a>4.7 创建per-pool的权重集</h2><p>要为特定池创建权重集，请执行以下操作：</p>
-<pre><code class="hljs sql">ceph osd crush weight-<span class="hljs-keyword">set</span> <span class="hljs-keyword">create</span> &#123;pool-<span class="hljs-keyword">name</span>&#125; &#123;<span class="hljs-keyword">mode</span>&#125;</code></pre>
+<pre><code class="hljs sql">sudo ceph osd crush weight-<span class="hljs-keyword">set</span> <span class="hljs-keyword">create</span> &#123;pool-<span class="hljs-keyword">name</span>&#125; &#123;<span class="hljs-keyword">mode</span>&#125;</code></pre>
 <p>调整权重：</p>
-<pre><code class="hljs applescript">ceph osd crush weight-<span class="hljs-keyword">set</span> reweight &#123;pool-<span class="hljs-built_in">name</span>&#125; &#123;<span class="hljs-built_in">item</span>-<span class="hljs-built_in">name</span>&#125; &#123;weight [...]&#125;</code></pre>
+<pre><code class="hljs applescript">sudo ceph osd crush weight-<span class="hljs-keyword">set</span> reweight &#123;pool-<span class="hljs-built_in">name</span>&#125; &#123;<span class="hljs-built_in">item</span>-<span class="hljs-built_in">name</span>&#125; &#123;weight [...]&#125;</code></pre>
 <p>要列出现有的权重集，请执行以下操作：</p>
-<pre><code class="hljs routeros">ceph osd crush weight-<span class="hljs-builtin-name">set</span> ls</code></pre>
+<pre><code class="hljs routeros">sudo ceph osd crush weight-<span class="hljs-builtin-name">set</span> ls</code></pre>
 <p>要删除，请执行以下操作：</p>
-<pre><code class="hljs applescript">ceph osd crush weight-<span class="hljs-keyword">set</span> rm &#123;pool-<span class="hljs-built_in">name</span>&#125;</code></pre>
-<h2 id="4-8-为副本创建规则"><a href="#4-8-为副本创建规则" class="headerlink" title="4.8 为副本创建规则"></a>4.8 为副本创建规则</h2><pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-string">rule </span><span class="hljs-built_in">create-replicated</span> &#123;<span class="hljs-string">name&#125;</span> &#123;<span class="hljs-string">root&#125;</span> &#123;<span class="hljs-string">failure-domain-</span><span class="hljs-string">type&#125;</span> [&#123;<span class="hljs-string">class&#125;</span>]</code></pre>
+<pre><code class="hljs applescript">sudo ceph osd crush weight-<span class="hljs-keyword">set</span> rm &#123;pool-<span class="hljs-built_in">name</span>&#125;</code></pre>
+<h2 id="4-8-为副本创建规则"><a href="#4-8-为副本创建规则" class="headerlink" title="4.8 为副本创建规则"></a>4.8 为副本创建规则</h2><pre><code class="hljs dsconfig"><span class="hljs-string">sudo </span><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-string">rule </span><span class="hljs-built_in">create-replicated</span> &#123;<span class="hljs-string">name&#125;</span> &#123;<span class="hljs-string">root&#125;</span> &#123;<span class="hljs-string">failure-domain-</span><span class="hljs-string">type&#125;</span> [&#123;<span class="hljs-string">class&#125;</span>]</code></pre>
 <h2 id="4-9-为纠删码创建规则"><a href="#4-9-为纠删码创建规则" class="headerlink" title="4.9 为纠删码创建规则"></a>4.9 为纠删码创建规则</h2><p>对于纠删码（EC）池，需要做出相同的基本决策：故障域是什么，层次结构中的哪个节点将数据放置在（通常为<code>default</code>）下，并且放置位置将限制为特定的设备类。但是，纠删码池的创建方式略有不同，因为需要根据所使用的删除代码仔细构建它们。因此，您必须在<em>纠删码配置文件中</em>包含此信息。使用配置文件创建池时，将根据该规则显式或自动创建CRUSH规则。</p>
 <p>纠删码配置文件可以列出：</p>
-<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-keyword">ls</span></code></pre>
+<pre><code class="hljs vim">sudo ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-keyword">ls</span></code></pre>
 <p>查看某个特定配置</p>
-<pre><code class="hljs vim">ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-built_in">get</span> &#123;<span class="hljs-keyword">profile</span>-name&#125;</code></pre>
+<pre><code class="hljs vim">sudo ceph osd erasure-code-<span class="hljs-keyword">profile</span> <span class="hljs-built_in">get</span> &#123;<span class="hljs-keyword">profile</span>-name&#125;</code></pre>
 <p>通常，绝对不要修改配置文件。而是在创建新池或为现有池创建新规则时创建并使用新配置文件。</p>
 <p>感兴趣的纠删码配置文件属性为：</p>
 <blockquote>
@@ -507,16 +511,28 @@ MIN/MAX VAR: <span class="hljs-number">1.00</span>/<span class="hljs-number">1.0
 </ul>
 </blockquote>
 <p>定义配置文件后，您可以使用以下方法创建CRUSH规则：</p>
-<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-string">rule </span><span class="hljs-built_in">create-erasure</span> &#123;<span class="hljs-string">name&#125;</span> &#123;<span class="hljs-string">profile-name&#125;</span><span class="hljs-comment">#&#123;name&#125;为规则名称</span></code></pre>
+<pre><code class="hljs dsconfig"><span class="hljs-string">sudo </span><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">crush </span><span class="hljs-string">rule </span><span class="hljs-built_in">create-erasure</span> &#123;<span class="hljs-string">name&#125;</span> &#123;<span class="hljs-string">profile-name&#125;</span><span class="hljs-comment">#&#123;name&#125;为规则名称</span></code></pre>
 <p>可以通过以下方式删除池未使用的规则：</p>
-<pre><code class="hljs pgsql">ceph osd crush <span class="hljs-keyword">rule</span> rm &#123;<span class="hljs-keyword">rule</span>-<span class="hljs-type">name</span>&#125;</code></pre>
-<h2 id="4-10-自定义CRUSH规则♥"><a href="#4-10-自定义CRUSH规则♥" class="headerlink" title="4.10 自定义CRUSH规则♥"></a>4.10 自定义CRUSH规则♥</h2><p>我们可以通过CLI来很方便的修改CRUSH各项配置，但是如果修改项目过多，而集群较多，直接编辑CRUSH map 会是更好的选择。在一些特殊情况下，比如集群HDD和SSD和NVME混合则必须单独配置CRUSH rules。</p>
-<h3 id="（1）获取CRUSH-Map"><a href="#（1）获取CRUSH-Map" class="headerlink" title="（1）获取CRUSH Map"></a>（1）获取CRUSH Map</h3><pre><code class="hljs dts">ceph osd getcrushmap -<span class="hljs-class">o </span>&#123;compilefilename&#125;</code></pre>
+<pre><code class="hljs pgsql">sudo ceph osd crush <span class="hljs-keyword">rule</span> rm &#123;<span class="hljs-keyword">rule</span>-<span class="hljs-type">name</span>&#125;</code></pre>
+<h2 id="4-10-自定义CRUSH规则♥"><a href="#4-10-自定义CRUSH规则♥" class="headerlink" title="4.10 自定义CRUSH规则♥"></a>4.10 自定义CRUSH规则♥</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map-edits/">https://docs.ceph.com/en/latest/rados/operations/crush-map-edits/</a></p>
+</blockquote>
+<p>我们可以通过CLI来很方便的修改CRUSH各项配置，但是如果修改项目过多，而集群较多，直接编辑CRUSH map 会是更好的选择。在一些特殊情况下，比如集群HDD和SSD和NVME混合则必须单独配置CRUSH rules。</p>
+<h3 id="（1）获取CRUSH-Map"><a href="#（1）获取CRUSH-Map" class="headerlink" title="（1）获取CRUSH Map"></a>（1）获取CRUSH Map</h3><pre><code class="hljs dts">sudo ceph osd getcrushmap -<span class="hljs-class">o </span>&#123;compilefilename&#125;</code></pre>
 <p>之后我们将其解码为txt</p>
 <pre><code class="hljs dts">crushtool -<span class="hljs-class">d </span>&#123;compilefilename&#125; -<span class="hljs-class">o </span>&#123;outputfilename&#125;.txt</code></pre>
 <p>例如 </p>
 <pre><code class="hljs css"><span class="hljs-selector-tag">crushtool</span> <span class="hljs-selector-tag">-d</span> <span class="hljs-selector-tag">mycrushmap</span> <span class="hljs-selector-tag">-o</span> <span class="hljs-selector-tag">mycrushmap</span><span class="hljs-selector-class">.txt</span></code></pre>
-<p>典型的crush map如下</p>
+<p>典型的crush map如下:</p>
+<p>它包含6个部分：</p>
+<ol>
+<li><strong>可调项：</strong> tunable</li>
+<li><strong>设备：</strong>设备是存储数据的单个OSD。</li>
+<li><strong>types</strong>：存储桶<code>types</code>定义在CRUSH层次结构中使用的存储桶的类型。存储桶由存储位置（例如，行，机架，机箱，主机等）及其分配的权重的分层聚合组成。</li>
+<li><strong>存储桶：</strong>定义存储桶类型后，必须定义层次结构中的每个节点，其类型以及它包含的设备或其他节点。</li>
+<li><strong>规则：</strong>规则定义有关数据如何在层次结构中的各个设备之间分配的策略。</li>
+<li>choice_args <strong>：</strong> Choose_args是与层次结构关联的替代权重，这些权重已进行调整以优化数据放置。单个choose_args映射可以用于整个集群，也可以为每个单独的池创建一个映射。</li>
+</ol>
 <pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> begin crush map</span>
 tunable choose_local_tries 0
 tunable choose_local_fallback_tries 0
@@ -610,9 +626,122 @@ choose_args 4 &#123;
 </ul>
 <p><code>set_chooseleaf_tries</code>: 容灾域下产生递归调用时的尝试次数。</p>
 <p><code>set_choose_tries</code>: 非容灾域下产生递归调用的尝试次数。</p>
+<p><code>min_size</code>: 如果池中的副本数少于此数量，则CRUSH将 <strong>不会</strong>选择此规则。</p>
+<p><code>max_size</code>: 如果池中的副本数量超过此数量，则CRUSH将 <strong>不会</strong>选择此规则。</p>
+<blockquote>
+<p><code>firstn</code> 与 <code>indep</code></p>
+<ul>
+<li><p>描述</p>
+<p>控制在CRUSH映射中标记了项目（OSD）时CRUSH使用的替换策略。<strong>如果此规则将用于复制池，则应使用<code>firstn</code>；如果是擦除编码池，则应使用<code>indep</code></strong>。原因与先前选择的设备发生故障时它们的行为有关。假设您有一个PG存储在OSD 1、2、3、4、5上。然后3下降。在“ firstn”模式下，CRUSH只需将其计算调整为选择1和2，然后选择3，但发现它已关闭，因此它重试并选择4和5，然后继续选择一个新的OSD6。因此最终的CRUSH映射更改为1、2、3、4、5-&gt; 1、2、4、5、6。但是，如果要存储EC池，则意味着您只需更改映射到OSD 4、5和6的数据！因此，“独立”模式试图不这样做。相反，您可以期望它在选择失败的OSD 3时再次尝试并选择6，以进行以下最终转换：1，2，3，4，5-&gt; 1，2，6，4，5</p>
+</li>
+</ul>
+</blockquote>
+<div class="note note-danger">
+            <p>重要 :给定的CRUSH规则可以分配给多个池，但是单个池不可能具有多个CRUSH规则。</p>
+          </div>
 <h3 id="（2）修改并编译CRUSH-Map"><a href="#（2）修改并编译CRUSH-Map" class="headerlink" title="（2）修改并编译CRUSH Map"></a>（2）修改并编译CRUSH Map</h3><p>我们需要进行编译才能被ceph识别</p>
 <pre><code class="hljs dts">crushtool - <span class="hljs-class">c </span>&#123;decompiled_filename&#125; -<span class="hljs-class">o </span>&#123;compiled_filename&#125;</code></pre>
-<h3 id="（3）测试"><a href="#（3）测试" class="headerlink" title="（3）测试"></a>（3）测试</h3><h3 id="（4）部署"><a href="#（4）部署" class="headerlink" title="（4）部署"></a>（4）部署</h3><h2 id="4-11数据重平衡"><a href="#4-11数据重平衡" class="headerlink" title="4.11数据重平衡"></a>4.11数据重平衡</h2>
+<h3 id="（3）测试"><a href="#（3）测试" class="headerlink" title="（3）测试"></a>（3）测试</h3><p>例如我们打印出输入范围为[0,9]、副本数3，采用编号为0的ruleset映射的结果。</p>
+<pre><code class="hljs brainfuck"><span class="hljs-comment">sudo</span> <span class="hljs-comment">crushtool</span> <span class="hljs-literal">-</span><span class="hljs-comment">i</span> <span class="hljs-comment">&#123;compiled_filename&#125;</span> --<span class="hljs-comment">test</span> --<span class="hljs-comment">min</span><span class="hljs-literal">-</span><span class="hljs-comment">x</span> <span class="hljs-comment">0</span> --<span class="hljs-comment">max</span><span class="hljs-literal">-</span><span class="hljs-comment">x</span> <span class="hljs-comment">9</span> --<span class="hljs-comment">num</span><span class="hljs-literal">-</span><span class="hljs-comment">rep</span> <span class="hljs-comment">3</span> --<span class="hljs-comment">ruleset</span> <span class="hljs-comment">0\</span>
+<span class="hljs-comment"></span> --<span class="hljs-comment">show_mappings</span></code></pre>
+<pre><code class="hljs angelscript">CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">0</span> [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">1</span> [<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">2</span> [<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">3</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">4</span> [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">5</span> [<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">6</span> [<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">7</span> [<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">8</span> [<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+CRUSH rule <span class="hljs-number">0</span> x <span class="hljs-number">9</span> [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>]</code></pre>
+<p>也可以仅统计结果分布情况，输入变为[0,100000]</p>
+<pre><code class="hljs brainfuck"><span class="hljs-comment">sudo</span> <span class="hljs-comment">crushtool</span> <span class="hljs-literal">-</span><span class="hljs-comment">i</span> <span class="hljs-comment">mycrushmap</span> --<span class="hljs-comment">test</span> --<span class="hljs-comment">min</span><span class="hljs-literal">-</span><span class="hljs-comment">x</span> <span class="hljs-comment">0</span> --<span class="hljs-comment">max</span><span class="hljs-literal">-</span><span class="hljs-comment">x</span> <span class="hljs-comment">100000</span> --<span class="hljs-comment">num</span><span class="hljs-literal">-</span><span class="hljs-comment">rep</span> <span class="hljs-comment">3\</span>
+<span class="hljs-comment"></span> --<span class="hljs-comment">ruleset</span> <span class="hljs-comment">0</span> --<span class="hljs-comment">show_utilization</span></code></pre>
+<pre><code class="hljs yaml"><span class="hljs-string">rule</span> <span class="hljs-number">0</span> <span class="hljs-string">(replicated_rule),</span> <span class="hljs-string">x</span> <span class="hljs-string">=</span> <span class="hljs-number">0</span><span class="hljs-string">..100000,</span> <span class="hljs-string">numrep</span> <span class="hljs-string">=</span> <span class="hljs-number">3</span><span class="hljs-string">..3</span>
+<span class="hljs-string">rule</span> <span class="hljs-number">0</span> <span class="hljs-string">(replicated_rule)</span> <span class="hljs-string">num_rep</span> <span class="hljs-number">3</span> <span class="hljs-string">result</span> <span class="hljs-string">size</span> <span class="hljs-string">==</span> <span class="hljs-attr">2:</span>	<span class="hljs-number">3</span><span class="hljs-string">/100001</span>
+<span class="hljs-string">rule</span> <span class="hljs-number">0</span> <span class="hljs-string">(replicated_rule)</span> <span class="hljs-string">num_rep</span> <span class="hljs-number">3</span> <span class="hljs-string">result</span> <span class="hljs-string">size</span> <span class="hljs-string">==</span> <span class="hljs-attr">3:</span>	<span class="hljs-number">99998</span><span class="hljs-string">/100001</span>
+  <span class="hljs-attr">device 0:</span>		 <span class="hljs-attr">stored :</span> <span class="hljs-number">100001</span>	 <span class="hljs-attr">expected :</span> <span class="hljs-number">100001</span>
+  <span class="hljs-attr">device 1:</span>		 <span class="hljs-attr">stored :</span> <span class="hljs-number">99998</span>	 <span class="hljs-attr">expected :</span> <span class="hljs-number">100001</span>
+  <span class="hljs-attr">device 2:</span>		 <span class="hljs-attr">stored :</span> <span class="hljs-number">100001</span>	 <span class="hljs-attr">expected :</span> <span class="hljs-number">100001</span>
+</code></pre>
+<p>需要注意的是，除了叶子节点，其它的层级均为虚拟的，例如下面这个例子，我们让所有副本都必须分布在编号为0,1,2者三个特定的osd上。</p>
+<p>可以通过如下语句声明存储桶：</p>
+<pre><code class="hljs clojure">[bucket-type] [bucket-name] &#123;
+        id [a unique negative numeric ID]
+        weight [the relative capacity/capability of the item(<span class="hljs-name">s</span>)]
+        alg [the bucket type: uniform | list | tree | straw | straw2 ]
+        hash [the hash type: <span class="hljs-number">0</span> by default]
+        item [item-name] weight [weight]
+&#125;</code></pre>
+<pre><code class="hljs routeros">vim mycrushmap.txt
+host virtualhost&#123;
+	id -14
+	#weight 3.00
+	alg straw2
+	hash 0 # rejenkins1
+	item osd.0 weight 1.00
+	item osd.1 weight 1.00
+	item osd.2 weight 1.00
+&#125;
+<span class="hljs-comment">#rules</span>
+rule customized_ruleset&#123;
+	ruleset 1
+<span class="hljs-built_in">	type </span>replicated 
+	min_size 1
+	max_size 10
+	<span class="hljs-keyword">step</span> take virtualhost
+	<span class="hljs-keyword">step</span> chooseleaf firstn 0<span class="hljs-built_in"> type </span>osd
+	<span class="hljs-keyword">step</span> emit
+&#125;</code></pre>
+<h3 id="（4）注入集群"><a href="#（4）注入集群" class="headerlink" title="（4）注入集群"></a>（4）注入集群</h3><pre><code class="hljs dts">sudo ceph osd setcrushmap -<span class="hljs-class">i </span>&#123;compiledfilename&#125;</code></pre>
+<h2 id="4-11数据重平衡"><a href="#4-11数据重平衡" class="headerlink" title="4.11数据重平衡"></a>4.11数据重平衡</h2><p>找到空间利用率比较高的osd然后执行</p>
+<pre><code class="hljs \">sudo ceph osd reweight &#123;osd_num_id&#125; &#123;reweight&#125;</code></pre>
+<p>当然也可以批量调整：目前有两种模式</p>
+<ul>
+<li>按照OSD当前的空间利用率(<code>reweight-by-utilization</code>) ;</li>
+<li>按照PG在OSD之间的分布(<code>reweight-by-pg</code>)。</li>
+</ul>
+<p>为防止影响前端业务，可以先进行测试，这会触发PG进行迁移量统计。</p>
+<p>例如：</p>
+<pre><code class="hljs dust"><span class="xml">sudo ceph osd test-reweight-by-utilization </span><span class="hljs-template-variable">&#123;oload&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;max_change&#125;</span><span class="xml">\</span>
+<span class="hljs-template-variable">&#123;max_osds&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;--no-increasing&#125;</span></code></pre>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">oload</td>
+<td style="text-align:center">可选；整型，≥100，默认值120；当且仅当某个OSD的空间利用率大于等于集群瓶颈空间利用率的overload/100时，调整其reweight</td>
+</tr>
+<tr>
+<td style="text-align:center">max_change</td>
+<td style="text-align:center">可选，浮点数，[0,1]；默认受<code>mon_reweight_max_change</code>控制，目前为0.05.每次调整reweight的最大幅度，即调整上限。实际每个osd调整幅度取决于自身空间利用率与集群平均空间利用率的偏离程度——偏离越多调整越大</td>
+</tr>
+<tr>
+<td style="text-align:center">max_osds</td>
+<td style="text-align:center">可选，整型，默认受<code>mon_reweight_max_osds</code>控制，目前为4.每次至多调整的osd数目。</td>
+</tr>
+<tr>
+<td style="text-align:center">—no-increasing</td>
+<td style="text-align:center">可选,字符类型，如果携带，则从不将reweight进行上调（上调指将当前的underload的OSD权重调大，让其分担更多PG）；如果不携带，至多将OSD的reweight调整至1.0/</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>使用以下参数进行确认</p>
+<pre><code class="hljs dust"><span class="xml">sudo ceph osd reweight-by-utilization </span><span class="hljs-template-variable">&#123;oload&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;max_change&#125;</span><span class="xml">\</span>
+<span class="hljs-template-variable">&#123;max_osds&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;--no-increasing&#125;</span></code></pre>
+<blockquote>
+<p>合理设置weights</p>
+<p>Ceph将weights表示为两倍，从而可以进行精细调整。 weight是设备容量之间的相对差。 我们建议将1.00用作1TB存储设备的相对重量。 在这种情况下，权重为0.5代表大约500GB，权重为3.00代表大约3TB。 较高级别的存储桶的权重是该存储桶聚合的所有叶子项的总和。</p>
+<p>桶项目weight是一维的，但您也可以计算项目重量以反映存储驱动器的性能。 例如，如果您有许多1TB驱动器，其中一些具有较低的数据传输速率，而另一些具有较高的数据传输速率，则即使它们具有相同的容量（例如，硬盘的权重为0.80），也可以对其进行不同的加权。 第一组总吞吐量较低的驱动器，以及1.20第二组总吞吐量较高的驱动器）。</p>
+</blockquote>
+
             </div>
             <hr>
             <div>
@@ -648,9 +777,9 @@ choose_args 4 &#123;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/12/31/2020-10-8-article_navigator/">
+                      <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【置顶】本博客导航！</span>
+                        <span class="hidden-mobile">【研究向】Redis中跳表实现原理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -658,8 +787,8 @@ choose_args 4 &#123;
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
-                        <span class="hidden-mobile">CEPH 纠删码操作</span>
+                      <a href="/2020/11/26/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
+                        <span class="hidden-mobile">下一代对象存储引擎BlueStore</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

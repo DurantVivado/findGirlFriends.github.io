@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      3.6k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      47
        分钟
     </span>
   
@@ -242,23 +242,242 @@
             <h1 style="display: none">纠删码综述</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="纠删码在存储系统的应用"><a href="#纠删码在存储系统的应用" class="headerlink" title="纠删码在存储系统的应用"></a>纠删码在存储系统的应用</h1><blockquote>
+              <h1 id="【综述】纠删码理论"><a href="#【综述】纠删码理论" class="headerlink" title="【综述】纠删码理论"></a>【综述】纠删码理论</h1><blockquote>
 <p>2017年更新</p>
 </blockquote>
-<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本论文介绍了当前典型和常见的纠删码技术的发展现状，从评价纠删码性能的各项重要指标的角度详细地对比和分析了现有的纠删码技术，给出了不同纠删码在容错能力与磁盘要求、空间利用率、编码效率、更新效率、重构效率等方面的不足和可能的改进见解，并讨论了磁盘阵列系统、Ｐ２Ｐ存储系统、分布式存储系统、归档存储系统等不同存储系统对于纠删码各类性能的差别要求，本综述着眼于现阶段各类纠删码系统，并对一些新式纠删码系统进行介绍．</p>
+<h1 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1 摘要"></a>1 摘要</h1><p>随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本文介绍了最重要的一些纠删码。</p>
 <p>目前冗余备份机制主要有两种，一种是数据完全备份机制，也就是通常所说的镜像方法，（mirrorred-method），又称为多副本技术，这类方法的优点是不需要专门的编码解码算法，缺点是磁盘利用率很低，适合于存储规模比较小的应用场景。另外一种就是纠删码方法（erasure code）。</p>
-<h2 id="条带"><a href="#条带" class="headerlink" title="条带"></a>条带</h2><p>条带(stripe) 指 相同纠删码的所有信息的集合，它相当于一个算法的实例。一个存储系统可以看成是很多条带的集合，可以通过条带之间的轮转来实现负载的均衡。另一个类似的概念，是条块(strip)，它是同一条带内包含的元素的个数。</p>
+<h1 id="2-术语"><a href="#2-术语" class="headerlink" title="2 术语"></a>2 术语</h1><h2 id="2-1-存储效率和存储冗余度"><a href="#2-1-存储效率和存储冗余度" class="headerlink" title="2.1 存储效率和存储冗余度"></a>2.1 存储效率和存储冗余度</h2><p>​    <strong>存储效率 = 数据空间 /（数据空间 + 校验空间）</strong></p>
+<p>​    对于三副本存储，其效率为1/3。除了存储效率指标，冗余存储系统还要存储冗余度和存储开销。</p>
+<p>​    存储冗余度 = 1/存储效率</p>
+<p>​    存储开销 = 校验空间/数据空间</p>
+<h2 id="2-2-RCW和RMW"><a href="#2-2-RCW和RMW" class="headerlink" title="2.2 RCW和RMW"></a>2.2 RCW和RMW</h2><p>RCW针对写数据较多。Read Construct Write</p>
+<script type="math/tex; mode=display">
+P_{new} = D1_{new} \oplus D2_{old}\oplus D3_{old}\oplus D4_{old}</script><p>RMW针对读数据较少。Read Modify Write</p>
+<script type="math/tex; mode=display">
+P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆盖写。</p>
+<h2 id="2-3-节点重构"><a href="#2-3-节点重构" class="headerlink" title="2.3 节点重构"></a>2.3 节点重构</h2><p>如果碰到永久性失效，需要恢复失效数据。根据重构过程中存储系统是否响应用户I/O请求分为在线重构和离线重构。前者是指重构的过程中同时响应IO请求。后者指系统独立进行重构。</p>
+<p>对于容错能力为r的存储系统的平均数据丢失时间(mean time to data loss, $MTTDL$) 与失效数据恢复时间的r次方成反比，即失效数据恢复时间越长，系统节点再次失效的概率就越大，系统的有效性越差。 </p>
+<h2 id="2-4-条带"><a href="#2-4-条带" class="headerlink" title="2.4 条带"></a>2.4 条带</h2><p>条带(stripe) 指 相同纠删码的所有信息的集合，它相当于一个算法的实例。一个存储系统可以看成是很多条带的集合，可以通过条带之间的轮转来实现负载的均衡。另一个类似的概念，是条块(strip)，它是同一条带内包含的元素的个数。</p>
 <p>目前企业中，已经有利用大条带降低校验码比例以实现降低存储开销的先例，但是如何高效的生成大条带并不是容易的，尤其是降低生成大条带的带宽。</p>
-<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>谈到纠删码，我们就不得不提编码了。按照条块中是否同时存储块和校验块可以分为横式编码和纵式编码。在横式编码中，存储块和校验快分开存储，比如EVENODD[9]，RDP编码[10]等，在纵式编码中，某些存储块和校验块在一起，比如X-code[11].</p>
-<p>容错率(fault tolerance)指 最多容忍的同时出错的条块数目，在不超过这个数字时条块均可以恢复。</p>
-<p>MDS编码是满足Singleton边界条件[12]的编码方式，MDS码在理论上具有最高存储利用率。</p>
-<ol>
-<li>Reed-Solomon编码</li>
+<pre><code>                                                                 表 1 几种纠删码存储集群系统的特征分析
+</code></pre><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">存储方案</th>
+<th style="text-align:center">设计目标</th>
+<th style="text-align:center">纠删码</th>
+<th style="text-align:center">网络</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Microsoft Aure Storage</td>
+<td style="text-align:center">可扩展云存储</td>
+<td style="text-align:center">RS码（k=12，r=4）</td>
+<td style="text-align:center">TCP/IP over VL2 Ethernet</td>
+</tr>
+<tr>
+<td style="text-align:center">Google GFS II</td>
+<td style="text-align:center">分布式存储</td>
+<td style="text-align:center">RS码（k=6，r=3）</td>
+<td style="text-align:center">TCP/IP over Ethernet</td>
+</tr>
+<tr>
+<td style="text-align:center">Facebook HDFS-RAID</td>
+<td style="text-align:center">数据仓库</td>
+<td style="text-align:center">RS码（k=10，r=4）</td>
+<td style="text-align:center">TCP/IP</td>
+</tr>
+<tr>
+<td style="text-align:center">Tahoe</td>
+<td style="text-align:center">长期存储</td>
+<td style="text-align:center">Vandermonde RS码</td>
+<td style="text-align:center">TCP/IP</td>
+</tr>
+<tr>
+<td style="text-align:center">Hydrastor</td>
+<td style="text-align:center">内容寻址存储</td>
+<td style="text-align:center">Caucy RS码（k=9，r=3）</td>
+<td style="text-align:center">TCP/IP</td>
+</tr>
+<tr>
+<td style="text-align:center">Cleversafe</td>
+<td style="text-align:center">归档存储</td>
+<td style="text-align:center">Caucy RS码</td>
+<td style="text-align:center">TCP/IP</td>
+</tr>
+<tr>
+<td style="text-align:center">Quantcast</td>
+<td style="text-align:center">分布式存储</td>
+<td style="text-align:center">RS码（k=6，r=3）</td>
+<td style="text-align:center">TCP/IP</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="3-纠删码理论基础"><a href="#3-纠删码理论基础" class="headerlink" title="3 纠删码理论基础"></a>3 纠删码理论基础</h1><p>纠删码是一种前向纠错码，一般由四元组表示$(k,n,b,k’)$，通常$(k+r,k)$纠删码存储开销为$r/k$, 纠错能力上限为$r \le d_{min}-1$,其中$d_{min}$为纠删码最小列距。</p>
+<p>符合条件的$d_{min}=r+1$编码称为MDS码（Minimal Distance Seperable Code），其能获得Singleton下界而具有最优存储效率$k/(k+r)$.目前业界普遍采用的纠删编码有，RS码，低密度奇偶校验码（LDPC）和阵列编码RAID码。</p>
+<h2 id="3-1-Reed-Solomon编码"><a href="#3-1-Reed-Solomon编码" class="headerlink" title="3.1 Reed Solomon编码"></a>3.1 Reed Solomon编码</h2><p>RS码最多允许r个数据块丢失, 属于横式编码。</p>
+<script type="math/tex; mode=display">
+\begin{equation}       %开始数学环境
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+    a11 & a12 & ... & a1k\\  %第一行元素
+    a21 & a22 & ... & a2k\\  %第二行元素
+    \vdots & \vdots &&\vdots \\
+    ar1 & ar2 & ... & ark
+  \end{array}
+\right]                 %右括号
+\end{equation} × 
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+  D_1\\D_2\\\vdots\\D_r
+  \end{array}
+\right] = 
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+  P_1\\P_2\\\vdots\\P_r
+  \end{array}
+\right]</script><p>其中$[a_{ij}]$为转置冗余矩阵，有$Vandermonde$矩阵以及$Caucy$矩阵。</p>
+<blockquote>
+<p>RS码重构过程有一个至关重要条件，就是未出错信息对应的残余生成矩阵必须满足$GF(2^w)$上可逆条件。</p>
+</blockquote>
+<h3 id="Vandermonde编码"><a href="#Vandermonde编码" class="headerlink" title="Vandermonde编码"></a>Vandermonde编码</h3><blockquote>
+<p>参考文献：<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="ReedIS, Solomon G. Polynomial code sover certain infinite fields[J]. Journal of the Society for Industrial and Applied Mathmetics, 1960, 8(2):300.
+">[1]</span></a></sup></p>
+</blockquote>
+<script type="math/tex; mode=display">
+\begin{equation}       %开始数学环境
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+    1 & 0 & ... & 0\\  %第一行元素
+    0 & 1 & ... & 0\\  %第二行元素
+    \vdots & \vdots &&\vdots \\
+    0 & 0 & ... & 1 \\
+    1 & 1 & ... & 1 \\
+    1 & 2 & ... & k \\
+    \vdots & \vdots &&\vdots \\
+    1 & 2^{r-1} & ... & k^{r-1} \\
+  \end{array}
+\right]                 %右括号
+\end{equation} × 
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+  D_1\\D_2\\\vdots\\D_r
+  \end{array}
+\right] = 
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+  D_1\\D_2\\\vdots\\D_k\\P_1\\P_2\\\vdots\\P_r
+  \end{array}
+\right]</script><script type="math/tex; mode=display">
+where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script><p>上述即为编码原理，如果需要解码的话，利用存活数据所对应的剩余生成矩阵与存活数据对应的列向量在Galois域$GF(2^w)$进行乘法运算得到失效数据。数据解码算法成立的必要条件是生成矩阵任意k个行向量在域$GF(2^w)$上是线性无关的。</p>
+<p>$vandermonde$矩阵编码收到时间复杂度为$O(kr)$，解码的时间复杂度为$O(r^3)$。</p>
+<p>然而这种编码有很大的缺陷，及分布矩阵A并不具有删除任意m行仍科比的特性，在<sup><a href="#fn_5" id="reffn_5">5</a></sup> 中进行了修正。这里不再赘述。</p>
+<h3 id="Caucy编码"><a href="#Caucy编码" class="headerlink" title="Caucy编码"></a>Caucy编码</h3><blockquote>
+<p>参考文献：<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="Roth RM, LempelA. On MDS code via Caucy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.
+">[2]</span></a></sup>,<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Luo J, Schuman C, et al. A performance evaluation and examination of open-source erasure codign library for storage[C]. Proc of the 7th USENIC Conf on File and Storage Technologies. Berkeley, CA: USENIX Association. 2009:253-266.
+">[3]</span></a></sup>,<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1 5:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
+">[4]</span></a></sup></p>
+</blockquote>
+<p>Vandermonde矩阵求逆的复杂度为$O(n^3)$，而柯西矩阵为了改善vandermonde的时间复杂度（最后可以优化到$O(n^2)$），①冗余矩阵采用了柯西矩阵，解码时间复杂度优化为$O(r^2)$；②将有限域中的每个数表示为比特位矩阵。注意柯西矩阵并不是唯一的。好的柯西矩阵一般性算法可以在<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1 5:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
+">[4]</span></a></sup>中找到。</p>
+<script type="math/tex; mode=display">
+\begin{equation}       %开始数学环境
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+    1 & 0 & ... & 0\\  %第一行元素
+    0 & 1 & ... & 0\\  %第二行元素
+    \vdots & \vdots &&\vdots \\
+    0 & 0 & ... & 1 \\
+    \frac{1}{x_1+y_1} & \frac{1}{x_1+y_2} & ... & \frac{1}{x_1+y_k} \\
+    \frac{1}{x_2+y_1} & \frac{1}{x_2+y_2} & ... & \frac{1}{x_2+y_k} \\
+    \vdots & \vdots &&\vdots \\
+    \frac{1}{x_r+y_1} & \frac{1}{x_r+y_2} & ... & \frac{1}{x_r+y_k} \\
+
+  \end{array}
+\right]                 %右括号
+\end{equation} × 
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+  D_1\\D_2\\\vdots\\D_r
+  \end{array}
+\right] = 
+\left[                 %左括号
+  \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
+  D_1\\D_2\\\vdots\\D_k\\P_1\\P_2\\\vdots\\P_r
+  \end{array}
+\right]</script><p>解码过程类似。</p>
+<p>假设数据块$D_1$失效，为了解码出失效数据分块，所有存活数据对应的 剩余生成矩阵 与所有存活数据对应列向量进行乘法运算，得到原始数据列。</p>
+<blockquote>
+<p>补充 Galois域上的四则运算：</p>
+<p>1、域</p>
+<p>一组元素的集合，以及在集合上的四则运算，构成一个域。其中加法和乘法必须满足交换、结合和分配的规律。加法和乘法具有封闭性，即加法和乘法结果仍然是域中的元素。  </p>
+<p>域中必须有加法单位元和乘法单位元，且每一个元素都有对应的加法逆元和乘法逆元。但不要求域中的 0 有乘法逆元。  </p>
+<p>2、有限域</p>
+<p>仅含有限多个元素的域。因为它由伽罗华所发现，因而又称为伽罗华域。</p>
+<p>所以当我们说伽罗华域的时候，就是指有限域。</p>
+<p>$GF（2^w）$表示含有$2^w$个元素的有限域。因为计算机一个字节由8位，所以最常用的是$GF(2^8)$, </p>
+<p>3、单位元</p>
+<p>Identity Element，也叫幺元，通常使用e来表示单位元。单位元和其他元素结合时，并不会改变那些元素。</p>
+<p>对于二元运算，若$a<em>e=a$，e称为右单位元；若$e</em>a=a$，e称为左单位元，若$a<em>e=e</em>a=a$，则e称为单位元。</p>
+<p>4、逆元</p>
+<p>对于二元运算，若$a<em>b=e$，则a称为b的左逆元素，反之b称为a的右逆元素。若$a</em>b=b*a=e$，则称a为b的逆元，b为a的逆元。</p>
+<p>5、本原多项式</p>
+<p>域中不可约多项式是不能够进行因子分解的多项式， 本原多项式 （primitive polynomial）是一种特殊的不可约多项式。当一个域上的本原多项式确定了，这个域上的运算也就确定了。本原多项式一般通过查表可得，同一个域往往有多个本原多项式。</p>
+<p>通过将域中的元素化为多项式形式，可以将域上的乘法运算转化为普通的多项式乘法再模本原多项式。</p>
+<p><strong>本源多项式</strong></p>
+<p>伽罗华域的元素可以通过该域上的本原多项式生成。通过本原多项式得到的域，其加法单位元都是 0 ，乘法单位元是1。且满足：</p>
+<ul>
+<li>多项式系数全部来自$GF(2)$</li>
+<li>多项式中系数相同的项，可以基于$GF(2)$中的加法进行合并。</li>
+</ul>
+<p>以$GF(2^3)$为例，指数小于3的多项式共8个：$ 0 ， 1， x， x+1， x^2， x^2+1， x^2 + x， x^2+x+1$。其系数刚好就是000,001, 010, 011, 100, 101, 110, 111，是 0 到7这8个数的二进制形式。</p>
+<p>$GF(2^3)$上有不只一个本原多项式，选一个本原多项式$x^3+x+1$，这8个多项式进行四则运算后 $mod (x^3+x+1)$的结果都是8个之中的某一个。因此这8个多项式构成一个有限域。</p>
+<p>对于$GF(2^3)$，取素多项式为$x^3 + x+1$，那么多项式$x^2+x$的乘法逆元就是x+1。系数对应的二进制分别为110和011。此时，我们就认为对应的十进制数6和3互为逆元。</p>
+<p><img src="/img/poly.png" srcset="/img/loading.gif" alt="img"></p>
+<blockquote>
+<p>​                                                                        常用的本原多项式</p>
+</blockquote>
+<p><strong>通过本原多项式生成元素</strong></p>
+<p>设$P(x)$是$GF（2^w）$上的某一个本原多项式，$GF（2^w）$的元素产生步骤是：<br><strong>1、给定一个初始集合，{$ { 0,1,x }$}；</strong><br><strong>2、将这个集合中的最后一个元素，即$x$，乘以$x$，如果结果的度大于等于$w$，则将结果$mod   P(x)$后加入集合；</strong><br><strong>3、直到集合有$2^w$个元素，此时最后一个元素乘以$x$再$mod   P(x)$的值等于1。</strong></p>
+<p>例如，$GF(2^4)$含有16个元素，本原多项式为$P(x)=x^4+x+1$，除了 0 、1外，另外14个符号均由本原多项式生成。</p>
+<p>注意到$x^{14}=x^3+1$，此时计算$x^{15}=x^{14}<em>x=(x^3+1)</em>x=x^4+x=1$，生成结束。</p>
+<p><strong>多项式计算</strong></p>
+<p>Galois域上四则运算是基于多项式运算的，对于$GF(2^w)$多项式系数只能取0或1. 合并多项式时，进行的是<strong>异或</strong>运算 比如 $x^4+x^4=x^4$, 多项式减法等于加法运算$x^4-x^4=x^4$。</p>
+<p>乘法和除法：</p>
+<ul>
+<li><ol>
+<li>将被乘数和乘数的二进制转换位对应的多项式表示</li>
 </ol>
-<p>RS码是唯一一种可以满足任意磁盘数目(n)和校验块个数(m)的编码方法。RS码是定义在伽罗华域$GW(2^w)$上的横式编码，下面简单讲解一下伽罗华域上的运算，</p>
-<p>RS码分为两类，一类是范德蒙 RS码，另一类是柯西编码：</p>
-<p>范德蒙德编码的结构如下：</p>
-<p><img src="纠删码在存储系统的应用/image-20201117115013666.png" srcset="/img/loading.gif" alt="image-20201117115013666"></p>
+</li>
+<li><ol>
+<li>执行多项式乘法，将得到的结构针对$P(x)$取模</li>
+</ol>
+</li>
+<li><ol>
+<li>将2 得到的结果转化为对应的二进制表示</li>
+</ol>
+</li>
+</ul>
+<p>例如 </p>
+<script type="math/tex; mode=display">
+3×7 = (x+1)(x^2+x+1)=x^3+x^2+x+x^2+x+1=x^3+1=9\\</script><p>或者直接利用本原多项式：</p>
+<script type="math/tex; mode=display">
+3×7=x^4.x^{10}=x^{14}=9</script><p><strong>查表法</strong></p>
+<p>如果以$gflog$和$gfilog$分别表示$GF(2^w)$中对数运算及其逆运算，由对数运算的性质：</p>
+<script type="math/tex; mode=display">
+MN = gfilog(gflog(MN)) = gfilog(gflog(M)+gflog(N)) mod (2^w-1)\\
+M/N = gfilog(gflog(M/N)) = gfilog(gflog(M)-gflog(N)) mod (2^w-1)\\</script><p>注意：多项式 0 ，是无法用生成元生成的。g^0等于多项式1，而不是 0 。</p>
+<p>  根据上文的$GF(2^4)$的元素表示，生成gflog表和gfilog表如下：</p>
+<p><img src="/img/gflog.png" srcset="/img/loading.gif" alt="img"></p>
+<p>例如：</p>
+<script type="math/tex; mode=display">
+3×7 = gfilog(gflog(3)+gflog(7)) = gfilog(4+10)= 9 \\
+3/7 = gfilog(gflog(3)-gflog(7)) = gfilog(4-10+15)= gfilog(9)=10 \\</script></blockquote>
+<h2 id="3-2-LRC码和Pyramid码"><a href="#3-2-LRC码和Pyramid码" class="headerlink" title="3.2 LRC码和Pyramid码"></a>3.2 LRC码和Pyramid码</h2><h1 id=""><a href="#" class="headerlink" title=" "></a> </h1><hr>
 <p><strong><em>\</em>主要文献参考列表**</strong></p>
 <p>[1] 罗象宏，舒继武. 存储系统中的纠删码研究综述[J].计算机研究与发展, 49(1),2012:1-11.</p>
 <p>[2] ReedIS, Solomon G. Polynomial code sover certain infinite fields[J]. Journal of the Society for Industrial and Applied Mathmetics, 1960, 8(2):300. </p>
@@ -273,7 +492,11 @@
 <p>[11]Huang C , Chen M , Li J . Pyramid Codes: Flexible Schemes to Trade Space for Access Efficiency in Reliable Data Storage Systems[C]// IEEE International Symposium on Network Computing &amp; Applications. IEEE, 2007.</p>
 <p>[12]Sathiamoorthy M , Asteris M , Papailiopoulos D , et al. XORing Elephants: Novel Erasure Codes for Big Data[J]. 2013.</p>
 <p>[13]王意洁, 许方亮, 裴晓强. 分布式存储中的纠删码容错技术研究[J]. 计算机学报, 2017(01):236-255.</p>
-
+<section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>ReedIS, Solomon G. Polynomial code sover certain infinite fields[J]. Journal of the Society for Industrial and Applied Mathmetics, 1960, 8(2):300.
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>Roth RM, LempelA. On MDS code via Caucy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span>Plank J, Luo J, Schuman C, et al. A performance evaluation and examination of open-source erasure codign library for storage[C]. Proc of the 7th USENIC Conf on File and Storage Technologies. Berkeley, CA: USENIX Association. 2009:253-266.
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span>Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1<br><sup><a href="#fn_ 5" id="reffn_ 5"> 5</a></sup>:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>
             <div>

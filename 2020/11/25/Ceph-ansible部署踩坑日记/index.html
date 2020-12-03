@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.8k 字
+      1.9k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      26
+      29
        分钟
     </span>
   
@@ -537,6 +537,23 @@ Install Ceph<span class="hljs-built_in"> Client </span>           : Complete (0:
 <hr>
 <p>优质博文参考：<a target="_blank" rel="noopener" href="https://blog.51cto.com/14210294/2353243">https://blog.51cto.com/14210294/2353243</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zyxnhr/p/10543814.html">https://www.cnblogs.com/zyxnhr/p/10543814.html</a></p>
+<hr>
+<h2 id="Trouble-Shooting"><a href="#Trouble-Shooting" class="headerlink" title="Trouble Shooting"></a>Trouble Shooting</h2><ol>
+<li>Devices are not disjoint</li>
+</ol>
+<p>设备存在交集。如果存储方式是bluestore, 那么block，wal和db必须是不同的存储盘。并且：</p>
+<pre><code class="hljs angelscript">$ mount | grep osd
+tmpfs on /var/lib/ceph/osd/ceph<span class="hljs-number">-0</span> type tmpfs (rw,relatime,seclabel)
+$ ls -Alh /var/lib/ceph/osd/ceph<span class="hljs-number">-0</span>
+lrwxrwxrwx. <span class="hljs-number">1</span> ceph ceph <span class="hljs-number">19</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> block -&gt; /dev/ceph-pool/osd0
+lrwxrwxrwx. <span class="hljs-number">1</span> root root <span class="hljs-number">22</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> block.db -&gt; /dev/ceph-pool/osd0.db
+lrwxrwxrwx. <span class="hljs-number">1</span> root root <span class="hljs-number">23</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> block.wal -&gt; /dev/ceph-pool/osd0.wal
+-rw-------. <span class="hljs-number">1</span> ceph ceph <span class="hljs-number">37</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> ceph_fsid
+-rw-------. <span class="hljs-number">1</span> ceph ceph <span class="hljs-number">37</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> fsid
+-rw-------. <span class="hljs-number">1</span> ceph ceph <span class="hljs-number">55</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> keyring
+-rw-------. <span class="hljs-number">1</span> ceph ceph  <span class="hljs-number">6</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> ready
+-rw-------. <span class="hljs-number">1</span> ceph ceph <span class="hljs-number">10</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> type
+-rw-------. <span class="hljs-number">1</span> ceph ceph  <span class="hljs-number">2</span> Apr  <span class="hljs-number">7</span> <span class="hljs-number">21</span>:<span class="hljs-number">36</span> whoami</code></pre>
 
             </div>
             <hr>
@@ -573,7 +590,7 @@ Install Ceph<span class="hljs-built_in"> Client </span>           : Complete (0:
                     
                       <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CEPH 纠删码操作</span>
+                        <span class="hidden-mobile">CEPH 纠删码操作&API</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

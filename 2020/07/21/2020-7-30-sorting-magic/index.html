@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.3k 字
+      6.7k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      91
+      84
        分钟
     </span>
   
@@ -712,6 +712,8 @@
 &#125;</code></pre>
 <hr>
 <h2 id="1-10-基数排序"><a href="#1-10-基数排序" class="headerlink" title="1.10 基数排序"></a>1.10 基数排序</h2><h3 id="分类-算法"><a href="#分类-算法" class="headerlink" title="分类 算法"></a><em>分类</em> <a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote_genre/algorithm">算法</a></h3><p>基数排序是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。由于整数也可以表达字符串（比如名字或日期）和特定格式的浮点数，所以基数排序也不是只能使用于整数。</p>
+<p>  <strong>LSD</strong>（Least significant digital）：排序方式由数值的最右边（低位）开始</p>
+<p>  <strong>MSD</strong>（Most significant digital）：由数值的最左边（高位）开始。</p>
 <h3 id="算法步骤"><a href="#算法步骤" class="headerlink" title="算法步骤"></a>算法步骤</h3><p>以LSD为例，假设原来有一串数值如下所示：</p>
 <p>73, 22, 93, 43, 55, 14, 28, 65, 39, 81</p>
 <ol>
@@ -873,54 +875,6 @@
 <p>时间复杂度: $O(n+m)$，其中 $n$ 为课程数，$m$ 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。</p>
 <p>空间复杂度: $O(n+m)$。题目中是以列表形式给出的先修课程关系，为了对图进行深度优先搜索，我们需要存储成邻接表的形式，空间复杂度为 $O(n+m)$。在深度优先搜索的过程中，我们需要最多 $O(n)$ 的栈空间（递归）进行深度优先搜索，并且还需要若干个 $O(n)$ 的空间存储节点状态、最终答案等。</p>
 <h2 id="-7"><a href="#-7" class="headerlink" title=" "></a> </h2><hr>
-<h2 id="XII-跳跃表（Skip-list）实现排序"><a href="#XII-跳跃表（Skip-list）实现排序" class="headerlink" title="XII 跳跃表（Skip list）实现排序"></a>XII 跳跃表（Skip list）实现排序</h2><blockquote>
-<h4 id="1206-设计跳表-这一题可以帮助我们快速理解跳表原理。"><a href="#1206-设计跳表-这一题可以帮助我们快速理解跳表原理。" class="headerlink" title="1206. 设计跳表  这一题可以帮助我们快速理解跳表原理。"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/design-skiplist/">1206. 设计跳表  </a>这一题可以帮助我们快速理解跳表原理。</h4></blockquote>
-<p>跳跃表是一种<strong>随机化</strong>的数据结构，基于<strong>并联</strong>的链表，其效率相当于二叉查找树，查找和删除均为$O(logn)$。有序的链表加上附加的前进链接。</p>
-<p><img src="/img/1506_skiplist.gif" srcset="/img/loading.gif" alt="img"></p>
-<p><strong>节点和跳跃表的数据结构定义</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">typedef</span>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">nodeStructure</span>  </span>
-<span class="hljs-class">&#123;</span>  
-    <span class="hljs-keyword">int</span> key;  
-    <span class="hljs-keyword">int</span> value;    
-    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">nodeStructure</span> *<span class="hljs-title">forward</span>[1];</span> <span class="hljs-comment">//链表中的下一节点 </span>
-&#125;nodeStructure;  <span class="hljs-comment">//结点数据结构</span>
-
-<span class="hljs-keyword">typedef</span>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">skiplist</span>  </span>
-<span class="hljs-class">&#123;</span>  
-    <span class="hljs-keyword">int</span> level;    
-    nodeStructure *header;  
-&#125;skiplist;  <span class="hljs-comment">//跳跃表数据结构</span></code></pre>
-<p><strong>创建一个节点</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-function">nodeStructure* <span class="hljs-title">createNode</span><span class="hljs-params">(<span class="hljs-keyword">int</span> level, <span class="hljs-keyword">int</span> key, <span class="hljs-keyword">int</span> value)</span></span>
-<span class="hljs-function"></span>&#123;
-	nodeStructure* node = (*nodeStucture)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(nodeStructure)+level*<span class="hljs-keyword">sizeof</span>(nodeStructure*));
-	<span class="hljs-comment">//节点中定义了一个指针，用的是数组的方式，访问k级别时，使用下标forward[k]来访问指针，会自动在forword[1]上加上偏移量，由于这一块空间已经开辟了，所以并不会导致指向了未定义的地址。</span>
-
-	node-&gt;key = key;
-	node-&gt;val = val;
-	<span class="hljs-keyword">return</span> node;
-&#125;</code></pre>
-<p>一个跳表的结构特征：<br>（1）一个跳表由多个层（level）组成；<br>（2）每一层都是一个有序的链表；<br>（3）第1层包含所有的元素；<br>（4）如果元素x出现在第i层，则所有比i小的层都包含x；<br>（5）第i层的元素通过一个down指针指向下一层拥有相同值的元素；<br>（6）在每一层中都包含-1和1两个元素，分别表示INT_MIN和INT_MAX；<br>（7）Top指针指向最高层的第一个元素。</p>
-<p><img src="\img\skiplist.png" srcset="/img/loading.gif" alt=""></p>
-<p>跳跃列表的增加是以随机化的方式进行的，所以在列表中的查找可以快速的跳过部分列表(因此得名)。</p>
-<p>跳表的插入需要三个步骤：<br>（1）查找到在每层待插入位置；<br>（2）随机产生一个层数；<br>（3）从高层至下插入，插入时算法和普通链表的插入完全相同。</p>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">search</span><span class="hljs-params">(skiplist *sl,<span class="hljs-keyword">int</span> key)</span>  <span class="hljs-comment">//搜索指定key的value  </span></span>
-<span class="hljs-function"></span>&#123;  nodeStructure *p,*q=<span class="hljs-literal">NULL</span>;  
-    p=sl-&gt;header;  
-    <span class="hljs-keyword">int</span> k=sl-&gt;level;  <span class="hljs-comment">//从最高层开始搜  </span>
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=k<span class="hljs-number">-1</span>; i &gt;= <span class="hljs-number">0</span>; i--)&#123;  <span class="hljs-comment">//i--，逐层向下</span>
-        <span class="hljs-keyword">while</span>((q=p-&gt;forward[i])&amp;&amp;(q-&gt;key&lt;=key))  
-        &#123;  <span class="hljs-keyword">if</span>(q-&gt;key == key)  
-            &#123;  <span class="hljs-keyword">return</span> q-&gt;value;  &#125;  <span class="hljs-comment">// 找到则返回</span>
-            p=q; <span class="hljs-comment">// 向后搜寻</span>
-        &#125;  
-    &#125;  
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;  
-&#125;  
-</code></pre>
-<p>删除节点操作和插入类似，找到每层需要删除的位置，之后删除操作和普通链表一样。</p>
-<p>注：如果该节点的level是最大的，则需更新跳表的level。</p>
-<hr>
 
             </div>
             <hr>
@@ -951,9 +905,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
+                      <a href="/2020/07/21/2020-7-30-pointers/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">动态规划</span>
+                        <span class="hidden-mobile">神奇的多指针 【cover 脑筋急转弯💡】</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -961,8 +915,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/19/2020-07-19-damn_blog/">
-                        <span class="hidden-mobile">Durant终于有个家写写东西了</span>
+                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
+                        <span class="hidden-mobile">动态规划</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

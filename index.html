@@ -245,9 +245,13 @@
             
           
           
-            本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！参考《Ceph设计与实现》谢型果等，第二章。以及官方CRUSH教程。
+            本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！参考《Ceph设计与实现》谢型果等，第一章。以及官方CRUSH教程。
           
-浅析CRUSH算法1. CRUSH背景大部分存储系统将数据写入到存储设备之后，数据很少在设备之间相互移动，这会导致一个潜在问题，即使是一个数据分布趋于完美的系统，随着时间的迁移，新的空闲设备不断加入，老设备不
+浅析CRUSH算法
+论文地址：
+https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
+
+1. CRUSH背景大部分存储系统将数据写入到
         </a>
       </p>
 
@@ -460,7 +464,202 @@ API文档
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">CEPH 纠删码操作</a>
+        <a href="/2020/12/03/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8E%E2%80%94%E2%80%94PG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">迁移之美——PG读写流程与状态迁移详解</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/03/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8E%E2%80%94%E2%80%94PG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">
+          
+          
+            
+          
+          迁移之美——PG读写流程与状态迁移详解存储池中的对象到OSD的映射是通过PG来完成。一方面，存储池中PG数目决定了其并发处理多个对象的能力；另一方面，过多的PG会消耗大量CPU，同时容易使得磁盘长期处于过载状态。（经验表明：磁盘利用率保持在70%左右可以使得I/O并发能力和平均相应时延最佳）。
+因此在创建存储池时，需要合理的指定PG的数目，一般将每个OSD中PG限制在100个左右最佳。
+需要注意的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-03 00:00" pubdate>
+              2020-12-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/PG/">PG</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Ceph%E7%90%86%E8%AE%BA/">Ceph理论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/02/kNN%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/"></a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/02/kNN%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
+          
+          
+            
+          
+          kNN算法实现人脸识别
+代表论文：
+http://www.stanford.edu/~hastie/Papers/dann_IEEE.pdf
+
+kNN算法流程如下：
+  1）算距离：给定测试对象，计算它与训练集中的每个对象的距离  2）找邻居：圈定距离最近的k个训练对象，作为测试对象的近邻  3）做分类：根据这k个近邻归属的主要类别，来对测试对象分类
+k太小，分类结果易受噪声点影响；k太大，近邻中
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-02 21:22" pubdate>
+              2020-12-02
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">【研究向】Redis中跳表实现原理</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+          
+          
+            
+          
+          跳表 SkipList的实现原理XII 跳跃表（Skip list）实现排序
+1206. 设计跳表  这一题可以帮助我们快速理解跳表原理。这种数据结构是由William Pugh发明的，最早出现于他在1990年发表的论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》
+
+跳跃表是一种随机化的数据结构，基于并联的链表，其效率相当于
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-01 00:00" pubdate>
+              2020-12-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/26/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">下一代对象存储引擎BlueStore</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/26/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
+          
+          
+            
+          
+          下一代对象存储引擎BlueStore相比于目前FileStore，BlueStore拥有无与伦比的优势：
+
+充分考虑下一代全SSD以及NVMe SSD闪存阵列的适配。例如将高效索引元数据的引擎由LevelDB替换为RocksDB。
+传统的基于POSIX接口的FileStore需要通过操作系统自带的文件系统间接管理磁盘。BlueStore选择绕开文件系统，从而使得I/O路径大大减小。
+在设计中将元素
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-26 00:00" pubdate>
+              2020-11-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/bluestore/">bluestore</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+              <a href="/tags/%E7%90%86%E8%AE%BA/">理论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">CEPH 纠删码操作&amp;API</a>
       </h1>
 
       <p class="index-excerpt">
@@ -472,11 +671,12 @@ API文档
           
             您必须先部署一个ceph集群，才能进行纠删码操作。
           
-Ceph 纠删码操作Official Documentationerasure code
+Part ICeph 纠删码操作Official Documentationerasure code
 
-K ——数据块数。
+术语K ——数据块数。
 M——编码块数。
-1 Ceph纠删码库Ceph的默认纠删码库是Jerasure，即Jerasure库；除此之外还有 Clay, ISA-L, LRC, Shec(Octopus版本15.2
+N——条带中块的个数，$N=K+M$。
+块（chunk）——将对象基于纠删码进行编码时，每次编码将产生若干大小的块（要求是有序的），Ceph通过数量相等的
         </a>
       </p>
 
@@ -511,218 +711,11 @@ M——编码块数。
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/19/Ceph%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8F%8A%E7%BC%93%E5%AD%98%E6%9B%BF%E6%8D%A2%E6%9C%BA%E5%88%B6/">CEPH 数据分布及缓存替换机制</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/19/Ceph%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8F%8A%E7%BC%93%E5%AD%98%E6%9B%BF%E6%8D%A2%E6%9C%BA%E5%88%B6/">
-          
-          
-            
-          
-          Ceph数据分布及缓存替换机制
-2020/11/17 by Chongyu Hu
-
-缓存替换机制LRU算法：最近最少使用，时间局部性原理。
-LFU算法：最近不经常使用，SDD访问模型。
-ARC算法，同时考虑了LRU和LFU的长处，同时使用两个队列对缓存中页面进行管理：
-
-MRU (Most Recently Used) 队列保存最近访问过的页面
-MFU（Most Frequently Used）队
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-19 00:00" pubdate>
-              2020-11-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ceph/">ceph</a>
-            
-              <a href="/categories/ceph/%E7%90%86%E8%AE%BA/">理论</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ceph/">ceph</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">日语名谚语系列</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">
-          
-          
-            
-          
-          毎日放送－日本の諺每日一句日语谚语，让你口语和写作更地道一点吧。
-1.　失敗は成功の元。　しっぱいはせいこうのもと。失败是成功之母。2.　習うより慣れよ。习惯成自然。3.　今日の後に今日なし。光阴似箭，日月如梭。4.　急がは回れ。欲速则不达。5.　人は見かけによらず。人不可貌相。6.　覆水盆に返らず。ふくすいぼんにかえらず。覆水难收。7.　石の上にも三年。功夫不负有心人。8.　努力に勝る天才なし。
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-19 00:00" pubdate>
-              2020-11-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%97%A5%E8%AF%AD/">日语</a>
-            
-              <a href="/categories/%E6%97%A5%E8%AF%AD/%E6%96%87%E5%8C%96/">文化</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%97%A5%E8%AF%AD/">日语</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">【推荐】Ceph-deploy流程</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">
-          
-          
-            
-          
-          Ceph-deploy流程本文介绍了借助Ceph-deploy工具安装Ceph并搭建集群的过程。按照下文的步骤，你可以快速搭建一个基础的Ceph环境，并且了解Ceph集群的组成和工作原理。文章首先会简单介绍Ceph及其安装和环境部署方法，接着给出了预备环境的搭建过程，最后详细地列出了Ceph的安装及配置过程。本文附录还给出了Ceph的编译过程示例。
-1  Ceph基础1.1 Ceph介绍Ceph 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-19 00:00" pubdate>
-              2020-11-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ceph/">ceph</a>
-            
-              <a href="/categories/ceph/%E5%AE%9E%E8%B7%B5/">实践</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ceph/">ceph</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">纠删码综述</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">
-          
-          
-            
-          
-          纠删码在存储系统的应用
-2017年更新
-
-摘要随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本论文介绍了当前典型和常见的纠删码技术的发展现状，从评价纠删码性能的各项重要指标的角度详细地对比和分析了现有的纠删码技术，给出了不同纠删码在容错能力与磁盘要求、空间利用率、编码效率、更新效率、重构效率等方面的不足和可能的
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-15 00:00" pubdate>
-              2020-11-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%BB%BC%E8%BF%B0/">综述</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
