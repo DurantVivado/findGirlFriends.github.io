@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>【核心】Ceph三部曲之四:下一代对象存储引擎BlueStore - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>【核心】Ceph学习三部曲之四:下一代对象存储引擎BlueStore - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -54,7 +54,8 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Durant Thorvalds 的米奇妙妙屋" type="application/atom+xml">
+</head>
 
 
 <body>
@@ -191,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.2k 字
+      4.3k 字
     </span>
   
 
@@ -201,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      49
        分钟
     </span>
   
@@ -239,11 +240,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">【核心】Ceph三部曲之四:下一代对象存储引擎BlueStore</h1>
+            <h1 style="display: none">【核心】Ceph学习三部曲之四:下一代对象存储引擎BlueStore</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
-            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第二章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/bluestore-migration/">官方BlueStore教程</a>。</p>
+            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第二章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/bluestore-migration/">官方BlueStore教程</a>。</p><p>推荐博客<a target="_blank" rel="noopener" href="http://www.itworld123.com/2019/06/04/storage/ceph/Ceph%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore%E7%AE%80%E6%9E%90/">Ceph存储引擎BlueStore简析</a></p>
           </div>
 <h1 id="下一代对象存储引擎BlueStore"><a href="#下一代对象存储引擎BlueStore" class="headerlink" title="下一代对象存储引擎BlueStore"></a>下一代对象存储引擎BlueStore</h1><p>相比于目前FileStore，BlueStore拥有无与伦比的优势：</p>
 <ul>
@@ -337,7 +338,164 @@
 <h2 id="6-ObjectStore-OS"><a href="#6-ObjectStore-OS" class="headerlink" title="6 ObjectStore(OS)"></a>6 ObjectStore(OS)</h2><p>Ceph是一个指导原则是所有存储的不管是块设备、对象存储、文件存储最后都转化成了底层的对象object，这个object包含3个元素data，xattr，omap。data是保存对象的数据；xattr是保存对象的扩展属性，每个对象文件都可以设置文件的属性，这个属性是一个key/value值对，这类操作的特征是kv对并且与某一个Object关联，但是受到文件系统的限制，key/value对的个数和每个value的大小都进行了限制。如果要设置的对象的key/value不能存储在文件的扩展属性中；还存在另外一种方式保存omap(在Ceph中称为omap)，omap实际上是保存到了key/vaule  值对的RocksDB中，在这里value的值限制要比xattr中好的多。</p>
 <p>对于FileStore实现，每个Object在FileStore层会被看成是一个文件，Object的属性(xattr)会利用文件的xattr属性存取，因为有些文件系统(如Ext4)对xattr的长度有限制，因此超出长度的Metadata会被存储在DBObjectMap里。而Object的omap则直接利用DBObjectMap实现。因此，可以看出xattr和omap操作是互通的，在用户角度来说，前者可以看作是受限的长度，后者更宽泛(API没有对这些做出硬性要求)。目前纠删码还不支持omap。</p>
 <p>而在BlueStore则没有这种限制。</p>
-<h1 id="部署和操作BlueStore"><a href="#部署和操作BlueStore" class="headerlink" title="部署和操作BlueStore"></a>部署和操作BlueStore</h1>
+<hr>
+<h1 id="部署和操作BlueStore"><a href="#部署和操作BlueStore" class="headerlink" title="部署和操作BlueStore"></a>部署和操作BlueStore</h1><h1 id="BLUESTORE迁移"><a href="#BLUESTORE迁移" class="headerlink" title="BLUESTORE迁移"></a>BLUESTORE迁移</h1><p>每个OSD都可以运行BlueStore或FileStore，并且单个Ceph集群可以包含两者的混合。先前已部署FileStore的用户可能希望过渡到BlueStore，以利用改进的性能和健壮性。有几种策略可以实现这种过渡。</p>
+<p>单个OSD不能单独进行原地转换，但是：BlueStore和FileStore根本不同，以致于无法实用。“转换”将依靠群集的正常复制和修复支持，或者依靠将OSD内容从旧的（FileStore）设备复制到新的（BlueStore）设备的工具和策略。</p>
+<h2 id="部署新的OSD与BLUESTORE"><a href="#部署新的OSD与BLUESTORE" class="headerlink" title="部署新的OSD与BLUESTORE"></a>部署新的OSD与BLUESTORE</h2><p>可以使用BlueStore部署任何新的OSD（例如，在扩展群集时）。这是默认行为，因此不需要进行特定更改。</p>
+<p>同样，更换故障驱动器后重新配置的任何OSD都可以使用BlueStore。</p>
+<h2 id="将现有的OSD"><a href="#将现有的OSD" class="headerlink" title="将现有的OSD"></a>将现有的OSD</h2><h3 id="标记并替换"><a href="#标记并替换" class="headerlink" title="标记并替换"></a>标记并替换</h3><p>最简单的方法是依次标记每个设备，等待数据在群集中复制，重新配置OSD，然后再次将其标记回。它很容易实现自动化。但是，它需要的数据迁移量超出了必要，因此不是最佳选择。</p>
+<ol>
+<li><p>确定要替换的FileStore OSD：</p>
+<pre><code class="hljs ini"><span class="hljs-attr">ID</span>=&lt;osd-id-number&gt;
+<span class="hljs-attr">DEVICE</span>=&lt;disk-device&gt;</code></pre>
+<p>您可以使用以下命令判断给定的OSD是FileStore还是BlueStore：</p>
+<pre><code class="hljs perl">ceph osd metadata $ID | <span class="hljs-keyword">grep</span> osd_objectstore</code></pre>
+<p>您可以使用以下命令获取文件存储与bluestore的当前计数：</p>
+<pre><code class="hljs applescript">ceph osd <span class="hljs-built_in">count</span>-metadata osd_objectstore</code></pre>
+</li>
+<li><p>将文件存储OSD标记为：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">ceph</span> osd out <span class="hljs-variable">$ID</span></code></pre>
+</li>
+<li><p>等待数据从有问题的OSD迁移：</p>
+<pre><code class="hljs bash"><span class="hljs-keyword">while</span> ! ceph osd safe-to-destroy <span class="hljs-variable">$ID</span> ; <span class="hljs-keyword">do</span> sleep 60 ; <span class="hljs-keyword">done</span></code></pre>
+</li>
+<li><p>停止OSD：</p>
+<pre><code class="hljs bash">systemctl <span class="hljs-built_in">kill</span> ceph-osd@<span class="hljs-variable">$ID</span></code></pre>
+</li>
+<li><p>记下此OSD使用的设备：</p>
+<pre><code class="hljs crystal">mount | grep /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-$<span class="hljs-title">ID</span></span></code></pre>
+</li>
+<li><p>卸载OSD：</p>
+<pre><code class="hljs crystal">umount /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-$<span class="hljs-title">ID</span></span></code></pre>
+</li>
+<li><p>销毁OSD数据。请<em>格外小心，</em>因为这会破坏设备的内容；在继续操作之前，请确保不需要设备上的数据（即，群集运行状况良好）。</p>
+<pre><code class="hljs dockerfile">ceph-<span class="hljs-keyword">volume</span><span class="bash"> lvm zap <span class="hljs-variable">$DEVICE</span></span></code></pre>
+</li>
+<li><p>告诉集群OSD已被破坏（并且可以使用相同的ID重新配置新的OSD）：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">ceph</span> osd destroy <span class="hljs-variable">$ID</span> --<span class="hljs-literal">yes</span>-i-really-mean-it</code></pre>
+</li>
+<li><p>使用相同的OSD ID在其位置重新配置BlueStore OSD。这要求您确实根据上面看到的内容确定要擦除的设备。小心！</p>
+<pre><code class="hljs dockerfile">ceph-<span class="hljs-keyword">volume</span><span class="bash"> lvm create --bluestore --data <span class="hljs-variable">$DEVICE</span> --osd-id <span class="hljs-variable">$ID</span></span></code></pre>
+</li>
+<li><p>重复。</p>
+</li>
+</ol>
+<p>您可以允许替换OSD的重新填充与下一个OSD的排空同时进行，或者对多个OSD并行执行相同的步骤，只要确保在销毁群集之前群集是完全干净的（所有数据具有所有副本）即可。任何OSD。否则，将减少数据的冗余，并增加（甚至可能导致）数据丢失的风险。</p>
+<p>优点：</p>
+<ul>
+<li>简单。</li>
+<li>可以逐个设备完成。</li>
+<li>不需要备用设备或主机。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>数据通过网络复制了两次：一次复制到集群中的其他OSD（以保持所需的副本数），然后再次返回到重新配置的BlueStore OSD。</li>
+</ul>
+<h3 id="整个主机更换"><a href="#整个主机更换" class="headerlink" title="整个主机更换"></a>整个主机更换</h3><p>如果集群中有一个备用主机，或者有足够的可用空间来疏散整个主机以用作备用主机，则可以在每个主机的基础上使用存储的每个数据副本进行转换仅迁移一次。</p>
+<p>首先，您需要有一个没有数据的空主机。有两种方法可以执行此操作：从尚未包含在群集中的新的空主机开始，或者从群集中现有主机上卸载数据。</p>
+<h4 id="使用新的，空的主机"><a href="#使用新的，空的主机" class="headerlink" title="使用新的，空的主机"></a>使用新的，空的主机</h4><p>理想情况下，主机应具有与将要转换的其他主机大致相同的容量（尽管并不严格）。</p>
+<pre><code class="hljs ini"><span class="hljs-attr">NEWHOST</span>=&lt;empty-host-name&gt;</code></pre>
+<p>将主机添加到CRUSH层次结构，但不要将其附加到根目录：</p>
+<pre><code class="hljs smali">ceph osd crush<span class="hljs-built_in"> add-bucket </span>$NEWHOST host</code></pre>
+<p>确保已安装ceph软件包。</p>
+<h4 id="使用现有的主机"><a href="#使用现有的主机" class="headerlink" title="使用现有的主机"></a>使用现有的主机</h4><p>如果要使用已经是群集一部分的现有主机，并且该主机上有足够的可用空间，以便可以迁移其所有数据，则可以执行以下操作：</p>
+<pre><code class="hljs autoit">OLDHOST=&lt;existing-cluster-host-<span class="hljs-keyword">to</span>-offload&gt;
+ceph osd crush unlink $OLDHOST <span class="hljs-keyword">default</span></code></pre>
+<p>其中“默认”是CRUSH地图中的直接祖先。（对于具有未修改配置的较小群集，通常将是“默认”，但也可能是机架名称。）现在，您应该在OSD树输出的顶部看到没有父节点的主机：</p>
+<pre><code class="hljs lsl">$ bin/ceph osd tree
+ID CLASS WEIGHT  TYPE NAME     STATUS REWEIGHT PRI-AFF
+<span class="hljs-number">-5</span>             <span class="hljs-number">0</span> host oldhost
+<span class="hljs-number">10</span>   ssd <span class="hljs-number">1.00000</span>     osd<span class="hljs-number">.10</span>        up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+<span class="hljs-number">11</span>   ssd <span class="hljs-number">1.00000</span>     osd<span class="hljs-number">.11</span>        up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+<span class="hljs-number">12</span>   ssd <span class="hljs-number">1.00000</span>     osd<span class="hljs-number">.12</span>        up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+<span class="hljs-number">-1</span>       <span class="hljs-number">3.00000</span> root <span class="hljs-section">default</span>
+<span class="hljs-number">-2</span>       <span class="hljs-number">3.00000</span>     host foo
+ <span class="hljs-number">0</span>   ssd <span class="hljs-number">1.00000</span>         osd<span class="hljs-number">.0</span>     up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+ <span class="hljs-number">1</span>   ssd <span class="hljs-number">1.00000</span>         osd<span class="hljs-number">.1</span>     up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+ <span class="hljs-number">2</span>   ssd <span class="hljs-number">1.00000</span>         osd<span class="hljs-number">.2</span>     up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+...</code></pre>
+<p>如果一切正常，请直接跳到下面的“等待数据迁移完成”步骤，然后从那里继续进行操作以清理旧的OSD。</p>
+<h4 id="迁移过程"><a href="#迁移过程" class="headerlink" title="迁移过程"></a>迁移过程</h4><p>如果您使用的是新主机，请从步骤1开始。对于现有主机，请跳至下面的步骤5。</p>
+<ol>
+<li><p>为所有设备配置新的BlueStore OSD：</p>
+<pre><code class="hljs awk">ceph-volume lvm create --bluestore --data <span class="hljs-regexp">/dev/</span><span class="hljs-variable">$DEVICE</span></code></pre>
+</li>
+<li><p>验证OSD通过以下方式加入集群：</p>
+<pre><code class="hljs dos">ceph osd <span class="hljs-built_in">tree</span></code></pre>
+<p>您应该看到新主机<code>$NEWHOST</code>与它下面的所有的OSD的，但主机应该<em>不</em>被嵌套任何其他节点下的层次结构（像）。例如，如果是空主机，则可能会看到以下内容：<code>root default``newhost</code></p>
+<pre><code class="hljs lsl">$ bin/ceph osd tree
+ID CLASS WEIGHT  TYPE NAME     STATUS REWEIGHT PRI-AFF
+<span class="hljs-number">-5</span>             <span class="hljs-number">0</span> host newhost
+<span class="hljs-number">10</span>   ssd <span class="hljs-number">1.00000</span>     osd<span class="hljs-number">.10</span>        up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+<span class="hljs-number">11</span>   ssd <span class="hljs-number">1.00000</span>     osd<span class="hljs-number">.11</span>        up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+<span class="hljs-number">12</span>   ssd <span class="hljs-number">1.00000</span>     osd<span class="hljs-number">.12</span>        up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+<span class="hljs-number">-1</span>       <span class="hljs-number">3.00000</span> root <span class="hljs-section">default</span>
+<span class="hljs-number">-2</span>       <span class="hljs-number">3.00000</span>     host oldhost1
+ <span class="hljs-number">0</span>   ssd <span class="hljs-number">1.00000</span>         osd<span class="hljs-number">.0</span>     up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+ <span class="hljs-number">1</span>   ssd <span class="hljs-number">1.00000</span>         osd<span class="hljs-number">.1</span>     up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+ <span class="hljs-number">2</span>   ssd <span class="hljs-number">1.00000</span>         osd<span class="hljs-number">.2</span>     up  <span class="hljs-number">1.00000</span> <span class="hljs-number">1.00000</span>
+...</code></pre>
+</li>
+<li><p>确定要转换的第一个目标主机</p>
+<pre><code class="hljs ini"><span class="hljs-attr">OLDHOST</span>=&lt;existing-cluster-host-to-convert&gt;</code></pre>
+</li>
+<li><p>将新主机交换到群集中旧主机的位置：</p>
+<pre><code class="hljs nginx"><span class="hljs-attribute">ceph</span> osd crush swap-bucket <span class="hljs-variable">$NEWHOST</span> <span class="hljs-variable">$OLDHOST</span></code></pre>
+<p>此时，所有数据<code>$OLDHOST</code>将开始迁移到上的OSD <code>$NEWHOST</code>。如果新旧主机的总容量不同，您可能还会看到一些数据迁移到集群中的其他节点或从集群的其他节点迁移，但是只要这些主机的大小相同，这将是相对少量的数据。</p>
+</li>
+<li><p>等待数据迁移完成：</p>
+<pre><code class="hljs reasonml"><span class="hljs-keyword">while</span> ! ceph osd safe-<span class="hljs-keyword">to</span>-destroy <span class="hljs-constructor">$(<span class="hljs-params">ceph</span> <span class="hljs-params">osd</span> <span class="hljs-params">ls</span>-<span class="hljs-params">tree</span> $OLDHOST)</span>; <span class="hljs-keyword">do</span> sleep <span class="hljs-number">60</span> ; <span class="hljs-keyword">done</span></code></pre>
+</li>
+<li><p>停止所有空的旧OSD <code>$OLDHOST</code>：</p>
+<pre><code class="hljs crystal">ssh $OLDHOST
+systemctl kill ceph-osd.target
+umount /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-*</span></code></pre>
+</li>
+<li><p>销毁并清除旧的OSD：</p>
+<pre><code class="hljs nginx">for osd in `ceph osd ls-tree $OLDHOST`; do
+    <span class="hljs-attribute">ceph</span> osd purge <span class="hljs-variable">$osd</span> --<span class="hljs-literal">yes</span>-i-really-mean-it
+done</code></pre>
+</li>
+<li><p>擦拭旧的OSD设备。这要求您确定要手动擦除哪些设备（请小心！）。对于每个设备：</p>
+<pre><code class="hljs dockerfile">ceph-<span class="hljs-keyword">volume</span><span class="bash"> lvm zap <span class="hljs-variable">$DEVICE</span></span></code></pre>
+</li>
+<li><p>将现在为空的主机用作新主机，然后重复：</p>
+<pre><code class="hljs ini"><span class="hljs-attr">NEWHOST</span>=<span class="hljs-variable">$OLDHOST</span></code></pre>
+</li>
+</ol>
+<p>优点：</p>
+<ul>
+<li>数据只能通过网络复制一次。</li>
+<li>一次转换整个主机的OSD。</li>
+<li>可以并行转换为一次转换多个主机。</li>
+<li>每个主机上都不需要备用设备。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>需要备用主机。</li>
+<li>整个主机的OSD值将同时迁移数据。这很可能会影响整个群集的性能。</li>
+<li>所有迁移的数据仍然在网络上进行了一整跳。</li>
+</ul>
+<h3 id="每OSD设备副本"><a href="#每OSD设备副本" class="headerlink" title="每OSD设备副本"></a>每OSD设备副本</h3><p>可以使用的<code>copy</code>功能转换单个逻辑OSD <code>ceph-objectstore-tool</code>。这要求主机具有一个或多个空闲设备来供应新的空BlueStore OSD。例如，如果群集中的每个主机都有12个OSD，则需要第13个可用设备，以便可以依次转换每个OSD，然后再收回旧设备以转换下一个OSD。</p>
+<p>注意事项：</p>
+<ul>
+<li>此策略要求准备一个空白的BlueStore OSD，而无需分配该<code>ceph-volume</code> 工具不支持的新OSD ID 。更重要的是，<em>dmcrypt</em>的设置与OSD身份紧密相关，这意味着该方法不适用于加密的OSD。</li>
+<li>设备必须手动分区。</li>
+<li>工具未实现！</li>
+<li>没有记录！</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>在转换期间，很少或没有数据在网络上迁移。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>工具尚未完全实现。</li>
+<li>流程未记录。</li>
+<li>每个主机必须具有备用或空设备。</li>
+<li>OSD在转换过程中处于脱机状态，这意味着新的写入操作将仅写入OSD的一部分。这会增加由于后续故障而导致数据丢失的风险。（但是，如果在转换完成之前出现故障，则可以启动原始FileStore OSD来提供对其原始数据的访问。）</li>
+</ul>
+
             </div>
             <hr>
             <div>
@@ -583,7 +741,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【核心】Ceph三部曲之四:下一代对象存储引擎BlueStore&nbsp;",
+        "【核心】Ceph学习三部曲之四:下一代对象存储引擎BlueStore&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
