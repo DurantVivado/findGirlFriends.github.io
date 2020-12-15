@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>CEPH 数据分布及缓存替换机制 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>【参考】CEPH 缓存替换机制 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      818 字
+      738 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      7
        分钟
     </span>
   
@@ -239,10 +239,10 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">CEPH 数据分布及缓存替换机制</h1>
+            <h1 style="display: none">【参考】CEPH 缓存替换机制</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Ceph数据分布及缓存替换机制"><a href="#Ceph数据分布及缓存替换机制" class="headerlink" title="Ceph数据分布及缓存替换机制"></a>Ceph数据分布及缓存替换机制</h1><blockquote>
+              <h1 id="Ceph缓存替换机制"><a href="#Ceph缓存替换机制" class="headerlink" title="Ceph缓存替换机制"></a>Ceph缓存替换机制</h1><blockquote>
 <p>2020/11/17 by Chongyu Hu</p>
 </blockquote>
 <h2 id="缓存替换机制"><a href="#缓存替换机制" class="headerlink" title="缓存替换机制"></a>缓存替换机制</h2><p>LRU算法：最近最少使用，时间局部性原理。</p>
@@ -270,12 +270,6 @@
 <p>参考Theodore和Dennis的测试结论，推荐A1in和Am队列的容量配比1:1.</p>
 <p>BlueStore的cache既可以用于缓存用户数据，也可以用于缓存元数据。bluestore中默认元数据的比重位90%。</p>
 <p>BlueStore中元素据分为两类：Collection和Onode. Collection是PG在BlueStore中内存管理结构。每个OSD最多承载100个PG而且Collection管理结构本身比较小，故被设计成常驻内存。而Onode的数量和其管理的磁盘空间成正比，因而不可能常驻内存，需要引入淘汰机制。Onode采用LRU。</p>
-<h2 id="数据可靠性技术"><a href="#数据可靠性技术" class="headerlink" title="数据可靠性技术"></a>数据可靠性技术</h2><p>纠删码API</p>
-<p>Jerasure, ISA-I和LRC。</p>
-<p>RS变种</p>
-<p>Fountain code， Pyramid code，Local Repairable code（LRC）。</p>
-<p>系统性编码：数据和编码分开。适合热数据。</p>
-<p>非系统性编码：所有盘被编码，真实数据需要被解码。适用读很少。冷数据，备份等。</p>
 
             </div>
             <hr>
@@ -310,7 +304,7 @@
                     
                       <a href="/2020/11/22/CEPH%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CEPH 基础介绍</span>
+                        <span class="hidden-mobile">【入门理论】CEPH 基础介绍</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -520,7 +514,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "CEPH 数据分布及缓存替换机制&nbsp;",
+        "【参考】CEPH 缓存替换机制&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -1,0 +1,736 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>小白投资入门（煎炸卤炖） - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-14 00:00" pubdate>
+        2020年12月14日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">小白投资入门（煎炸卤炖）</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="小白投资入门（煎炸卤炖）"><a href="#小白投资入门（煎炸卤炖）" class="headerlink" title="小白投资入门（煎炸卤炖）"></a>小白投资入门（煎炸卤炖）</h1><p>写这个博客表明笔者准备开始炒股了，当然任何事情都是万事开头难，希望与君共勉，踩坑。</p>
+<p>假如小Q有1W元，如何投资才能获得最大收益：</p>
+<ol>
+<li>存银行</li>
+<li>炒股</li>
+<li>购买保险</li>
+<li>购买基金</li>
+<li>购买黄金</li>
+<li>购买房地产</li>
+<li>购买期货</li>
+<li>全部换成美元</li>
+<li>全部换成日元</li>
+<li>研究“如何让钱无性生殖”</li>
+</ol>
+<p>上面问题便是笔者写博客的初衷，弄清楚这些问题不是简单是事，除了问题10以外。</p>
+<h1 id="1基本概念"><a href="#1基本概念" class="headerlink" title="1基本概念"></a>1基本概念</h1><p>所谓股票，就是股份制公司发行的所有权凭证。那么公司为什么要发行股票呢？一般是为了凑集资金，非上市公司和上市公司都可以发行股票，只是非上市公司的股票不能在证券交易所交易而已。</p>
+<h2 id="证券"><a href="#证券" class="headerlink" title="证券"></a>证券</h2><p>证券是多种经济权益凭证的统称，有很多分类，比如股票和证券。</p>
+<h2 id="证券交易所"><a href="#证券交易所" class="headerlink" title="证券交易所"></a>证券交易所</h2><p>专门进行证券交易的场所。我国目前有四大证券交易所，分别是1990年11月26日成立的上海证券交易所，简称上交所或者沪市；1990年12月1日成立的深圳证券交易所，简称深交所；此外还有香港证券交易所和成都证券交易所。</p>
+<p>证券交易所本身是一家公司，也可以上市，比如香港证券交易所的股票代码是00388。</p>
+<h2 id="股市"><a href="#股市" class="headerlink" title="股市"></a>股市</h2><p>股市就是股票市场，是已经发行的股票转让、买卖和流通的场所，在我国就是指证券交易所，又称二级市场。</p>
+<h2 id="IPO"><a href="#IPO" class="headerlink" title="IPO"></a>IPO</h2><p>指首次公开募股。通常是新上市的公司第一次发售股票。</p>
+<h2 id="如何炒股？"><a href="#如何炒股？" class="headerlink" title="如何炒股？"></a>如何炒股？</h2><p>炒股时盈亏是兵家常事，但是如果想长期盈利，我们需要掌握正确的投资理念和搭建适合自己的交易体系，并严格指定好交易策略才能实现长期盈利。</p>
+<h2 id="证券公司"><a href="#证券公司" class="headerlink" title="证券公司"></a>证券公司</h2><p>就是专门经营证券交易所的交易商，俗称券商。投资者通过在券商处开设账户从而去交易放在证券交易所的股票。</p>
+<h2 id="证券账户"><a href="#证券账户" class="headerlink" title="证券账户"></a>证券账户</h2><p>我国规定每个投资者最多拥有三个账户。目前有线上和线下两种方式，最常用线上的券商包括【同花顺APP】和【东方财富】。它们的区别是，同花顺本身是一家上市公司，股票代码300033，而不是一家券商。而东方财富本身是一家券商，股票代码300059.</p>
+<h2 id="三方管存"><a href="#三方管存" class="headerlink" title="三方管存"></a>三方管存</h2><p>全称是<strong><em>客户交易结算资金第三方管存</em></strong>，在券商开户时必须指定一张银行卡，买卖股票的资金都通过这个银行账户。</p>
+<h1 id="2-如何看数据"><a href="#2-如何看数据" class="headerlink" title="2 如何看数据"></a>2 如何看数据</h1><h2 id="指数与点数"><a href="#指数与点数" class="headerlink" title="指数与点数"></a>指数与点数</h2><p>指数指金融机构事先制定好规则，选取一部分股票作为样本，按照某种计算方法编制乘的一组数字，目的是为了反映市场情况的变动。</p>
+<ul>
+<li><p>上证指数</p>
+<p>全称【上海证券综合指数】，俗称<strong>大盘</strong>。它是把在上海证券交易所上市的所有股票按照特定的规则编制而成的一个指数，自1991年7月15日开始实时发布，一开始就是100点。其中中石油、中石化称为【两桶油】。银行、证券、保险俗称为【金三胖】。</p>
+</li>
+<li><p>深圳成指</p>
+<p>全称【深圳成分股指数】，代码为399001. 它是取市场上最有代表性的500家公司编制的股票，基点为1000。</p>
+</li>
+<li><p>中小板指</p>
+<p>从深交所中小板上市的所有股票中选取100只编制的股票。代码399005.</p>
+</li>
+<li><p>创业板指</p>
+<p>从深交所创业板上市的所有股票中选取100只编制的股票。代码399006.</p>
+</li>
+<li><p>沪深300</p>
+<p>000300</p>
+</li>
+<li><p>上证50</p>
+<p>000016</p>
+</li>
+<li><p>中证500</p>
+<p>主要挑选沪深两地的中小盘股票，在上海为000905，在深圳为399905.</p>
+</li>
+</ul>
+<p><img src="/img/1607942239006.jpeg" srcset="/img/loading.gif" alt="1607942239006"></p>
+<h2 id="板块"><a href="#板块" class="headerlink" title="板块"></a>板块</h2><p>指证券交易所不同的交易市场，目的是支持不同类型的公司。</p>
+<p>上交所包含主板和科创板两个。上交所主板股票代码一般以「600」、「601」或「603」开头。科创板一般以「688」开头，比如「金山办公」为688111.</p>
+<p>深交所包括主板、中小板、创业板三个板块，中小板是专为中小型公司所开设的，创业板与其它板块区别较大，主要是因为公司在创业板上市要求更加宽松，所以上市后股票风险性更大，因而开通创业板必须去线下营业点而且要签一堆风险声明并且录视频。 深市主板代码以「000」开头，中小板以「002」开头，创业板以「300」开头。</p>
+<h2 id="全球"><a href="#全球" class="headerlink" title="全球"></a>全球</h2><p>可以查看全球市场的大概情况，最上面是我国的沪深指数，往下依次是股指期货、汇率指数、全球商品。</p>
+<p>「恒生指数」是香港的，「日经指数」是日本的，「富时A50」是富时指数公司选取中国市值最大的50家公司创建的指数，</p>
+<p>「道琼斯」「纳斯达克」「标普500」是美国的，美股和「富时A50」可以影响A股走势。</p>
+<h2 id="A股"><a href="#A股" class="headerlink" title="A股"></a>A股</h2><p>我国股市的大概情况，有三个板块，「沪深」「板块」「科创板」。</p>
+<p>「沪深」页面最上面的上证指数、深证成指和创业板是我国A股最主要的三个指数，下面是市场概况，全部股票的涨停比例和跌停涨停比，再往下是股票排行，比如涨幅榜和跌幅榜等。</p>
+<p>「板块」主要显示行业板块的情况，最上面是涨幅前三名的板块和跌幅前三名的板块。其中第三个页面是「创业板」，这个板块是2019年刚刚创立的，主要是支持我国科技创新的发展，对投资者而言具有较高的<strong>门槛</strong>和较大的<strong>风险</strong>。</p>
+<h2 id="交易界面"><a href="#交易界面" class="headerlink" title="交易界面"></a>交易界面</h2><p>我们可以看到账户情况，比如总资产、浮动盈亏和当日盈亏等情况，也可以买入、卖出、撤单、持仓和查询，申购新股、国债逆回购、可转债、银证转账等功能</p>
+<p>那么我们如何进行交易呢？</p>
+<ul>
+<li>通过搜索或自选解码进入股票的详情页面</li>
+<li>点击最下面的「下单」按钮，有「分时下单」和「交易下单」两种。默认为「分时下单」。</li>
+<li>点击「买」按钮，再次跳出新的买卖页面。</li>
+<li>设定好合适价格，输入想要买入的数量，然后点击最下面的红色「买入」按钮。</li>
+<li>最后会跳出询问页面，确认之前提交的信息是否有误等。点击「确认买入」</li>
+</ul>
+<h2 id="股市开市时间及股票交易费用"><a href="#股市开市时间及股票交易费用" class="headerlink" title="股市开市时间及股票交易费用"></a>股市开市时间及股票交易费用</h2><p>我国A股交易时间为周一至周五上午9：30-11：30，下午13：00-15：00， 其中9：15-9：25，下午14：57-15：00是集合竞价的时间，具体概念我们后面再讲。</p>
+<p>股票交易一般包含以下几种费用：</p>
+<ul>
+<li>佣金：券商收取，买卖都要收，每笔最低5元，如果超过后则按万分之3或万分之2.5.</li>
+<li>印花税：国税局收取，卖出股票时收取，比例为成交金额的0.1%</li>
+<li>过户费：上交所收取，交易沪市股票时收取，为成交金额的0.002%。</li>
+<li>规费：视券商而定。</li>
+</ul>
+<h2 id="K线"><a href="#K线" class="headerlink" title="K线"></a>K线</h2><p>k线图又称为蜡烛图、日本线、阴阳线。它源于日本德川幕府时代。它是一个竖着的长方体，如下图所示。</p>
+<p><img src="/img/1607943017765.jpeg" srcset="/img/loading.gif" alt="1607943017765" style="zoom:67%;" /></p>
+<p>如果上影线较长，上方抛压较大，股价上涨后又被砸了回来，有长下影线则表示下方买盘较强，股价跌了下去又被买了回来。红色表示阳K线，绿色表示阴K线。红表示涨，即开盘价小于收盘价，绿表示跌。</p>
+<p><img src="/img/1607943072426.jpeg" srcset="/img/loading.gif" alt="1607943072426"></p>
+<p><strong>注意不要把技术指标当作买卖的标准。</strong></p>
+<p>我们有【假阴线】和【假阳线】两种说法，假阳线指收盘价比前一根K线的收盘价要低。假阳线表示收盘价全部比各自前一天的收盘价要高</p>
+<p><img src="/img/v2-e6d2b7984a2228522f4012c2af96436e.jpg" srcset="/img/loading.gif" alt="v2-e6d2b7984a2228522f4012c2af96436e"></p>
+<h2 id="均线"><a href="#均线" class="headerlink" title="均线"></a>均线</h2><h2 id="成交量"><a href="#成交量" class="headerlink" title="成交量"></a>成交量</h2><h2 id="MACD"><a href="#MACD" class="headerlink" title="MACD"></a>MACD</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%8A%95%E8%B5%84/">投资</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E8%82%A1%E7%A5%A8/">股票</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/15/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8EPG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【核心】Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/14/ceph%20pool/">
+                        <span class="hidden-mobile">【参考】Ceph Pool</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "小白投资入门（煎炸卤炖）&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

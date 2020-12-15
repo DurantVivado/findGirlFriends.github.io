@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>CEPH 基础介绍 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>【入门理论】CEPH 基础介绍 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      12k 字
+      9.4k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      136
+      105
        分钟
     </span>
   
@@ -239,7 +239,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">CEPH 基础介绍</h1>
+            <h1 style="display: none">【入门理论】CEPH 基础介绍</h1>
             
             <div class="markdown-body" id="post-body">
               <h1 id="CEPH基础理论学习"><a href="#CEPH基础理论学习" class="headerlink" title="CEPH基础理论学习"></a>CEPH基础理论学习</h1><hr>
@@ -411,198 +411,7 @@
 <li>视频存储。</li>
 <li>…</li>
 </ul>
-<h3 id="Ceph硬件要求"><a href="#Ceph硬件要求" class="headerlink" title="Ceph硬件要求"></a>Ceph硬件要求</h3><p>Ceph 为普通硬件设计，这可使构建、维护 PB 级数据集群的费用相对低廉。规划集群硬件时，需要均衡几方面的因素，包括区域失效和潜在的性能问题。硬件规划要包含把使用 Ceph 集群的 Ceph 守护进程和其他进程恰当分布。通常，我们推荐在一台机器上只运行一种类型的守护进程。我们推荐把使用数据集群的进程（如 OpenStack 、 CloudStack 等）安装在别的机器上。</p>
-<blockquote>
-<p>关于 Ceph 的高品质博客文章也值得参考，比如 <a target="_blank" rel="noopener" href="http://ceph.com/community/ceph-performance-part-1-disk-controller-write-throughput/">Ceph Write Throughput 1</a> 、 <a target="_blank" rel="noopener" href="http://ceph.com/community/ceph-performance-part-2-write-throughput-without-ssd-journals/">Ceph Write Throughput 2</a> 、 <a target="_blank" rel="noopener" href="http://ceph.com/uncategorized/argonaut-vs-bobtail-performance-preview/">Argonaut v. Bobtail Performance Preview</a> 、 <a target="_blank" rel="noopener" href="http://ceph.com/community/ceph-bobtail-performance-io-scheduler-comparison/">Bobtail Performance - I/O Scheduler Comparison</a> 。</p>
-</blockquote>
-<h4 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h4><p>Ceph 元数据服务器对 CPU 敏感，它会动态地重分布它们的负载，所以你的元数据服务器应该有足够的处理能力（如 4 核或更强悍的 CPU ）。 Ceph 的 OSD 运行着 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-rados"><em>RADOS</em></a> 服务、用 <a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/glossary/#term-crush"><em>CRUSH</em></a> 计算数据存放位置、复制数据、维护它自己的集群运行图副本，因此 OSD 需要一定的处理能力（如双核 CPU ）。监视器只简单地维护着集群运行图的副本，因此对 CPU 不敏感；但必须考虑机器以后是否还会运行 Ceph 监视器以外的 CPU 密集型任务。例如，如果服务器以后要运行用于计算的虚拟机（如 OpenStack Nova ），你就要确保给 Ceph 进程保留了足够的处理能力，所以我们推荐在其他机器上运行 CPU 密集型任务。</p>
-<h4 id="RAM内存"><a href="#RAM内存" class="headerlink" title="RAM内存"></a>RAM内存</h4><p>元数据服务器和监视器必须可以尽快地提供它们的数据，所以他们应该有足够的内存，至少每进程 1GB 。 OSD 的日常运行不需要那么多内存（如每进程 500MB ）差不多了；然而在恢复期间它们占用内存比较大（如每进程每 TB 数据需要约 1GB 内存）。通常内存越多越好。</p>
-<p>元数据服务器和监视器必须可以尽快地提供它们的数据，所以他们应该有足够的内存，至少每进程 1GB 。 OSD 的日常运行不需要那么多内存（如每进程 500MB ）差不多了；然而在恢复期间它们占用内存比较大（如每进程每 TB 数据需要约 1GB 内存）。通常内存越多越好。</p>
-<blockquote>
-<p>因为 Ceph 发送 ACK 前必须把所有数据写入日志（至少对 xfs 和 ext4 来说是），因此均衡日志和 OSD 性能相当重要。</p>
-</blockquote>
-<h4 id="硬盘驱动器"><a href="#硬盘驱动器" class="headerlink" title="硬盘驱动器"></a>硬盘驱动器</h4><p>OSD 应该有足够的空间用于存储对象数据。考虑到大硬盘的每 GB 成本，我们建议用容量大于 1TB 的硬盘。</p>
-<ul>
-<li><p>不顾分区而在单个硬盘上运行多个OSD，这样<strong>不明智</strong>！</p>
-</li>
-<li><p>不顾分区而在运行了OSD的硬盘上同时运行监视器或元数据服务器也<strong>不明智</strong>！</p>
-</li>
-</ul>
-<p>存储驱动器受限于寻道时间、访问时间、读写时间、还有总吞吐量，这些物理局限性影响着整体系统性能，尤其在系统恢复期间。因此我们推荐独立的驱动器用于安装操作系统和软件，另外每个 OSD 守护进程占用一个驱动器。大多数 “slow OSD”问题的起因都是在相同的硬盘上运行了操作系统、多个 OSD 、和/或多个日志文件。鉴于解决性能问题的成本差不多会超过另外增加磁盘驱动器，你应该在设计时就避免增加 OSD 存储驱动器的负担来提升性能。</p>
-<p>Ceph 允许你在每块硬盘驱动器上运行多个 OSD ，但这会导致资源竞争并降低总体吞吐量； Ceph 也允许把日志和对象数据存储在相同驱动器上，但这会增加记录写日志并回应客户端的延时，因为 Ceph 必须先写入日志才会回应确认了写动作。 btrfs 文件系统能同时写入日志数据和对象数据， xfs 和 ext4 却不能。</p>
-<p>SSD总体性能优于HDD</p>
-<ul>
-<li><strong>写密集语义：</strong> 记日志涉及写密集语义，所以你要确保选用的 SSD 写入性能和硬盘相当或好于硬盘。廉价 SSD 可能在加速访问的同时引入写延时，有时候高性能硬盘的写入速度可以和便宜 SSD 相媲美。</li>
-<li><strong>顺序写入：</strong> 在一个 SSD 上为多个 OSD 存储多个日志时也必须考虑 SSD 的顺序写入极限，因为它们要同时处理多个 OSD 日志的写入请求。</li>
-<li><strong>分区对齐：</strong> 采用了 SSD 的一个常见问题是人们喜欢分区，却常常忽略了分区对齐，这会导致 SSD 的数据传输速率慢很多，所以请确保分区对齐了。</li>
-</ul>
-<p>SSD 用于对象存储太昂贵了，但是把 OSD 的日志存到 SSD 、把对象数据存储到独立的硬盘可以明显提升性能。 <code>osd journal</code> 选项的默认值是 <code>/var/lib/ceph/osd/$cluster-$id/journal</code> ，你可以把它挂载到一个 SSD 或 SSD 分区，这样它就不再是和对象数据一样存储在同一个硬盘上的文件了。</p>
-<p>提升 CephFS 文件系统性能的一种方法是从 CephFS 文件内容里分离出元数据。 Ceph 提供了默认的 <code>metadata</code> 存储池来存储 CephFS 元数据，所以你不需要给 CephFS 元数据创建存储池，但是可以给它创建一个仅指向某主机 SSD 的 CRUSH 运行图。详情见<a target="_blank" rel="noopener" href="http://ceph.com/docs/master/rados/operations/crush-map/#placing-different-pools-on-different-osds">给存储池指定 OSD</a> 。</p>
-<p>你可以在同一主机上运行多个 OSD ，但要确保 OSD 硬盘总吞吐量不超过为客户端提供读写服务所需的网络带宽；还要考虑集群在每台主机上所存储的数据占总体的百分比，如果一台主机所占百分比太大而它挂了，就可能导致诸如超过 <code>full ratio</code> 的问题，此问题会使 Ceph 中止运作以防数据丢失。</p>
-<p>如果每台主机运行多个 OSD ，也得保证内核是最新的。参阅<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/start/os-recommendations">操作系统推荐</a>里关于 <code>glibc</code> 和 <code>syncfs(2)</code> 的部分，确保硬件性能可达期望值。</p>
-<p>OSD 数量较多（如 20 个以上）的主机会派生出大量线程，尤其是在恢复和重均衡期间。很多 Linux 内核默认的最大线程数较小（如 32k 个），如果您遇到了这类问题，可以把 <code>kernel.pid_max</code> 值调高些。理论最大值是 4194303 。例如把下列这行加入 <code>/etc/sysctl.conf</code> 文件：</p>
-<pre><code class="hljs ini"><span class="hljs-attr">kernel.pid_max</span> = <span class="hljs-number">4194303</span></code></pre>
-<h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4><p>​        建议每台机器最少两个千兆网卡，现在大多数机械硬盘都能达到大概 100MB/s 的吞吐量，网卡应该能处理所有 OSD 硬盘总吞吐量，所以推荐最少两个千兆网卡，分别用于公网（前端）和集群网络（后端）。集群网络（最好别连接到国际互联网）用于处理由数据复制产生的额外负载，而且可防止拒绝服务攻击，拒绝服务攻击会干扰数据归置组，使之在 OSD 数据复制时不能回到 <code>active + clean</code> 状态。请考虑部署万兆网卡。通过 1Gbps 网络复制 1TB 数据耗时 3 小时，而 3TB （典型配置）需要 9 小时，相比之下，如果使用 10Gbps 复制时间可分别缩减到 20 分钟和 1 小时。在一个 PB 级集群中， OSD 磁盘失败是常态，而非异常；在性价比合理的的前提下，系统管理员想让 PG 尽快从 <code>degraded</code> （降级）状态恢复到 <code>active + clean</code> 状态。另外，一些部署工具（如 Dell 的 Crowbar ）部署了 5 个不同的网络，但使用了 VLAN 以提高网络和硬件可管理性。 VLAN 使用 802.1q 协议，还需要采用支持 VLAN 功能的网卡和交换机，增加的硬件成本可用节省的运营（网络安装、维护）成本抵消。使用 VLAN 来处理集群和计算栈（如 OpenStack 、 CloudStack 等等）之间的 VM 流量时，采用 10G 网卡仍然值得。每个网络的机架路由器到核心路由器应该有更大的带宽，如 40Gbps 到 100Gbps 。</p>
-<p>​        服务器应配置底板管理控制器（ Baseboard Management Controller, BMC ），管理和部署工具也应该大规模使用 BMC ，所以请考虑带外网络管理的成本/效益平衡，此程序管理着 SSH 访问、 VM 映像上传、操作系统安装、端口管理、等等，会徒增网络负载。运营 3 个网络有点过分，但是每条流量路径都指示了部署一个大型数据集群前要仔细考虑的潜能力、吞吐量、性能瓶颈。</p>
-<p>Ceph 可以运行在廉价的普通硬件上，小型生产集群和开发集群可以在一般的硬件上。</p>
-<p>如果在只有一块硬盘的机器上运行 OSD ，要把数据和操作系统分别放到不同分区；一般来说，我们推荐操作系统和数据分别使用不同的硬盘。</p>
-<h4 id="最低硬件要求"><a href="#最低硬件要求" class="headerlink" title="最低硬件要求"></a>最低硬件要求</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">进程</th>
-<th style="text-align:left">条件</th>
-<th style="text-align:left">最低建议</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left"><code>ceph-osd</code></td>
-<td style="text-align:left">Processor</td>
-<td style="text-align:left">1x 64-bit AMD-641x 32-bit ARM dual-core or better1x i386 dual-core</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">RAM</td>
-<td style="text-align:left">~1GB for 1TB of storage per daemon</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Volume Storage</td>
-<td style="text-align:left">1x storage drive per daemon</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Journal</td>
-<td style="text-align:left">1x SSD partition per daemon (optional)</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>ceph-mon</code></td>
-<td style="text-align:left">Processor</td>
-<td style="text-align:left">1x 64-bit AMD-64/i3861x 32-bit ARM dual-core or better1x i386 dual-core</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">RAM</td>
-<td style="text-align:left">1 GB per daemon</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Disk Space</td>
-<td style="text-align:left">10 GB per daemon</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left"><code>ceph-mds</code></td>
-<td style="text-align:left">Processor</td>
-<td style="text-align:left">1x 64-bit AMD-64 quad-core1x 32-bit ARM quad-core1x i386 quad-core</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">RAM</td>
-<td style="text-align:left">1 GB minimum per daemon</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Disk Space</td>
-<td style="text-align:left">1 MB per daemon</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="生产实例"><a href="#生产实例" class="headerlink" title="生产实例"></a>生产实例</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Configuration</th>
-<th style="text-align:left">Criteria</th>
-<th style="text-align:left">Minimum Recommended</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Dell PE R510</td>
-<td style="text-align:left">Processor</td>
-<td style="text-align:left">2x 64-bit quad-core Xeon CPUs</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">RAM</td>
-<td style="text-align:left">16 GB</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Volume Storage</td>
-<td style="text-align:left">8x 2TB drives. 1 OS, 7 Storage</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Client Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">OSD Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Mgmt. Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left">Dell PE R515</td>
-<td style="text-align:left">Processor</td>
-<td style="text-align:left">1x hex-core Opteron CPU</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">RAM</td>
-<td style="text-align:left">16 GB</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Volume Storage</td>
-<td style="text-align:left">12x 3TB drives. Storage</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">OS Storage</td>
-<td style="text-align:left">1x 500GB drive. Operating System.</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Client Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">OSD Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:left">Mgmt. Network</td>
-<td style="text-align:left">2x 1GB Ethernet NICs</td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
+<h3 id=""><a href="#" class="headerlink" title=" "></a> </h3><hr>
 <h2 id="2-Ceph-I-O流程和数据分布"><a href="#2-Ceph-I-O流程和数据分布" class="headerlink" title="2 Ceph I/O流程和数据分布"></a>2 Ceph I/O流程和数据分布</h2><p><img src="\img\ceph-d.png" srcset="/img/loading.gif" alt="img"></p>
 <p><img src="\img\ceph_io2.png" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>步骤：</strong></p>
@@ -708,73 +517,73 @@
 <thead>
 <tr>
 <th style="text-align:center">PG状态</th>
-<th style="text-align:center">含义</th>
+<th style="text-align:left">含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:center">down</td>
-<td style="text-align:center">PG处于失效状态，PG处于离线状态</td>
+<td style="text-align:left">Peering过程中，PG检测到某个Interval中，当前剩余的OSD不足以完成数据修复</td>
 </tr>
 <tr>
 <td style="text-align:center">repair</td>
-<td style="text-align:center">PG正在被检查，被发现的任何不一致都将尽可能的被修复</td>
+<td style="text-align:left">PG正在被检查，被发现的任何不一致都将尽可能的被修复</td>
 </tr>
 <tr>
 <td style="text-align:center">peering（等待互联）</td>
-<td style="text-align:center">PG处于 peering 过程中, peering 由主 osd 发起的使存放 PG 副本的所有 OSD 就 PG 的所有对象和元素数据的状态达成一致的过程, peering 过程完成后, 主 OSD 就可以接受客户端写请求.</td>
+<td style="text-align:left">PG处于 peering 过程中, peering 由主 osd 发起的使存放 PG 副本的所有 OSD 就 PG 的所有对象和元素数据的状态达成一致的过程, peering 过程完成后, 主 OSD 就可以接受客户端写请求.</td>
 </tr>
 <tr>
 <td style="text-align:center">active</td>
-<td style="text-align:center">当 ceph 完成 peering 过程, pg 将会变成 active, active 状态意味着 pg 中的数据变得可用, 主 pg 将可执行读写操作 .</td>
+<td style="text-align:left">当 ceph 完成 peering 过程, pg 将会变成 active, active 状态意味着 pg 中的数据变得可用, 主 pg 将可执行读写操作 .</td>
 </tr>
 <tr>
 <td style="text-align:center">clean</td>
-<td style="text-align:center">干净态。前不存在待修复的对象， Acting Set和Up Set内容一致，并且大小等于存储池的副本数</td>
+<td style="text-align:left">干净态。前不存在待修复的对象， Acting Set和Up Set内容一致，并且大小等于存储池的副本数</td>
 </tr>
 <tr>
 <td style="text-align:center">replay（重做）</td>
-<td style="text-align:center">某OSD崩溃后，PG正在等待客户端重新发起操作</td>
+<td style="text-align:left">某OSD崩溃后，PG正在等待客户端重新发起操作</td>
 </tr>
 <tr>
 <td style="text-align:center">degraded</td>
-<td style="text-align:center">1.PG 处于 active+degraded 原因是因为 OSD 是处于活跃, 但并没有完成所有的对象副本写入, PG 中部分对象的副本数量未达到规定的数量.当 OSD 重新上线, OSD 将会重新恢复,  假如 OSD DOWN 并且 degraded 状态持续, CEPH 会标记 DOWN OSD, 并会对集群迁移相关 OSD 的数据, 对应时间由<code>mon osd down out interval</code> 参数决定 .</td>
+<td style="text-align:left">1.PG 处于 active+degraded 原因是因为 OSD 是处于活跃, 但并没有完成所有的对象副本写入, PG 中部分对象的副本数量未达到规定的数量.当 OSD 重新上线, OSD 将会重新恢复,  假如 OSD DOWN 并且 degraded 状态持续, CEPH 会标记 DOWN OSD, 并会对集群迁移相关 OSD 的数据, 对应时间由<code>mon osd down out interval</code> 参数决定 .</td>
 </tr>
 <tr>
 <td style="text-align:center">inconsistent</td>
-<td style="text-align:center">PG副本出现不一致, 对象大小不正确或者恢复借宿后某个副本出现对象丢失现象</td>
+<td style="text-align:left">PG通过Scrub检测到某些对象在PG实例间出现不一致（主要是因为静默错误）</td>
 </tr>
 <tr>
 <td style="text-align:center">recovering</td>
-<td style="text-align:center">ceph 设备故障容忍在一定范围的软件与硬件问题, 当 OSD 变 DOWN, 那么包含该 OSD 的 PG 副本都会有问题, 当 OSD 恢复, OSD 对应的 PG 将会更新 并反映出当前状态, 在一段时间周期后, OSD 将会恢复 recovering 状态</td>
+<td style="text-align:left">PG正在对不一致对象进行同步/修复。</td>
 </tr>
 <tr>
 <td style="text-align:center">back filling</td>
-<td style="text-align:center">当新 OSD 加入集群, CRUSH 将会为集群新添加的 OSD 重新分配 PG, 强制新的 OSD 接受重新分配的 PG 并把一定数量的负载转移到新 OSD 中,back filling OSD 会在后台处理, 当 backfilling 完成, 新的 OSD 完成后, 将开始对请求进行服务</td>
+<td style="text-align:left">当新 OSD 加入集群, CRUSH 将会为集群新添加的 OSD 重新分配 PG, 强制新的 OSD 接受重新分配的 PG 并把一定数量的负载转移到新 OSD 中,back filling OSD 会在后台处理, 当 backfilling 完成, 新的 OSD 完成后, 将开始对请求进行服务</td>
 </tr>
 <tr>
 <td style="text-align:center">remapped</td>
-<td style="text-align:center">当 pg 改变, 数据从旧的 osd 迁移到新的 osd, 新的主 osd 应该请求将会花费一段时间, 在这段时间内, 将会继续向旧主 osd 请求服务, 直到 PG 迁移完成, 当数据迁移完成, mapping 将会使用新的 OSD 响应主 OSD 服务</td>
+<td style="text-align:left">当 pg 改变, 数据从旧的 osd 迁移到新的 osd, 新的主 osd 应该请求将会花费一段时间, 在这段时间内, 将会继续向旧主 osd 请求服务, 直到 PG 迁移完成, 当数据迁移完成, mapping 将会使用新的 OSD 响应主 OSD 服务</td>
 </tr>
 <tr>
 <td style="text-align:center">stale（旧）</td>
-<td style="text-align:center">当 ceph 使用 heartbeat 确认主机与进程是否运行, ceph osd daemon 可能由于网络临时故障, 获得一个卡住状态 (stuck state) 没有得到心跳回应 默认, osd daemon 会每 0.5 秒报告 PG, up 状态, 启动与故障分析, 假如 PG 中主 OSD 因为故障没有回应 monitor 或者其他 OSD 报告 主 osd down, 那么 monitor 将会标记 PG stale</td>
+<td style="text-align:left">当 ceph 使用 heartbeat 确认主机与进程是否运行, ceph osd daemon 可能由于网络临时故障, 获得一个卡住状态 (stuck state) 没有得到心跳回应 默认, osd daemon 会每 0.5 秒报告 PG, up 状态, 启动与故障分析, 假如 PG 中主 OSD 因为故障没有回应 monitor 或者其他 OSD 报告 主 osd down, 那么 monitor 将会标记 PG stale</td>
 </tr>
 <tr>
 <td style="text-align:center">scrubbing</td>
-<td style="text-align:center">scrubbing（清理中）, PG 在做一致性校验</td>
+<td style="text-align:left">scrubbing（清理中）, PG 在做一致性校验</td>
 </tr>
 <tr>
 <td style="text-align:center">inactive</td>
-<td style="text-align:center">inactive ：PG 很长时间没有显示为 active 状态, (不可执行读写请求), PG 不可以执行读写, 因为等待 OSD 更新数据到最新的备份状态</td>
+<td style="text-align:left">inactive ：PG 很长时间没有显示为 active 状态, (不可执行读写请求), PG 不可以执行读写, 因为等待 OSD 更新数据到最新的备份状态</td>
 </tr>
 <tr>
 <td style="text-align:center">unclean</td>
-<td style="text-align:center">unclean：PG 很长时间都不是 clean 状态 (不可以完成之前恢复的操作), PG 包含对象没有完成相应的复制副本数量, 通常都要执行恢复操作。</td>
+<td style="text-align:left">unclean：PG 很长时间都不是 clean 状态 (不可以完成之前恢复的操作), PG 包含对象没有完成相应的复制副本数量, 通常都要执行恢复操作。</td>
 </tr>
 <tr>
 <td style="text-align:center">stale（新）</td>
-<td style="text-align:center">stale：PG 状态很长时间没有被 ceph-osd 更新过, 标识存储在该 GP 中的节点显示为 DOWN, PG 处于 unknown 状态, 因为 OSD 没有报告 monitor 由 mon osd report timeout 定义超时时间</td>
+<td style="text-align:left">stale：PG 状态很长时间没有被 ceph-osd 更新过, 标识存储在该 GP 中的节点显示为 DOWN, PG 处于 unknown 状态, 因为 OSD 没有报告 monitor 由 mon osd report timeout 定义超时时间</td>
 </tr>
 </tbody>
 </table>
@@ -1013,14 +822,6 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 		<span class="hljs-attr">x_max</span> = <span class="hljs-string">x</span>
 		<span class="hljs-attr">max_item</span> = <span class="hljs-string">item</span>
 <span class="hljs-attr">return</span> <span class="hljs-string">max_item</span></code></pre>
-<p>下面我们介绍firstn算法的select过程</p>
-<ol>
-<li>重置计数器rep</li>
-<li>检查rep是否等于副本数，若等于，则返回，否则进行下一步</li>
-<li>重置尝试次数</li>
-<li>设置当前查找的bucket为函数输入的bucket</li>
-<li></li>
-</ol>
 <h3 id="CRUSH算法案例"><a href="#CRUSH算法案例" class="headerlink" title="CRUSH算法案例"></a>CRUSH算法案例</h3><p>集群中有部分sas和ssd磁盘，现在有个业务线性能及可用性优先级高于其他业务线，能否让这个高优业务线的数据都存放在ssd磁盘上。</p>
 <p><strong>普通用户：</strong></p>
 <p><img src="/img/ceph-q.jpg" srcset="/img/loading.gif" alt="img"></p>
@@ -1028,6 +829,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 <p><img src="/img/ceph-r.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p>配置规则</p>
 <p>作者：<img src="/img/ceph-t.jpg" srcset="/img/loading.gif" alt="img"></p>
+<p>限于篇幅，我们对CRUSH的介绍十分简略，更详细的请看<a href="https://durantthorvalds.top/2020/11/27/A%20first%20glance%20at%20CRUSH/">A First Galance At Crush</a>一文.</p>
 <hr>
 <h2 id="6-定制化Ceph-RBD-QOS"><a href="#6-定制化Ceph-RBD-QOS" class="headerlink" title="6 定制化Ceph RBD QOS"></a>6 定制化Ceph RBD QOS</h2><p>QoS （Quality of Service，服务质量）起源于网络技术，它用来解决网络延迟和阻塞等问题，能够为指定的网络通信提供更好的服务能力。</p>
 <p>我们总的Ceph集群的iIO能力是有限的，比如带宽，IOPS。如何避免用户争取资源，如果保证集群所有用户资源的高可用性，以及如何保证高优用户资源的可用性。所以我们需要把有限的IO能力合理分配。</p>
@@ -1219,9 +1021,9 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/25/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">
+                      <a href="/2020/11/24/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【推荐】Ceph-ansible部署集群</span>
+                        <span class="hidden-mobile">【入门部署】Ceph-ansible部署集群</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -1230,7 +1032,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
                     
                     
                       <a href="/2020/11/19/Ceph%E6%95%B0%E6%8D%AE%E5%88%86%E5%B8%83%E5%8F%8A%E7%BC%93%E5%AD%98%E6%9B%BF%E6%8D%A2%E6%9C%BA%E5%88%B6/">
-                        <span class="hidden-mobile">CEPH 数据分布及缓存替换机制</span>
+                        <span class="hidden-mobile">【参考】CEPH 缓存替换机制</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -1431,7 +1233,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "CEPH 基础介绍&nbsp;",
+        "【入门理论】CEPH 基础介绍&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

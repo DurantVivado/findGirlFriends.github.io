@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>数组和字符串的🆒skr操作——前缀和 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>数组和字符串的🆒skr操作——前缀和&amp;差分数组 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.7k 字
+      3.7k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      36
+      49
        分钟
     </span>
   
@@ -239,10 +239,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">数组和字符串的🆒skr操作——前缀和</h1>
+            <h1 style="display: none">数组和字符串的🆒skr操作——前缀和&amp;差分数组</h1>
             
             <div class="markdown-body" id="post-body">
-              <h2 id="前缀和"><a href="#前缀和" class="headerlink" title="前缀和"></a>前缀和</h2><ul>
+              <blockquote>
+<p>前缀和，很容易让人想到高等数学中的积分操作；对称的，差分数组对应着微分操作，表示作差。让人不禁感叹大自然和计算机之间的神奇联系。</p>
+</blockquote>
+<h1 id="I-前缀和"><a href="#I-前缀和" class="headerlink" title="I 前缀和"></a>I 前缀和</h1><ul>
 <li><ol>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarray-sum-equals-k/">和为k的子数组</a>(Medium)</li>
 </ol>
@@ -383,7 +386,7 @@ s 只包含小写英文字母。</code></p>
 <p>时间复杂度: $O(N)$. $N$为字符串长度。</p>
 <p>空间复杂度: $O(1)$.</p>
 <hr>
-<h4 id="LCP-19-秋叶收藏集"><a href="#LCP-19-秋叶收藏集" class="headerlink" title="LCP 19. 秋叶收藏集"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">LCP 19. 秋叶收藏集</a></h4><p>小扣出去秋游，途中收集了一些红叶和黄叶，他利用这些叶子初步整理了一份秋叶收藏集 <code>leaves</code>， 字符串 <code>leaves</code> 仅包含小写字符 <code>r</code> 和 <code>y</code>， 其中字符 <code>r</code> 表示一片红叶，字符 <code>y</code> 表示一片黄叶。<br>出于美观整齐的考虑，小扣想要将收藏集中树叶的排列调整成「红、黄、红」三部分。每部分树叶数量可以不相等，但均需大于等于 1。每次调整操作，小扣可以将一片红叶替换成黄叶或者将一片黄叶替换成红叶。请问小扣最少需要多少次调整操作才能将秋叶收藏集调整完毕。</p>
+<h2 id="LCP-19-秋叶收藏集"><a href="#LCP-19-秋叶收藏集" class="headerlink" title="LCP 19. 秋叶收藏集"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/UlBDOe/">LCP 19. 秋叶收藏集</a></h2><p>小扣出去秋游，途中收集了一些红叶和黄叶，他利用这些叶子初步整理了一份秋叶收藏集 <code>leaves</code>， 字符串 <code>leaves</code> 仅包含小写字符 <code>r</code> 和 <code>y</code>， 其中字符 <code>r</code> 表示一片红叶，字符 <code>y</code> 表示一片黄叶。<br>出于美观整齐的考虑，小扣想要将收藏集中树叶的排列调整成「红、黄、红」三部分。每部分树叶数量可以不相等，但均需大于等于 1。每次调整操作，小扣可以将一片红叶替换成黄叶或者将一片黄叶替换成红叶。请问小扣最少需要多少次调整操作才能将秋叶收藏集调整完毕。</p>
 <p><strong>示例 1：</strong></p>
 <blockquote>
 <p>输入：<code>leaves = &quot;rrryyyrryyyrr&quot;</code></p>
@@ -403,7 +406,7 @@ s 只包含小写英文字母。</code></p>
 </ul>
 <hr>
 <p>【待更新】</p>
-<h1 id="327-区间和的个数"><a href="#327-区间和的个数" class="headerlink" title="327. 区间和的个数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-of-range-sum/">327. 区间和的个数</a></h1><p>给定一个整数数组 <code>nums</code>，返回区间和在 <code>[lower, upper]</code> 之间的个数，包含 <code>lower</code> 和 <code>upper</code>。<br>区间和 <code>S(i, j)</code> 表示在 <code>nums</code> 中，位置从 <code>i</code> 到 <code>j</code> 的元素之和，包含 <code>i</code> 和 <code>j</code> (<code>i</code> ≤ <code>j</code>)。</p>
+<h2 id="327-区间和的个数"><a href="#327-区间和的个数" class="headerlink" title="327. 区间和的个数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/count-of-range-sum/">327. 区间和的个数</a></h2><p>给定一个整数数组 <code>nums</code>，返回区间和在 <code>[lower, upper]</code> 之间的个数，包含 <code>lower</code> 和 <code>upper</code>。<br>区间和 <code>S(i, j)</code> 表示在 <code>nums</code> 中，位置从 <code>i</code> 到 <code>j</code> 的元素之和，包含 <code>i</code> 和 <code>j</code> (<code>i</code> ≤ <code>j</code>)。</p>
 <p><strong>说明:</strong><br>最直观的算法复杂度是 <em>O</em>(<em>n</em>2) ，请在此基础上优化你的算法。</p>
 <p><strong>示例:</strong></p>
 <pre><code class="hljs angelscript">输入: nums = [<span class="hljs-number">-2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">-1</span>], lower = <span class="hljs-number">-2</span>, upper = <span class="hljs-number">2</span>,
@@ -485,6 +488,94 @@ s 只包含小写英文字母。</code></p>
 <blockquote>
 <p>前缀和数组先加入0，可以简化我们很多代码！</p>
 </blockquote>
+<h1 id="II-差分数组"><a href="#II-差分数组" class="headerlink" title="II 差分数组"></a>II 差分数组</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-moves-to-make-array-complementary/">1674. 使数组互补的最少操作次数</a></p>
+</blockquote>
+<p>设数组为$a[0…n-1]$第$i-1$项为$a[i]$</p>
+<p>那么定义差分数组$diff[i] = a[i]-a[i-1]$。</p>
+<p>它的性质是前i项和是$a[i]$。</p>
+<hr>
+<h2 id="1674-使数组互补的最少操作次数"><a href="#1674-使数组互补的最少操作次数" class="headerlink" title="1674. 使数组互补的最少操作次数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-moves-to-make-array-complementary/">1674. 使数组互补的最少操作次数</a></h2><p>给你一个长度为 <strong>偶数</strong> <code>n</code> 的整数数组 <code>nums</code> 和一个整数 <code>limit</code> 。每一次操作，你可以将 <code>nums</code> 中的任何整数替换为 <code>1</code> 到 <code>limit</code> 之间的另一个整数。</p>
+<p>如果对于所有下标 <code>i</code>（<strong>下标从</strong> <code>0</code> <strong>开始</strong>），<code>nums[i] + nums[n - 1 - i]</code> 都等于同一个数，则数组 <code>nums</code> 是 <strong>互补的</strong> 。例如，数组 <code>[1,2,3,4]</code> 是互补的，因为对于所有下标 <code>i</code> ，<code>nums[i] + nums[n - 1 - i] = 5</code> 。</p>
+<p>返回使数组 <strong>互补</strong> 的 <strong>最少</strong> 操作次数。</p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>], limit = <span class="hljs-number">4</span>
+输出：<span class="hljs-number">1</span>
+解释：经过 <span class="hljs-number">1</span> 次操作，你可以将数组 nums 变成 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]（加粗元素是变更的数字）：
+nums[<span class="hljs-number">0</span>] + nums[<span class="hljs-number">3</span>] = <span class="hljs-number">1</span> + <span class="hljs-number">3</span> = <span class="hljs-number">4.</span>
+nums[<span class="hljs-number">1</span>] + nums[<span class="hljs-number">2</span>] = <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">4.</span>
+nums[<span class="hljs-number">2</span>] + nums[<span class="hljs-number">1</span>] = <span class="hljs-number">2</span> + <span class="hljs-number">2</span> = <span class="hljs-number">4.</span>
+nums[<span class="hljs-number">3</span>] + nums[<span class="hljs-number">0</span>] = <span class="hljs-number">3</span> + <span class="hljs-number">1</span> = <span class="hljs-number">4.</span>
+对于每个 i ，nums[i] + nums[n<span class="hljs-number">-1</span>-i] = <span class="hljs-number">4</span> ，所以 nums 是互补的。</code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>], limit = <span class="hljs-number">2</span>
+输出：<span class="hljs-number">2</span>
+解释：经过 <span class="hljs-number">2</span> 次操作，你可以将数组 nums 变成 [<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>] 。你不能将任何数字变更为 <span class="hljs-number">3</span> ，因为 <span class="hljs-number">3</span> &gt; limit 。</code></pre>
+<p><strong>示例 3：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>], limit = <span class="hljs-number">2</span>
+输出：<span class="hljs-number">0</span>
+解释：nums 已经是互补的。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>n == nums.length</code></li>
+<li><code>2 &lt;= n &lt;= 105</code></li>
+<li><code>1 &lt;= nums[i] &lt;= limit &lt;= 105</code></li>
+<li><code>n</code> 是偶数。</li>
+</ul>
+<hr>
+<p>这一题不考虑dp，因为相邻两项之间唯一联系是它和对称项的和相等。在确定的和下，总操作数是确定的。</p>
+<p>$nums[i]+nums[i-1] = K$我们考虑操作有三种：</p>
+<ul>
+<li>当和为K，此时不需要操作</li>
+<li>当和小于K，且$max(nums[i],nums[i-1])+limit&lt;K$，那么此时也必须修改两位</li>
+<li>当和大于K，且$min(nums[i],nums[i-1])+1&gt;K$，那么此时也必须修改两位</li>
+<li>其余情况，均只需操作一位</li>
+</ul>
+<p>总结以下，对于每一个$i$，其范围为$[a,b]=[min(nums[i],nums[i-1])+1,max(nums[i],nums[i-1])+limit]$，</p>
+<p>并且对于修改两位的情况，最极限的情况为$[2,2*limit]$</p>
+<p>对于差分数组$diff[i]$，区间$[l,r]$对应$diff[l]$和$diff[r+1]$。其最大大小为$2*limit+2$</p>
+<p>我们先用一个哈希表$freq$存储每个和的可能情况，并且更新差分数组，因为是互补的，所以</p>
+<p>$diff[a]++$且$diff[b]—;$</p>
+<p>然后遍历$i\in [2,2*limit]$</p>
+<p>如果哈希表内有该元素，对应操作数为0 ，得到其总数量为$op_0=freq[i]$</p>
+<p>然后求操作数为1的数量$op_1=diff[i]-freq[i]$</p>
+<p>最后的操作数为2直接取补集，$op_2=n/2-op_0-op_1$</p>
+<p>更新答案 $res = min(res, op_1+2*op_2)$</p>
+<p>代码</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minMoves</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> limit)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = nums.size();
+        <span class="hljs-keyword">int</span> res = INT_MAX;
+        <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; sum;<span class="hljs-comment">//计算和的频次</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">diff</span><span class="hljs-params">(<span class="hljs-number">2</span>*limit+<span class="hljs-number">2</span>)</span></span>; 
+        <span class="hljs-comment">//引入差分数组</span>
+        <span class="hljs-comment">// cout&lt;&lt;(2*limit+2)&lt;&lt;endl;</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n/<span class="hljs-number">2</span>;i++)
+        &#123;
+            sum[nums[i]+nums[n-i<span class="hljs-number">-1</span>]]++;
+            <span class="hljs-keyword">int</span> a = <span class="hljs-number">1</span>+min(nums[i],nums[n<span class="hljs-number">-1</span>-i]);
+            <span class="hljs-keyword">int</span> b = limit+max(nums[i],nums[n<span class="hljs-number">-1</span>-i])+<span class="hljs-number">1</span>;
+            diff[a]++;
+            diff[b]--;
+        &#125;
+        <span class="hljs-keyword">int</span> op_1 = <span class="hljs-number">0</span>, op_2 = <span class="hljs-number">0</span>, op_0 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> op01 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>;i &lt;= limit*<span class="hljs-number">2</span>; i++)
+        &#123;
+            <span class="hljs-comment">//我们需要统计各操作的贡献</span>
+            op01 += diff[i];
+            op_0 = sum.count(i)?sum[i]:<span class="hljs-number">0</span>;
+            op_1 = op01 - op_0;<span class="hljs-comment">//需要一次操作</span>
+            op_2 = n/<span class="hljs-number">2</span> - op01; 
+            <span class="hljs-comment">// printf(&quot;%d,%d,%d\n&quot;,op_0,op_1,op_2);</span>
+            res = min(res, op_1+op_2*<span class="hljs-number">2</span>);
+        &#125;
+        <span class="hljs-keyword">return</span> (res==INT_MAX)?<span class="hljs-number">0</span>:res;
+    &#125;
+&#125;;</code></pre>
+<p>时间复杂度$O(n/2+limit)$</p>
+<p>空间复杂度基本相同。</p>
 
             </div>
             <hr>
@@ -729,7 +820,7 @@ s 只包含小写英文字母。</code></p>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "数组和字符串的🆒skr操作——前缀和&nbsp;",
+        "数组和字符串的🆒skr操作——前缀和&差分数组&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

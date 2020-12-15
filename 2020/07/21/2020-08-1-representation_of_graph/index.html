@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      49
+      50
        分钟
     </span>
   
@@ -371,6 +371,7 @@
 <hr>
 <h1 id="Dijsktra算法"><a href="#Dijsktra算法" class="headerlink" title="Dijsktra算法"></a>Dijsktra算法</h1><blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/FrozaFerrari/xue-tu-lun-ni-zhen-di-liao-xie-zui-duan-lu-ma-post">参考：米奇妙妙屋</a></p>
+<p>在实际应用中，集中式路由选择算法用完整、全局性的网络知识计算出从元到目的地的最低开销路径。其获取全局状态信息的算法被称为链路状态LS算法。其中一种便是Dijkstra. 它通过链路状态广播实现。</p>
 </blockquote>
 <p>先用邻接矩阵存储数据，考虑采用一个二重循环，每次寻找出距离集合最近的一个点，然后数组标记它已经加入集合，然后在用当前点对不在集合中的点进行松弛，进行 <em>n</em> 次，整个操作就完成了,注意起点对应的最小距离是0.</p>
 <p><strong>cpp代码</strong></p>
@@ -587,8 +588,8 @@ pq.offer(src);<span class="hljs-comment">//压入队列</span>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-30-pointers/">
-                        <span class="hidden-mobile">神奇的多指针 【cover 脑筋急转弯💡】</span>
+                      <a href="/2020/07/21/2020-7-30-sorting-magic/">
+                        <span class="hidden-mobile">【面试向】十种排序算法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

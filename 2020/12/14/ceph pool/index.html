@@ -1,0 +1,1401 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>【参考】Ceph Pool - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-14 00:00" pubdate>
+        2020年12月14日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">【参考】Ceph Pool</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <div class="note note-primary">
+            <p>本期主要介绍Ceph pool的操作，需要您事先部署成功Ceph集群！</p><p>主要参考<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/">官方pool教程</a>。</p>
+          </div>
+<h1 id="Ceph-pool"><a href="#Ceph-pool" class="headerlink" title="Ceph pool"></a>Ceph pool</h1><p>池是用于存储对象的逻辑分区。</p>
+<p>当首次部署群集而不创建池时，Ceph使用默认池来存储数据。pool具有以下特性：</p>
+<ul>
+<li><strong>弹性</strong>：可以设置允许多少OSD发生故障而不丢失数据。对于复制池，它是对象的所需副本数/副本数。典型的配置存储一个对象和一个附加副本（即<code>size=2</code>），但是您可以确定副本/副本的数量。对于<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code">纠删码池</a>，它是编码块的数量<code>m=2</code></li>
+<li><strong>放置组</strong>(PG)：可以设置池的放置组数。一个典型的配置每个OSD使用大约100个放置组，以提供最佳的平衡，而不会消耗太多的计算资源。设置多个池时，请确保为池和整个群集设置合理数量的放置组。</li>
+<li><strong>CRUSH规则</strong>：将数据存储在池中时，对象及其副本（或用于纠删码池的块）在群集中的位置由CRUSH规则控制。如果默认规则不适用于您的用例，则可以为池创建自定义的CRUSH规则。</li>
+<li><strong>快照</strong>：使用创建快照时，可以有效地为特定池拍摄快照。<code>ceph osd pool mksnap</code></li>
+</ul>
+<p>要列出群集的池，请执行：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph osd lspools</span></code></pre>
+<h2 id="1-创建一个池"><a href="#1-创建一个池" class="headerlink" title="1 创建一个池"></a>1 创建一个池</h2><p>在创建池之前，我们有必要修改Ceph配置文件，它位于<code>\etc\ceph.conf</code>，典型的ceph配置文件如下：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create &#123;pool-name&#125; [&#123;pg-num&#125; [&#123;pgp-num&#125;]] [replicated] \
+     [crush-rule-name] [expected-num-objects]
+ceph osd<span class="hljs-built_in"> pool </span>create &#123;pool-name&#125; [&#123;pg-num&#125; [&#123;pgp-num&#125;]]   erasure \
+     [erasure-code-profile] [crush-rule-name] [expected_num_objects] [<span class="hljs-attribute">--autoscale-mode</span>=&lt;on,off,warn&gt;]</code></pre>
+<p>我们对几个比较重要的参数进行讲解：</p>
+<ul>
+<li><code>replicated|erasure</code></li>
+</ul>
+<p>官方有这样一句话。副本池需要更多的空间但是实现了Ceph所有操作，而纠删码池只实现了一部分的功能。主要是因为纠删码不支持omap，所以只能采用FileStore。</p>
+<p>实例：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>create ecpool erasure</code></pre>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="2-将池关联到应用程序"><a href="#2-将池关联到应用程序" class="headerlink" title="2 将池关联到应用程序"></a>2 将池关联到应用程序</h2><p>池在使用前需要与应用程序关联。将与CephFS一起使用的池或RGW自动创建的池自动关联。打算与RBD一起使用的池应使用该<code>rbd</code>工具进行初始化（有关更多信息，请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rbd/rados-rbd-cmds/#create-a-block-device-pool">块设备命令</a>）。</p>
+<p>对于其他情况，您可以手动将自由格式的应用程序名称关联到池。</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>application <span class="hljs-builtin-name">enable</span> &#123;pool-name&#125; &#123;application-name&#125;</code></pre>
+<p>提示：</p>
+<p>CephFS使用应用程序名称<code>cephfs</code>，RBD使用应用程序名称<code>rbd</code>，而RGW使用应用程序名称<code>rgw</code>。</p>
+<h2 id="3-设置池配额"><a href="#3-设置池配额" class="headerlink" title="3 设置池配额"></a>3 设置池配额</h2><p>您可以将池配额设置为每个池的最大字节数和/或最大对象数。</p>
+<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">pool </span><span class="hljs-built_in">set-quota</span> &#123;<span class="hljs-string">pool-name&#125;</span> [<span class="hljs-string">max_objects </span>&#123;<span class="hljs-string">obj-count&#125;</span>] [<span class="hljs-string">max_bytes </span>&#123;<span class="hljs-string">bytes&#125;</span>]</code></pre>
+<p>例如：</p>
+<pre><code class="hljs dsconfig"><span class="hljs-string">ceph </span><span class="hljs-string">osd </span><span class="hljs-string">pool </span><span class="hljs-built_in">set-quota</span> <span class="hljs-string">data </span><span class="hljs-string">max_objects </span><span class="hljs-string">10000</span></code></pre>
+<p>要删除配额，请将其值设置为<code>0</code>。</p>
+<h2 id="4-删除池"><a href="#4-删除池" class="headerlink" title="4 删除池"></a>4 删除池</h2><p>要删除池，请执行：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>delete &#123;pool-name&#125; [&#123;pool-name&#125; --yes-i-really-really-mean-it]</code></pre>
+<p>要删除池，必须在Monitor的配置中将mon_allow_pool_delete标志设置为true。否则，他们将拒绝删除池。</p>
+<p>有关更多信息，请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/configuration/mon-config-ref">Monitor Configuration</a>。</p>
+<p>如果您为自己创建的池创建了自己的规则，则在不再需要池时应考虑删除它们：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">get</span> &#123;pool-name&#125; crush_rule</code></pre>
+<p>例如，如果规则是“ 123”，则可以像这样检查其他池：</p>
+<pre><code class="hljs gradle">ceph osd <span class="hljs-keyword">dump</span> | <span class="hljs-keyword">grep</span> <span class="hljs-string">&quot;^pool&quot;</span> | <span class="hljs-keyword">grep</span> <span class="hljs-string">&quot;crush_rule 123&quot;</span></code></pre>
+<p>通过ceph osd dump可以查看monitor的映射信息，包括epoch，fsid和crush rule等。返回结果如下</p>
+<pre><code class="hljs pgsql">pool <span class="hljs-number">1</span> <span class="hljs-string">&#x27;device_health_metrics&#x27;</span> replicated size <span class="hljs-number">3</span> min_size <span class="hljs-number">2</span> crush_rule <span class="hljs-number">0</span> object_hash rjenkins pg_num <span class="hljs-number">1</span> pgp_num <span class="hljs-number">1</span> autoscale_mode <span class="hljs-keyword">on</span> last_change <span class="hljs-number">13</span> flags hashpspool stripe_width <span class="hljs-number">0</span> pg_num_min <span class="hljs-number">1</span> application mgr_devicehealth
+pool <span class="hljs-number">2</span> <span class="hljs-string">&#x27;cephfs_data&#x27;</span> replicated size <span class="hljs-number">3</span> min_size <span class="hljs-number">2</span> crush_rule <span class="hljs-number">0</span> object_hash rjenkins pg_num <span class="hljs-number">32</span> pgp_num <span class="hljs-number">32</span> autoscale_mode <span class="hljs-keyword">on</span> last_change <span class="hljs-number">17</span> flags hashpspool stripe_width <span class="hljs-number">0</span> application cephfs
+pool <span class="hljs-number">3</span> <span class="hljs-string">&#x27;cephfs_metadata&#x27;</span> replicated size <span class="hljs-number">3</span> min_size <span class="hljs-number">2</span> crush_rule <span class="hljs-number">0</span> object_hash rjenkins pg_num <span class="hljs-number">32</span> pgp_num <span class="hljs-number">32</span> autoscale_mode <span class="hljs-keyword">on</span> last_change <span class="hljs-number">18</span> flags hashpspool stripe_width <span class="hljs-number">0</span> pg_autoscale_bias <span class="hljs-number">4</span> pg_num_min <span class="hljs-number">16</span> recovery_priority <span class="hljs-number">5</span> application cephfs
+pool <span class="hljs-number">4</span> <span class="hljs-string">&#x27;ecpool&#x27;</span> erasure profile toy_ec size <span class="hljs-number">3</span> min_size <span class="hljs-number">2</span> crush_rule <span class="hljs-number">1</span> object_hash rjenkins pg_num <span class="hljs-number">16</span> pgp_num <span class="hljs-number">16</span> autoscale_mode <span class="hljs-keyword">on</span> last_change <span class="hljs-number">65</span> flags hashpspool,ec_overwrites stripe_width <span class="hljs-number">8192</span> application rgw</code></pre>
+<p>如果没有其他池使用该自定义规则，则可以从群集中删除该规则。</p>
+<p>如果您创建的用户严格地具有不再存在的池的权限，则也应该考虑删除这些用户：</p>
+<pre><code class="hljs dust"><span class="xml">ceph auth ls | grep -C 5 </span><span class="hljs-template-variable">&#123;pool-name&#125;</span>
+<span class="xml">ceph auth del </span><span class="hljs-template-variable">&#123;user&#125;</span></code></pre>
+<h2 id="5-重命名池"><a href="#5-重命名池" class="headerlink" title="5 重命名池"></a>5 重命名池</h2><p>要重命名池，请执行：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>rename &#123;current-pool-name&#125; &#123;new-pool-name&#125;</code></pre>
+<p>如果重命名池，并且您具有针对经过身份验证的用户的每个池功能，则必须使用新的池名称更新用户的功能（即上限）。</p>
+<h2 id="6-显示池统计信息"><a href="#6-显示池统计信息" class="headerlink" title="6 显示池统计信息"></a>6 显示池统计信息</h2><p>要显示池的利用率统计信息，请执行：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">rados df</span></code></pre>
+<p>返回如下</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">POOL_NAME</span>                 USED  OBJECTS  CLONES  COPIES  MISSING_ON_PRIMARY  UNFOUND  DEGRADED  RD_OPS       RD  WR_OPS      WR  USED COMPR  UNDER COMPR
+<span class="hljs-attribute">cephfs_data</span>                <span class="hljs-number">0</span> B        <span class="hljs-number">0</span>       <span class="hljs-number">0</span>       <span class="hljs-number">0</span>                   <span class="hljs-number">0</span>        <span class="hljs-number">0</span>         <span class="hljs-number">0</span>       <span class="hljs-number">0</span>      <span class="hljs-number">0</span> B       <span class="hljs-number">0</span>     <span class="hljs-number">0</span> B         <span class="hljs-number">0</span> B          <span class="hljs-number">0</span> B
+<span class="hljs-attribute">cephfs_metadata</span>        <span class="hljs-number">156</span> KiB       <span class="hljs-number">22</span>       <span class="hljs-number">0</span>      <span class="hljs-number">66</span>                   <span class="hljs-number">0</span>        <span class="hljs-number">0</span>         <span class="hljs-number">0</span>     <span class="hljs-number">362</span>  <span class="hljs-number">382</span> KiB      <span class="hljs-number">70</span>  <span class="hljs-number">24</span> KiB         <span class="hljs-number">0</span> B          <span class="hljs-number">0</span> B
+<span class="hljs-attribute">device_health_metrics</span>   <span class="hljs-number">15</span> KiB        <span class="hljs-number">1</span>       <span class="hljs-number">0</span>       <span class="hljs-number">3</span>                   <span class="hljs-number">0</span>        <span class="hljs-number">0</span>         <span class="hljs-number">0</span>      <span class="hljs-number">17</span>   <span class="hljs-number">17</span> KiB      <span class="hljs-number">19</span>  <span class="hljs-number">19</span> KiB         <span class="hljs-number">0</span> B          <span class="hljs-number">0</span> B
+<span class="hljs-attribute">ecpool</span>                  <span class="hljs-number">12</span> KiB        <span class="hljs-number">1</span>       <span class="hljs-number">0</span>       <span class="hljs-number">3</span>                   <span class="hljs-number">0</span>        <span class="hljs-number">0</span>         <span class="hljs-number">0</span>       <span class="hljs-number">0</span>      <span class="hljs-number">0</span> B       <span class="hljs-number">3</span>   <span class="hljs-number">3</span> KiB         <span class="hljs-number">0</span> B          <span class="hljs-number">0</span> B
+
+<span class="hljs-attribute">total_objects</span>    <span class="hljs-number">24</span>
+<span class="hljs-attribute">total_used</span>       <span class="hljs-number">3</span>.<span class="hljs-number">0</span> GiB
+<span class="hljs-attribute">total_avail</span>      <span class="hljs-number">57</span> GiB
+<span class="hljs-attribute">total_space</span>      <span class="hljs-number">60</span> GiB
+</code></pre>
+<p>此外，要获取特定池或全部池的I / O信息，请执行以下操作：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>stats [&#123;pool-name&#125;]</code></pre>
+<h2 id="7-制作池快照"><a href="#7-制作池快照" class="headerlink" title="7 制作池快照"></a>7 制作池快照</h2><p>要制作池的快照，请执行：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>mksnap &#123;pool-name&#125; &#123;snap-name&#125;</code></pre>
+<h2 id="8-删除池快照"><a href="#8-删除池快照" class="headerlink" title="8 删除池快照"></a>8 删除池快照</h2><p>要删除池的快照，请执行：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>rmsnap &#123;pool-name&#125; &#123;snap-name&#125;</code></pre>
+<h2 id="9-设置对象副本数"><a href="#9-设置对象副本数" class="headerlink" title="9 设置对象副本数"></a>9 设置对象副本数</h2><p>要设置复制池上对象副本的数量，请执行以下操作：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> &#123;poolname&#125; size &#123;num-replicas&#125;</code></pre>
+<div class="note note-danger">
+            <p>重要</p><p><code>{num-replicas}</code>包括所述对象本身。如果您需要该对象和该对象的两个副本，以总共三个对象的实例，请指定<code>3</code>。</p>
+          </div>
+<p>例如：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> data size 3</code></pre>
+<p>您可以为每个池执行此命令。<strong>注意：</strong>对象在降级模式下接受的I / O可能少于副本。要设置I / O所需的最小副本数，应使用该设置。例如：<code>pool size``min_size</code></p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> data min_size 2</code></pre>
+<p>这样可以确保数据池中的任何对象都不会收到少于<code>min_size</code>副本的I / O。</p>
+<h2 id="10-获取对象副本数"><a href="#10-获取对象副本数" class="headerlink" title="10 获取对象副本数"></a>10 获取对象副本数</h2><p>要获取对象副本的数量，请执行以下操作：</p>
+<pre><code class="hljs gradle">ceph osd <span class="hljs-keyword">dump</span> | <span class="hljs-keyword">grep</span> <span class="hljs-string">&#x27;replicated size&#x27;</span></code></pre>
+<p>Ceph将列出池，并突出显示该属性。默认情况下，ceph创建一个对象的两个副本（共三个副本，或3个大小）。<code>replicated size</code></p>
+<h2 id="11-池值"><a href="#11-池值" class="headerlink" title="11 池值"></a>11 池值</h2><p>要将值设置为池，请执行以下操作：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> &#123;pool-name&#125; &#123;key&#125; &#123;value&#125;</code></pre>
+<p>您可以为以下键设置值：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">compression_algorithm</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>设置用于基础BlueStore的内联压缩算法。此设置将覆盖<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/configuration/bluestore-config-ref/#inline-compression">全局设置</a>的。<code>bluestore compression algorithm</code></p>
+</li>
+<li><p>类型</p>
+<p>串</p>
+</li>
+<li><p>有效设定</p>
+<p><code>lz4</code>，<code>snappy</code>，<code>zlib</code>，<code>zstd</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">compression_mode</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>为基础BlueStore设置嵌入式压缩算法的策略。此设置将覆盖<a target="_blank" rel="noopener" href="http://docs.ceph.com/en/latest/rados/configuration/bluestore-config-ref/#inline-compression">全局设置</a>的。<code>bluestore compression mode</code></p>
+</li>
+<li><p>类型</p>
+<p>串</p>
+</li>
+<li><p>有效设定</p>
+<p><code>none</code>，<code>passive</code>，<code>aggressive</code>，<code>force</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">compression_min_blob_size</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>小于此大小的块永远不会被压缩。此设置将覆盖<a target="_blank" rel="noopener" href="http://docs.ceph.com/en/latest/rados/configuration/bluestore-config-ref/#inline-compression">全局设置</a>的。<code>bluestore compression min blob *</code></p>
+</li>
+<li><p>类型</p>
+<p>无符号整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">compression_max_blob_size</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>大于此的块<code>compression_max_blob_size</code>在压缩之前会分解为较小的斑点大小 。</p>
+</li>
+<li><p>类型</p>
+<p>无符号整数</p>
+</li>
+</ul>
+<pre><code class="hljs arduino"><span class="hljs-built_in">size</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>设置池中对象的副本数。有关更多详细信息，请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#set-the-number-of-object-replicas">设置对象副本数</a>。仅复制池。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">min_size</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>设置I / O所需的最小副本数。有关更多详细信息，请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#set-the-number-of-object-replicas">设置对象副本数</a>。对于擦除编码池，应将其设置为大于“ k”的值，因为如果我们将IO的值设置为“ k”，则不会出现冗余，并且如果OSD永久性故障，数据将会丢失。有关更多信息，请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code">擦除代码</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>版</p>
+<p><code>0.54</code> 以上</p>
+</li>
+</ul>
+<pre><code class="hljs pgsql">pg_num</code></pre>
+<ul>
+<li><p>描述</p>
+<p>计算数据放置时要使用的放置组的有效数量。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>优于<code>pg_num</code>当前值。</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">pgp_num</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>计算数据放置时要使用的放置的有效放置组数。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>等于或小于<code>pg_num</code>。</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">crush_rule</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>用于在集群中映射对象放置的规则。</p>
+</li>
+<li><p>类型</p>
+<p>串</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">allow_ec_overwrites</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>是否写入擦除代码池可以更新对象的一部分，因此cephfs和rbd可以使用它。有关更多详细信息，请参见 <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code#erasure-coding-with-overwrites">带覆盖的擦除编码</a>。</p>
+</li>
+<li><p>类型</p>
+<p>布尔型</p>
+</li>
+<li><p>版</p>
+<p><code>12.2.0</code> 以上</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hashpspool</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置HASHPSPOOL标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">nodelete</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置NODELETE标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+<li><p>版</p>
+<p>版 <code>FIXME</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">nopgchange</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置NOPGCHANGE标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+<li><p>版</p>
+<p>版 <code>FIXME</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">nosizechange</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置NOSIZECHANGE标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+<li><p>版</p>
+<p>版 <code>FIXME</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">write_fadvise_dontneed</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置WRITE_FADVISE_DONTNEED标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">noscrub</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置NOSCRUB标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">nodeep-scrub</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在给定的池上设置/取消设置NODEEP_SCRUB标志。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>1个设置标志，0个未设置标志</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_type</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>对高速缓存池启用命中集跟踪。有关其他信息，请参见<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom Filter</a>。</p>
+</li>
+<li><p>类型</p>
+<p>串</p>
+</li>
+<li><p>有效设定</p>
+<p><code>bloom</code>，<code>explicit_hash</code>，<code>explicit_object</code></p>
+</li>
+<li><p>默认</p>
+<p><code>bloom</code>。其他值用于测试。</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_count</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>要为高速缓存池存储的命中集的数量。该数字越高，<code>ceph-osd</code>守护程序消耗的RAM就越多。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p><code>1</code>。代理尚未处理&gt; 1。</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_period</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>高速缓存池的命中设置周期的持续时间（以秒为单位）。该数字越高，<code>ceph-osd</code>守护程序消耗的RAM就越多 。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>例</p>
+<p><code>3600</code> 1小时</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_fpp</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p><code>bloom</code>匹配集类型的误报概率。有关其他信息，请参见<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom Filter</a>。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>有效范围</p>
+<p>0.0-1.0</p>
+</li>
+<li><p>默认</p>
+<p><code>0.05</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_target_dirty_ratio</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在缓存分层代理将其刷新到后备存储池之前，包含修改后的（脏）对象的缓存池的百分比。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>.4</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_target_dirty_high_ratio</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在缓存分层代理将其以较高速度刷新到后备存储池之前，包含修改后的（脏）对象的缓存池的百分比。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>.6</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_target_full_ratio</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在缓存分层代理将其从缓存池中驱逐之前，包含未修改（干净）对象的缓存池的百分比。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>.8</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">target_max_bytes</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p><code>max_bytes</code>触发阈值时，Ceph将开始刷新或逐出对象 。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>例</p>
+<p><code>1000000000000</code> ＃1-TB</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">target_max_objects</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p><code>max_objects</code>触发阈值时，Ceph将开始刷新或逐出对象 。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>例</p>
+<p><code>1000000</code> ＃1M个对象</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_grade_decay_rate</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>两个连续命中点之间的温度衰减率</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>0-100</p>
+</li>
+<li><p>默认</p>
+<p><code>20</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_search_last_n</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>计算hit_sets中最多N个出现以进行温度计算</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>0-hit_set_count</p>
+</li>
+<li><p>默认</p>
+<p><code>1</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_min_flush_age</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>缓存分层代理将对象从缓存池刷新到存储池之前的时间（以秒为单位）。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>例</p>
+<p><code>600</code> 10分钟</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_min_evict_age</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>缓存分层代理将对象从缓存池中逐出之前的时间（以秒为单位）。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>例</p>
+<p><code>1800</code> 30分钟</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">fast_read</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>在擦除编码池上，如果打开此标志，则读取请求将对所有分片发出子读取，并等待直到接收到足够的分片以解码以服务于客户端。对于jerasure和isaerasure插件，一旦返回第一个K答复，就会使用从这些答复中解码的数据立即满足客户的请求。这有助于权衡一些资源以获得更好的性能。当前，仅擦除编码池支持此标志。</p>
+</li>
+<li><p>类型</p>
+<p>布尔型</p>
+</li>
+<li><p>默认值</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">scrub_min_interval</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>负载低时最小时间间隔（以秒为单位）。如果为0，则使用config中的osd_scrub_min_interval值。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">scrub_max_interval</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>池清理的最大时间间隔（以秒为单位），与群集负载无关。如果为0，则使用config中的osd_scrub_max_interval值。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">deep_scrub_interval</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>池“深度”清理的时间间隔（以秒为单位）。如果为0，则使用config中的osd_deep_scrub_interval值。</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">recovery_priority</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>设置值后，它将增加或减少计算出的预留优先级。此值的范围必须在-10到10之间。对于不太重要的池，请使用负优先级，以使它们的优先级低于任何新池。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">recovery_op_priority</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>指定该池的恢复操作优先级，而不要指定<code>osd_recovery_op_priority</code>。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<h2 id="12-获取池值"><a href="#12-获取池值" class="headerlink" title="12 获取池值"></a>12 获取池值</h2><p>要从池中获取值，请执行以下操作：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">get</span> &#123;pool-name&#125; &#123;key&#125;</code></pre>
+<p>您可能会获得以下键的值：</p>
+<pre><code class="hljs arduino"><span class="hljs-built_in">size</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>看<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#size">大小</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">min_size</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#min-size">min_size</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>版</p>
+<p><code>0.54</code> 以上</p>
+</li>
+</ul>
+<pre><code class="hljs pgsql">pg_num</code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#pg-num">pg_num</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">pgp_num</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#pgp-num">pgp_num</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>有效范围</p>
+<p>等于或小于<code>pg_num</code>。</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">crush_rule</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#crush-rule">rush_rule</a></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_type</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#hit-set-type">hit_set_type</a></p>
+</li>
+<li><p>类型</p>
+<p>串</p>
+</li>
+<li><p>有效设定</p>
+<p><code>bloom</code>，<code>explicit_hash</code>，<code>explicit_object</code></p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_count</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#hit-set-count">hit_set_count</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_period</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#hit-set-period">hit_set_period</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">hit_set_fpp</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#hit-set-fpp">hit_set_fpp</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_target_dirty_ratio</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#cache-target-dirty-ratio">cache_target_dirty_ratio</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_target_dirty_high_ratio</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#cache-target-dirty-high-ratio">cache_target_dirty_high_ratio</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_target_full_ratio</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>请参阅<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#cache-target-full-ratio">cache_target_full_ratio</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">target_max_bytes</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#target-max-bytes">target_max_bytes</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">target_max_objects</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#target-max-objects">target_max_objects</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_min_flush_age</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#cache-min-flush-age">cache_min_flush_age</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">cache_min_evict_age</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#cache-min-evict-age">cache_min_evict_age</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">fast_read</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#fast-read">fast_read</a></p>
+</li>
+<li><p>类型</p>
+<p>布尔型</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">scrub_min_interval</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#scrub-min-interval">scrub_min_interval</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">scrub_max_interval</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#scrub-max-interval">scrub_max_interval</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">deep_scrub_interval</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#deep-scrub-interval">deep_scrub_interval</a></p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">allow_ec_overwrites</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#allow-ec-overwrites">allow_ec_overwrites</a></p>
+</li>
+<li><p>类型</p>
+<p>布尔型</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">recovery_priority</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#recovery-priority">recovery_priority</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">recovery_op_priority</span></code></pre>
+<ul>
+<li><p>描述</p>
+<p>见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/#recovery-op-priority">recovery_op_priority</a></p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Ceph%E5%AE%9E%E8%B7%B5/">Ceph实践</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">小白投资入门（煎炸卤炖）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/02/kNN%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【参考】Ceph Pool&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

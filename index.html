@@ -235,11 +235,175 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/11/27/A%20first%20glance%20at%20CRUSH/">A First Galance At Crush</a>
+        <a href="/2020/12/27/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">【核心】Ceph三部曲之四:下一代对象存储引擎BlueStore</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/11/27/A%20first%20glance%20at%20CRUSH/">
+        <a href="/2020/12/27/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
+          
+          
+            
+          
+          
+            本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！参考《Ceph设计与实现》谢型果等，第二章。以及官方BlueStore教程。
+          
+下一代对象存储引擎BlueStore相比于目前FileStore，BlueStore拥有无与伦比的优势：
+
+充分考虑下一代全SSD以及NVMe SSD闪存阵列的适配。例如将高效索引元数据的引擎由Lev
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-27 00:00" pubdate>
+              2020-12-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/bluestore/">bluestore</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+              <a href="/tags/%E7%90%86%E8%AE%BA/">理论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/15/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8EPG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">【核心】Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/15/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8EPG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">
+          
+          
+            
+          
+          迁移之美——PG读写流程与状态迁移详解
+            本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！由于篇幅较大，建议先看看完理论部分的术语再看官方实践部分，最后到理论部分搜索关键字进行理解。参考《Ceph设计与实现》谢型果等，第四章。以及官方PG教程。
+          
+1 基本概念PG是Ceph最难理解的部分之一，但是它也是Ceph最精妙有意思的部分。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-15 00:00" pubdate>
+              2020-12-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/PG/">PG</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Ceph%E7%90%86%E8%AE%BA/">Ceph理论</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">【核心】Ceph学习三部曲之二:CEPH 纠删码操作&amp;API</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
+          
+          
+            
+          
+          
+            本blog包括理论和实践两个部分，力求深入浅出，实践部分需要您事先部署成功Ceph集群！参考《Ceph设计与实现》谢型果等，第三章。以及官方纠删码教程。
+          
+Part ICeph 纠删码操作
+术语K ——数据块数。
+M——编码块数。
+N——条带中块的个数，$N=K+M$。
+块（chunk）——将对象基于纠删码进行编码时，每次编码将产生若干大小的块（要求是
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-26 00:00" pubdate>
+              2020-11-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/25/A%20first%20glance%20at%20CRUSH/">【核心】Ceph学习三部曲之一:A FirstCeph学习三部曲之一:A First Galance At Crush</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/25/A%20first%20glance%20at%20CRUSH/">
           
           
             
@@ -259,8 +423,8 @@ https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-27 18:00" pubdate>
-              2020-11-27
+            <time datetime="2020-11-25 18:00" pubdate>
+              2020-11-25
             </time>
           </div>
         
@@ -295,11 +459,11 @@ https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/11/25/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">【推荐】Ceph-ansible部署集群</a>
+        <a href="/2020/11/24/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">【入门部署】Ceph-ansible部署集群</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/11/25/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">
+        <a href="/2020/11/24/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">
           
           
             
@@ -318,8 +482,8 @@ Cephadm：Ceph
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-25 18:00" pubdate>
-              2020-11-25
+            <time datetime="2020-11-24 18:00" pubdate>
+              2020-11-24
             </time>
           </div>
         
@@ -352,7 +516,7 @@ Cephadm：Ceph
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/11/22/CEPH%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">CEPH 基础介绍</a>
+        <a href="/2020/11/22/CEPH%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">【入门理论】CEPH 基础介绍</a>
       </h1>
 
       <p class="index-excerpt">
@@ -405,7 +569,7 @@ Ceph项目最早起源于Sage就读博士期间的工作（最早的成果于200
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/21/Ceph%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">【推荐】Ceph手动配置集群部署&amp;编译源码</a>
+        <a href="/2020/10/21/Ceph%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">【高级部署】Ceph手动配置集群部署&amp;编译源码</a>
       </h1>
 
       <p class="index-excerpt">
@@ -464,18 +628,24 @@ API文档
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/03/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8E%E2%80%94%E2%80%94PG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">迁移之美——PG读写流程与状态迁移详解</a>
+        <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">【参考】Ceph配置参数conf</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/03/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8E%E2%80%94%E2%80%94PG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">
+        <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
           
           
             
           
-          迁移之美——PG读写流程与状态迁移详解存储池中的对象到OSD的映射是通过PG来完成。一方面，存储池中PG数目决定了其并发处理多个对象的能力；另一方面，过多的PG会消耗大量CPU，同时容易使得磁盘长期处于过载状态。（经验表明：磁盘利用率保持在70%左右可以使得I/O并发能力和平均相应时延最佳）。
-因此在创建存储池时，需要合理的指定PG的数目，一般将每个OSD中PG限制在100个左右最佳。
-需要注意的
+          Ceph 配置参数
+涉及pool, PG, CRUSH的配置参数。
+参考官方文档
+
+一个典型的Ceph配置文件如下：
+[global]
+
+	# By default, Ceph makes 3 replicas of objects. If you want to make four
+	# copies of an object the default value--a primary copy 
         </a>
       </p>
 
@@ -483,8 +653,8 @@ API文档
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-03 00:00" pubdate>
-              2020-12-03
+            <time datetime="2020-12-15 16:00" pubdate>
+              2020-12-15
             </time>
           </div>
         
@@ -502,7 +672,7 @@ API文档
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Ceph%E7%90%86%E8%AE%BA/">Ceph理论</a>
+              <a href="/tags/Ceph%E5%AD%97%E5%85%B8/">Ceph字典</a>
             
           </div>
         
@@ -515,22 +685,20 @@ API文档
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/02/kNN%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/"></a>
+        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">距离向量路由选择算法——DV</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/02/kNN%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
+        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">
           
           
             
           
-          kNN算法实现人脸识别
-代表论文：
-http://www.stanford.edu/~hastie/Papers/dann_IEEE.pdf
+          距离向量路由选择算法——DV获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！
+这儿的自我终止指：即没有计算应该停止的信号，它就停止了。
+我们首先讨论最低路径开销之间的一种重要关系。令$d_x(y)$是从节点x到y的最低开销，由著名的Bellman-Ford方程：
 
-kNN算法流程如下：
-  1）算距离：给定测试对象，计算它与训练集中的每个对象的距离  2）找邻居：圈定距离最近的k个训练对象，作为测试对象的近邻  3）做分类：根据这k个近邻归属的主要类别，来对测试对象分类
-k太小，分类结果易受噪声点影响；k太大，近邻中
+d_x
         </a>
       </p>
 
@@ -538,44 +706,8 @@ k太小，分类结果易受噪声点影响；k太大，近邻中
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-02 21:22" pubdate>
-              2020-12-02
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">【研究向】Redis中跳表实现原理</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
-          
-          
-            
-          
-          跳表 SkipList的实现原理XII 跳跃表（Skip list）实现排序
-1206. 设计跳表  这一题可以帮助我们快速理解跳表原理。这种数据结构是由William Pugh发明的，最早出现于他在1990年发表的论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》
-
-跳跃表是一种随机化的数据结构，基于并联的链表，其效率相当于
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-01 00:00" pubdate>
-              2020-12-01
+            <time datetime="2020-12-15 00:00" pubdate>
+              2020-12-15
             </time>
           </div>
         
@@ -591,119 +723,9 @@ k太小，分类结果易受噪声点影响；k太大，近邻中
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+              <a href="/tags/%E5%9B%BE%E7%AE%97%E6%B3%95/">图算法</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/26/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">下一代对象存储引擎BlueStore</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/26/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
-          
-          
-            
-          
-          下一代对象存储引擎BlueStore相比于目前FileStore，BlueStore拥有无与伦比的优势：
-
-充分考虑下一代全SSD以及NVMe SSD闪存阵列的适配。例如将高效索引元数据的引擎由LevelDB替换为RocksDB。
-传统的基于POSIX接口的FileStore需要通过操作系统自带的文件系统间接管理磁盘。BlueStore选择绕开文件系统，从而使得I/O路径大大减小。
-在设计中将元素
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-26 00:00" pubdate>
-              2020-11-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ceph/">ceph</a>
-            
-              <a href="/categories/ceph/bluestore/">bluestore</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ceph/">ceph</a>
-            
-              <a href="/tags/%E7%90%86%E8%AE%BA/">理论</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">CEPH 纠删码操作&amp;API</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
-          
-          
-            
-          
-          
-            您必须先部署一个ceph集群，才能进行纠删码操作。
-          
-Part ICeph 纠删码操作Official Documentationerasure code
-
-术语K ——数据块数。
-M——编码块数。
-N——条带中块的个数，$N=K+M$。
-块（chunk）——将对象基于纠删码进行编码时，每次编码将产生若干大小的块（要求是有序的），Ceph通过数量相等的
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-26 00:00" pubdate>
-              2020-11-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ceph/">ceph</a>
-            
-              <a href="/categories/ceph/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ceph/">ceph</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
             
           </div>
         

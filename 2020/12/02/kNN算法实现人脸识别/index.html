@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      554 字
+      850 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      9
        分钟
     </span>
   
@@ -246,9 +246,10 @@
 <p>代表论文：</p>
 <p><a target="_blank" rel="noopener" href="http://www.stanford.edu/~hastie/Papers/dann_IEEE.pdf">http://www.stanford.edu/~hastie/Papers/dann_IEEE.pdf</a></p>
 </blockquote>
-<p>kNN算法流程如下：</p>
+<p>kNN算法属于监督学习，而且是一种典型的“懒惰学习算法”，kNN算法流程如下：</p>
 <p>  1）算距离：给定测试对象，计算它与训练集中的每个对象的距离<br>  2）找邻居：圈定距离最近的k个训练对象，作为测试对象的近邻<br>  3）做分类：根据这k个近邻归属的主要类别，来对测试对象分类</p>
-<p>k太小，分类结果易受噪声点影响；k太大，近邻中又可能包含太多的其它类别的点。（对距离加权，可以降低k值设定的影响）<br>k值通常是采用交叉检验来确定（以k=1为基准）<br>经验规则：k一般低于训练样本数的平方根</p>
+<script type="math/tex; mode=display">
+d(x,y) = \sqrt{\sum\limits_{i=1}^{n}(x_i-y_i)^2}</script><p>k太小，分类结果易受噪声点影响；k太大，近邻中又可能包含太多的其它类别的点。（对距离加权，可以降低k值设定的影响）<br>k值通常是采用交叉检验来确定（以k=1为基准）<br>经验规则：k一般低于训练样本数的平方根</p>
 <p>1、优点<br>简单，易于理解，易于实现，无需估计参数，无需训练<br>适合对稀有事件进行分类（例如当流失率很低时，比如低于0.5%，构造流失预测模型）<br>特别适合于多分类问题(multi-modal,对象具有多个类别标签)，例如根据基因特征来判断其功能分类，kNN比SVM的表现要好</p>
 <p>2、缺点<br>懒惰算法，对测试样本分类时的计算量大，内存开销大，评分慢<br>可解释性较差，无法给出决策树那样的规则</p>
 <h2 id="人脸识别指标"><a href="#人脸识别指标" class="headerlink" title="人脸识别指标"></a>人脸识别指标</h2><p>虽然跑库的时候我们一般还是看Accuracy或者Recall，不过其实实际应用的时候更多的是会用TAR(True Accept Rate)和FAR(False Accept Rate)。</p>
@@ -257,6 +258,12 @@
 <p>那么TAR则是表示正确接受的比例。就是同一个人的照片被判别为同一个人的概率。</p>
 <p><img src="https://www.zhihu.com/equation?tex=TAR+%3D+%5Cfrac%7B%E5%90%8C%E4%BA%BA%E5%88%86%E6%95%B0%3ET%7D%7B%E5%90%8C%E4%BA%BA%E6%AF%94%E8%BE%83%E7%9A%84%E6%AC%A1%E6%95%B0%7D+%5C%5C" srcset="/img/loading.gif" alt="[公式]"></p>
 <p>一般我们会计算的是在FAR为多少（比如 <img src="https://www.zhihu.com/equation?tex=10%5E%7B-3%7D" srcset="/img/loading.gif" alt="[公式]"> ）的情况下TAR为多少</p>
+<p><img src="https://img2018.cnblogs.com/blog/1011838/201901/1011838-20190123203347054-1083715070.png" srcset="/img/loading.gif" alt="sklearn算法选择"></p>
+<h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><p><strong>1.最小-最大规范化</strong><br>最小-最大规范化对原始数据进行线性变换，变换到[0,1]区间（也可以是其他固定最小最大值的区间）</p>
+<p><em>x[n] = (x[n] - min) / (max - min)</em></p>
+<p><strong>2. 标准化（Standardization or Mean Removal and Variance Scaling)</strong><br>变换后各维特征有0均值，单位方差。也叫z-score规范化（零均值规范化）。计算方式是将特征值减去均值，除以标准差。</p>
+<p><em>x[n] = (x[n] - mean) / stdev</em></p>
+<p><strong>3. L2-Normalization ( 人脸识别中会用到 )</strong><br>Normalization主要思想是对每个样本计算其p-范数，然后对该样本中每个元素除以该范数，这样处理的结果是使得每个处理后样本的p-范数（l1-norm,l2-norm）等于1。<br>p-范数的计算公式：<em>||X||p = ( |x1|^p + |x2|^p +…+ |xn|^p ）^1/p</em><br>该方法主要应用于文本分类和聚类中。例如，对于两个TF-IDF向量的l2-norm进行点积，就可以得到这两个向量的余弦相似性。</p>
 
             </div>
             <hr>
@@ -273,9 +280,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/03/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8E%E2%80%94%E2%80%94PG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">
+                      <a href="/2020/12/14/ceph%20pool/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">迁移之美——PG读写流程与状态迁移详解</span>
+                        <span class="hidden-mobile">【参考】Ceph Pool</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

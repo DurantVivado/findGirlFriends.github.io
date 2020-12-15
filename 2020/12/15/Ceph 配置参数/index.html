@@ -1,0 +1,1010 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>【参考】Ceph配置参数conf - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-15 16:00" pubdate>
+        2020年12月15日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">【参考】Ceph配置参数conf</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Ceph-配置参数"><a href="#Ceph-配置参数" class="headerlink" title="Ceph 配置参数"></a>Ceph 配置参数</h1><blockquote>
+<p>涉及pool, PG, CRUSH的配置参数。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/configuration/pool-pg-config-ref/">官方文档</a></p>
+</blockquote>
+<p>一个典型的Ceph配置文件如下：</p>
+<pre><code class="hljs routeros">[global]
+
+	# By default, Ceph makes 3 replicas of objects. <span class="hljs-keyword">If</span> you want <span class="hljs-keyword">to</span> make four
+	# copies of an object the<span class="hljs-built_in"> default </span>value--a primary copy <span class="hljs-keyword">and</span> three replica
+	# copies--reset the<span class="hljs-built_in"> default </span>values as shown <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;osd pool default size&#x27;</span>.
+	# <span class="hljs-keyword">If</span> you want <span class="hljs-keyword">to</span> allow Ceph <span class="hljs-keyword">to</span> write a lesser number of copies <span class="hljs-keyword">in</span> a degraded
+	# state, <span class="hljs-builtin-name">set</span> <span class="hljs-string">&#x27;osd pool default min size&#x27;</span> <span class="hljs-keyword">to</span> a number less than the
+	# <span class="hljs-string">&#x27;osd pool default size&#x27;</span> value.
+
+	osd<span class="hljs-built_in"> pool default </span>size = 3  # Write an object 3 times.
+	osd<span class="hljs-built_in"> pool default </span>min size = 2 # Allow writing two copies <span class="hljs-keyword">in</span> a degraded state.
+
+	# Ensure you have a realistic number of placement groups. We recommend
+	# approximately 100 per OSD. E.g., total number of OSDs multiplied by 100
+	# divided by the number of replicas (i.e., osd<span class="hljs-built_in"> pool default </span>size). So <span class="hljs-keyword">for</span>
+	# 10 OSDs <span class="hljs-keyword">and</span> osd<span class="hljs-built_in"> pool default </span>size = 4, we<span class="hljs-string">&#x27;d recommend approximately</span>
+<span class="hljs-string">	# (100 * 10) / 4 = 250.</span>
+<span class="hljs-string">        # always use the nearest power of 2</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">	osd pool default pg num = 256</span>
+<span class="hljs-string">	osd pool default pgp num = 256</span></code></pre>
+<div class="note note-primary">
+            <p>笔者注：</p><p>关于PG和PGP：</p><ul><li><p>PG =放置组( Placement Group)<br>PGP =用于放置的放置组(Placement Group for Placement purpose)</p><p>pg_num = 映射到OSD的PG的数量，它必须是2的幂次。</p><p>当对任何一个池增加pg_num时，该池的每个PG都会分裂成一半，但它们都将始终映射到其父OSD。</p><p>在此之前，Ceph不会开始重新平衡。 现在，当您为同一池增加pgp_num值时，PG开始从父级迁移到其他OSD，并且群集重新平衡开始。 这就是PGP扮演重要角色的方式。</p></li></ul>
+          </div>
+<hr>
+<blockquote>
+<p>标记为※的是笔者认为比较重要的或者需要重点理解的配置项。供参考。</p>
+</blockquote>
+<h2 id="PG"><a href="#PG" class="headerlink" title="PG"></a>PG</h2><h3 id="※mon-max-pool-pg-num"><a href="#※mon-max-pool-pg-num" class="headerlink" title="※mon max pool pg num"></a>※mon max pool pg num</h3><ul>
+<li><p>描述</p>
+<p>每个池的最大放置组数。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>65536</code></p>
+</li>
+</ul>
+<h3 id="※mon-pg-create-interval"><a href="#※mon-pg-create-interval" class="headerlink" title="※mon pg create interval"></a>※mon pg create interval</h3><ul>
+<li><p>描述</p>
+<p>在同一Ceph OSD守护进程中创建PG之间的秒数。[interval含义参考PG那篇博文]</p>
+</li>
+<li><p>类型</p>
+<p>浮动</p>
+</li>
+<li><p>默认</p>
+<p><code>30.0</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-stuck-threshold"><a href="#mon-pg-stuck-threshold" class="headerlink" title="mon pg stuck threshold"></a>mon pg stuck threshold</h3><ul>
+<li><p>描述</p>
+<p>PG被认为阻塞的秒数。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>300</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-min-inactive"><a href="#mon-pg-min-inactive" class="headerlink" title="mon pg min inactive"></a>mon pg min inactive</h3><ul>
+<li><p>描述</p>
+<p>如果PG保持不活动状态的时间<code>mon_pg_stuck_threshold</code>超过此设置的时间，将在群集日志中发出一个<code>HEALTH_ERR</code>信号。非正数表示禁用。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>1</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-warn-min-per-osd"><a href="#mon-pg-warn-min-per-osd" class="headerlink" title="mon pg warn min per osd"></a>mon pg warn min per osd</h3><ul>
+<li><p>描述</p>
+<p>如果每个OSD中的PG的平均数量低于此数量，则在群集日志中发出 <code>HEALTH_WARN</code>。（非正数禁用此功能）</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>30</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-warn-min-objects"><a href="#mon-pg-warn-min-objects" class="headerlink" title="mon pg warn min objects"></a>mon pg warn min objects</h3><ul>
+<li><p>描述</p>
+<p>如果群集中的对象总数低于此数目，则不发出警告</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>1000</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-warn-min-pool-objects"><a href="#mon-pg-warn-min-pool-objects" class="headerlink" title="mon pg warn min pool objects"></a>mon pg warn min pool objects</h3><ul>
+<li><p>描述</p>
+<p>对象号低于此数字的池不发出警告</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>1000</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-check-down-all-threshold"><a href="#mon-pg-check-down-all-threshold" class="headerlink" title="mon pg check down all threshold"></a>mon pg check down all threshold</h3><ul>
+<li><p>描述</p>
+<p>降低OSD百分比的阈值之后，我们将检查所有PG的陈旧状态。</p>
+</li>
+<li><p>类型</p>
+<p>浮动</p>
+</li>
+<li><p>默认</p>
+<p><code>0.5</code></p>
+</li>
+</ul>
+<h3 id="mon-pg-warn-max-object-skew"><a href="#mon-pg-warn-max-object-skew" class="headerlink" title="mon pg warn max object skew"></a>mon pg warn max object skew</h3><ul>
+<li><p>描述</p>
+<p>如果某个特定池的平均对象数大于整个池的平均对象数，在群集日志中发出<code>HEALTH_WARN</code> 。（零或非正数将禁用此功能）。请注意，此选项适用于管理者。<code>mon pg warn max object skew</code></p>
+</li>
+<li><p>类型</p>
+<p>浮动</p>
+</li>
+<li><p>默认</p>
+<p><code>10</code></p>
+</li>
+</ul>
+<h3 id="mon-delta-reset-interval"><a href="#mon-delta-reset-interval" class="headerlink" title="mon delta reset interval"></a>mon delta reset interval</h3><ul>
+<li><p>描述</p>
+<p>在将pg delta重置为0之前，处于非活动状态的秒数。我们跟踪每个池的已用空间的delta，因此，例如，对于我们来说，更容易理解恢复的进度或缓存层的性能。但是，如果没有报告某个池的活动，我们只需重置该池的增量历史记录即可。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>10</code></p>
+</li>
+</ul>
+<h3 id="mon-osd-max-op-age"><a href="#mon-osd-max-op-age" class="headerlink" title="mon osd max op age"></a>mon osd max op age</h3><ul>
+<li><p>描述</p>
+<p>关注之前的最大操作年龄（使其为2的幂）。如果请求被阻止的时间超过此限制，则将发出<code>HEALTH_WARN</code>。</p>
+</li>
+<li><p>类型</p>
+<p>浮动</p>
+</li>
+<li><p>默认</p>
+<p><code>32.0</code></p>
+</li>
+</ul>
+<h2 id="OSD"><a href="#OSD" class="headerlink" title="OSD"></a>OSD</h2><h3 id="osd-pg-bits"><a href="#osd-pg-bits" class="headerlink" title="osd pg bits"></a>osd pg bits</h3><ul>
+<li><p>描述</p>
+<p>每个Ceph OSD守护程序的放置组位数。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>6</code></p>
+</li>
+</ul>
+<h3 id="osd-pgp-bits"><a href="#osd-pgp-bits" class="headerlink" title="osd pgp bits"></a>osd pgp bits</h3><ul>
+<li><p>描述</p>
+<p>PGP的每个Ceph OSD守护程序的位数。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>6</code></p>
+</li>
+</ul>
+<h3 id="※osd-crush-chooseleaf-type"><a href="#※osd-crush-chooseleaf-type" class="headerlink" title="※osd crush chooseleaf type"></a>※osd crush chooseleaf type</h3><ul>
+<li><p>描述</p>
+<p><code>chooseleaf</code>在CRUSH规则中使用的存储桶类型。使用顺序等级而不是名称。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>1</code>。通常，一台主机包含一个或多个Ceph OSD守护程序。</p>
+</li>
+</ul>
+<h3 id="※osd-crush-initial-weight"><a href="#※osd-crush-initial-weight" class="headerlink" title="※osd crush initial weight"></a>※osd crush initial weight</h3><ul>
+<li><p>描述</p>
+<p>将新添加的osds的初始权重添加到crushmap中。【参考crush那篇文章】</p>
+</li>
+<li><p>类型</p>
+<p>双</p>
+</li>
+<li><p>默认</p>
+<p><code>the size of newly added osd in TB</code>。默认情况下，新添加的osd的初始压缩重量设置为以TB为单位的卷大小。有关详细信息，请参见对<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map#weightingbucketitems">存储桶项目</a>进行<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map#weightingbucketitems">加权</a>。</p>
+</li>
+</ul>
+<h3 id="※osd-pool-default-crush-rule"><a href="#※osd-pool-default-crush-rule" class="headerlink" title="※osd pool default crush rule"></a>※osd pool default crush rule</h3><ul>
+<li><p>描述</p>
+<p>创建复制池时要使用的默认CRUSH规则。</p>
+</li>
+<li><p>类型</p>
+<p>8位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>-1</code>，这意味着“<strong>选择数字ID最低的规则并使用它</strong>”。这是为了在没有规则0的情况下创建池。</p>
+</li>
+</ul>
+<h3 id="※osd-pool-erasure-code-stripe-unit"><a href="#※osd-pool-erasure-code-stripe-unit" class="headerlink" title="※osd pool erasure code stripe unit"></a>※osd pool erasure code stripe unit</h3><ul>
+<li><p>描述</p>
+<p>设置用于纠删码池的对象条带块的默认大小（以字节为单位）。每个大小为S的对象将存储为N条，每个数据块接收字节。每个字节的条带<code>N*strip_unit</code>将分别进行编码/解码。可以通过纠删码配置文件中的设置<code>strip_unit</code>来覆盖此选项 。</p>
+</li>
+<li><p>类型</p>
+<p>无符号32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>4096</code></p>
+</li>
+</ul>
+<h3 id="※osd-pool-default-size"><a href="#※osd-pool-default-size" class="headerlink" title="※osd pool default size"></a>※osd pool default size</h3><ul>
+<li><p>描述</p>
+<p>设置池中对象的副本数。预设值与相同 。<code>ceph osd pool set &#123;pool-name&#125; size &#123;size&#125;</code></p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>3</code></p>
+</li>
+</ul>
+<h3 id="※osd-pool-default-min-size"><a href="#※osd-pool-default-min-size" class="headerlink" title="※osd pool default min size"></a>※osd pool default min size</h3><ul>
+<li><p>描述</p>
+<p>设置池中对象的最小写入副本数，以确认对客户端的写入操作。如果未达到最小值，则Ceph将不会确认对客户端的写入，<strong>这可能会导致数据丢失</strong>。在<code>degraded</code>模式下运行时，此设置可确保最少数量的副本。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code>，表示没有特别的下限。如果<code>0</code>，最小值为。<code>size - (size / 2)</code></p>
+</li>
+</ul>
+<h3 id="※osd-pool-default-pg-num"><a href="#※osd-pool-default-pg-num" class="headerlink" title="※osd pool default pg num"></a>※osd pool default pg num</h3><ul>
+<li><p>描述</p>
+<p>池的默认放置组数。默认值是一样<code>pg_num</code>用<code>mkpool</code>。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>32</code></p>
+</li>
+</ul>
+<h3 id="osd-pool-default-pgp-num"><a href="#osd-pool-default-pgp-num" class="headerlink" title="osd pool default pgp num"></a>osd pool default pgp num</h3><ul>
+<li><p>描述</p>
+<p>池放置的默认放置组数。默认值是一样<code>pgp_num</code>用<code>mkpool</code>。PG和PGP应该相等（目前）。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>8</code></p>
+</li>
+</ul>
+<h3 id="osd-pool-default-flags"><a href="#osd-pool-default-flags" class="headerlink" title="osd pool default flags"></a>osd pool default flags</h3><ul>
+<li><p>描述</p>
+<p>新池的默认标志。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>0</code></p>
+</li>
+</ul>
+<h3 id="osd-max-pgls"><a href="#osd-max-pgls" class="headerlink" title="osd max pgls"></a>osd max pgls</h3><ul>
+<li><p>描述</p>
+<p>要列出的展示位置组的最大数量。请求大量请求的客户端可以占用Ceph OSD守护程序。</p>
+</li>
+<li><p>类型</p>
+<p>无符号64位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>1024</code></p>
+</li>
+<li><p>注意</p>
+<p>默认应该没问题。</p>
+</li>
+</ul>
+<h3 id="osd-min-pg-log-entries"><a href="#osd-min-pg-log-entries" class="headerlink" title="osd min pg log entries"></a>osd min pg log entries</h3><ul>
+<li><p>描述</p>
+<p>修剪日志文件时要保留的最小放置组日志数。</p>
+</li>
+<li><p>类型</p>
+<p>32位Int Unsigned</p>
+</li>
+<li><p>默认</p>
+<p><code>250</code></p>
+</li>
+</ul>
+<h3 id="osd-max-pg-log-entries"><a href="#osd-max-pg-log-entries" class="headerlink" title="osd max pg log entries"></a>osd max pg log entries</h3><ul>
+<li><p>描述</p>
+<p>修剪日志文件时要保留的放置组日志的最大数量。</p>
+</li>
+<li><p>类型</p>
+<p>32位Int Unsigned</p>
+</li>
+<li><p>默认</p>
+<p><code>10000</code></p>
+</li>
+</ul>
+<h3 id="osd-default-data-pool-replay-window"><a href="#osd-default-data-pool-replay-window" class="headerlink" title="osd default data pool replay window"></a>osd default data pool replay window</h3><ul>
+<li><p>描述</p>
+<p>OSD等待客户端重播请求的时间（以秒为单位）。</p>
+</li>
+<li><p>类型</p>
+<p>32位整数</p>
+</li>
+<li><p>默认</p>
+<p><code>45</code></p>
+</li>
+</ul>
+<h3 id="osd-max-pg-per-osd-hard-ratio"><a href="#osd-max-pg-per-osd-hard-ratio" class="headerlink" title="osd max pg per osd hard ratio"></a>osd max pg per osd hard ratio</h3><ul>
+<li><p>描述</p>
+<p>在OSD拒绝创建新PG之前，集群允许的每个OSD PG数量的比率。如果OSD服务的PG数量超过<code>osd max pg per osd hard ratio*mon max pg per osd</code>，则OSD停止创建新的PG 。</p>
+</li>
+<li><p>类型</p>
+<p>浮动</p>
+</li>
+<li><p>默认</p>
+<p><code>2</code></p>
+</li>
+</ul>
+<h3 id="※osd-recovery-priority"><a href="#※osd-recovery-priority" class="headerlink" title="※osd recovery priority"></a>※osd recovery priority</h3><ul>
+<li><p>描述</p>
+<p>工作队列中恢复的优先级。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>5</code></p>
+</li>
+</ul>
+<h3 id="※osd-recovery-op-priority"><a href="#※osd-recovery-op-priority" class="headerlink" title="※osd recovery op priority"></a>※osd recovery op priority</h3><ul>
+<li><p>描述</p>
+<p>如果不覆盖池，则用于恢复操作的默认优先级。</p>
+</li>
+<li><p>类型</p>
+<p>整数</p>
+</li>
+<li><p>默认</p>
+<p><code>3</code></p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/PG/">PG</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Ceph%E5%AD%97%E5%85%B8/">Ceph字典</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/27/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【核心】Ceph三部曲之四:下一代对象存储引擎BlueStore</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">
+                        <span class="hidden-mobile">距离向量路由选择算法——DV</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【参考】Ceph配置参数conf&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

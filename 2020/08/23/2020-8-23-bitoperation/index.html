@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.9k 字
+      3.2k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      21
+      39
        分钟
     </span>
   
@@ -274,12 +274,15 @@
 <p>461 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hamming-distance/">汉明距离</a></p>
 <p>338 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/counting-bits">比特位计数</a>（Medium）</p>
 <ol>
-<li>解数独</li>
+<li><p>解数独</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-incompatibility/">最小不兼容性</a></p>
+</li>
 </ol>
 <p>树状数组 的LowBit操作</p>
 <p>….</p>
 <hr>
-<p>我们使用长度为9的数组表示每个数字是否出现过。我们同样也可以借助位运算，仅使用一个整数表示每个数字是否出现过。</p>
+<h2 id="Brian-kernighan算法"><a href="#Brian-kernighan算法" class="headerlink" title="Brian kernighan算法"></a><strong>Brian kernighan算法</strong></h2><p>我们使用长度为9的数组表示每个数字是否出现过。我们同样也可以借助位运算，仅使用一个整数表示每个数字是否出现过。</p>
 <p>具体地，数$b$ 的二进制表示的第$i$位（从低到高，最低位为第$0$位），当且仅当数字$i+1$已经出现过。例如当 b 的二进制表示为 $(011000100)_2$ 时，就表示数字 3，7，8 已经出现过。</p>
 <p>位运算有一些基础的使用技巧。下面列举了所有在代码中使用到的技巧：</p>
 <ul>
@@ -293,12 +296,6 @@
 <p>具体应用见$\lfloor$回溯算法$\rceil$    </p>
 </li>
 </ul>
-<hr>
-<p>大多数编程语言中，都存在各种内置计算等于 1 的位数函数。如果这是一个项目中的问题，应该直接使用内置函数，而不是重复造轮子。</p>
-<pre><code class="hljs python">bin(x ^ y).count(<span class="hljs-string">&#x27;1&#x27;</span>)</code></pre>
-<pre><code class="hljs C++">binset&lt;<span class="hljs-number">32</span>&gt;(x^y).count();</code></pre>
-<pre><code class="hljs java">Integer.bitCount(x ^ y);</code></pre>
-<p><strong>Brian kernighan算法</strong></p>
 <p>该算法的关键在于我们每次对$number$和$number-1$之间进行按位与操作后，$number$中最右边的1会变成0。</p>
 <script type="math/tex; mode=display">
 n\&(n-1)</script><p><strong>复杂度分析</strong></p>
@@ -306,11 +303,43 @@ n\&(n-1)</script><p><strong>复杂度分析</strong></p>
 <li>时间复杂度：$O(\log n)$。和位移方法类似，算法的时间复杂度取决于 $m$ 和 $n$ 二进制展开的位数。尽管和位移方法具有相同的渐近复杂度，但 Brian Kernighan 的算法需要的迭代次数会更少，因为它跳过了两个数字之间的所有零位。</li>
 <li>空间复杂度：$O(1)$。我们只需要常数空间存放若干变量。</li>
 </ul>
-<p><strong>Hamming距离</strong></p>
-<blockquote>
-<p>461 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hamming-distance/">汉明距离</a></p>
-</blockquote>
-<p>汉明距离广泛应用于多个领域。在编码理论中用于错误检测，在信息论中量化字符串之间的差异。</p>
+<hr>
+<h2 id="内置二进制函数"><a href="#内置二进制函数" class="headerlink" title="内置二进制函数"></a>内置二进制函数</h2><p>大多数编程语言中，有现成的库函数（如STL）。如果这是一个项目中的问题，应该直接使用内置函数，而不是重复造轮子。</p>
+<p>python</p>
+<pre><code class="hljs python">bin(x ^ y).count(<span class="hljs-string">&#x27;1&#x27;</span>)</code></pre>
+<p>C++</p>
+<pre><code class="hljs C++">binset&lt;<span class="hljs-number">32</span>&gt;(x^y).count();</code></pre>
+<p>当然还有更快的（在汇编层次上优化的）</p>
+<ul>
+<li><code>__builtin_popcount(x)</code>： x中1的位数。</li>
+</ul>
+<p>有时候我们想把二进制直接打印出来</p>
+<p>在C++中可以用bitset</p>
+<pre><code class="hljs cpp"><span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-built_in">bitset</span>&lt;<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">int</span>)*8&gt;(bit)&lt;&lt;<span class="hljs-built_in">endl</span>;<span class="hljs-comment">//打印出来是32位</span></code></pre>
+<ul>
+<li><code>__builtin_ctz</code> 函数：用于求一个二进制数的最低位的 1 的右侧的 0 的个数。<br>示例： 求 <code>__builtin_ctz(8)</code>，由于 8 = (1000)  8=(1000) ，其最低位的 1 右侧的 0 的个数有 3 个，故为 3。</li>
+</ul>
+<p>Java</p>
+<pre><code class="hljs java">Integer.bitCount(x ^ y);</code></pre>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><hr>
+<h2 id="LowBit"><a href="#LowBit" class="headerlink" title="LowBit"></a>LowBit</h2><p>用于找到一个二进制数的最低位的 1，并把它 <strong>按照原来的位置</strong> 返回。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lowbit</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span> </span>&#123; <span class="hljs-keyword">return</span> x &amp; (-x); &#125;</code></pre>
+<p>那么如果是HighBit呢，</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> <span class="hljs-title">get_hight_bit</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> a)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> prev, curr;
+    
+    prev = a;
+    curr = a;
+    <span class="hljs-keyword">while</span>(curr)
+    &#123;
+        prev = curr;
+        curr &amp;= prev - <span class="hljs-number">1</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> prev;
+&#125;</code></pre>
+<hr>
+<h2 id="Hamming距离"><a href="#Hamming距离" class="headerlink" title="Hamming距离"></a><strong>Hamming距离</strong></h2><h4 id="461-汉明距离"><a href="#461-汉明距离" class="headerlink" title="461 汉明距离"></a>461 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hamming-distance/">汉明距离</a></h4><p>汉明距离广泛应用于多个领域。在编码理论中用于错误检测，在信息论中量化字符串之间的差异。</p>
 <p>两个整数之间的汉明距离是对应位置上数字不同的位数。</p>
 <p><img src="\img\hamming.png" srcset="/img/loading.gif" alt="img"></p>
 <p>根据以上定义，提出一种 XOR 的位运算，当且仅当输入位不同时输出为 1。</p>
@@ -347,10 +376,9 @@ n\&(n-1)</script><p><strong>复杂度分析</strong></p>
 <li><p>空间复杂度：$O(1)$，与输入无关，使用恒定大小的空间。</p>
 </li>
 </ul>
-<p><strong>动态规划</strong>+<strong>最高有效位</strong></p>
-<p>有一些位操作题目用动态规划解也十分方便和快速。</p>
-<p>比如 338 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/counting-bits">比特位计数</a>（Medium）</p>
-<blockquote>
+<hr>
+<h2 id="动态规划-最高有效位"><a href="#动态规划-最高有效位" class="headerlink" title="动态规划+最高有效位"></a><strong>动态规划</strong>+<strong>最高有效位</strong></h2><p>有一些位操作题目用动态规划解也十分方便和快速。</p>
+<h4 id="338-比特位计数（Medium）"><a href="#338-比特位计数（Medium）" class="headerlink" title="338 比特位计数（Medium）"></a>338 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/counting-bits">比特位计数</a>（Medium）</h4><blockquote>
 <p>给定一个非负整数 <strong>num</strong>。对于 <strong>0 ≤ i ≤ num</strong> 范围中的每个数字 <strong>i</strong> ，计算其二进制数中的 1 的数目并将它们作为数组返回。</p>
 </blockquote>
 <p>假设有一个整数：</p>
@@ -375,7 +403,106 @@ P(x + b) = P(x) + 1, b = 2^m > x</script><p>有了状态转移函数，我们可
 <p>$x’ = (100101110)_2 = (302)_{10}$<br>可以发现 $x’$与 $x$ 只有一位不同，这是因为$x’$  可以看做 xx 移除最低有效位的结果。</p>
 <p>这样，我们就有了下面的状态转移函数：</p>
 <script type="math/tex; mode=display">
-P(x) = P(x >> 1) + (x \mod 2)</script>
+P(x) = P(x >> 1) + (x \mod 2)</script><hr>
+<h2 id="枚举二进制子集"><a href="#枚举二进制子集" class="headerlink" title="枚举二进制子集"></a>枚举二进制子集</h2><p>设我们有一个二进制<strong>掩码</strong>$mask$，我们想得到它子集，子集$sub$的定义为：$1\le sub\le mask$且$sub\&amp;mask!=0$的数的集合。一个很巧妙的方法是类比Brian算法</p>
+<pre><code class="hljs gcode"><span class="hljs-keyword">sub</span> = mask
+<span class="hljs-keyword">while</span> <span class="hljs-keyword">sub</span>:
+	<span class="hljs-keyword">sub</span> = <span class="hljs-comment">(sub-1)</span>&amp;mask</code></pre>
+<p>让我们来看一道题</p>
+<h4 id="1681-最小不兼容性（hard）"><a href="#1681-最小不兼容性（hard）" class="headerlink" title="1681. 最小不兼容性（hard）"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-incompatibility/">1681. 最小不兼容性</a>（hard）</h4><p>给你一个整数数组 <code>nums</code> 和一个整数 <code>k</code> 。你需要将这个数组划分到 <code>k</code> 个相同大小的子集中，使得同一个子集里面没有两个相同的元素。</p>
+<p>一个子集的 <strong>不兼容性</strong> 是该子集里面最大值和最小值的差。</p>
+<p>请你返回将数组分成 <code>k</code> 个子集后，各子集 <strong>不兼容性</strong> 的 <strong>和</strong> 的 <strong>最小值</strong> ，如果无法分成分成 <code>k</code> 个子集，返回 <code>-1</code> 。</p>
+<p>子集的定义是数组中一些数字的集合，对数字顺序没有要求。</p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>], k = <span class="hljs-number">2</span>
+输出：<span class="hljs-number">4</span>
+解释：最优的分配是 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] 和 [<span class="hljs-number">1</span>,<span class="hljs-number">4</span>] 。
+不兼容性和为 (<span class="hljs-number">2</span><span class="hljs-number">-1</span>) + (<span class="hljs-number">4</span><span class="hljs-number">-1</span>) = <span class="hljs-number">4</span> 。
+注意到 [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>] 和 [<span class="hljs-number">2</span>,<span class="hljs-number">4</span>] 可以得到更小的和，但是第一个集合有 <span class="hljs-number">2</span> 个相同的元素，所以不可行。</code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>], k = <span class="hljs-number">4</span>
+输出：<span class="hljs-number">6</span>
+解释：最优的子集分配为 [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]，[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]，[<span class="hljs-number">6</span>,<span class="hljs-number">8</span>] 和 [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>] 。
+不兼容性和为 (<span class="hljs-number">2</span><span class="hljs-number">-1</span>) + (<span class="hljs-number">3</span><span class="hljs-number">-2</span>) + (<span class="hljs-number">8</span><span class="hljs-number">-6</span>) + (<span class="hljs-number">3</span><span class="hljs-number">-1</span>) = <span class="hljs-number">6</span> 。</code></pre>
+<p><strong>示例 3：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>], k = <span class="hljs-number">3</span>
+输出：<span class="hljs-number">-1</span>
+解释：没办法将这些数字分配到 <span class="hljs-number">3</span> 个子集且满足每个子集里没有相同数字。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= k &lt;= nums.length &lt;= 16</code></li>
+<li><code>nums.length</code> 能被 <code>k</code> 整除。</li>
+<li><code>1 &lt;= nums[i] &lt;= nums.length</code></li>
+</ul>
+<hr>
+<p>这一题最鲜明的特征就是——数组范围非常有限，最多16位，这就明示我们可能要使用位运算了，因为有很多状态，要结合dp。</p>
+<p>一个直观的想法就是枚举子集，然后找到最小的那个解。所以要利用掩码mask，某一位为1表示 选择这个数，为0表示我们不选这个数。极端的两种情况是，我们什么都不选，那就是000…00（n个 0），或者全选111…111（n个1）.</p>
+<p>我们就可以枚举$[1,1&lt;&lt;n)$的所有情况，然后我们考虑如何分割，按照题目要求，每个子集$sub$合理的条件为：</p>
+<ul>
+<li>包含$n/k$个1。</li>
+<li>任意两个1对应nums中不同元素</li>
+</ul>
+<p>因而我们得到一个十分难以想到的状态转移方程：</p>
+<script type="math/tex; mode=display">
+f[mask]=\min\limits_{isValid(sub)}(f[mask \oplus sub])+ value[sub])</script><p>其中，$\oplus$表示异或，$mask\oplus sub$表示除$sub$以外的所有其它子集，$value$是$sub$对应的不相容性。</p>
+<p>对1的个数判断可以用<code>__builtin_popcount</code></p>
+<p>代码</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">minimumIncompatibility</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = nums.size();
+        <span class="hljs-keyword">int</span> m = n/k;<span class="hljs-comment">//每个子集的大小</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">dp</span><span class="hljs-params">(<span class="hljs-number">1</span>&lt;&lt;n, <span class="hljs-number">-1</span>)</span></span>;
+        dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;<span class="hljs-comment">//0表示什么都不取，不兼容性为0</span>
+        <span class="hljs-comment">//mask 中 1表示选择 0表示不选择，sub是mask一个子集</span>
+        <span class="hljs-comment">// dp[mask] = min(dp[mask^sub]+value[sub]);</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">value</span><span class="hljs-params">((<span class="hljs-number">1</span>&lt;&lt;n), <span class="hljs-number">-1</span>)</span></span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> sub = <span class="hljs-number">1</span>; sub &lt; (<span class="hljs-number">1</span>&lt;&lt;n); sub ++)
+        <span class="hljs-keyword">if</span>(__builtin_popcount(sub) == m)
+        &#123;<span class="hljs-comment">//</span>
+            <span class="hljs-built_in">unordered_map</span>&lt;<span class="hljs-keyword">int</span>,<span class="hljs-keyword">int</span>&gt; freq;
+            <span class="hljs-keyword">bool</span> flag = <span class="hljs-literal">true</span>;
+            <span class="hljs-comment">//判断sub中任意两个1对应nums中元素不能相同</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+            <span class="hljs-keyword">if</span>(sub&amp;(<span class="hljs-number">1</span>&lt;&lt;i)) 
+            &#123;
+                freq[nums[i]] ++; 
+                <span class="hljs-keyword">if</span>(freq[nums[i]] &gt; <span class="hljs-number">1</span>)
+                &#123;
+                    flag = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">break</span>;
+                &#125;
+            &#125;
+            <span class="hljs-keyword">if</span>(flag)
+            &#123;
+                <span class="hljs-comment">//统计该子集的不兼容性</span>
+                <span class="hljs-keyword">int</span> min_ele = INT_MAX, max_ele = INT_MIN;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;k: freq)
+                &#123;
+                    min_ele = min(min_ele, k.first);
+                    max_ele = max(max_ele, k.first);
+                &#125;
+                value[sub] = (max_ele - min_ele);
+                <span class="hljs-comment">// cout&lt;&lt;bitset&lt;sizeof(int)*4&gt;(sub)&lt;&lt;&quot;,Value:&quot;&lt;&lt;(max_ele - min_ele)&lt;&lt;endl;</span>
+            &#125;
+        &#125;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> mask = <span class="hljs-number">1</span>;mask &lt; (<span class="hljs-number">1</span>&lt;&lt;n);mask ++)
+        <span class="hljs-keyword">if</span>(__builtin_popcount(mask)%m == <span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> sub = mask;sub; sub=(sub<span class="hljs-number">-1</span>)&amp;mask)
+            <span class="hljs-keyword">if</span>(value[sub]!=<span class="hljs-number">-1</span> &amp;&amp; dp[sub^mask] != <span class="hljs-number">-1</span>)
+            <span class="hljs-keyword">if</span>(dp[mask] == <span class="hljs-number">-1</span>)
+                dp[mask] = dp[mask^sub] + value[sub] ;
+            <span class="hljs-keyword">else</span> 
+                dp[mask] = min(dp[mask],dp[mask^sub]+value[sub]);
+        &#125;
+        
+        <span class="hljs-keyword">return</span> dp[(<span class="hljs-number">1</span>&lt;&lt;n)<span class="hljs-number">-1</span>];
+    &#125;
+&#125;;</code></pre>
+<p>直观来看，对于有 $i$ 个 1 的二进制数字，需要 $2^i$ 的时间复杂度。而有 $i$ 个 1 的二进制数字有 $C(n,i)$ 个，所以这段代 码的时间复杂度为 $\sum_{i=0}^{n} C(n,i)⋅2^i$。 根据二项式定理： <script type="math/tex">(1 + x)^n = \sum_{i = 0}^n C(n, i) x^i</script> 在本问题中 $x = 2$</p>
+<p>时间复杂度是$O(3^n)$</p>
+
             </div>
             <hr>
             <div>

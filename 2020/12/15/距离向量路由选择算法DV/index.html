@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>迁移之美——PG读写流程与状态迁移详解 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>距离向量路由选择算法——DV - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -179,8 +179,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-12-03 00:00" pubdate>
-        2020年12月3日 凌晨
+      <time datetime="2020-12-15 00:00" pubdate>
+        2020年12月15日 凌晨
       </time>
     </span>
   
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      423 字
+      330 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      3
        分钟
     </span>
   
@@ -239,18 +239,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">迁移之美——PG读写流程与状态迁移详解</h1>
+            <h1 style="display: none">距离向量路由选择算法——DV</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="迁移之美——PG读写流程与状态迁移详解"><a href="#迁移之美——PG读写流程与状态迁移详解" class="headerlink" title="迁移之美——PG读写流程与状态迁移详解"></a>迁移之美——PG读写流程与状态迁移详解</h1><p>存储池中的对象到OSD的映射是通过PG来完成。一方面，存储池中PG数目决定了其并发处理多个对象的能力；另一方面，过多的PG会消耗大量CPU，同时容易使得磁盘长期处于过载状态。（经验表明：磁盘利用率保持在70%左右可以使得I/O并发能力和平均相应时延最佳）。</p>
-<p>因此在创建存储池时，需要合理的指定PG的数目，一般将每个OSD中PG限制在100个左右最佳。</p>
-<p>需要注意的是，创建存储池中指定的PG数目其实是指<strong>逻辑PG数目</strong>。为了数据的可靠性，Ceph会将每个逻辑PG转换为多个实例PG，由它们负责将对象的不同备份或者部分写入不同的OSD。</p>
-<p>如果使用多副本，那么每个逻辑PG被转换为与副本数相等的PG实例。处于数据一致性考虑，我们可以选择Paxos作为数据分布一致性算法，但这样过于重量级。其实我们只需要在PG实例中选择一个主要的PG作为通用的入口进行操作分发或者集中（例如peering）。</p>
-<p>如果使用纠删码，每个逻辑PG会被分为k+m个实例。与多副本不同，这些PF只保存每个对象的一个分片（shard），所以需要对其身份进行严格区分。同样，需要在PG实例中选择一个主要的PG。</p>
-<blockquote>
-<p>思考：是否需要对</p>
-</blockquote>
-<p>按照约定，主要PG由CRUSH返回的第一个OSD充当。</p>
+              <h1 id="距离向量路由选择算法——DV"><a href="#距离向量路由选择算法——DV" class="headerlink" title="距离向量路由选择算法——DV"></a>距离向量路由选择算法——DV</h1><p>获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！</p>
+<p>这儿的自我终止指：即没有计算应该停止的信号，它就停止了。</p>
+<p>我们首先讨论最低路径开销之间的一种重要关系。令$d_x(y)$是从节点x到y的最低开销，由著名的Bellman-Ford方程：</p>
+<script type="math/tex; mode=display">
+d_x(y)=min_v\{c(x,v)+d_v(y)\}</script><p>$c(x,y)$表示x与y之间的边的开销。这正是Dijkstra算法的核心思路。</p>
+<p>我们令$D_x(y)$为节点x到邻近的每一个节点y的<strong>距离向量</strong>。</p>
+<p>每个节点不时的向每个邻居发送它的距离向量副本。当节点x从它任何一个邻居v收到一个新的距离向量，它就保存，然后根据Bellford-man方程更新自己的距离向量，如果自己的距离向量发生改变，那么它向所有邻居广播更新后的距离向量。令人惊奇的是，只要所有节点都异步地交换它们的距离向量，每个开销$D_x(y)$都会收敛到$d_x(y)$!!!</p>
 
             </div>
             <hr>
@@ -260,9 +258,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
-                    
-                      <a class="hover-with-bg" href="/categories/ceph/PG/">PG</a>
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     
                   </div>
                 
@@ -270,7 +266,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Ceph%E7%90%86%E8%AE%BA/">Ceph理论</a>
+                      <a class="hover-with-bg" href="/tags/%E5%9B%BE%E7%AE%97%E6%B3%95/">图算法</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
                     
                   </div>
                 
@@ -283,9 +281,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/12/31/2020-10-8-article_navigator/">
+                      <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【置顶】本博客导航！</span>
+                        <span class="hidden-mobile">【参考】Ceph配置参数conf</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -293,8 +291,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/12/02/kNN%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2020/12/15/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8EPG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">
+                        <span class="hidden-mobile">【核心】Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -495,7 +493,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "迁移之美——PG读写流程与状态迁移详解&nbsp;",
+        "距离向量路由选择算法——DV&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

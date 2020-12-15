@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>解华容道 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>启发式搜索——探索华容道 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      624 字
+      2.3k 字
     </span>
   
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      25
        分钟
     </span>
   
@@ -239,15 +239,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">解华容道</h1>
+            <h1 style="display: none">启发式搜索——探索华容道</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="解华容道问题"><a href="#解华容道问题" class="headerlink" title="解华容道问题"></a>解华容道问题</h1><h2 id="状态空间表示法及搜索策略"><a href="#状态空间表示法及搜索策略" class="headerlink" title="状态空间表示法及搜索策略"></a>状态空间表示法及搜索策略</h2><p>华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.</p>
+              <h1 id="启发式搜索——探索华容道"><a href="#启发式搜索——探索华容道" class="headerlink" title="启发式搜索——探索华容道"></a>启发式搜索——探索华容道</h1><h1 id="1-引入"><a href="#1-引入" class="headerlink" title="1 引入"></a>1 引入</h1><p>华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.</p>
 <p><img src="https://img-blog.csdn.net/20161002102820064" srcset="/img/loading.gif" alt="同质"></p>
-<hr>
-<p>我们不妨从简单问题出发，考虑一个3x3的华容道问题。</p>
-<p><img src="https://exp-picture.cdn.bcebos.com/025d87c0affce18685f722c61f1fbee435daeb6c.jpg?x-bce-process=image%2Fresize%2Cm_lfit%2Cw_500%2Climit_1" srcset="/img/loading.gif" alt="数字华容道游戏3X3模式怎么过？"></p>
-<p>在搜索时需要解决的基本问题：</p>
+<p>我们稍后再考虑如何具体解决。</p>
+<p>我们不禁感叹老祖宗的智慧，华容道问题的推广——便是著名的N数码问题。下面是8数码问题，我们可以很容易得到它的状态空间为$O(9!)=O(1)$。</p>
+<p><img src="https://exp-picture.cdn.bcebos.com/025d87c0affce18685f722c61f1fbee435daeb6c.jpg?x-bce-process=image%2Fresize%2Cm_lfit%2Cw_500%2Climit_1" srcset="/img/loading.gif" alt=""></p>
+<p>更难的是15数码问题，或者31数码问题。传统的回溯或者dfs显然不能满足要求（TLE）。</p>
+<h1 id="2-术语"><a href="#2-术语" class="headerlink" title="2 术语"></a>2 术语</h1><p>在搜索时需要解决的基本问题：</p>
 <ul>
 <li>搜索过程能否一定能找到一个解</li>
 <li>找到一个解，是否为最优解</li>
@@ -262,20 +263,167 @@
 <li>状态空间：四元组$（S，O，S_0，G）$</li>
 </ol>
 <p><strong>搜索分类</strong></p>
-<p><code>盲目搜索</code>：在特定问题不具有任何相关信息，包括DFS和BFS。</p>
-<p><code>启发式搜索</code>:考虑特定问题领域可应用的知识，动态地确定调用操作算子的步骤。优先选择较合适的操作算子，尽量减少不必要的搜索，以尽快到达目标状态。</p>
+<p>盲目搜索：在特定问题不具有任何相关信息，包括DFS和BFS。</p>
+<p>启发式搜索：考虑特定问题领域可应用的知识，动态地确定调用操作算子的步骤。优先选择较合适的操作算子，尽量减少不必要的搜索，以尽快到达目标状态。</p>
 <blockquote>
-<p>A*启发式搜索</p>
+<p>启发式搜索A与A*</p>
+<p>它们都是定义一个评价函数$f$，然后对当前的搜索状态进行评估，然后找出一个代价最小的节点来扩展。A*表示的是最短路径的代价，在路径规划类问题中，它被证明是最优解法。</p>
 </blockquote>
-<p>A*核心的思想是 <script type="math/tex">f(n)=g(n)+h(n)</script></p>
-<p><script type="math/tex">f(n)</script>是节点n的综合优先级，<script type="math/tex">g(n)</script>是节点n距离起点的代价，<script type="math/tex">h(n)</script>是节点n距离终点的预计代价，也即启发函数,显然<script type="math/tex">h(n)</script>的好坏直接关乎到算法的好坏，一般而言<script type="math/tex">h(n)</script>比最优解大，一定是错误的，没有任何意义，<script type="math/tex">h(n)</script>与最优解相同，是理想状态；如果<script type="math/tex">h(n)</script>比最优解小，那么相差越大性能越差。一般用<code>open_set</code>来表示待遍历的节点，<code>close_set</code>表示已经遍历过的节点。</p>
-<p>为了避免重复搜索或者陷入死循环，我们需要记录已经经历的状态，以及为了回溯，我们需要另外一个表记录相邻的状态。</p>
-<p>设网格大小4x4, 给定任意初始状态S,请返回达到目标状态G所需要的最小步骤数.</p>
-<blockquote>
-<p>我们可以把华容道问题转换为并查集，每次只能交换空白方块和邻近方块，</p>
-<p>在最好的情况下，所有块都排好了，那么这样交换次数为 $N-N$</p>
-<p>在最坏情况下，</p>
+<p>启发式搜索的核心的思想是 <script type="math/tex">f(n)=g(n)+h(n)</script></p>
+<p>$g^*(n)$：表示从初始节点s到当前节点n的最短路径的代价；</p>
+<p>$h^*(n)$：表示从当前节点n到目标节点g的最短路径的代价；</p>
+<p>$f^<em>(n)=g^</em>(n)+h^*(n)$：表示从初始节点s经过节点n到目标节点g的最短路径的代价。</p>
+<p>  而$f(n)、g(n)和h(n)$则分别表示是对三$f^<em>(n)、g^</em>(n)、h^*(n)$个函数值的的估计值。是一种预测。A算法就是利用这种预测，来达到有效搜索的目的的。它每次按照$f(n)$值的大小对OPEN表中的元素进行排序，值小的节点放在前面，而值大的节点则被放在OPEN表的后面，这样每次扩展节点时，都是选择当前$f$值最小的节点来优先扩展。</p>
+<p>当在算法A的评价函数中，使用的启发函数$h(n)$是处在$h^<em>(n)$的下界范围，即满足$h(n)\le h^</em>(n)$时，把这个算法就称为A*算法。</p>
+<h1 id="3-十五数码求解"><a href="#3-十五数码求解" class="headerlink" title="3 十五数码求解"></a>3 十五数码求解</h1><p>利用bfs+位运算 </p>
+<p> 设计一个启发函数，利用A*算法求解15数码问题。</p>
+<p>原始状态为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>5</th>
+<th>1</th>
+<th>2</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>6</strong></td>
+<td><strong>3</strong></td>
+<td><strong>8</strong></td>
+</tr>
+<tr>
+<td><strong>13</strong></td>
+<td><strong>15</strong></td>
+<td><strong>10</strong></td>
+<td><strong>11</strong></td>
+</tr>
+<tr>
+<td><strong>14</strong></td>
+<td></td>
+<td><strong>7</strong></td>
+<td><strong>12</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>目标状态为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>6</strong></td>
+<td><strong>7</strong></td>
+<td><strong>8</strong></td>
+</tr>
+<tr>
+<td><strong>9</strong></td>
+<td><strong>10</strong></td>
+<td><strong>11</strong></td>
+<td><strong>12</strong></td>
+</tr>
+<tr>
+<td><strong>13</strong></td>
+<td><strong>14</strong></td>
+<td><strong>15</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>要求:</strong> 其中空格可以与相邻的上下左右格子交换，但不能越界。尽可能用与A*算法一致的思路实现算法, 求解到达目标的最小操作数.</p>
+<hr>
+<p>首先我们可以采取当前节点在搜索树的深度（初始为0）$h$作为$g(n)$。</p>
+<p>之后要确定用何种启发函数$h(n)$，一种做法是统计<strong>不在位的数码个数</strong>，另一种是求<strong>离目标节点的剩余距离</strong>（计算曼哈顿距离、欧拉距离等），我们点到为止，有兴趣的读者可以深入研究。</p>
+<p>采用曼哈顿距离，计算从当前节点到目标节点之间，水平与垂直距离总和。然后将结果乘以10，表示对剩余距离的估计(启发信息)。</p>
+<p>以统计不在位的数码个数为例。算法步骤为：</p>
+<ol>
+<li><p>计算起始节点$f(s)$，并加入OPEN表中；</p>
+<ul>
+<li>如果当前节点为目标节点，则更新此时最短路径长度$minOp$；</li>
+<li>如果当前操作数大于等于$minOp$则停止递归。</li>
+</ul>
+</li>
+<li><p>从OPEN表中选择一个代价最小的节点I（可以用小顶堆实现），把它放入CLOSE扩展节点列表之中；</p>
+<p>对于I的每个后继节点J。计算$f(J)$</p>
+<ul>
+<li>如果J在OPEN表中，且大于$f(J)$，则更新表中项为较小值。（事实上，它们的h(x)是相同的，先出现的节点其g(x)不会大于后生成的，所以此步是没有必要的）</li>
+<li>如果OPEN和CLOSE均没有，则把该子节点移到OPEN表。</li>
+<li>如果节点J在CLOSE表，则把它移回OPEN表。</li>
+</ul>
+</li>
+<li><p>如果OPEN表为空，表明无法到达目标状态。（对于open表没有该子节点但close表中有的情况不予处理，因为如果close表中节点的$f(n)$小于现在新生成的子节点，那么前者的子节点的估价函数也会小于后者子节点的估价函数，相应地也先被扩展，最终也会最先找到最优解，因为本文的目标是找到一条最佳路径即可）。</p>
+</li>
+<li><p>把起始节点S放在OPEN表中，计算$f(S)$，并把其值和节点S联系起来。</p>
+</li>
+<li>如果OPEN表是一个空表，则没有解；否则继续。</li>
+<li>从OPEN表中选择一个$f$最小的节点I。如果同时有几个节点满足要求（同时为最小），当其中有一个为目标节点则同时返回目标节点。否则就选择其中第一个节点。</li>
+<li>把节点I从OPEN表中取出，并把它放到CLOSE列表之中。</li>
+<li>如果I是目标节点，则成功退出，求得一个解。</li>
+<li>扩展节点I，生成其全部后继节点。对于I的每一个后继节点J：<ol>
+<li>计算$f(J)$;</li>
+<li>如果J既不在OPEN表中，也不在CLOSE表中，则把它填入OPEN表中。从J加一指向父节点的指针，以便记住解答路径。</li>
+<li>如果J已在OPEN表上，则比较刚刚对J计算过的$f$和前面计算过的该节点在该表中的值。如果该值较小，则<ul>
+<li>以此值代替旧值；</li>
+<li>从J指向I，而不是指向它的父节点；</li>
+<li>如果J在CLOSE表中，则把它移回OPEN表。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<div class="note note-warning">
+            <p>对于数据我们可以把它“状态压缩”为一个字符串，来降低时间开销，甚至可以用字典树来降低存储开销。有兴趣的读者可以思考一下。</p>
+          </div>
+<p>代码实现：</p>
+<p>运行结果</p>
+<p><img src="2020-7-28-HuaRongDao/image-20201209202001368.png" srcset="/img/loading.gif" alt="image-20201209202001368"></p>
+<p><img src="2020-7-28-HuaRongDao/image-20201209202019921.png" srcset="/img/loading.gif" alt="image-20201209202019921"></p>
+<p>时间对比</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>获取第一个解时间（10次实验取平均）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>outOfPlace</code>:不在位数字个数</td>
+<td>0.003s</td>
+</tr>
+<tr>
+<td><code>Manhattan</code>：曼哈顿距离</td>
+<td>27.678s</td>
+</tr>
+<tr>
+<td><code>Euclidean</code>：欧几里得距离</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="如何获得可行的测试样例"><a href="#如何获得可行的测试样例" class="headerlink" title="如何获得可行的测试样例"></a>如何获得可行的测试样例</h2><blockquote>
+<p>这其实是HDU4021的一道竞赛题。不过很有意思。</p>
 </blockquote>
+<p>思路：看起来很像著名的“八数码”问题，首先，针对八个特殊位置（死角），如果这里有空位就把它和相邻的位置交换，这样之后如果两个状态的对应死角上的数字不同，那么显然是不能达到指定状态的，因为无法把死角处的数字换出去。</p>
+<p>搞定了死角后就只剩下4×4的board了，这就变成了八数码问题的拓展——15数码。首先想想八数码是如何判断有解的：首先把所有数字（不包括空位的0）写成一行，就得到了一个1~8的排列，考虑空位的交换情况：1.左右交换，2.上下交换。对于左右交换而言，是不会改变写出的排列的逆序数的；而对上下交换，相当于在排列中向前或向后跳了两个位置，那么要么两个数都比它大或小，这样逆序数加2或减2，要么两个数一个比它大一个比它小，这样逆序数不变，综上，对于八数码问题，操作不会改变逆序数的奇偶性，所以只有初始状态和指定状态的逆序数奇偶性相同就有解。</p>
+<p>弄清楚了八数码，扩展起来就容易了，现在我们将其扩展到N维（即N的board，N*(N-1)数码问题）。</p>
+<p>首先无论N的奇偶，左右交换不改变逆序数，N为奇数时：上下交换逆序数增加N-1或减少N-1或不变，因为N为奇数，所以逆序数奇偶性不变；而N为偶数时：上下交换一次奇偶性改变一次。</p>
+<p>结论：N为奇数时，初始状态与指定状态逆序数奇偶性相同即有解；N为偶数时，先计算出从初始状态到指定状态，空位要移动的行数m，如果初始状态的逆序数加上m与指定状态的逆序数奇偶性相同，则有解。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sstealer/p/11296391.html">https://www.cnblogs.com/sstealer/p/11296391.html</a></p>
 
             </div>
             <hr>
@@ -287,6 +435,8 @@
                     
                       <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
                     
+                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+                    
                   </div>
                 
                 
@@ -294,6 +444,10 @@
                     <i class="iconfont icon-tags"></i>
                     
                       <a class="hover-with-bg" href="/tags/%E6%B8%B8%E6%88%8F/">游戏</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%90%AF%E5%8F%91%E5%BC%8F%E6%90%9C%E7%B4%A2/">启发式搜索</a>
+                    
+                      <a class="hover-with-bg" href="/tags/A/">A*</a>
                     
                   </div>
                 
@@ -518,7 +672,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "解华容道&nbsp;",
+        "启发式搜索——探索华容道&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
