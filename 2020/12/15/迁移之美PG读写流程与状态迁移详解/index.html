@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>【核心】Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>「核心」Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -240,7 +240,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">【核心】Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解</h1>
+            <h1 style="display: none">「核心」Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解</h1>
             
             <div class="markdown-body" id="post-body">
               <h1 id="迁移之美——PG读写流程与状态迁移详解"><a href="#迁移之美——PG读写流程与状态迁移详解" class="headerlink" title="迁移之美——PG读写流程与状态迁移详解"></a>迁移之美——PG读写流程与状态迁移详解</h1><div class="note note-primary">
@@ -287,9 +287,10 @@
 <p>一般情况下指OSDMap（OSDMap 是 Ceph 集群中所有 OSD 的信息）的版本号，由Monitor生成，总是单调递增。Epoch变化意味着OSDMap发生变化，需要通过一定的策略扩散至所有客户端和位于服务端的OSD。</p>
 </li>
 <li><p>Version </p>
+<p>version指本次修改生效之后的版本号。</p>
 </li>
 <li><p>Eversion</p>
-<p>由Epoch和Version组成。Version总是当前的Primary产生，连续单调增，和Epoch一起标志一次PG内修改操作。如1.0。</p>
+<p>由Epoch和Version组成。Version总是当前的Primary产生，连续单调增，和Epoch一起标志一次PG内修改操作。如223’23。</p>
 </li>
 <li><p>Interval</p>
 <p>指OSDMap一个连续的Epoch的持续时间，Interval和具体的PG绑定。</p>
@@ -1146,7 +1147,7 @@ ceph osd<span class="hljs-built_in"> pool </span>cancel-force-backfill &#123;poo
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【核心】Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解&nbsp;",
+        "「核心」Ceph学习三部曲之三:迁移之美——PG读写流程与状态迁移详解&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

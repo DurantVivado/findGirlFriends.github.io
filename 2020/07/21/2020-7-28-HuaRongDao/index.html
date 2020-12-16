@@ -350,20 +350,6 @@
 <p>采用曼哈顿距离，计算从当前节点到目标节点之间，水平与垂直距离总和。然后将结果乘以10，表示对剩余距离的估计(启发信息)。</p>
 <p>以统计不在位的数码个数为例。算法步骤为：</p>
 <ol>
-<li><p>计算起始节点$f(s)$，并加入OPEN表中；</p>
-<ul>
-<li>如果当前节点为目标节点，则更新此时最短路径长度$minOp$；</li>
-<li>如果当前操作数大于等于$minOp$则停止递归。</li>
-</ul>
-</li>
-<li><p>从OPEN表中选择一个代价最小的节点I（可以用小顶堆实现），把它放入CLOSE扩展节点列表之中；</p>
-<p>对于I的每个后继节点J。计算$f(J)$</p>
-<ul>
-<li>如果J在OPEN表中，且大于$f(J)$，则更新表中项为较小值。（事实上，它们的h(x)是相同的，先出现的节点其g(x)不会大于后生成的，所以此步是没有必要的）</li>
-<li>如果OPEN和CLOSE均没有，则把该子节点移到OPEN表。</li>
-<li>如果节点J在CLOSE表，则把它移回OPEN表。</li>
-</ul>
-</li>
 <li><p>如果OPEN表为空，表明无法到达目标状态。（对于open表没有该子节点但close表中有的情况不予处理，因为如果close表中节点的$f(n)$小于现在新生成的子节点，那么前者的子节点的估价函数也会小于后者子节点的估价函数，相应地也先被扩展，最终也会最先找到最优解，因为本文的目标是找到一条最佳路径即可）。</p>
 </li>
 <li><p>把起始节点S放在OPEN表中，计算$f(S)$，并把其值和节点S联系起来。</p>
@@ -390,8 +376,8 @@
           </div>
 <p>代码实现：</p>
 <p>运行结果</p>
-<p><img src="2020-7-28-HuaRongDao/image-20201209202001368.png" srcset="/img/loading.gif" alt="image-20201209202001368"></p>
-<p><img src="2020-7-28-HuaRongDao/image-20201209202019921.png" srcset="/img/loading.gif" alt="image-20201209202019921"></p>
+<p><img src="../image-20201209202001368.png" srcset="/img/loading.gif" alt="image-20201209202001368"></p>
+<p><img src="../image-20201209202019921.png" srcset="/img/loading.gif" alt="image-20201209202019921"></p>
 <p>时间对比</p>
 <div class="table-container">
 <table>
@@ -425,6 +411,23 @@
 <p>首先无论N的奇偶，左右交换不改变逆序数，N为奇数时：上下交换逆序数增加N-1或减少N-1或不变，因为N为奇数，所以逆序数奇偶性不变；而N为偶数时：上下交换一次奇偶性改变一次。</p>
 <p>结论：N为奇数时，初始状态与指定状态逆序数奇偶性相同即有解；N为偶数时，先计算出从初始状态到指定状态，空位要移动的行数m，如果初始状态的逆序数加上m与指定状态的逆序数奇偶性相同，则有解。</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sstealer/p/11296391.html">https://www.cnblogs.com/sstealer/p/11296391.html</a></p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">solvable</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">char</span>&gt;&gt; &amp;<span class="hljs-built_in">map</span>)</span></span>
+<span class="hljs-function"></span>&#123;<span class="hljs-comment">//判断棋盘是否有解，对每一位统计其逆序数以及与“ ”的曼哈顿距离之和，最后判断和为奇数则有解，否则无解</span>
+    <span class="hljs-keyword">int</span> sum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>;i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>;j++)
+        &#123;
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">map</span>[i][j] != <span class="hljs-string">&#x27; &#x27;</span>)
+                sum += (<span class="hljs-number">3</span> - i) + (<span class="hljs-number">3</span> - j);<span class="hljs-comment">//求曼哈顿距离，0在右下角为（3，3）</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>;f &lt; (i*n+j); f++)
+            &#123;
+                <span class="hljs-keyword">if</span>(<span class="hljs-built_in">map</span>[f/n][f%n] &gt; <span class="hljs-built_in">map</span>[i][j])
+                    sum ++;
+            &#125;
+        &#125;
+
+    <span class="hljs-keyword">return</span> (sum&amp;<span class="hljs-number">1</span>); <span class="hljs-comment">//为奇数则有解，否则无解</span>
+&#125;</code></pre>
 
             </div>
             <hr>

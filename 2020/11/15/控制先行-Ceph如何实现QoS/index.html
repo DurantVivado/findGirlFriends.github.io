@@ -17,10 +17,25 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>分类 - bluestore - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -44,7 +59,7 @@
 
 
 <body>
-  <header style="height: 60vh;">
+  <header style="height: 70vh;">
     <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand"
@@ -160,6 +175,51 @@
             </span>
 
             
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-15 00:00" pubdate>
+        2020年11月15日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      760 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      8
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
           </div>
 
           
@@ -170,37 +230,141 @@
 
   <main>
     
-      <div class="container nopadding-md">
-        <div class="py-5" id="board"
-          >
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-<div class="list-group">
-  <p class="h4">共计 1 篇文章</p>
-  <hr>
-  
-    
       
-      <p class="h5">2020</p>
-    
-    <a href="/2020/12/27/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">「核心」Ceph学习三部曲之四:下一代对象存储引擎BlueStore</span>
-      <time style="float: right;">12-27</time>
-    </a>
-  
-</div>
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="控制先行——Ceph的QoS策略"><a href="#控制先行——Ceph的QoS策略" class="headerlink" title="控制先行——Ceph的QoS策略"></a>控制先行——Ceph的QoS策略</h1><p>Ceph作为开源社区的明星，因为其高可扩展性、高可靠性，受到各大厂商的热烈追捧，并成为OpenStack事实上的默认存储后端。但是人非圣贤，孰能无过。它也同样面临I/O资源分配的问题。为了保证客户能够体验更好的服务，Ceph引入了QoS($Quality of Service$).</p>
+<p>$dmClock$是一种分布式系统的I/O调度算法，它起源于mClock（<a target="_blank" rel="noopener" href="https://www.usenix.org/legacy/events/osdi10/tech/full_papers/Gulati.pdf">论文地址</a>）,目前被应用于Ceph中。</p>
+<p>Ceph作为分布式存储系统集大成者，不能像传统QoS实现位置首选的中心节点，必须在每个OSD中实现QoS。下图是整体架构，细节我们在后面会讲到。</p>
+<p><img src="https://www.xsky.com/wp-content/uploads/2017/11/96-2.jpg" srcset="/img/loading.gif" alt="img" style="zoom: 67%;" /></p>
+<h2 id="1-dmClock算法原理"><a href="#1-dmClock算法原理" class="headerlink" title="1 dmClock算法原理"></a>1 dmClock算法原理</h2><p>首先我们先了解mClock，这是一种基于时间标签的I/O调度算法，最先被VMware提出了的用于集中式管理的存储系统。它使用了reservation（预留，表示客户端获得的最低I/O资源）、weight（权重，表示客户端占用共享I/O资源的权重，共享I/O指满足预留之后剩余的I/O资源）以及limit（上限，表示用户所能使用的最大I/O）作为一套模板（QoS spec），作用于不同的客户端。下图是其典型应用模型：</p>
+<p><img src="../img/dmClock.png" srcset="/img/loading.gif" alt="image-20201216151614635"></p>
+<p>mClock是典型的C/S架构，Client可以驻留在实际的客户端或者服务器端，主要负责下发QoS模板的参数值、收集请求的完成信息等；server为mClock的服务端，实现I/O调度的核心功能。</p>
+<p>其算法流程如下：</p>
+<ol>
+<li>Server为每个客户端设置一套QoS模板参数，包括预留（r），权重（w）和上限（l）三个部分，并依次计算出I/O请求的时间标签，其中预留和上限为绝对时间，权重标签为相对时间。</li>
+<li>服务器分为两个阶段来处理I/O请求：一是Constarint-based，只处理满足预留时间标签的请求；二是Weight-based阶段，处理满足上限的时间标签的权重标签请求。</li>
+<li>服务器先工作也Constraint-based，再转入Weight-based阶段。</li>
+</ol>
+<p>如果用$q_i$表示QoS的模板参数$q_i\in\{r_i,w_i,l_i\}$，$Q^r_i$表示来自第i个客户的第r个请求的时间标签。有如下公式：</p>
+<script type="math/tex; mode=display">
+Q_i^r=max\{Q^{r-1}_i+1/q_i,current\_time\}</script><p>以第一个请求到达时间作为初始基准标签，后续标签依据预设的模板参数值，对单位时间进行均匀切分计算而来。在Constraint-based阶段 ，各客户端请求被均匀的处理，而在weight-based阶段，则将出现竞争，由于权重标签是相对值，它和真实的时间之差通常会很大，从而出现饥饿现象。因此需要调整旧client的权重标签，以新client的权重时间标签为基准，添加一个补偿值。</p>
+<p>dmClock是mClock 的分布式版本，</p>
 
-
-              </div>
             </div>
-          </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Ceph/">Ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Ceph/%E7%90%86%E8%AE%BA/">理论</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/QoS/">QoS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">「入门部署」Ceph-deploy流程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">
+                        <span class="hidden-mobile">「综述」纠删码综述</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
         </div>
       </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
     
   </main>
 
@@ -308,6 +472,31 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
 
 
   <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
@@ -315,7 +504,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "分类 - bluestore&nbsp;",
+        "「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
@@ -330,6 +519,21 @@
 
 
 
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
 
 
   <script  src="/js/local-search.js" ></script>
@@ -343,6 +547,20 @@
   </script>
 
 
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
 
 
 
@@ -407,6 +625,13 @@
 
 
 
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
 
 
 
