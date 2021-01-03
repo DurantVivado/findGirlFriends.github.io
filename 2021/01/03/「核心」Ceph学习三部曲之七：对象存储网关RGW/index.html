@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      892 字
+      1.1k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      11
        分钟
     </span>
   
@@ -267,6 +267,11 @@
 </ul>
 <p>以Amazon S3为例，它数据实体包括user、bucket、object，如下图所示；而OpenStack将用户的概念细分为account和user，其中account对应一个项目或者租户，每个account可以被多个user共享，其他的集成实体比如container和object与以上的存储桶、对象概念相符。</p>
 <p>RGW为了兼容Amazon S3和OpenStack接口，所以将用户分为user和subuser，分别对应S3用户和Swift用户。</p>
+<p><img src="「核心」Ceph学习三部曲之七：对象存储网关RGW/image-20210103132412544.png" srcset="/img/loading.gif" alt="image-20210103132412544" style="zoom:67%;" /></p>
+<p><img src="「核心」Ceph学习三部曲之七：对象存储网关RGW/image-20210103132643135.png" srcset="/img/loading.gif" alt="image-20210103132643135" style="zoom:67%;" /></p>
+<p><img src="「核心」Ceph学习三部曲之七：对象存储网关RGW/image-20210103132828794.png" srcset="/img/loading.gif" alt="image-20210103132828794" style="zoom:67%;" /></p>
+<p>我们将详细讨论，这些数据实体所包含的信息和数据组织形式，由上一期我们知道，数据存在RADOS有三种方式，第一种是二进制；第二种是以键值对存在扩展属性xattr中；第三种是存在扩展属性omap中。</p>
+<h2 id="1-2-用户"><a href="#1-2-用户" class="headerlink" title="1.2 用户"></a>1.2 用户</h2><p>对用户的设计管理主要包含以下几个方面：首先是为了对RESTful API进行请求认为，其次是为了控制用户对存储资源的访问权限，最后是为了控制用户的可用存储空间，因此一个用户包含的信息包括用户认证信息、访问认证控制权限信息和配额信息。</p>
 
             </div>
             <hr>
