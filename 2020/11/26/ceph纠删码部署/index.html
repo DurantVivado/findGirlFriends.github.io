@@ -470,7 +470,7 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
 </blockquote>
 <h2 id="覆盖写思考"><a href="#覆盖写思考" class="headerlink" title="覆盖写思考"></a>覆盖写思考</h2><p>因为数据更新必须以条带为单位进行，如果覆盖写的起始或者结束位置没有进行条带对齐，那么不足一个完整条带的部分，其写入只能通过“读取完整条带→修改数据→基于条带重新计算校验数据→写入（被修改部分和校验和）”。这个过程被称为RMW。</p>
 <p>整个RMW过程补齐读阶段最耗时，由两种解决思路：1. 减少RMW次数，2.如果RMW不可避免，那么尽量减少补齐读的数据量。一种常见的做法是引入写缓存。将驻留于缓存的写操作进行合并。 另外是尽可能减少读的次数，基于被修改写的数据范围预先计算出需要执行补齐读的块，而不是每次都执行满条带写。</p>
-<h2 id="Scrub的问题"><a href="#Scrub的问题" class="headerlink" title="Scrub的问题"></a>Scrub的问题</h2><p>Scrub指数据扫描，通过读取对象数据并重新计算校验和，再与之前存储在对象属性的校验和进行比对，以判断有无静默错误（磁盘自身无法感知的错误）。目前Ceph纠删码没有自动修复功能。</p>
+<h2 id="Scrub的问题"><a href="#Scrub的问题" class="headerlink" title="Scrub的问题"></a>Scrub的问题</h2><p>Scrub指数据扫描，通过读取对象数据并重新计算校验和，再与之前存储在对象属性的校验和进行比对，以判断有无静默错误（磁盘自身无法感知的错误）。目前Ceph纠删码没有自动修复功能。其中Scrub只扫描元数据，而Deep Scrub对对象整体进行扫描。</p>
 <p>例如对象大小为4MB，那么每4KB原始数据采用CRC32生成固定四个字节的校验和，则整个对象的校验和最大只能是4KB，这显然无法直接使用对象扩展属性存储，而只能使用对象的omap存储(kv pairs)，但是纠删码目前不支持omap! </p>
 <p>Ceph中纠删码一直未达到商业水平，无外乎以下几个原因：</p>
 <ul>
@@ -600,7 +600,7 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
                     
                       <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【研究向】Redis中跳表实现原理</span>
+                        <span class="hidden-mobile">「研究向」Redis中跳表实现原理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -609,7 +609,7 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
                     
                     
                       <a href="/2020/11/25/A%20first%20glance%20at%20CRUSH/">
-                        <span class="hidden-mobile">「核心」Ceph学习三部曲之一:A First Galance At Crush</span>
+                        <span class="hidden-mobile">「核心」Ceph学习三部曲之一:A First Glance At Crush</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

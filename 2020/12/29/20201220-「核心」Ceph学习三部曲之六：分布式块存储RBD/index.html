@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Durant Thorvalds 的米奇妙妙屋" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-29 00:00" pubdate>
+        2020年12月29日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            <div class="markdown-body" id="post-body">
+              <div class="note note-primary">
+            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第六章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/man/8/rados/">官方RADOS指南</a>，以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/man/8/rbd/">官方RBD教程</a></p>
+          </div>
+<h1 id="无心插柳——分布式块存储RBD"><a href="#无心插柳——分布式块存储RBD" class="headerlink" title="无心插柳——分布式块存储RBD"></a>无心插柳——分布式块存储RBD</h1><blockquote>
+<p>RADOS(Reliable, Autonomic Distributed Object Store) </p>
+<p><strong>rbd</strong>是用于处理rados块设备（RBD）映像的实用程序，由Linux rbd驱动程序和QEMU / KVM的rbd存储驱动程序使用。RBD映像是简单的块设备，在对象上划分条带并存储在RADOS对象存储中。分割image的对象的大小必须是2的幂。——来自官方</p>
+</blockquote>
+<p>RBD($RADOS Block  Device$)指分布式块存储服务组件，是Ceph对外的三大存储服务组件之一。另外两个分别是CephFS以及Radosgw                                                                                          。我们将在后面介绍。上层应用访问RBD有两种途径：librbd以及krbd。其中librbd是基于librados的用户态接口库，而krbd是继承在GNU/Linux内核中的一个内核模块。通过librbd命令行工具，将RBD块设备映射为本地的一个块设备文件。</p>
+<p><img src="/img/rados.png" srcset="/img/loading.gif" alt=""></p>
+<p>一个块通常是512字节，块设备接口无处不在，非常适合与包括Ceph在内的海量数据存储进行交互。Ceph块设备是精简配置的，可调整大小的，并且可以在多个OSD上条带化存储数据。Ceph块设备利用了 RADOS功能，包括快照，复制和强大的一致性。Ceph块存储客户端通过内核模块或<code>librbd</code>库与Ceph集群通信。</p>
+<p>Ceph的的块设备提供与广阔的可扩展性，高性能的 <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rbd/rbd-ko/">内核模块</a>，或者KVM系列如<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rbd/qemu-rbd/">QEMU</a>和基于云计算系统，如<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rbd/rbd-openstack">OpenStack的</a>和<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rbd/rbd-cloudstack">的CloudStack</a>依赖的libvirt和QEMU与Ceph的块设备集成。可以同一群集同时运行<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/radosgw/#object-gateway">Ceph RADOS网关</a>， <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephfs/#ceph-file-system">Ceph文件系统</a>和Ceph块设备。</p>
+<p><img src="/img/rbd1.png" srcset="/img/loading.gif" alt="image-20201220224241218" style="zoom:67%;" /></p>
+<p>RBD架构如上图所示，由于元数据信息非常少，且访问不频繁，因此RBD在Ceph集群中不需要daemon守护进程直接将元数据加载到内存进行元数据访问加速，所有数据操作直接与MON和OSD进行交互。</p>
+<h2 id="S1-元数据"><a href="#S1-元数据" class="headerlink" title="$\S1$ 元数据"></a>$\S1$ 元数据</h2><p>RBD块设备在Ceph中被称为image，由元数据和数据组成。其中元数据有三种存储方式，第一种将元数据编码后以二进制文件的形式存储在RADOS对象的数据部分，后面将该类型标识为data。第二种将元数据以键值对的形式存储在RADOS对象的扩展属性中，称为xattr；第三种将元数据以键值对形式存储在RADOS对象omap中，称为omap。更多关于元数据的讨论见<a href="https://durantthorvalds.top/2020/12/27/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/#6-ObjectStore-OS">BlueStore</a></p>
+<h3 id="1-1-image元数据对象"><a href="#1-1-image元数据对象" class="headerlink" title="1.1 image元数据对象"></a>1.1 image元数据对象</h3><ul>
+<li><code>rbd_id.&lt;name&gt;</code>，data类型，记录image名称到image id 的单向映射关系。</li>
+<li><code>rbd_header.&lt;id&gt;</code>，omap\xattr类型，记录image所支持的功能特性、容量大小等基本信息以及配置参数、自定义元数据，锁信息等。</li>
+<li><code>rbd_object_map.&lt;id&gt;</code>，data类型，记录组成image的所有数据对象的存在状态。</li>
+</ul>
+<p><img src="/img/rbd3.png" srcset="/img/loading.gif" alt="image-20201221173651999" style="zoom:67%;" /></p>
+<p>通常情况下，image的数据和元数据存储在同一个存储池下。但是当前纠删码池不支持omap，必须将数据对象和元数据分开存储，需要一个独立的元数据<code>data_pool_id</code>用于记录数据对象所在的存储池。</p>
+<p>$\S 1$ rbd_id</p>
+<p>image内部的元数据和数据的名称以id为基础，这样即使image重命名，内部结构也基本不发生改变。</p>
+<p>$\S 2$ rbd_header</p>
+<p>这是image最主要的元数据对象，其对象名由rbd_header.<id>,<id>表示rbd_id所记录的内部id。</p>
+<p>$\S3$ rbd_object_map</p>
+<p>为了解决克隆image数据I/O对象执行时间过长的问题，Ceph引入object-map，它将所有数据对象的存在记录在一个独立的元数据对象，总共有四种状态，b00对象不存在、b01对象存在、b10对象待删除、b11对象存在且从第一次快照创建后没有进行写。</p>
+<h3 id="1-2-RBD管理元数据对象"><a href="#1-2-RBD管理元数据对象" class="headerlink" title="1.2 RBD管理元数据对象"></a>1.2 RBD管理元数据对象</h3><ul>
+<li><p>rbd_directory</p>
+<p>omap类型。记录存储池中所有image列表。其中 <code>name_&lt;name&gt;</code> 记录image名称所对应的image id；<code>id_&lt;id&gt;</code>记录image名称。</p>
+</li>
+<li><p>rbd_children</p>
+<p>omap类型。记录父image快照到克隆image之间的单向映射关系（parent-&gt;children）。其中<code>&lt;parent&gt;</code>记录当前存储池下基于父image快照创建的一个或多个克隆image id列表。由<pool_id,image_id,snap_id>三个字段组成，用于表示克隆image所关联的父image快照，而元数据内容为克隆image的id集合。</p>
+</li>
+</ul>
+<h2 id="S2-数据"><a href="#S2-数据" class="headerlink" title="$\S2$  数据"></a>$\S2$  数据</h2><p>如rbd_header的定义，在创建image时可以通过<code>object-size</code>控制数据对象的容量大小，默认为4MB，image数据以该大小为单元进行等量划分。每个数据对象的名称由rbd_header元数据中对象前缀和对象序号组成。</p>
+<p><strong>数据条带化</strong></p>
+<p>RBD image在许多对象上分条，然后由Ceph分布式对象存储（RADOS）存储。结果，对图像的读取和写入请求分布在群集中的许多节点上，通常可以防止在单个image变大或繁忙时任何单个节点成为瓶颈。默认为类似于RAID-0的方式进行条带化（Stripping V2）.</p>
+<p>条带化由三个参数控制：</p>
+<ul>
+<li><p><code>object-size</code></p>
+<p>我们分割的对象的大小是2的幂。将四舍五入到最接近的2的幂。默认对象大小为4 MB，最小为4K，最大为32M。</p>
+</li>
+<li><p><code>stripe_unit</code></p>
+<p>在继续下一个对象之前，每个[ <em>stripe_unit</em> ]连续字节都存储在同一对象中。</p>
+</li>
+<li><p><code>stripe_count</code></p>
+<p>之后，我们写[ <em>stripe_unit</em> ]字节为[ <em>stripe_count</em> ]对象，我们循环回到初始对象和写入另一个条纹，直到对象达到其最大尺寸。在这一点上，我们继续下一个[ <em>stripe_count</em> ]对象。</p>
+</li>
+</ul>
+<p>默认情况下，[ <em>stripe_unit</em> ]与对象大小相同，[ <em>stripe_count</em> ]为1。指定不同的[ <em>stripe_unit</em> ]和/或[ <em>stripe_count</em> ]通常被称为使用“花式”条带，并且需要v2。</p>
+<h2 id="S3-功能特性"><a href="#S3-功能特性" class="headerlink" title="$\S3 $ 功能特性"></a>$\S3 $ 功能特性</h2><h3 id="RADOS快照"><a href="#RADOS快照" class="headerlink" title="RADOS快照"></a>RADOS快照</h3><p>由于快照的存在，一个RADOS对象可能由一个head对象和多个克隆组成。在OSD端使用SnapSet结构体来保存对象的快照信息，其中clone_overlap字段记录clone对象与head对象的数据内容重叠的区间，在数据恢复时，可以减少OSD直接的信息传输。</p>
+<p>RADOS对象创建快照后数据读取流程非常简单，RADOS客户端在读操作中携带需要读取的RADOS对象的snapid，通过snapid定位到clone对象或head对象即可读到相应的数据。</p>
+<p>假设初始时的head对象是一个完整的使用默认4MB大小的对象，且之前未有过COW操作。对该对象制作快照snap1，然后写数据至[512K~1M]区间，此时会触发COW，通过底层的克隆操作生成一个clone对象clone1，然后将新数据写入head对象。写操作会同步更新这个head对象上记录的clone_overlap[snap1]，对于一个新的快照对象一开始这个重叠区间是整个对象的[0 ~ 4M]， 然后每个新的写入操作会在这个区间减去新写的区间。 </p>
+<h3 id="RBD快照"><a href="#RBD快照" class="headerlink" title="RBD快照"></a>RBD快照</h3><p>RBD快照只需要保存少量的快照元数据信息，其底层数据I/O的实现完全依赖于RADOS快照实现，</p>
+<h3 id="克隆"><a href="#克隆" class="headerlink" title="克隆"></a>克隆</h3><p>RBD克隆是在RBD快照基础上实现的可写快照，与RBD快照功能相似，RBD克隆的实现也依赖COW。与RBD快照不同的是 快照功能依赖于RADOS层的对象快照实现，但是功能完全在RBD客户端实现。</p>
+<p>创建克隆image的过程基本上就是创建一个新的image，但是在image的元数据中会记录一个parent键值对，也就是记录克隆image与快照相连的父子关系。所以才会有parent和rbd_children等属性。由于克隆关系可能存在多层，因此RBD客户端会尝试访问最顶层的parent。</p>
+<p><strong>如果访问克隆对象遇到不一致如何处理</strong>？</p>
+<p>克隆image读流程</p>
+<ul>
+<li>RBD客户端读取指定区间的数据，假设该区间最终落到第一个数据对象；</li>
+<li>由于第一个对象不存在，故会返回对象不存在错误；</li>
+<li>RBD会访问parent并得到关联的快照信息，需要注意的是，创建克隆image时可以指定与快照image不同的条带化参数，因此从快照image读取数据的区间可能落到与第一步不同的数据对象；</li>
+<li>读操作返回</li>
+</ul>
+<p>克隆image写流程</p>
+<ul>
+<li>RBD客户端读取指定区间的数据，假设该区间最终落到第一个数据对象；</li>
+<li>由于第一个对象不存在，故会返回对象不存在错误；</li>
+<li>与读操作不同，写入操作需要从快照image读取克隆image第一个数据对象整个对象区间的数据；</li>
+<li>对快照image的读操作返回；</li>
+<li>将从快照读取的数据写入克隆image的第一个数据对象，然后重新执行原始的针对克隆image的第一个数据对象的写操作，最终写操作完成。</li>
+</ul>
+<hr>
+<h1 id="实践部分"><a href="#实践部分" class="headerlink" title="实践部分"></a>实践部分</h1><h2 id="创建和删除"><a href="#创建和删除" class="headerlink" title="创建和删除"></a>创建和删除</h2><ol>
+<li><p>我们可以创建一个rbd_image并且指定它的大小：</p>
+<pre><code class="hljs livecodeserver">rbd <span class="hljs-built_in">create</span> mypool/myimage <span class="hljs-comment">--size 102400</span></code></pre>
+<p>或者指定对象大小（8M）</p>
+<pre><code class="hljs angelscript">rbd create mypool/myimage --size <span class="hljs-number">102400</span> --object-size <span class="hljs-number">8</span>M</code></pre>
+</li>
+<li><p>删除（小心！）</p>
+</li>
+</ol>
+<pre><code class="hljs nginx"><span class="hljs-attribute">rbd</span> rm mypool/myimage</code></pre>
+<ol>
+<li>创建快照</li>
+</ol>
+<pre><code class="hljs nginx"><span class="hljs-attribute">rbd</span> snap create mypool/myimage<span class="hljs-variable">@mysnap</span></code></pre>
+<h2 id="获取rbd-id"><a href="#获取rbd-id" class="headerlink" title="获取rbd_id"></a>获取rbd_id</h2><pre><code class="hljs vim">rados <span class="hljs-built_in">get</span> -<span class="hljs-keyword">p</span> rbd rbd_id.<span class="hljs-symbol">&lt;image_name&gt;</span> file_rbd_id
+<span class="hljs-keyword">cat</span> file_rbd_id</code></pre>
+<p>可以获得类似<code>ac62a15cbf99</code>这样的id标识。</p>
+<ul>
+<li>features 已启用的功能特性</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>bit位</th>
+<th>注解</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>layering</td>
+<td>0(LSB)</td>
+<td>是否支持image克隆操作，克隆image与关联的父image快照之间通过COW实现数据共享</td>
+</tr>
+<tr>
+<td>striping</td>
+<td>1</td>
+<td>是否进行数据对象间数据条带化，类似于RAID 0，在创建image时如果指定了条带化参数，数据会在多个image数据对象之间进行条带化</td>
+</tr>
+<tr>
+<td>exclusive-lock</td>
+<td>2</td>
+<td>是否支持分布式锁，即image自带互斥访问锁机制以限制以限制同时只能有一个客户端访问image，主要应用于虚拟机热迁移</td>
+</tr>
+<tr>
+<td>object-map</td>
+<td>3</td>
+<td>是否记录组成image的数据对象存在的状态位图，通过查表加速类似于导入、导出、克隆分离、已使用容量计算等操作，同时有助于减少COW机制带来的克隆image的I/O时延，依赖于exclusive-lock特性</td>
+</tr>
+<tr>
+<td>fast-diff</td>
+<td>4</td>
+<td>用于计算快照间增量数据等操作加速，依赖于object-map特性</td>
+</tr>
+<tr>
+<td>deep-flatten</td>
+<td>5</td>
+<td>克隆分离时十分同时解除克隆image创建的快照与父image之间的关联关系。该特性只是为了阻止老的RBD客户端访问image而设置</td>
+</tr>
+<tr>
+<td>journaing</td>
+<td>6</td>
+<td>是否记录image修改操作到日志对象，用于远程异步镜像功能，依赖于exclusive-lock特性</td>
+</tr>
+<tr>
+<td>data-pool</td>
+<td>7(MSB)</td>
+<td>是否将数据对象存储于与元数据不同的存储池，用于支持将image的数据对象存储于EC纠删码存储池</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+  <pre><code class="hljs angelscript">value (<span class="hljs-number">8</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">3</span>d <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>                           |=.......|
+<span class="hljs-number">00000008</span></code></pre>
+<p>  0x3d对应二进制<code>0&#39;b00111101</code> 表示启用了layering、exclusive-lock、object-map，fast-diff，deep-flatten等特性。</p>
+<ul>
+<li><p>object_prefix 数据对象名称前缀</p>
+<pre><code class="hljs angelscript">value (<span class="hljs-number">25</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">15</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">72</span> <span class="hljs-number">62</span> <span class="hljs-number">64</span> <span class="hljs-number">5f</span>  <span class="hljs-number">64</span> <span class="hljs-number">61</span> <span class="hljs-number">74</span> <span class="hljs-number">61</span> <span class="hljs-number">2</span>e <span class="hljs-number">61</span> <span class="hljs-number">63</span> <span class="hljs-number">36</span>  |....rbd_data.ac6|
+<span class="hljs-number">00000010</span>  <span class="hljs-number">32</span> <span class="hljs-number">61</span> <span class="hljs-number">31</span> <span class="hljs-number">35</span> <span class="hljs-number">63</span> <span class="hljs-number">62</span> <span class="hljs-number">66</span> <span class="hljs-number">39</span>  <span class="hljs-number">39</span>                       |<span class="hljs-number">2</span>a15cbf99|
+<span class="hljs-number">00000019</span></code></pre>
+</li>
+<li><p>order 组成image的数据对象容量大小，以2为底的指数</p>
+<pre><code class="hljs angelscript">value (<span class="hljs-number">1</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">16</span>                                                |.|
+<span class="hljs-number">00000001</span></code></pre>
+</li>
+<li><p>parent 当存在克隆关系时，克隆image记录的关联的父image快照信息</p>
+</li>
+<li><p>size 容量大小</p>
+<pre><code class="hljs angelscript">value (<span class="hljs-number">8</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">40</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>                           |...@....|
+<span class="hljs-number">00000008</span></code></pre>
+<p>64位整型，上述表示1GB</p>
+</li>
+<li><p>snap_seq 用于记录image最后一次创建的快照的id</p>
+<pre><code class="hljs angelscript">value (<span class="hljs-number">8</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">04</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span>                           |........|
+<span class="hljs-number">00000008</span></code></pre>
+<p>上图表示最后一次创建快照id为0x04</p>
+</li>
+<li><p>snap_<snap_id>所记录的是一个cls_rbd_snap结构体实例，记录快照名称、id等基本信息。</p>
+<pre><code class="hljs routeros">rados getomapval -p cephfs_data rbd_header.ac62a15cbf99 snapshot_0000000000000004 f_snap
+ceph-decoder<span class="hljs-built_in"> type </span>cls_rbd_snap import \
+&gt; f_snap decode dump_json
+ceph-dencoder<span class="hljs-built_in"> type </span>cls_rbd_snap import f_snap decode dump_json</code></pre>
+<pre><code class="hljs json">&#123;
+    <span class="hljs-attr">&quot;id&quot;</span>: <span class="hljs-number">4</span>,
+    <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;snap1&quot;</span>,
+    <span class="hljs-attr">&quot;image_size&quot;</span>: <span class="hljs-number">1073741824</span>,
+    <span class="hljs-attr">&quot;protection_status&quot;</span>: <span class="hljs-string">&quot;unprotected&quot;</span>,
+    <span class="hljs-attr">&quot;child_count&quot;</span>: <span class="hljs-number">0</span>
+&#125;</code></pre>
+<p>与普通的image不同，克隆image在创建时不能指定容量大小，而是由image_size决定克隆image的初始容量大小。features是父image在创建快照时的features元数据记录，创建克隆image时如果不显示指定需要启用的功能特性<code>--image-feature &lt;feature_name&gt;</code>，则默认会使用features所有记录的值。protection_status 用于标示快照被保护状态，处于被保护的快照不能被删除，克隆image必须基于被保护的快照进行创建，主要是为了防止克隆image所引用的父image被误删除。</p>
+</li>
+<li><p>stripe_count\stripe_unit所记录的元素据是64位整数，用于记录image条带化信息。详细见理论部分。</p>
+</li>
+</ul>
+<h2 id="RBD管理元数据对象"><a href="#RBD管理元数据对象" class="headerlink" title="RBD管理元数据对象"></a>RBD管理元数据对象</h2><ul>
+<li><h3 id="rbd-directory"><a href="#rbd-directory" class="headerlink" title="rbd_directory"></a>rbd_directory</h3></li>
+</ul>
+<p>用于记录当前存储池中image列表。</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">rados</span> listomapvals -P cephfs_data rbd_directory id_ac<span class="hljs-number">62</span>a<span class="hljs-number">15</span>cbf<span class="hljs-number">99</span></code></pre>
+<pre><code class="hljs angelscript">value (<span class="hljs-number">12</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">08</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">72</span> <span class="hljs-number">62</span> <span class="hljs-number">64</span> <span class="hljs-number">69</span>  <span class="hljs-number">6</span>d <span class="hljs-number">61</span> <span class="hljs-number">67</span> <span class="hljs-number">65</span>              |....rbdimage|
+<span class="hljs-number">0000000</span>c
+
+id_aca0d915627f
+value (<span class="hljs-number">13</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">09</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">72</span> <span class="hljs-number">62</span> <span class="hljs-number">64</span> <span class="hljs-number">69</span>  <span class="hljs-number">6</span>d <span class="hljs-number">61</span> <span class="hljs-number">67</span> <span class="hljs-number">65</span> <span class="hljs-number">32</span>           |....rbdimage2|
+<span class="hljs-number">0000000</span>d
+
+name_rbdimage
+value (<span class="hljs-number">16</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">0</span>c <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">61</span> <span class="hljs-number">63</span> <span class="hljs-number">36</span> <span class="hljs-number">32</span>  <span class="hljs-number">61</span> <span class="hljs-number">31</span> <span class="hljs-number">35</span> <span class="hljs-number">63</span> <span class="hljs-number">62</span> <span class="hljs-number">66</span> <span class="hljs-number">39</span> <span class="hljs-number">39</span>  |....ac62a15cbf99|
+<span class="hljs-number">00000010</span>
+
+name_rbdimage2
+value (<span class="hljs-number">16</span> bytes) :
+<span class="hljs-number">00000000</span>  <span class="hljs-number">0</span>c <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">00</span> <span class="hljs-number">61</span> <span class="hljs-number">63</span> <span class="hljs-number">61</span> <span class="hljs-number">30</span>  <span class="hljs-number">64</span> <span class="hljs-number">39</span> <span class="hljs-number">31</span> <span class="hljs-number">35</span> <span class="hljs-number">36</span> <span class="hljs-number">32</span> <span class="hljs-number">37</span> <span class="hljs-number">66</span>  |....aca0d915627f|
+<span class="hljs-number">00000010</span></code></pre>
+<h3 id="rbd-children"><a href="#rbd-children" class="headerlink" title="rbd_children"></a>rbd_children</h3><p>当image之间具有克隆关系时，rbd_children 元数据对象用于记录父image快照到克隆image之间的单向映射关系。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ceph/">ceph</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/31/%E9%80%9A%E7%94%A8%E5%9E%8B%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7Csim/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/28/%E6%8E%A7%E5%88%B6%E5%85%88%E8%A1%8C-Ceph%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0QoS/">
+                        <span class="hidden-mobile">「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

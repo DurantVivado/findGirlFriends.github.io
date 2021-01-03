@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.4k 字
+      9.5k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      105
+      107
        分钟
     </span>
   
@@ -243,7 +243,11 @@
             <h1 style="display: none">「基础理论」CEPH 基础介绍</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="CEPH基础理论学习"><a href="#CEPH基础理论学习" class="headerlink" title="CEPH基础理论学习"></a>CEPH基础理论学习</h1><hr>
+              <h1 id="CEPH基础理论学习"><a href="#CEPH基础理论学习" class="headerlink" title="CEPH基础理论学习"></a>CEPH基础理论学习</h1><blockquote>
+<p>参考<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="Weil S A, Brandt S A, Miller E L, et al. Ceph: A scalable, high-performance distributed file system[C]//Proceedings of the 7th symposium on Operating systems design and implementation. 2006: 307-320.
+">[2]</span></a></sup></p>
+</blockquote>
+<hr>
 <h1 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h1><h2 id="1-Ceph简介"><a href="#1-Ceph简介" class="headerlink" title="1 Ceph简介"></a><strong>1 Ceph简介</strong></h2><blockquote>
 <p>Ceph是一个统一的分布式存储系统，设计初衷是提供较好的性能、可靠性和可扩展性。它是一个统一的存储系统，既支持传统的块、文件存储协议，例如SAN和NAS，也支持新兴的对象存储协议，如S3和Swift，这使得Ceph理论上可以满足时下一切主流的存储应用的要求。</p>
 </blockquote>
@@ -347,6 +351,8 @@
 <blockquote>
 <p>基于 RADOS 的 Ceph 对象存储集群包括两类守护进程：term:对象存储守护进程（ OSD ）把存储节点上的数据存储为对象； term:Ceph 监视器（ MON ）维护集群运行图的主拷贝。一个 Ceph 集群可以包含数千个存储节点，最简系统至少需要一个监视器和两个 OSD 才能做到数据复制。</p>
 </blockquote>
+<h3 id="Ceph架构"><a href="#Ceph架构" class="headerlink" title="Ceph架构"></a>Ceph架构</h3><p><img src="CEPH基础理论/image-20201231160559413.png" srcset="/img/loading.gif" alt="image-20201231160559413"></p>
+<p>系统架构。 客户端通过直接与OSD通信来执行文件I / O。 每个进程可以直接链接到客户端实例，也可以与已安装的文件系统进行交互。</p>
 <h3 id="ceph读写流程"><a href="#ceph读写流程" class="headerlink" title="ceph读写流程"></a>ceph读写流程</h3><p>Read：</p>
 <ul>
 <li>Client app 发送读请求，RADOS将请求发送给Primary OSD。</li>
@@ -990,7 +996,8 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cc3ece850433">https://www.jianshu.com/p/cc3ece850433</a></p>
 <hr>
 <section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>Weil S A Brandt S A , Miller E L , et al. CRUSH: Controlled, Scalable, Decentralized Placement of Replicated Data[C]// IEEE Sc Conference. ACM, 2006.
-<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>Weil S A, Brandt S A, Miller E L, et al. Ceph: A scalable, high-performance distributed file system[C]//Proceedings of the 7th symposium on Operating systems design and implementation. 2006: 307-320.
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>
             <div>

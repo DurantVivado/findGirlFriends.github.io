@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      413 字
+      490 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      6
        分钟
     </span>
   
@@ -275,6 +275,15 @@
 mymap[<span class="hljs-built_in">make_pair</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)]=<span class="hljs-number">3</span>;</code></pre>
 <h3 id="vector直接初始化大小按下标赋值而不是push-back更快"><a href="#vector直接初始化大小按下标赋值而不是push-back更快" class="headerlink" title="vector直接初始化大小按下标赋值而不是push_back更快"></a>vector<int>直接初始化大小按下标赋值而不是push_back更快</h3><p>stoi有大小限制，若超过INT_MAX会报 out_of_range错误</p>
 <p>如果出现非<code>0-9</code>字符也会报这个错。</p>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>当你准备设计一个新链表，那么千万不要将头节点设为原链表头节点的引用，而应该新建一个节点。</p>
+<pre><code class="hljs awk"><span class="hljs-regexp">//</span>设原链表为head
+<span class="hljs-regexp">//</span>错误的写法
+ListNode *root1 = head;</code></pre>
+<pre><code class="hljs awk"><span class="hljs-regexp">//</span>设原链表为head
+<span class="hljs-regexp">//</span>正确的写法
+ListNode *root1 = new ListNode(<span class="hljs-number">0</span>);
+...
+return root1-&gt;<span class="hljs-keyword">next</span>;</code></pre>
 
             </div>
             <hr>

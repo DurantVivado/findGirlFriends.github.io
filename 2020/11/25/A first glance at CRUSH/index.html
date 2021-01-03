@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>「核心」Ceph学习三部曲之一:A First Galance At Crush - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>「核心」Ceph学习三部曲之一:A First Glance At Crush - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.1k 字
+      9.9k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      80
+      122
        分钟
     </span>
   
@@ -240,31 +240,36 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">「核心」Ceph学习三部曲之一:A First Galance At Crush</h1>
+            <h1 style="display: none">「核心」Ceph学习三部曲之一:A First Glance At Crush</h1>
             
             <div class="markdown-body" id="post-body">
               <div class="note note-primary">
             <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第一章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/?s">官方CRUSH教程</a>。</p>
           </div>
 <h1 id="浅析CRUSH算法"><a href="#浅析CRUSH算法" class="headerlink" title="浅析CRUSH算法"></a>浅析CRUSH算法</h1><blockquote>
-<p>论文地址：</p>
-<p><a target="_blank" rel="noopener" href="https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf</a></p>
+<p>CRUSH论文地址：<a target="_blank" rel="noopener" href="https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf</a></p>
+<p>一个通过增加额外时间维度来提升性能的方案，MapX（FAST2020‘）：<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/fast20-wang_li.pdf">https://www.usenix.org/system/files/fast20-wang_li.pdf</a></p>
 </blockquote>
 <h1 id="1-CRUSH背景"><a href="#1-CRUSH背景" class="headerlink" title="1. CRUSH背景"></a>1. CRUSH背景</h1><p>大部分存储系统将数据写入到存储设备之后，数据很少在设备之间相互移动，这会导致一个潜在问题，即使是一个数据分布趋于完美的系统，随着时间的迁移，新的空闲设备不断加入，老设备不断退出，数据变得不均匀。<br>一种可行方案是将数据以足够小的粒度打散，均匀分布于整个存储系统，这样做有两个问题:</p>
 <ul>
 <li>如果设备数量发生变化， 如何最小化迁移量使得整个系统尽快恢复平衡。</li>
 <li>在大型（PB以上）分布式存储系统，为保证数据可靠性一般采用多副本或者纠删码，如何合理分布它们。。</li>
 </ul>
-<p>CRUSH: Controlled Replication Under Scalable Hashing 基于可扩展哈希的受控副本分布策略。<br>它基于伪随机数哈希算法，以数据唯一标识符、当前存储集群拓扑以及数据备份策略作为输入，可以随时随地通过计算获取数据所在的底层存储设备的位置并之间与其通信，从而避免查表，失效去中心化和高度并发。</p>
+<p>CRUSH: Controlled Replication Under Scalable Hashing<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="WEIL, S. A., BRANDT, S. A., MILLER, E. L., AND MALTZAHN,C. Crush: Controlled, scalable, decentralized placement of replicateddata. In SC’06: Proceedings of the 2006 ACM/IEEE Conference onSupercomputing (2006), IEEE, pp. 31–31.
+">[1]</span></a></sup> 基于可扩展哈希的受控副本分布策略。<br>它基于伪随机数哈希算法，以数据唯一标识符、当前存储集群拓扑以及数据备份策略作为输入，可以随时随地通过计算获取数据所在的底层存储设备的位置并之间与其通信，从而避免查表，失效去中心化和高度并发。</p>
 <h1 id="2-Straw选择算法"><a href="#2-Straw选择算法" class="headerlink" title="2. Straw选择算法"></a>2. Straw选择算法</h1><p>网络中不同层级具有不同容忍灾难的能力，称之为容灾域。</p>
 <p><img src="/img/image-20201128210418154.png" srcset="/img/loading.gif" alt="image-20201128210418154"></p>
 <p>Sage weil一共设计了四种选择算法，并按照添加删除数据的性能进行比较。结论是：考虑到存储空间需求爆炸式增长，在大型分布式存储系统中某些部件故障是常态，以及数据性可靠性要求，Straw将是不错的选择。我们重点分析。</p>
 <ul>
 <li>straw算法将所有元素（设备）比作吸管，为每个元素随机计算一个长度，最后从中选择长度最长的那个元素作为结果输出，这个过程被形象地称为抽签（draw）。</li>
-<li>CRUSH引入了权重（weight）来区分不同容量的设备。大容量设备理应获得更大的权重。设输入为x，元素编号为i，权重为w，随机数种子为r。</li>
+<li>CRUSH引入了权重（weight）来区分不同容量的设备。大容量设备理应获得更大的权重。设输入为x，元素编号为i，权重为w，随机数种子为r。每根“吸管”的长度是根据权重决定的,i.e.$f(w_i)$。</li>
 </ul>
 <script type="math/tex; mode=display">
-C(r,x) = max_i(f(w_i)hash(x,r,i))</script><ul>
+C(r,x) = max_i(f(w_i)hash(x,r,i))</script><blockquote>
+<p>其实这里的x是输入PGID。<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="Wang L, Zhang Y, Xu J, et al. {MAPX}: Controlled Data Migration in the Expansion of Decentralized Object-Based Storage Systems[C]//18th {USENIX} Conference on File and Storage Technologies ({FAST} 20). 2020: 1-11.
+">[2]</span></a></sup>[2.1]节</p>
+</blockquote>
+<ul>
 <li>当添加一个元素，straw会随机将一些原有元素中的数据随机映射至新加入的元素中；当删除一个元素x，straw会将全部数据重新映射到除x以外所有元素。</li>
 </ul>
 <p>当然straw也存在问题</p>
@@ -298,7 +303,7 @@ max_item = <span class="hljs-number">-1</span>
 </ul>
 <h2 id="3-1-Cluster-Map"><a href="#3-1-Cluster-Map" class="headerlink" title="3.1 Cluster Map"></a>3.1 Cluster Map</h2><p><img src="/img/cluster_map.png" srcset="/img/loading.gif" alt="image-20201128210954633"></p>
 <p>实现上cluster map具有诸如 “数据中心→机架→主机→磁盘”这样的树状层次关系。每个叶子节点都是真实的物理设备（比如磁盘）称为device；所有的中间节点称为bucket；根节点称为root，是整个集群的入口。每个节点都用于唯一的数字ID和类型，但是只有叶子节点采用与非负ID。父节点的权重是所有孩子节点权重之和。</p>
-<p>CRUSH放置策略可在故障域中分布对象副本，同时保持所需的分布。例如，为了解决并发故障的可能性，可能需要确保数据副本位于使用不同架子，机架，电源，控制器和/或物理位置的设备上。</p>
+<p>CRUSH放置策略可在故障域中分布对象副本，同时保持所需的分布。例如，为了解决并发故障的可能性，可能需要确保数据副本位于使用不同架子，机架，电源，控制器和/或物理位置的设备上。CRUSH算法通过（i）将故障域的信息（如共享电源或网络）编码到群集图中，并（ii）让管理员定义用于指定副本放置方式的放置规则，从而支持可靠约束副本放置的灵活约束。 通过递归选择存储桶项目。</p>
 <p>常见的节点层级</p>
 <ul>
 <li><code>osd</code> (or <code>device</code>)</li>
@@ -335,8 +340,8 @@ max_item = <span class="hljs-number">-1</span>
 <p>因为在容灾域模式下会产生递归调用，所以还需要限制产生递归调用时作为下一级输入的全局尝试次数（<code>choose_total_tries</code>），因为这个限制会导致递归调用时全局尝试次数成倍增长，按照递归的概念，多次递归后这个全局尝试次数应该成指数增长，但是实际上至多调用一次，所以这里是将原始尝试次数放大N倍后作为下一级输入的全局尝试数，实现上采用一个布尔变量（<code>chooseleaf_descent_once</code>,i.e. “first n”）进行控制，如果为真，则在产生递归调用至多重试一次，否则则不进行重试，由调用者自身进行重试。N由<code>chooseleaf_vary_r</code>进行决定。</p>
 <p><img src="/img/crush5.png" srcset="/img/loading.gif" alt="image-20201129195221719" style="zoom:67%;" /></p>
 <p>这儿的$b.c(r’,x)$即为第二节谈到的 Bucket Choose ， 我们采用Straw2算法。<br>如果得到的结果不是目标类型，则继续向下递归。并设置重试标记$retry_bucket$为true.</p>
-<p><img src="/img/crush6.png" srcset="/img/loading.gif" alt="image-20201129195537731" style="zoom:67%;" /></p>
-<p>冲突（Collision）： 选中的条目已经存在于输出条目列表之中。<br>OSD过载或失效：</p>
+<p><img src="../img/crush6.png" srcset="/img/loading.gif" alt="image-20201129195537731" style="zoom:67%;" /></p>
+<p>当输出已经在输出条目中或者发生冲突或过载时，如果$f_r\ge 3$会执行29行。冲突（Collision）： 选中的条目已经存在于输出条目列表之中。<br>OSD过载或失效：</p>
 <ol>
 <li>由于集群规模较小，导致集群PG总数有限，CRUSH输入不够。</li>
 <li>CRUSH本身缺陷，每次选择是单个条目被选中的独立概率，但是CRUSH所要求的副本策略使得针对同一个输入、多个副本直接的选择变成了条件概率。</li>
@@ -632,10 +637,9 @@ choose_args 4 &#123;
 <blockquote>
 <p><code>firstn</code> 与 <code>indep</code></p>
 <ul>
-<li><p>描述</p>
-<p>控制在CRUSH映射中标记了项目（OSD）时CRUSH使用的替换策略。<strong>如果此规则将用于复制池，则应使用<code>firstn</code>；如果是擦除编码池，则应使用<code>indep</code></strong>。原因与先前选择的设备发生故障时它们的行为有关。假设您有一个PG存储在OSD 1、2、3、4、5上。然后3下降。在“ firstn”模式下，CRUSH只需将其计算调整为选择1和2，然后选择3，但发现它已关闭，因此它重试并选择4和5，然后继续选择一个新的OSD6。因此最终的CRUSH映射更改为1、2、3、4、5-&gt; 1、2、4、5、6。但是，如果要存储EC池，则意味着您只需更改映射到OSD 4、5和6的数据！因此，“独立”模式试图不这样做。相反，您可以期望它在选择失败的OSD 3时再次尝试并选择6，以进行以下最终转换：1，2，3，4，5-&gt; 1，2，6，4，5</p>
-</li>
+<li>描述</li>
 </ul>
+<p>控制在CRUSH映射中标记了项目（OSD）时CRUSH使用的替换策略。<strong>如果此规则将用于复制池，则应使用<code>firstn</code>；如果是擦除编码池，则应使用<code>indep</code></strong>。原因与先前选择的设备发生故障时它们的行为有关。假设您有一个PG存储在OSD 1、2、3、4、5上。然后3下降。在“ firstn”模式下，CRUSH只需将其计算调整为选择1和2，然后选择3，但发现它已关闭，因此它重试并选择4和5，然后继续选择一个新的OSD6。因此最终的CRUSH映射更改为1、2、3、4、5-&gt; 1、2、4、5、6。但是，如果要存储EC池，则意味着您只需更改映射到OSD 4、5和6的数据！因此，“独立”模式试图不这样做。相反，您可以期望它在选择失败的OSD 3时再次尝试并选择6，以进行以下最终转换：1，2，3，4，5-&gt; 1，2，6，4，5</p>
 </blockquote>
 <div class="note note-danger">
             <p>重要 :给定的CRUSH规则可以分配给多个池，但是单个池不可能具有多个CRUSH规则。</p>
@@ -742,7 +746,55 @@ rule customized_ruleset&#123;
 <p>Ceph将weights表示为两倍，从而可以进行精细调整。 weight是设备容量之间的相对差。 我们建议将1.00用作1TB存储设备的相对重量。 在这种情况下，权重为0.5代表大约500GB，权重为3.00代表大约3TB。 较高级别的存储桶的权重是该存储桶聚合的所有叶子项的总和。</p>
 <p>桶项目weight是一维的，但您也可以计算项目重量以反映存储驱动器的性能。 例如，如果您有许多1TB驱动器，其中一些具有较低的数据传输速率，而另一些具有较高的数据传输速率，则即使它们具有相同的容量（例如，硬盘的权重为0.80），也可以对其进行不同的加权。 第一组总吞吐量较低的驱动器，以及1.20第二组总吞吐量较高的驱动器）。</p>
 </blockquote>
-
+<hr>
+<p>2020/12/22更新</p>
+<h2 id="MapX-lt-span-class-”hint—top-hint—rounded”-aria-label-”Wang-L-Zhang-Y-Xu-J-et-al-MAPX-Controlled-Data-Migration-in-the-Expansion-of-Decentralized-Object-Based-Storage-Systems-C-18th-USENIX-Conference-on-File-and-Storage-Technologies-FAST-20-2020-1-11"><a href="#MapX-lt-span-class-”hint—top-hint—rounded”-aria-label-”Wang-L-Zhang-Y-Xu-J-et-al-MAPX-Controlled-Data-Migration-in-the-Expansion-of-Decentralized-Object-Based-Storage-Systems-C-18th-USENIX-Conference-on-File-and-Storage-Technologies-FAST-20-2020-1-11" class="headerlink" title="MapX&lt;span class=”hint—top hint—rounded” aria-label=”Wang L, Zhang Y, Xu J, et al. {MAPX}: Controlled Data Migration in the Expansion of Decentralized Object-Based Storage Systems[C]//18th {USENIX} Conference on File and Storage Technologies ({FAST} 20). 2020: 1-11."></a>MapX<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote">&lt;span class=”hint—top hint—rounded” aria-label=”Wang L, Zhang Y, Xu J, et al. {MAPX}: Controlled Data Migration in the Expansion of Decentralized Object-Based Storage Systems[C]//18th {USENIX} Conference on File and Storage Technologies ({FAST} 20). 2020: 1-11.</h2><p>“&gt;[2]&lt;/span&gt;&lt;/a&gt;&lt;/sup&gt; (FAST20’) 中对CRUSH算法的改进</p>
+<p>传统的CRUSH架构如下图（图1）</p>
+<p><img src="/img/mapx1.png" srcset="/img/loading.gif" alt="image-20201224164010122" style="zoom:80%;" /></p>
+<p>传统的CRUSH算法在增加节点时会导致大量的数据迁移，导致系统性能下降。下图（图2）模拟了两个模拟CRUSH集群在扩展时发生的数据迁移。</p>
+<p><img src="/img/mapx2.png" srcset="/img/loading.gif" alt="image-20201224162115959" style="zoom:80%;" /></p>
+<p>定性的表示，数据迁移量可以高达hΔw/W，其中h是层次结构中的级别数，而Δw和W是扩展权重以及 所有OSD的总重量.</p>
+<p>存储系统通常在集群扩展时会避免数据迁移，这会导致数据暂时不平衡。比如，Haystack和HDFS采用中心目录来避免已有的对象受到影响。因此本文思考通过加入适当的中心化成分来优化CRUSH。</p>
+<p><img src="/img/mapx3.png" srcset="/img/loading.gif" alt="image-20201224163557319" style="zoom:67%;" /></p>
+<p>上图(3)表示，MAPX对每次扩展记录为“一层”。MAPX 会加入select到placement rule当中。可与传统CRUSH对比理解。为了支持时间维度的映射并且对CRUSH改动最小，我们在root下插入一个虚拟层，每一个虚拟节点表示一个扩展层。 虚拟层使MAPX能够通过在将新对象映射到新层之前对CRUSH算法进行进一步处理来实现无迁移扩展。 由于新层不会影响旧层的权重，因此旧对象在旧层中的放置不会改变。</p>
+<h3 id="映射对象到PG"><a href="#映射对象到PG" class="headerlink" title="映射对象到PG"></a>映射对象到PG</h3><p>在每次扩展中，都会为新层分配一定数量的新创建的PG，每个PG的时间戳（$t_{pgs}$）等于该层的扩展时间（$t_l$）。 写入/读取对象O（带有创建时间戳记$t_0$）时，我们首先通过以下方法计算O的PG的ID（pgid）：</p>
+<script type="math/tex; mode=display">
+pgid =Hash(name) \text{ mod INIT_PG_NUM[j]} + \sum\limits_{i=0}^{j-1}\text{INIT_PG_NUM[i]}</script><p>这里name表示对象名，<code>INT_PG_NUM[i]</code>表示PG第i层的初始值，并且第j层拥有最小的时间标签$t_l\le t_O$，PG可能会重新映射到其他层，例如进行负载平衡（第3.2节），<code>INIT_PG_NUM</code>是层的常量，因此从对象到PG的映射是不可变的。<br>   因此，每个对象在创建过程中都映射到负责的PG，所有PG中的最新时间戳$t_{pgs}≤t_O$。 例如，图3（b）中的三个RBD1，RBD2和RBD3是分别在layer0，layer1和layer2扩展之后创建的。  RBD1，RBD2和RBD3的对象将使用三层的<code>INIT_PG_NUM</code>分别计算其在layer0，layer1和layer2内的PG。</p>
+<h3 id="将PG映射到OSD"><a href="#将PG映射到OSD" class="headerlink" title="将PG映射到OSD"></a>将PG映射到OSD</h3><p><img src="/img/mapx4.png" srcset="/img/loading.gif" alt="image-20201224170254087" style="zoom:67%;" /></p>
+<p>下面我们看下这篇文章具体是如何改进CRUSH的。</p>
+<ul>
+<li><p>如果type不是“layer”那么就等同于原始CRUSH算法（2~4行）。</p>
+</li>
+<li><p>否则，我们将初始化一个图层数组，该数组按图层时间戳的升序（第5行）存储当前正在处理的存储桶（通常是根目录）下的所有图层。 我们还在第6到8行初始化num层（层数），pg（放置组）和〜o（输出列表）。然后循环（第9-21行）在层阵列中添加数字层 到输出列表〜o。 在大多数情况下，层数为 1，PG可以在一层中映射到OSD，也有number很大的情况，比如在两个扩展层进行镜像。</p>
+</li>
+<li>请注意，对象的副本不一定都放置在最新层上。 例如，假设最后一个扩展（第2层）在图3（a）中仅添加了两个机柜（即m = 2），但是第二个<code>select()</code>函数（<code>select(3,cabinet)</code>）需要三个机柜。 这将导致第一个<code>select()</code>函数<code>(select(1,layer)</code> 被调用两次，以满足遵循CRUSH回溯机制的规则：当<code>select()</code>函数无法在“ layer”存储桶下选择足够的项目时，MAPX 将保留（而不是放弃）选定的项目，并回溯到根以选择上一层下面的缺少的项目。 第12至14行检查先前的<code>select()</code>是否选择了图层，如果是，我们将继续进行下一个循环，以避免执行回溯时重复的图层选择。 仔细检查可确保算法1正确处理此情况，并分别为第一个和第二个<code>select()</code>函数返回layer2和layer1。</li>
+</ul>
+<h3 id="迁移控制"><a href="#迁移控制" class="headerlink" title="迁移控制"></a>迁移控制</h3><p>由于原始CRUSH的随机性和均匀性，基于MAPX的免迁移放置算法可在每层内提供（统计）负载平衡，当当前层的负载增加到与先前层相同的水平时，通过适时扩展群集来实现不同层之间的近似负载平衡。但是，层的负载可能由于例如对象的移除，OSD的故障或不可预测的工作负载变化而改变。 例如，在图3中，当第一个扩展（第1层）的负载与原始集群（第0层）的负载一样高时，该集群可能会执行第二个扩展（第2层），但随后会有大量 删除第1层的对象，因此前两层的负载可能会变得不平衡。<br>  为了解决潜在的负载不平衡问题，我们设计了三种灵活的策略来动态管理MAPX中的负载，即放置组重新映射，群集收缩和层合并。</p>
+<p><strong>PG重新映射</strong>。  MAPX支持通过动态重新映射PG来控制对象数据的迁移。 每个PG都有两个时间戳，即等于PG初始层扩展时间的静态时间戳（$t_{pgs}$）和可以设置为任何层的扩展时间的动态时间戳（$t_{pgd}$）。 与使用静态时间戳的从对象到PG的映射不同，从PG到图层的映射是通过将PG的动态时间戳与图层的时间戳进行比较来进行的（算法1中的第11行）。 因此，可以通过操纵动态时间戳（如图3（b）所示）将PG轻松地重新映射到任何层，该时间戳将通过增量映射更新通知所有OSD和客户端。  PG的时间戳存储开销适中。 例如，如果我们为每个PG时间戳使用一个字节索引（指向相应层的时间戳），该索引最多支持$2^8$层= 256层），并且假设一台机器有20个OSD，每个OSD负责200个PG，则 1000个机器集群的时间戳的内存开销为1000×20×200×2×1B = 8MB。<br>   <strong>集群收缩</strong>。 当层的负载低于阈值时，MAPX会通过从集群中删除该层的设备（例如OSD，机器和机架）来收缩集群，这是集群扩展的逆向操作。<br>   给定要从群集中删除的层Ω，我们首先将Ω中的所有PG根据其总权重分配给其余层（为简单起见，重新分配不考虑层的实际负载），然后将PG迁移到 通过重新映射确定目标层（如上所述）。 缩小后，逻辑上保留了Ω层（没有物理设备或PG），并且它的<code>INIT_PG_NUM</code>不会更改，以免影响从对象到PG的映射（根据等式（2））。<br>   <strong>层合并</strong>。  MAPX通过层合并来平衡两层（Ω和Ω’）的负载，这可以通过将一层（Ω’）的扩展时间设置为与另一层（Ω）相同的扩展时间来轻松实现。</p>
+<p>我们通过将物理设备ID和该层的时间戳连接起来，为特定层（即，特定虚拟节点下方）的内部设备分配了虚拟设备ID。 <u>我们使用虚拟节点的权重字段来记录图层的时间戳，并将其与PG的动态时间戳进行比较以进行图层选择</u>。<br>   MAPX不适合用于一般对象存储，主要是因为维护和检索任意对象的时间戳很重要。 按对象时间戳维护的开销与维护中央目录的开销类似，因此在诸如CRUSH和MAPX的集中式放置方法中应避免这种开销。<br>   但是，MAPX适用于各种基于对象的存储系统，例如块存储（Ceph-RBD ）和文件存储（Ceph-FS），其中对象时间戳可以保持为更高级别 元数据。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p><strong>Ceph-RBD</strong>    </p>
+<p>Ceph-RBD。 我们已经为Ceph-RBD（RADOS块设备）实现了基于元数据的时间戳检索机制。  Ceph将RBD的元数据（例如数据对象名称的前缀以及卷，快照，条带等信息）存储在其<code>rbd_header</code>结构中，当客户端通过<code>rbd_open</code>挂载RBD时将检索该元数据。 由于RBD的对象可以在任何扩展之后创建，因此我们继承当前层的时间戳（创建对象时）作为对象的时间戳。 因此，我们在<code>rbd_header</code>结构中添加了一个每个对象的索引（称为对象时间戳<code>object_timestamp</code>），该索引指向每一层的扩展时间。 额外元数据的存储开销适中。 例如，如果我们为每个对象索引使用一个字节，而每个对象为4MB，则4TB RBD的对象时间戳数组的存储开销最多为4TB/4MB×1B = 1MB。</p>
+<p><strong>CephFS</strong></p>
+<p> 我们还（部分）为CephFS（Ceph文件系统）实现了时间戳检索机制。<br>   Ceph将文件元数据（包括文件创建时间）存储在inode结构中。 客户端在打开文件时读取inode并获取文件创建时间。 当前，我们让文件的所有对象继承文件的时间戳，以便我们可以按文件的粒度控制时维映射。 我们还计划支持更精细的对象时间戳维护。 如果文件大小超过阈值T（例如T = 100 MB），我们可以将其划分为每个小于100 MB的子文件。 文件的元数据既维护了从文件到其子文件的映射，又维护了每个子文件的创建时间戳，因此我们可以以子文件的粒度控制时间维度映射。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p><img src="/img/mapx6.png" srcset="/img/loading.gif" alt="image-20201224174039878" style="zoom:150%;" /></p>
+<blockquote>
+<p>​                                        左图4，第99百分位 I/O延迟对比；右图5 ，IOPS对比</p>
+</blockquote>
+<p>我们使用Ceph所有参数的默认值，但<code>OSD_max_backfills</code>除外。 如第1节所述，Ceph通过实现级优化减轻了CRUSH的迁移问题。 它使用参数<code>OSD_max_back_fill≥1</code>在数据迁移导致的性能下降的严重性和持续时间之间进行权衡。默认情况下，Ceph将参数<code>OSD_max_backfills</code>设置为1，这使迁移具有最低优先级，因此PG中的对象可能以极低的速度迁移。 尽管部分缓解了降级问题，但将<code>OSD_max_backfills</code>设置为1会大大延长迁移时间，并在迁移完成之前大大增加写入负载：等待迁移的PG写入将首先对原始OSD执行，然后异步进行 迁移到目标OSD。<br>   显然，这使Ceph遭受的性能下降的幅度较小，但时间较长。 我们设置<code>OSD_max_backfills=10</code>，在此实验中更合理，因此可以优先考虑迁移，以证明MAPX和CRUSH在算法级别上的差异。 </p>
+<p>​    图4显示了第99个百分位尾延迟的评估结果。 请注意，云存储方案通常关心的是（第99、99.9或99.99个百分位）尾部延迟，而不是平均延迟或中值延迟，以确保SLA（服务等级保障协议）。  MAPX的性能比CRUSH高出4.25倍，这主要是因为CRUSH中的迁移与正常的I / O请求严重竞争。 在此实验中，MAPX始终使用初始群集的六个OSD来满足I / O请求，因为它不会将现有RBD迁移到新OSD。 相比之下，CRUSH分别使用六个，九个和十二个OSD，但是CRUSH引起的数据迁移会严重降低性能，这对于延迟敏感的应用程序是不可接受的。<br>   图5分别显示了MAPX和CRUSH中IOPS的评估结果。 每个结果均为20次运行的平均值，我们省略了误差线，因为与平均值的方差相对较小（小于5％）。 与延迟测试类似，在IOPS测试中，MAPX的性能明显优于CRUSH，最高可达到74.3％，这是因为CRUSH的数据迁移可以应付正常的I / O请求。</p>
+<p><img src="A first glance at CRUSH/image-20201224200625534.png" srcset="/img/loading.gif" alt="image-20201224200625534" style="zoom:80%;" /></p>
+<blockquote>
+<p>图7：MAPX和CRUSH的第99个百分点的I / O延迟（在群集收缩期间）。</p>
+</blockquote>
+<p><img src="A first glance at CRUSH/image-20201224200711635.png" srcset="/img/loading.gif" alt="image-20201224200711635" style="zoom:80%;" /></p>
+<blockquote>
+<p>图8：在MAPX中合并的层中受影响的PG的数量（四个扩展之后）。 由于CRUSH不支持合并，因此我们在每次CRUSH扩展后测量受影响的PG的数量以供参考。</p>
+</blockquote>
+<p>我们使用CrushTool模拟MAPX中的图层合并。<br>   我们采用三向复制，其中每个对象在三个OSD上存储三个副本。 最初，存储集群由5个机架组成，每个机架有20台计算机。 一台机器有20个OSD。 总共有100台机器和2000个OSD，可存储20万个PG。 我们将集群扩展了四倍。 在每个扩展中，我们将一个机架的新层（包含20台计算机和400个OSD）添加到一个新层，并在新层中添加40,000个新PG。 显然，MAPX将所有新PG映射到新添加的OSD上，因此不会发生迁移。 四个扩展之后，总共有9个机架，180台机器和3600个OSD，可存储360,000个PG。 然后，我们合并第一扩展和第二扩展的40台机器，并测量MAPX中的合并影响了多少个PG。<br>   结果如图8所示，其中MAPX中的图层合并影响了两个合并图层的所有80,000 PG中的70,910 PG。  MAPX的层合并中受影响的PG的相对较高比例取决于作为参考，我们还模拟了CRUSH中的四个扩展，其中让群集最初具有360,000个PG，并且在扩展期间不添加新PG，因为否则CRUSH会将映射从对象更改为PG，从而导致更多PG迁移。<br>  图8还显示了CRUSH的每次扩展会影响多少PG。 例如，当机器数量从160增加到180时，几乎90％的PG在第四次扩展中都受到影响。</p>
+<hr>
+<h2 id="引用和参考文献"><a href="#引用和参考文献" class="headerlink" title="引用和参考文献"></a>引用和参考文献</h2><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>WEIL, S. A., BRANDT, S. A., MILLER, E. L., AND MALTZAHN,C. Crush: Controlled, scalable, decentralized placement of replicateddata. In <em>SC</em>’06: Proceedings of the 2006 ACM/IEEE Conference on<em>Supercomputing</em> (2006), IEEE, pp. 31–31.
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>Wang L, Zhang Y, Xu J, et al. {MAPX}: Controlled Data Migration in the Expansion of Decentralized Object-Based Storage Systems[C]//18th {USENIX} Conference on File and Storage Technologies ({FAST} 20). 2020: 1-11.
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>
             <div>
@@ -990,7 +1042,7 @@ rule customized_ruleset&#123;
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "「核心」Ceph学习三部曲之一:A First Galance At Crush&nbsp;",
+        "「核心」Ceph学习三部曲之一:A First Glance At Crush&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -262,14 +262,22 @@
 </ul>
 <p>我们将介绍</p>
 <ul>
-<li>二叉树的表示</li>
-<li>二叉树的遍历</li>
-<li>二叉树序列化以及反序列化</li>
-<li>树形dp</li>
-<li>线索二叉树</li>
-<li>最近公共祖先（LCA）</li>
-<li>二叉平衡树</li>
-<li>二叉树路径求和</li>
+<li><p>二叉树的表示</p>
+</li>
+<li><p>二叉树的遍历</p>
+</li>
+<li><p>二叉树序列化以及反序列化</p>
+</li>
+<li><p>树形dp</p>
+</li>
+<li><p>线索二叉树</p>
+</li>
+<li><p>最近公共祖先（LCA）</p>
+</li>
+<li><p>二叉平衡树</p>
+</li>
+<li><p>二叉树路径求和</p>
+</li>
 </ul>
 <hr>
 <p><strong>部分题目</strong></p>
@@ -279,6 +287,9 @@
 <li>124.二叉树最大路径（Hard）</li>
 <li>99.恢复二叉搜索树（Hard）（*）</li>
 <li>297.二叉树序列化与反序列化</li>
+</ul>
+<p><strong>二叉树遍历</strong></p>
+<ul>
 <li><ol>
 <li>从中序遍历和前序遍历构造二叉树</li>
 </ol>
@@ -286,6 +297,8 @@
 <li><ol>
 <li>从中序遍历和后序遍历构造二叉树</li>
 </ol>
+</li>
+<li><p>889.根据前序遍历和后序遍历构造二叉树</p>
 </li>
 <li><ol>
 <li>二叉树最近公共祖先</li>
@@ -449,12 +462,11 @@
     <span class="hljs-keyword">return</span> postorder;
 &#125;
 </code></pre>
-<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">从前序遍历和中序遍历构造二叉树</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">从后序遍历和中序遍历构造二叉树</a></p>
-</li>
+<h3 id="练习-举一反三"><a href="#练习-举一反三" class="headerlink" title="练习(举一反三)"></a>练习(举一反三)</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/">从前序遍历和中序遍历构造二叉树</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/">从后序遍历和中序遍历构造二叉树</a></li>
 </ol>
+<p>889.<a href="889.根据前序遍历和后序遍历构造二叉树">根据前序遍历和后序遍历构造二叉树</a></p>
 <p>我们要知道，中序遍历作用是确定左右子树与根节点的相对位置。我们建立一个哈希表记录中序遍历所有节点的位置，然后在前序遍历寻找，直到遇到叶子节点。</p>
 <hr>
 <h2 id="二叉树最近公共祖先"><a href="#二叉树最近公共祖先" class="headerlink" title="二叉树最近公共祖先"></a>二叉树最近公共祖先</h2><p>236.<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/">二叉树最近公共祖先</a></p>

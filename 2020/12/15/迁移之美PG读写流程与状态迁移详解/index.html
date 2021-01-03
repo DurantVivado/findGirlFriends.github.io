@@ -869,7 +869,7 @@ Total \ PGs = \frac{OSDs*100}{pool\_size}</script><p>$pool_size$在副本池表�
         &#125;,
 ...
 &#125;</code></pre>
-<p>我们可以看到很多理论部分讲过的元数据，比如 up 、acting、info、epoch、peer、interval等</p>
+<p>我们可以看到很多理论部分讲过的元数据，比如 up 、acting、info、epoch、peer、interval等。<code>snap_trimq</code>表示快照删除队列。</p>
 <p>当前的版本号为236.</p>
 <h2 id="12-Scrub一个放置组"><a href="#12-Scrub一个放置组" class="headerlink" title="12 Scrub一个放置组"></a>12 Scrub一个放置组</h2><p>关于Scrub的含义，我们在《Ceph纠删码部署》已经介绍了，Scrub指数据扫描，通过读取对象数据并重新计算校验和，再与之前存储在对象属性的校验和进行比对，以判断有无静默错误（磁盘自身无法感知的错误）。要Scrub，请执行以下操作：</p>
 <pre><code class="hljs pf">ceph pg <span class="hljs-keyword">scrub</span> &#123;pg-id&#125;</code></pre>

@@ -1,0 +1,783 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Durant Thorvalds 的米奇妙妙屋" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-28 00:00" pubdate>
+        2020年12月28日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      36
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="控制先行——Ceph的QoS策略"><a href="#控制先行——Ceph的QoS策略" class="headerlink" title="控制先行——Ceph的QoS策略"></a>控制先行——Ceph的QoS策略</h1><div class="note note-primary">
+            <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第五章。9/7/2017 韩国SK团队进展 .PPT见<a target="_blank" rel="noopener" href="https://www.slideshare.net/ssusercee823/implementing-distributed-mclock-in-ceph">链接</a>,Code见<a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/16369">链接</a>.</p>
+          </div>
+<blockquote>
+</blockquote>
+<p>Ceph作为开源社区的明星，因为其高可扩展性、高可靠性，受到各大厂商的热烈追捧，并成为OpenStack事实上的默认存储后端。但是人非圣贤，孰能无过?它也同样面临I/O资源分配的问题。为了保证客户能够体验更好的服务，Ceph引入了QoS($Quality of Service$).</p>
+<p>$dmClock$是一种分布式系统的I/O调度算法，它起源于mClock（<a target="_blank" rel="noopener" href="https://www.usenix.org/legacy/events/osdi10/tech/full_papers/Gulati.pdf">论文地址</a>）,目前被应用于Ceph中。</p>
+<p>Ceph作为分布式存储系统集大成者，不能像传统QoS实现位置首选的中心节点，必须在每个OSD中实现QoS。下图展示了社区目前（2017版本）的Ceph QoS pool单元：</p>
+<p><img src="/img/image-20201219164136113.png" srcset="/img/loading.gif" alt="image-20201219164136113" style="zoom:80%;" /></p>
+<h2 id="1-dmClock算法原理"><a href="#1-dmClock算法原理" class="headerlink" title="1 dmClock算法原理"></a>1 dmClock算法原理</h2><p>首先我们先了解mClock，这是一种基于时间标签的I/O调度算法，最先被VMware提出了的用于集中式管理的存储系统。它使用了reservation（预留，表示客户端获得的最低I/O资源）、weight（权重，表示客户端占用共享I/O资源的权重，共享I/O指满足预留之后剩余的I/O资源）以及limit（上限，表示用户所能使用的最大I/O）作为一套模板（QoS spec），作用于不同的客户端。下图是其典型应用模型：</p>
+<p><img src="/img/dmClock.png" srcset="/img/loading.gif" alt="image-20201216151614635"></p>
+<p>mClock是典型的C/S架构，Client可以驻留在实际的客户端或者服务器端，主要负责下发QoS模板的参数值、收集请求的完成信息等；server为mClock的服务端，实现I/O调度的核心功能。</p>
+<p>其算法流程如下：</p>
+<ol>
+<li>Server为每个客户端设置一套QoS模板参数，包括预留（r），权重（w）和上限（l）三个部分，并依次计算出I/O请求的时间标签，其中预留和上限为绝对时间，权重标签为相对时间。</li>
+<li>服务器分为两个阶段来处理I/O请求：一是Constarint-based，只处理满足预留时间标签的请求；二是Weight-based阶段，处理满足上限的时间标签的权重标签请求。</li>
+<li>服务器先工作也Constraint-based，再转入Weight-based阶段。</li>
+</ol>
+<p>如果用$q_i$表示QoS的模板参数$q_i\in\{r_i,w_i,l_i\}$，$Q^r_i$表示来自第i个客户的第r个请求的时间标签。有如下公式：</p>
+<script type="math/tex; mode=display">
+Q_i^r=max\{Q^{r-1}_i+1/q_i,current\_time\}</script><p>以第一个请求到达时间作为初始基准标签，后续标签依据预设的模板参数值，对单位时间进行均匀切分计算而来。在Constraint-based阶段 ，各客户端请求被均匀的处理，而在weight-based阶段，则将出现竞争，由于权重标签是相对值，它和真实的时间之差通常会很大，从而出现饥饿现象。因此需要调整旧client的权重标签，以新client的权重时间标签为基准，添加一个补偿值。</p>
+<p>dmClock是mClock 的分布式版本，两者的基本原理相同。每个请求的时间标签计算公式如下：</p>
+<script type="math/tex; mode=display">
+R_i^r=max\{R_i^{r-1}+\rho_i/r_i,current\_time\}\\
+W_i^r=max\{W_i^{r-1}+\delta_i/w_i,current\_time\}\\
+L_i^r=max\{L_i^{r-1}+\delta_i/l_i,current\_time\}\\</script><p>dmClock和mClock的主要区别在于：</p>
+<ul>
+<li>分布式系统具有多个服务器，服务器回应每个I/O请求时，返回其在哪个阶段被处理完成。</li>
+<li>客户端记录每个服务器完成的请求个数，在向服务器下发请求时，携带距上次下发请求以来，收到完成的请求个数的增量，并且是除目标服务器之外，其它服务器完成的请求数之和，分别用$\rho$和$\delta$表示两个阶段的增量处理个数。</li>
+<li>服务器计算请求的时间标签，使用$\rho$和$\delta$作为调整因子，不再以$1/q$均匀递增。从而减小了每个服务器处理的请求的个数。</li>
+</ul>
+<p>通过对$\rho$和$\delta$的调整，使得集群整体对外提供预期的I/O处理效果。</p>
+<h2 id="2-QoS的设计与实现"><a href="#2-QoS的设计与实现" class="headerlink" title="2 QoS的设计与实现"></a>2 QoS的设计与实现</h2><p>在OSD中，存在<code>op_shardedwq</code>队列处理各种来自上级的I/O，并且这是一个复合队列，通常包含若干子队列。I/O请求从队列出列后，通过ObjectStore接口与磁盘交互。</p>
+<p>OSD支持多种不同的子队列，目前主要包括优先级队列（prio）和基于权重的优先级队列（wpq）两种，</p>
+<p>I/O操作类型主要包括以下几种：</p>
+<ol>
+<li>ClientOp：来自客户端的读写I/O请求；</li>
+<li>SubOp：OSD之间的I/O请求。主要包括客户端I/O产生的副本间数据读写请求，以及由数据同步、数据扫描、负载均衡等引起的I/O请求。</li>
+<li>SnapTrim：快照数据删除。</li>
+<li>Scrub：用于发现对象的静默数据错误。其中Scrub只扫描元数据，而Deep Scrub对对象整体进行扫描。</li>
+<li>Recovery：数据恢复和迁移。集群扩容、OSD添加与移除、手动进行数据重平衡都有可能触发recovery过程。</li>
+</ol>
+<p><img src="/img/dmClock2.png" srcset="/img/loading.gif" alt="image-20201218175910498" style="zoom:67%;" /></p>
+<p>上图表示OSD内部结构，我们对原有的prior队列，wpq队列以及新增的dmClock队列加以分析。</p>
+<h2 id="2-1-优先级队列prior"><a href="#2-1-优先级队列prior" class="headerlink" title="2.1 优先级队列prior"></a>2.1 优先级队列prior</h2><p>prior是一个基于令牌桶的优先队列，由三个级别组成：1.I/O类型的优先级prior； 2. 客户端级别的client队列；3.真实的list请求；每个元素包括请求r以及数据大小cost。可以把prior看成一个三维的队列。</p>
+<p>每个prior队列，在其第一个请求入队时，被创建，并分配一个大小为<code>max_tokens</code>的令牌桶。</p>
+<p>关于出队的规则，有以下几点：</p>
+<ol>
+<li>选择合理的prior：从小到大轮询所有prior，只要满足条件则被选中。即，该prior队列的令牌桶中剩余 的令牌数量足够多，可以容纳将被选中的请求（每个请求出队时，必须拿到与其大小cost相当的令牌的个数）。</li>
+<li>选择合理的client：对同优先级下的client进行轮询，即第一个client出队一个请求后，将请求的出队权交给第二个client，该优先级再次被选中时，从第二个client出队请求。</li>
+<li>选择合理的请求：从被选中的client的请求list表中出队一个请求（FIFO策略）。</li>
+</ol>
+<p>当出队一个请求时，从令牌桶中拿掉与请求大小cost相当的令牌个数，随后将拿到的令牌数分发、交还至所有prior队列，使得令牌总数维持不变。令牌分发的规则是，按照各自prior的占用比重，每个prior队列可回收的令牌总数token：</p>
+<script type="math/tex; mode=display">
+token = \frac{prior}{total\_prior}\times cost</script><p>对于prio较大的队列将优先被考虑，I/O类型到达优先级可以用过配置参数修改，如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>优先级配置参数</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>osd_client_op_priority</code></td>
+<td>63</td>
+</tr>
+<tr>
+<td><code>osd_snap_trim_priority</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>osd_scrub_prority</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>osd_recovery_op_priority</code></td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>优先队列同样存在一些局限性，如果集群中某个OSD分布了比其它OSD更多的PG或者Object对象时，该OSD由于需要处理更多的副本请求，导致客户端长时间得不到处理出现饥饿现象。</p>
+<p>为此社区引入了基于权重的优先级队列wpq.</p>
+<h2 id="2-2-权重优先级队列wpq"><a href="#2-2-权重优先级队列wpq" class="headerlink" title="2.2 权重优先级队列wpq"></a>2.2 权重优先级队列wpq</h2><p>基于权重的wpq不需要创建令牌桶，与prior仅在出队方式上有区别：</p>
+<ul>
+<li><p>采用权重概率的方式确定prior级别，每个队列的优先级prior作为其权重，该prior队列被选中的概率即为其权重占总权重的比例。通过随机数对total_prior取余的方式得到在$[0,total_prior-1]$的范围内完全随机分布。(rand()%total_prior)</p>
+</li>
+<li><p>被选中的prior队列并不一定能出队请求，还需要根据将要出队的请求大小来确定，即是否满足$rand()\%max_cost\le (max_cost - (request_size*9/10))$</p>
+</li>
+</ul>
+<p>max_cost指该prior队列最大的请求的大小。较小请求对应右边值更大，因而出队概率更高。</p>
+<ul>
+<li>client级别和真实请求的选择和prior相同。</li>
+</ul>
+<h2 id="2-3-dmClock队列"><a href="#2-3-dmClock队列" class="headerlink" title="2.3 dmClock队列"></a>2.3 dmClock队列</h2><p>dmClock是一个两级映射的队列，第一级为客户端的client队列，第二级是真实的请求队列，每个请求包含三个时间标签$<R_i,W_i,L_i>$, 其中i表示所属的client编号，没有使用优先级prior。</p>
+<p>dmClock采用<strong>完全二叉树</strong>这种数据结构来处理大量的请求。分别构建预留时间标签、权重时间标签、上限时间标签二叉树，树节点为每个client对应的请求队列，节点在二叉树的位置，则根据其队首元素的三个标签决定，总体原则是父节点时间标签小于子节点。</p>
+<h3 id="入队"><a href="#入队" class="headerlink" title="入队"></a>入队</h3><p>对于已存在的client，将请求直接挂入请求队列的尾部；对于新增client，除了新创建一个对应的请求队列，还要将队列作为一个新节点加入标签二叉树。根据完全二叉树的特点，采用顺序的变长数组结构存储，新节点先加入二叉树的尾部，再调整至合适的位置，二叉树的调整规则如下：</p>
+<ul>
+<li>R预留标签二叉树：以节点的队首元素的预留标签为基础，值小的节点调整至树的上层，反之调整至下层，最终根节点的预留标签值最小；</li>
+<li>W权重标签二叉树：该树的节点中有两种状态，一种满足出队条件，其上限小于或等于当前时间，ready标记被置为true；另一种不满足出队条件，ready被置为false。对节点位置调整时，根据请求队列队首元素的ready状态，满足出队条件的节点调至上层，不满足出队条件的调至下层。相同状态的节点再由权重标签的大小决定，标签值较小的往上调整，反之往下调整。</li>
+<li>L上限标签二叉树：用于判决权重二叉树的节点中的请求是否满足出队条件，也使用ready进行标记区分。但与权重二叉树不同，ready为true的节点向下调整。ready相同的节点根据上限标签值的大小决定。</li>
+</ul>
+<h3 id="出队"><a href="#出队" class="headerlink" title="出队"></a>出队</h3><p>首先进入constraint-based阶段取预留标签二叉树的根节点的请求队列，判断其队首元素的预留标签是否小于当前时间，作为是否满足出队条件的依据。如果条件满足，则选取该节点对应的client，从其请求队列的队首出队一个元素；否则进入weight-based阶段，从上限标签二叉树的根节点开始，逐个判断队首元素的上限标签是否小于等于当前时间，并，设置满足条件的请求的ready为true，以决定其是否可以参加随后的<strong>权重竞争</strong>。所谓的权重竞争，指对所有满足上限条件的clients，依据其队首元素的权重标签值，调整自身在权重二叉树的位置的过程，最终位于根节点的client胜出。</p>
+<h2 id="2-4-Client的设计"><a href="#2-4-Client的设计" class="headerlink" title="2.4  Client的设计"></a>2.4  Client的设计</h2><p>目前Client 的设计有三种初步方案：</p>
+<p>1）使用mClock作为一种分配调度策略，控制客户端的I/O请求和Ceph内部产生的I/O调度。这将所有不同真实客户端作为同一个抽象的client考虑；</p>
+<p>2）使用dmClock以存储池或者卷为粒度，为其设置QoS模板参数，客户端请求以消息的形式发送至OSD。这是将每个存储池或存储池中的卷作为一个client；</p>
+<p>3）使用dmClock为每个真实客户端设置一套QoS模板，这是将每个真实client作为一个client；</p>
+<p>对于每一个 QoS 对象来说，首先需要在 OSD 中实现以下前置条件:</p>
+<ol>
+<li>对于每个客户端来说，每个请求具有唯一的标识符，客户端和请求形成全局唯一</li>
+<li>必须将每个请求对应的 QoS 控制信息持久化</li>
+<li>OSD 能够通过标识符从来访的请求中找到 QoS 控制信息</li>
+</ol>
+<h2 id="2-5-总结与展望"><a href="#2-5-总结与展望" class="headerlink" title="2.5 总结与展望"></a>2.5 总结与展望</h2><p>目前对QoS的优化有以下几种方向：</p>
+<ol>
+<li><p>合理模板参数的设置</p>
+<p>只有集群运行于超负荷时（入队速率大于出队速率），权重的效果才能体现出来。</p>
+</li>
+<li><p>I/O带宽的限制</p>
+<p>QoS限速体系的设计，比如通过OIO throttling来进行限速【参考SK团队PPT】。</p>
+</li>
+<li><p>突发I/O的处理</p>
+<p>dmClock的做法是为每个client预先设置一个可调整参数$\sigma$，当出现突发I/O状况，减小该client的权重标签至$t-\sigma_i/w_i$，从而使其在权重竞争中更有优势。这里有一个问题，就是服务端如何判断客户端产生突发I/O访问？通过记录客户端的状态是一种可行的方式。</p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Ceph/">Ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Ceph/%E7%90%86%E8%AE%BA/">理论</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/QoS/">QoS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/29/20201220-%E3%80%8C%E6%A0%B8%E5%BF%83%E3%80%8DCeph%E5%AD%A6%E4%B9%A0%E4%B8%89%E9%83%A8%E6%9B%B2%E4%B9%8B%E5%85%AD%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E5%9D%97%E5%AD%98%E5%82%A8RBD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/27/%E4%B8%8B%E4%B8%80%E4%BB%A3%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8EBlueStore/">
+                        <span class="hidden-mobile">「核心」Ceph学习三部曲之四:下一代对象存储引擎BlueStore</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "「核心」Ceph学习三部曲之五:控制先行——Ceph的QoS策略&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

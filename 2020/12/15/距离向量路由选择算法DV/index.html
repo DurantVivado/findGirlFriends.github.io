@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      330 字
+      809 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      9
        分钟
     </span>
   
@@ -243,13 +243,25 @@
             <h1 style="display: none">距离向量路由选择算法——DV</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="距离向量路由选择算法——DV"><a href="#距离向量路由选择算法——DV" class="headerlink" title="距离向量路由选择算法——DV"></a>距离向量路由选择算法——DV</h1><p>获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！</p>
+              <h1 id="DV"><a href="#DV" class="headerlink" title="DV"></a><em>DV</em></h1><p>获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！</p>
 <p>这儿的自我终止指：即没有计算应该停止的信号，它就停止了。</p>
 <p>我们首先讨论最低路径开销之间的一种重要关系。令$d_x(y)$是从节点x到y的最低开销，由著名的Bellman-Ford方程：</p>
 <script type="math/tex; mode=display">
 d_x(y)=min_v\{c(x,v)+d_v(y)\}</script><p>$c(x,y)$表示x与y之间的边的开销。这正是Dijkstra算法的核心思路。</p>
 <p>我们令$D_x(y)$为节点x到邻近的每一个节点y的<strong>距离向量</strong>。</p>
 <p>每个节点不时的向每个邻居发送它的距离向量副本。当节点x从它任何一个邻居v收到一个新的距离向量，它就保存，然后根据Bellford-man方程更新自己的距离向量，如果自己的距离向量发生改变，那么它向所有邻居广播更新后的距离向量。令人惊奇的是，只要所有节点都异步地交换它们的距离向量，每个开销$D_x(y)$都会收敛到$d_x(y)$!!!</p>
+<p>当然，这样的异步策略也有问题：比如我们有一个这样的图，$c(x,y)=4,c(y,z)=1,c(x,z)=5$,然后在某一时刻c(x,y)变为60.然后节点y重新计算开销$D_y(x)=min\{c(y,x)+D_x(x),c(y,z)+D_z(x)\}=min\{60+0,1+5\}=6$。这显然是不对的。那么这种现象被称为<strong>路由选择环路</strong>，报文会不断在y，z节点循环，他将持续60-6=44次！这个问题有时被称为<strong>无穷计数</strong>。</p>
+<p>除此之外，在DV算法，一个节点可向任何节点通告其不正确的最低路径开销（有意或无意的）,从而导致整个网络发生故障！</p>
+<h1 id="OSPF"><a href="#OSPF" class="headerlink" title="OSPF"></a><em>OSPF</em></h1><p>随着路由器数目变得巨大，涉及路由选择信息的通信计算和存储开销将接近无穷大。为此人们涉及了自治系统（AS）,它在一个ISP中由路由器和链路互联而形成。在一个自治系统内运行的路由算法称为自治系统内部路由选择协议。</p>
+<p>OSPF全称是 Open Shortest Path First 开放最短路优先。OSPF是一种链路状态协议，它使用洪泛链路状态协议以及Dijkstra最低开销路径算法，每台路由器都有整个自治网络的完整拓扑图。由管理员确定各条链路的开销，比如把所有链路开销设为1从而实现最小跳数；或者选择将链路权重与链路容量成反比来配置，不鼓励使用低带宽链路。</p>
+<p>OSPF的优势如下：</p>
+<ol>
+<li>安全。能够鉴别OSPF路由器之间的交换，使用MD5之类的加密算法。</li>
+<li>多条相同开销的路径。</li>
+<li>对单播和多播路由的综合支持。</li>
+<li>支持在单个AS中 的层次结构。</li>
+</ol>
+<h1 id="BGP"><a href="#BGP" class="headerlink" title="BGP"></a><em>BGP</em></h1><p>BGP Border Gateway protocol , 边界网关协议是AS间选择协议</p>
 
             </div>
             <hr>
