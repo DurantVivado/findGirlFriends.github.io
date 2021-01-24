@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.5k 字
+      6.5k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      107
+      74
        分钟
     </span>
   
@@ -349,11 +349,11 @@
 </li>
 </ul>
 <blockquote>
-<p>基于 RADOS 的 Ceph 对象存储集群包括两类守护进程：term:对象存储守护进程（ OSD ）把存储节点上的数据存储为对象； term:Ceph 监视器（ MON ）维护集群运行图的主拷贝。一个 Ceph 集群可以包含数千个存储节点，最简系统至少需要一个监视器和两个 OSD 才能做到数据复制。</p>
+<p>基于 RADOS 的 Ceph 对象存储集群包括两类守护进程：对象存储守护进程（ OSD ）把存储节点上的数据存储为对象； Ceph 监视器（ MON ）维护集群运行图的主拷贝。一个 Ceph 集群可以包含数千个存储节点，最简系统至少需要一个监视器和两个 OSD 才能做到数据复制。</p>
 </blockquote>
-<h3 id="Ceph架构"><a href="#Ceph架构" class="headerlink" title="Ceph架构"></a>Ceph架构</h3><p><img src="CEPH基础理论/image-20201231160559413.png" srcset="/img/loading.gif" alt="image-20201231160559413"></p>
+<h3 id="1-1-Ceph架构"><a href="#1-1-Ceph架构" class="headerlink" title="1.1 Ceph架构"></a>1.1 Ceph架构</h3><p><img src="CEPH基础理论/image-20201231160559413.png" srcset="/img/loading.gif" alt="image-20201231160559413"></p>
 <p>系统架构。 客户端通过直接与OSD通信来执行文件I / O。 每个进程可以直接链接到客户端实例，也可以与已安装的文件系统进行交互。</p>
-<h3 id="ceph读写流程"><a href="#ceph读写流程" class="headerlink" title="ceph读写流程"></a>ceph读写流程</h3><p>Read：</p>
+<h3 id="1-2-ceph读写流程"><a href="#1-2-ceph读写流程" class="headerlink" title="1.2 ceph读写流程"></a>1.2 ceph读写流程</h3><p>Read：</p>
 <ul>
 <li>Client app 发送读请求，RADOS将请求发送给Primary OSD。</li>
 <li>主要OSD在本地磁盘读数据并完成读请求。</li>
@@ -364,11 +364,14 @@
 </li>
 <li><p>Primary OSD识别Replica OSDs并且向他们发送数据，由他们写数据到本地磁盘。</p>
 </li>
-<li>Replica OSDs 完成写并通知Primary OSD。</li>
-<li>Primary OSDs 通知client APP 写完成。</li>
-<li><img src="\img\ceph-b.png" srcset="/img/loading.gif" alt="image-20201122180847737"></li>
+<li><p>Replica OSDs 完成写并通知Primary OSD。</p>
+</li>
+<li><p>Primary OSDs 通知client APP 写完成。</p>
+</li>
+<li><p><img src="\img\ceph-b.png" srcset="/img/loading.gif" alt="image-20201122180847737"></p>
+</li>
 </ul>
-<h3 id="三种存储方式"><a href="#三种存储方式" class="headerlink" title="三种存储方式"></a>三种存储方式</h3><h4 id="1-块设备"><a href="#1-块设备" class="headerlink" title="1. 块设备"></a>1. 块设备</h4><p><strong>典型设备：</strong> 磁盘阵列，硬盘</p>
+<h3 id="1-3-三种存储方式"><a href="#1-3-三种存储方式" class="headerlink" title="1.3 三种存储方式"></a>1.3 三种存储方式</h3><h4 id="1-块设备"><a href="#1-块设备" class="headerlink" title="1. 块设备"></a>1. 块设备</h4><p><strong>典型设备：</strong> 磁盘阵列，硬盘</p>
 <p>主要是将裸磁盘空间映射给主机使用的。</p>
 <p><strong>优点：</strong></p>
 <ul>
@@ -431,7 +434,7 @@
 <li>等待主节点以及另外两个副本节点写完数据状态。</li>
 <li>主节点及副本节点写入状态都成功后，返回给client，io写入完成。</li>
 </ol>
-<h3 id="新主I-O流程图"><a href="#新主I-O流程图" class="headerlink" title="新主I/O流程图"></a>新主I/O流程图</h3><p><img src="\img\ceph-e.jpg" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="2-1-新主I-O流程图"><a href="#2-1-新主I-O流程图" class="headerlink" title="2.1 新主I/O流程图"></a>2.1 新主I/O流程图</h3><p><img src="\img\ceph-e.jpg" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>步骤：</strong></p>
 <ol>
 <li>client连接monitor获取集群map信息。</li>
@@ -444,7 +447,7 @@
 <li>如果osd1数据同步完毕，临时主osd2会交出主角色。</li>
 <li>osd1成为主节点，osd2变成副本。</li>
 </ol>
-<h3 id="Ceph-I-O算法流程"><a href="#Ceph-I-O算法流程" class="headerlink" title="Ceph I/O算法流程"></a>Ceph I/O算法流程</h3><p><img src="\img\ceph-arch.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="2-2-Ceph-I-O算法流程"><a href="#2-2-Ceph-I-O算法流程" class="headerlink" title="2.2 Ceph I/O算法流程"></a>2.2 Ceph I/O算法流程</h3><p><img src="\img\ceph-arch.png" srcset="/img/loading.gif" alt="img"></p>
 <ol>
 <li>File用户需要读写的文件。File-&gt;Object映射：</li>
 </ol>
@@ -472,7 +475,7 @@
 <span class="hljs-attr">osds_for_pg</span> = crush(pg)  <span class="hljs-comment"># returns a list of osds</span>
 <span class="hljs-attr">primary</span> = osds_for_pg[<span class="hljs-number">0</span>]
 <span class="hljs-attr">replicas</span> = osds_for_pg[<span class="hljs-number">1</span>:]</code></pre>
-<h3 id="Ceph-RBD-IO流程"><a href="#Ceph-RBD-IO流程" class="headerlink" title="Ceph RBD IO流程"></a>Ceph RBD IO流程</h3><p><img src="/img/ceph-f.png" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="2-3-Ceph-RBD-IO流程"><a href="#2-3-Ceph-RBD-IO流程" class="headerlink" title="2.3 Ceph RBD IO流程"></a>2.3 Ceph RBD IO流程</h3><p><img src="/img/ceph-f.png" srcset="/img/loading.gif" alt="img"></p>
 <ol>
 <li><p>客户端创建一个pool，需要为这个pool指定pg的数量。</p>
 </li>
@@ -496,7 +499,7 @@
 <li>在客户端本地同过调用librados接口，然后经过pool，rbd，object、pg进行层层映射,在PG这一层中，可以知道数据保存在哪3个OSD上，这3个OSD分为主从的关系。</li>
 <li>客户端与primay OSD建立SOCKET 通信，将要写入的数据传给primary OSD，由primary OSD再将数据发送给其他replica OSD数据节点。</li>
 </ol>
-<h3 id="Ceph-Pool和PG分布情况"><a href="#Ceph-Pool和PG分布情况" class="headerlink" title="Ceph Pool和PG分布情况"></a>Ceph Pool和PG分布情况</h3><p><img src="/img/ceph-h.jpg" srcset="/img/loading.gif" alt="img"></p>
+<h3 id="2-4-Ceph-Pool和PG分布情况"><a href="#2-4-Ceph-Pool和PG分布情况" class="headerlink" title="2.4 Ceph Pool和PG分布情况"></a>2.4 Ceph Pool和PG分布情况</h3><p><img src="/img/ceph-h.jpg" srcset="/img/loading.gif" alt="img"></p>
 <ul>
 <li><p>pool是ceph存储数据时的逻辑分区，它起到namespace的作用。</p>
 </li>
@@ -509,7 +512,7 @@
 <li><p>pool可以做故障隔离域，根据不同的用户场景不一进行隔离。</p>
 </li>
 </ul>
-<h3 id="Ceph-数据扩容PG分布"><a href="#Ceph-数据扩容PG分布" class="headerlink" title="Ceph 数据扩容PG分布"></a>Ceph 数据扩容PG分布</h3><p><strong>场景数据迁移流程：</strong></p>
+<h3 id="2-5-Ceph-数据扩容PG分布"><a href="#2-5-Ceph-数据扩容PG分布" class="headerlink" title="2.5 Ceph 数据扩容PG分布"></a>2.5 Ceph 数据扩容PG分布</h3><p><strong>场景数据迁移流程：</strong></p>
 <ul>
 <li>现状3个OSD, 4个PG</li>
 <li>扩容到4个OSD, 4个PG</li>
@@ -519,82 +522,10 @@
 <p><strong>扩容后</strong></p>
 <p><img src="/img/ceph-j.png" srcset="/img/loading.gif" alt="img"></p>
 <p><strong>说明</strong><br>每个OSD上分布很多PG, 并且每个PG会自动散落在不同的OSD上。如果扩容那么相应的PG会进行迁移到新的OSD上，保证PG数量的均衡。</p>
-<h3 id="PG状态及其含义"><a href="#PG状态及其含义" class="headerlink" title="PG状态及其含义"></a>PG状态及其含义</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">PG状态</th>
-<th style="text-align:left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">down</td>
-<td style="text-align:left">Peering过程中，PG检测到某个Interval中，当前剩余的OSD不足以完成数据修复</td>
-</tr>
-<tr>
-<td style="text-align:center">repair</td>
-<td style="text-align:left">PG正在被检查，被发现的任何不一致都将尽可能的被修复</td>
-</tr>
-<tr>
-<td style="text-align:center">peering（等待互联）</td>
-<td style="text-align:left">PG处于 peering 过程中, peering 由主 osd 发起的使存放 PG 副本的所有 OSD 就 PG 的所有对象和元素数据的状态达成一致的过程, peering 过程完成后, 主 OSD 就可以接受客户端写请求.</td>
-</tr>
-<tr>
-<td style="text-align:center">active</td>
-<td style="text-align:left">当 ceph 完成 peering 过程, pg 将会变成 active, active 状态意味着 pg 中的数据变得可用, 主 pg 将可执行读写操作 .</td>
-</tr>
-<tr>
-<td style="text-align:center">clean</td>
-<td style="text-align:left">干净态。前不存在待修复的对象， Acting Set和Up Set内容一致，并且大小等于存储池的副本数</td>
-</tr>
-<tr>
-<td style="text-align:center">replay（重做）</td>
-<td style="text-align:left">某OSD崩溃后，PG正在等待客户端重新发起操作</td>
-</tr>
-<tr>
-<td style="text-align:center">degraded</td>
-<td style="text-align:left">1.PG 处于 active+degraded 原因是因为 OSD 是处于活跃, 但并没有完成所有的对象副本写入, PG 中部分对象的副本数量未达到规定的数量.当 OSD 重新上线, OSD 将会重新恢复,  假如 OSD DOWN 并且 degraded 状态持续, CEPH 会标记 DOWN OSD, 并会对集群迁移相关 OSD 的数据, 对应时间由<code>mon osd down out interval</code> 参数决定 .</td>
-</tr>
-<tr>
-<td style="text-align:center">inconsistent</td>
-<td style="text-align:left">PG通过Scrub检测到某些对象在PG实例间出现不一致（主要是因为静默错误）</td>
-</tr>
-<tr>
-<td style="text-align:center">recovering</td>
-<td style="text-align:left">PG正在对不一致对象进行同步/修复。</td>
-</tr>
-<tr>
-<td style="text-align:center">back filling</td>
-<td style="text-align:left">当新 OSD 加入集群, CRUSH 将会为集群新添加的 OSD 重新分配 PG, 强制新的 OSD 接受重新分配的 PG 并把一定数量的负载转移到新 OSD 中,back filling OSD 会在后台处理, 当 backfilling 完成, 新的 OSD 完成后, 将开始对请求进行服务</td>
-</tr>
-<tr>
-<td style="text-align:center">remapped</td>
-<td style="text-align:left">当 pg 改变, 数据从旧的 osd 迁移到新的 osd, 新的主 osd 应该请求将会花费一段时间, 在这段时间内, 将会继续向旧主 osd 请求服务, 直到 PG 迁移完成, 当数据迁移完成, mapping 将会使用新的 OSD 响应主 OSD 服务</td>
-</tr>
-<tr>
-<td style="text-align:center">stale（旧）</td>
-<td style="text-align:left">当 ceph 使用 heartbeat 确认主机与进程是否运行, ceph osd daemon 可能由于网络临时故障, 获得一个卡住状态 (stuck state) 没有得到心跳回应 默认, osd daemon 会每 0.5 秒报告 PG, up 状态, 启动与故障分析, 假如 PG 中主 OSD 因为故障没有回应 monitor 或者其他 OSD 报告 主 osd down, 那么 monitor 将会标记 PG stale</td>
-</tr>
-<tr>
-<td style="text-align:center">scrubbing</td>
-<td style="text-align:left">scrubbing（清理中）, PG 在做一致性校验</td>
-</tr>
-<tr>
-<td style="text-align:center">inactive</td>
-<td style="text-align:left">inactive ：PG 很长时间没有显示为 active 状态, (不可执行读写请求), PG 不可以执行读写, 因为等待 OSD 更新数据到最新的备份状态</td>
-</tr>
-<tr>
-<td style="text-align:center">unclean</td>
-<td style="text-align:left">unclean：PG 很长时间都不是 clean 状态 (不可以完成之前恢复的操作), PG 包含对象没有完成相应的复制副本数量, 通常都要执行恢复操作。</td>
-</tr>
-<tr>
-<td style="text-align:center">stale（新）</td>
-<td style="text-align:left">stale：PG 状态很长时间没有被 ceph-osd 更新过, 标识存储在该 GP 中的节点显示为 DOWN, PG 处于 unknown 状态, 因为 OSD 没有报告 monitor 由 mon osd report timeout 定义超时时间</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p><img src="/img/image-20210105203533111.png" srcset="/img/loading.gif" alt="image-20210105203533111"></p>
+<p>上图：在将写入应用于复制对象的所有OSD上的缓冲区高速缓存后，RADOS会以ack响应。 只有在将其安全地提交到磁盘之后，才将最终提交通知发送到客户端。这确保了数据的安全性。</p>
+<p>   主服务器将更新转发到副本，并在将更新应用到所有OSD的内存缓冲区高速缓存后回复确认，从而允许客户端上的同步POSIX调用返回。 当数据安全地提交到磁盘时，将发送一次最终提交（可能在几秒钟后）。 仅在完全复制更新日期之后，我们才会将确认发送给客户端，以无缝地容忍任何单个OSD的故障，即使这样做会增加客户端的延迟。 默认情况下，客户端还会缓冲写入操作，直到它们承诺避免在放置组中所有OSD同时掉电的情况下避免数据丢失为止。 在这种情况下进行恢复时，RADOS允许在接受新的更新之前，以固定的间隔重播先前已确认（因此有序）的更新。</p>
+<p>详细请见<a href="https://durantthorvalds.top/2020/12/15/%E8%BF%81%E7%A7%BB%E4%B9%8B%E7%BE%8EPG%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E4%B8%8E%E7%8A%B6%E6%80%81%E8%BF%81%E7%A7%BB%E8%AF%A6%E8%A7%A3/">PG读写及迁移</a></p>
 <hr>
 <h2 id="3-Ceph心跳机制"><a href="#3-Ceph心跳机制" class="headerlink" title="3 Ceph心跳机制"></a>3 Ceph心跳机制</h2><p>心跳是用于节点间检测对方是否故障的，以便及时发现故障节点进入相应的故障处理流程。</p>
 <p><strong>问题：</strong></p>
@@ -809,26 +740,6 @@
     step chooseleaf  firstn  0  <span class="hljs-built_in">type</span>  host <span class="hljs-comment">#选择一个host,并递归选择叶子节点osd     </span>
     step emit        <span class="hljs-comment">#结束</span>
 &#125;</code></pre>
-<h3 id="Bucket随机算法类型"><a href="#Bucket随机算法类型" class="headerlink" title="Bucket随机算法类型"></a>Bucket随机算法类型</h3><p><img src="/img/ceph-p.jpg" srcset="/img/loading.gif" alt=""></p>
-<p><strong>一般的buckets</strong>：适合所有子节点权重相同，而且很少添加删除item。</p>
-<p><strong>list buckets</strong>：适用于集群扩展类型。增加item，产生最优的数据移动，查找item，时间复杂度O(n)。</p>
-<p><strong>tree buckets</strong>：查找负责度是O (log n), 添加删除叶子节点时，其他节点node_id不变。</p>
-<p><strong>straw buckets</strong>：允许所有项通过类似抽签的方式来与其他项公平“竞争”。定位副本时，bucket中的每一项都对应一个随机长度的straw，且拥有最长长度的straw会获得胜利（被选中），添加或者重新计算，子树之间的数据移动提供最优的解决方案。</p>
-<h3 id="STRAW算法"><a href="#STRAW算法" class="headerlink" title="STRAW算法"></a>STRAW算法</h3><p>straw将所有元素比喻成吸管，针对指定输入，为每个元素随机计算一个长度，最后选择长度最长的那个元素作为结果输出，这个过程也被形象地称为抽签（draw），对应元素的长度称为签长。因为存储设备随着时间推移会趋于异构化，随意我们引入权重来让容量大的设备分担更多的数据，而容量小的设备分担更少的数据，从而使得数据在异构网络中也能获得合理的分布。</p>
-<p>将所有元素按逆序排列，我们设签长为$L$，用$\triangle W_{pre}$表示当前元素与之前元素权重的差值，$R$表示剩余元素个数，$\triangle W_{next}$表示下一个元素与现在元素的权重差值,$S$表示累计权重占有的比重。</p>
-<script type="math/tex; mode=display">
-S = \frac{\sum \triangle W_{pre}}{\sum \triangle W_{pre}+\triangle W_{next}}\\
-L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
-<p>上述算法，最终选择结果不仅与每个元素自身权重有关，还与集合中其它元素相关，修正后的straw2算法，则更加简单，</p>
-<pre><code class="hljs properties"><span class="hljs-attr">max_x</span> = <span class="hljs-string">-1</span>
-<span class="hljs-attr">max_item</span> = <span class="hljs-string">-1</span>
-<span class="hljs-attr">foreach</span> <span class="hljs-string">in item:</span>
-	<span class="hljs-attr">x</span> = <span class="hljs-string">hash(input, r)</span>
-	<span class="hljs-attr">x</span> = <span class="hljs-string">ln(x/65536)/weight</span>
-	<span class="hljs-attr">if</span> <span class="hljs-string">x &gt; x_max:</span>
-		<span class="hljs-attr">x_max</span> = <span class="hljs-string">x</span>
-		<span class="hljs-attr">max_item</span> = <span class="hljs-string">item</span>
-<span class="hljs-attr">return</span> <span class="hljs-string">max_item</span></code></pre>
 <h3 id="CRUSH算法案例"><a href="#CRUSH算法案例" class="headerlink" title="CRUSH算法案例"></a>CRUSH算法案例</h3><p>集群中有部分sas和ssd磁盘，现在有个业务线性能及可用性优先级高于其他业务线，能否让这个高优业务线的数据都存放在ssd磁盘上。</p>
 <p><strong>普通用户：</strong></p>
 <p><img src="/img/ceph-q.jpg" srcset="/img/loading.gif" alt="img"></p>
@@ -852,146 +763,7 @@ L = \prod{(1/S)^{1/R}}</script><p>再把L乘上0x10000。</p>
 <li><p><strong>Recovery</strong>：数据恢复和迁移。集群扩/缩容、osd失效/从新加入等过程。</p>
 </li>
 </ul>
-<h2 id="7-CephFS"><a href="#7-CephFS" class="headerlink" title="7.CephFS"></a>7.CephFS</h2><p><img src="/img/ceph-lec.jpg" srcset="/img/loading.gif" alt="image-20201122181939220"></p>
-<h2 id="8-BlueStore-分布式对象存储"><a href="#8-BlueStore-分布式对象存储" class="headerlink" title="8.BlueStore 分布式对象存储"></a>8.BlueStore 分布式对象存储</h2><blockquote>
-<p>与一般的FS相比，BlueStore绕过了系统的本地文件系统，由自身接管磁盘，所以其性能更好。并且充分考虑了对下一代全SSD以及全NVMe SSD闪存的支持。例如支持RocksDB。</p>
-</blockquote>
-<p>先介绍一些术语：</p>
-<p>$ACID$，分别表示$Atomicity, Consistency,Isolation,Durability$。原子性，一致性，隔离性，持久性。一个支持事务$Transcation$d的系统必须支持这四种特性。</p>
-<ol>
-<li><strong>block-size</strong></li>
-</ol>
-<p>对磁盘进行操作的最小粒度（原子粒度），对普通的机械硬盘，最小粒度512字节，即一个扇区。现代SSD一般使用更大的块，4KB。</p>
-<ol>
-<li><strong>RMW（Read Modify Write）</strong></li>
-</ol>
-<p>指覆盖写，如果本次改写的内容不足一个磁盘块大小，那么需要先将对应的块读上来，然后将待修改的内容与原先的内容进行合并，最后将更新后的块重新写入原先的位置。 有两个问题：1. 额外的惩罚读 2. 因为要针对已有的内容执行覆盖写。解决方法是引入日志，数据线写入日志盘再更新数据盘。</p>
-<ol>
-<li><strong>COW（Copy On Write）</strong></li>
-</ol>
-<p>指当覆盖写发生时，不是直接更新磁盘对应位置的已有内容，而是重新在磁盘上分配一块新的空间，用于存放本次新写入的内容，这个过程也称为写时重定向。当新写完成，对应的地址更新时，即可释放原有数据对应的磁盘空间。</p>
-<p>它自身的缺陷是：1. 破坏了数据在磁盘分布的物理连续性，经过多次COW后，前端任何大范围的顺序读后续都将变为随机读。在SSD普及后，这种情况有所好转。2. 将新的内容写入新块后，原有的块因为仍然保留了部分有效内容，所以COW之后不能释放。因为COW涉及空间重分配和地址指针重定向，所以COW将引入更多元数据。对存储系统而言，元数据的多少关乎功能的丰富与否。</p>
-<p>BlueStore针对写操作综合运用了RMW和COW策略——任何一个写请求，根据磁盘的大小，将其切分为三个部分。<strong>首尾非块大小对齐部分</strong>，<strong>中间块大小对齐部分</strong>，然后针对中间块对齐部分采用<strong>COW策略</strong>，首尾非块对齐部分采用<strong>RMW策略</strong>。</p>
-<p>BlueStore主要提供了读写两种类型的多线程访问接口，这些接口是基于PG粒度的。因为读请求可以并发，而写请求出于效率考虑一般被设计为异步，（所以PG内部使用读写锁来实现上述语义），实现上还需要为每个PG设计一个队列，用于对所有操作该PG的写请求进行保序。称为$OpSequencer$，不同类型的ObjectStore略有不同，在BlueStore实现中，$OpSequencer$包含两个FIFO。用于将所有进入覆盖写数据阶段的带日志写请求在线程池中再次进行排序。所有写请求通过标准的<code>queue_transcations</code>接口提交至BlueStore.</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/ceph/ceph/pull/9398">多对象事务语义支持参考</a></p>
-</blockquote>
-<h2 id="磁盘数据结构"><a href="#磁盘数据结构" class="headerlink" title="磁盘数据结构"></a>磁盘数据结构</h2><p>BlueStore习惯上磁盘格式用<code>_t</code>结尾而内存格式不以<code>_t</code>结尾并且只有首大写字母。所有元数据被设计成可以和用户数据分开存放，以键值对形式存放在$kvDB$中。</p>
-<h3 id="PG"><a href="#PG" class="headerlink" title="PG"></a>PG</h3><p>ceph对所有存储资源进行池化管理。资源池(pool), 是一个虚拟概念，表示一组CRUSH规则的约束条件。比如我们可以针对不同的pool指定不同的备份策略，针对时延敏感的应用采用副本策略，而在一些不重要的应用采用纠删码。Ceph将任意类型的前端数据都抽象为对象，每一个对象 采用一定的策略可以生成一个全局唯一的对象标识符（$ObjectID,OID$）基于此策略的对象标识最终可以形成一个扁平的寻址空间，从而大大提高索引效率。</p>
-<p>为了实现不同pool之间的策略隔离，Ceph引入了一个中间结构，称为PG，（归置组），实现两级映射。</p>
-<ul>
-<li>第一级映射是静态的，负责将任何前端类型 的应用数据按照固定的大小进行分割·编号作为伪随机哈希函数的输入，均匀映射至PG，以实现负载均衡。</li>
-<li>第二集映射实现PG到OSD的映射，这级映射仍采用伪随机哈希函数，但是除输入的五安居唯一的PGID外，还引入了集群拓扑，并且使用CRUSH规则对计算过程进行调整，以帮助PG在不同OSD之间进行灵活迁移，进而实现数据可靠性和自动平衡等。最终pool以PG作为基本单位进行组织。</li>
-</ul>
-<p>为了维持扁平的寻址空间。PG也有一个全局唯一的ID——$PGID$，所有的pool由Monitor统一管理，集群内唯一pool-id。事实上，为了保证Monitor分布一致性，采用Paxos算法，我们只需要为pool内每个PG分配一个pool内唯一的编号即可。</p>
-<blockquote>
-<p>思考：如何使得同一个pool下的不同的PG低n位相同？</p>
-<p>首先由特定类型的Client根据其操作的对象名计算出一个32位的哈希值，然后根据其操作的对象名计算出一个32位的哈希值，然后根据归属的pool及此时的哈希值，通过简单的计算，比如取模，即可找到最终承载该对象的PG。</p>
-<p>我们发现如果pool内的PG数目如果能写成$2^n$形式，那么其低n比特都是相同的。我们将$2^n-1$称为PG的<strong>掩码</strong>。否则，若PG不能写成$2^n$的形式，则不能保证针对不同的输入低n比特相同这一“稳定”的性质。（比如有12个PG，那么对于属于同一个pool的PGID只有低两位相同）</p>
-<p>因此一种行之有效的方法是用掩码代替取模。取hash低n-1位，即$hash\&amp;(2^n-1)$ .但这种映射存在问题，如果PG数目不能被2整除，那么采用这种方式会导致空穴，也就是取模结果没有实际PG对应。</p>
-<p>比如一个pool有12个PG，n=4，但是12-15这些值都浪费了：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-<th>10</th>
-<th>11</th>
-<th>12</th>
-<th>13</th>
-<th>14</th>
-<th>15</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>x</td>
-<td>x</td>
-<td>x</td>
-<td>x</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>我们可以想办法压缩空间 ，$hash\&amp;(2^{n-1}-1)$，使得不能被2整除的PGID仍能被合理映射。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-<th>10</th>
-<th>11</th>
-<th>12</th>
-<th>13</th>
-<th>14</th>
-<th>15</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>5</td>
-<td>6</td>
-<td>7</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>如果$hash\&amp;(2^{n}-1)&lt;pg_num$，那么可以直接返回$hash\&amp;(2^n-1)$.</p>
-<p>否则，我们返回$hash\&amp;(2^{n-1}-1)$.</p>
-<p>在参考书上被称为稳定哈希（stable hash）。</p>
-</blockquote>
-<p>Ceph主要设计理念之一是高扩展性。当集群中PG增加，新的PG会被随机均匀地映射至所有OSD上。作为stable hash的输入的PG数目已经发生变化，导致某些对象从旧PG重新映射至新PG，因此需要转移这部分对象，我们称为<strong>PG分裂</strong>。</p>
-<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3><p>BlueStore中的对象非常类似于文件，其最基本单元是<strong>逻辑段</strong>（extent）.</p>
-<p>可以写成 $\{offset, length , data\}$，</p>
-<ul>
-<li>offset表示对象逻辑偏移，从0开始编址</li>
-<li>逻辑段长度</li>
-<li>抽象数据类型</li>
-</ul>
-<p>—-更新中</p>
+<p>详细请见<a href="https://durantthorvalds.top/2020/12/28/%E6%8E%A7%E5%88%B6%E5%85%88%E8%A1%8C-Ceph%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0QoS/">Ceph QoS策略</a></p>
 <p>参考资料</p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/cc3ece850433">https://www.jianshu.com/p/cc3ece850433</a></p>
 <hr>

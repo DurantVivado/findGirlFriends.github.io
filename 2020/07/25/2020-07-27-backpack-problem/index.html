@@ -374,9 +374,7 @@ dp[j] = \max(dp[j-w[i-1]]+v[i-1],dp[j])</script><p>注意后面的dp[j]其实是
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 &#125;</code></pre>
 <p><strong>单调队列优化(Hard)</strong></p>
-<p><code>0&lt;N≤10000&lt;N≤1000
-0&lt;V≤200000&lt;V≤20000
-0&lt;vi,wi,si≤20000</code></p>
+<p>$0&lt;N≤1000,<br>0&lt;V≤20000,<br>0&lt;vi,wi,si≤20000$</p>
 <p>当数据范围变得极大，使用二进制将<code>TLE</code>，我们必须优化，这里有一种优化方式是单调队列优化。</p>
 <p>因为我们需要的是$dp[j], dp[v+j], dp[2<em>v+j], dp[3</em>v+j], … , dp[k*v+j]$ 中的最大值，我们通过维护一个单调队列来维护这些数中最大值。</p>
 <p>单调队列问题，最重要的两点<br>1）维护队列元素的个数，如果不能继续入队，弹出队头元素<br>2）维护队列的单调性，即：尾值$&gt;= dp[j + k<em>v] - k</em>w$</p>

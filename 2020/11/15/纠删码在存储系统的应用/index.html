@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.6k 字
+      3.8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      47
+      49
        分钟
     </span>
   
@@ -414,13 +414,21 @@ where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script>
 <p>假设数据块$D_1$失效，为了解码出失效数据分块，所有存活数据对应的 剩余生成矩阵 与所有存活数据对应列向量进行乘法运算，得到原始数据列。</p>
 <blockquote>
 <p>补充 Galois域上的四则运算：</p>
+<blockquote>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/hitgxz/p/12130983.html">https://www.cnblogs.com/hitgxz/p/12130983.html</a></p>
+</blockquote>
 <p>1、域</p>
 <p>一组元素的集合，以及在集合上的四则运算，构成一个域。其中加法和乘法必须满足交换、结合和分配的规律。加法和乘法具有封闭性，即加法和乘法结果仍然是域中的元素。  </p>
 <p>域中必须有加法单位元和乘法单位元，且每一个元素都有对应的加法逆元和乘法逆元。但不要求域中的 0 有乘法逆元。  </p>
 <p>2、有限域</p>
 <p>仅含有限多个元素的域。因为它由伽罗华所发现，因而又称为伽罗华域。</p>
 <p>所以当我们说伽罗华域的时候，就是指有限域。</p>
-<p>$GF（2^w）$表示含有$2^w$个元素的有限域。因为计算机一个字节由8位，所以最常用的是$GF(2^8)$, </p>
+<p>$GF（2^w）$表示含有$2^w$个元素的有限域。因为计算机一个字节由8位，所以最常用的是$GF(2^8)$。</p>
+<p>定义：对于GF(q)中任意非0元素a，使得$a^n=1$的最小整数n称为a的阶。</p>
+<p><strong>定理</strong>：对于GF(q)，设非零元素a的阶是n，则${1,a,…,a^{n−1}}$是GF(q)的一个子域。</p>
+<p><strong>定理</strong>：对于GF(q)，a是任意一个非零元素，则$a^{q−1}=1$ 。</p>
+<p><strong>定理</strong>：对于GF(q)，设非零元素a的阶是n，则$n∣q−1$。</p>
+<p><strong>定义</strong>：对于GF(q)，设非零元素a的阶是n，若$n=q−1$，则称a是GF(q)的本原元（primitive element）。</p>
 <p>3、单位元</p>
 <p>Identity Element，也叫幺元，通常使用e来表示单位元。单位元和其他元素结合时，并不会改变那些元素。</p>
 <p>对于二元运算，若$a<em>e=a$，e称为右单位元；若$e</em>a=a$，e称为左单位元，若$a<em>e=e</em>a=a$，则e称为单位元。</p>

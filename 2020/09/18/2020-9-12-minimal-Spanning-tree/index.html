@@ -261,7 +261,7 @@
 <li>重复<code>3.</code>。直到所有的顶点都在一棵树内，或者有$n-1$条边为止。</li>
 </ol>
 <p><img src="\img\kruskal.jpg" srcset="/img/loading.gif" alt="MST示意图"></p>
-<p>和并查集的概念非常相似。Kruskal算法可以看成是基于并查集的贪心算法。    </p>
+<p>和并查集的概念非常相似。Kruskal算法可以看成是基于<strong>并查集</strong>的<strong>贪心</strong>算法。    </p>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
     <span class="hljs-keyword">int</span> res,n;
     <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fa;
@@ -307,10 +307,13 @@
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     
     &#125;
+    
+    
     <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
 <span class="hljs-function">    </span>&#123;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;= n;i++) 
-            fa.emplace_back(i); 
+        fa.resize(n);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++) 
+            fa[i] = i; 
     &#125;
     <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
 <span class="hljs-function">    </span>&#123;
@@ -335,11 +338,11 @@
 <hr>
 <h2 id="Prim算法"><a href="#Prim算法" class="headerlink" title="Prim算法"></a>Prim算法</h2><p>此算法又被称为“加点法”，每次迭代选择代价最小的边对应的点，加入到最小生成树之中，算法从某一个顶点开始，逐渐扩散覆盖整个网络。比较适合<strong>稠密网络</strong>。</p>
 <ol>
-<li>图的所有顶点集合为V；初始令集合$u=s,v=V-u$.</li>
+<li>图的所有顶点集合为$V$；初始令集合$u=s,v=V-u$.</li>
 <li>在两个集合$u,v$所构成的边中，选择一条代价最小的边。</li>
 <li>重复上述步骤，直到最小生成树有$n-1$条边，或者只有一棵树为止。</li>
 </ol>
-<p><img src="\img\prim.jpg" srcset="/img/loading.gif" alt="这里写图片描述"></p>
+<p><img src="..\img\prim.jpg" srcset="/img/loading.gif" alt="这里写图片描述"></p>
 <p>我们注意到我们每次添加的都是最小边，因此可以用小顶堆来存储。 Prim算法更像是Dijkstra算法。</p>
 <h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
     <span class="hljs-keyword">int</span> res,n;

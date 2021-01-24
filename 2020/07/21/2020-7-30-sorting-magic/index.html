@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6.7k 字
+      7.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      84
+      98
        分钟
     </span>
   
@@ -812,6 +812,8 @@
 <hr>
 <h2 id="XI-拓扑排序"><a href="#XI-拓扑排序" class="headerlink" title="XI.拓扑排序"></a>XI.拓扑排序</h2><blockquote>
 <p>LC 课程表问题系列：207 210</p>
+<p>「力扣」第 207 题：课程表（中等）；<br>「力扣」第 210 题：课程表 II（中等）；<br>「力扣」第 301 题：最小高度树（中等）；<br>「力扣」第 802 题：找到最终的安全状态（中等）；<br>「力扣」第 630 题：课程表 III（困难）；<br>「力扣」第 329 题：矩阵中的最长递增路径（困难）；<br>「力扣」第 1245 题：树的直径（中等）；<br>「力扣」第 444 题：序列重建（中等）；<br>「力扣」第 1136 题：平行课程（困难）；<br>「力扣」第 269 题：火星词典（困难）。</p>
+<p>「力扣」第 1203 题：项目管理（困难）。</p>
 <p>核心特性，对于图G中任何一条有向边$(u,v)$，$u$在排列中都出现在$v$的前面，这样的排列称为「拓扑排序」。</p>
 </blockquote>
 <p>对一个有向无环图(Directed Acyclic Graph简称DAG)G进行拓扑排序，是将G中所有顶点排成一个线性序列，使得图中任意一对顶点u和v，若边(u,v)∈E(G)，则u在线性序列中出现在v之前。通常，这样的线性序列称为满足拓扑次序(Topological Order)的序列，简称拓扑序列。简单的说，由某个集合上的一个偏序得到该集合上的一个全序，这个操作称之为<strong>拓扑排序</strong>。</p>
@@ -822,7 +824,7 @@
 <li>若图中存在环，则不存在拓扑排序</li>
 </ul>
 <p><strong><em>重点</em></strong>：如何判断有无环：如果某个节点的相邻节点处于探索状态（在visited中），但还未加入拓扑序列，则说明有环。</p>
-<pre><code class="hljs python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<h3 id="理解1：记录数组-有向图深度优先搜索"><a href="#理解1：记录数组-有向图深度优先搜索" class="headerlink" title="理解1：记录数组+ 有向图深度优先搜索"></a>理解1：记录数组+ 有向图深度优先搜索</h3><pre><code class="hljs python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">graph</span>:</span>
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self,num</span>):</span>
         self.graph = defaultdict(list)
@@ -838,6 +840,7 @@
     <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">canFinish</span>(<span class="hljs-params">self, numCourses: int, prerequisites: [[int]]</span>) -&gt; bool:</span>
         g = graph(numCourses+<span class="hljs-number">1</span>)   
         topo_sort = []
+        <span class="hljs-comment">#构建图</span>
         <span class="hljs-keyword">for</span> lists <span class="hljs-keyword">in</span> prerequisites:
             g.visited[lists[<span class="hljs-number">0</span>]] = <span class="hljs-literal">False</span>
             <span class="hljs-keyword">for</span> i,it <span class="hljs-keyword">in</span> zip(range(<span class="hljs-number">1</span>,len(lists)), lists):
@@ -875,7 +878,100 @@
 </blockquote>
 <p>时间复杂度: $O(n+m)$，其中 $n$ 为课程数，$m$ 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。</p>
 <p>空间复杂度: $O(n+m)$。题目中是以列表形式给出的先修课程关系，为了对图进行深度优先搜索，我们需要存储成邻接表的形式，空间复杂度为 $O(n+m)$。在深度优先搜索的过程中，我们需要最多 $O(n)$ 的栈空间（递归）进行深度优先搜索，并且还需要若干个 $O(n)$ 的空间存储节点状态、最终答案等。</p>
-<h2 id="-7"><a href="#-7" class="headerlink" title=" "></a> </h2><hr>
+<h3 id="理解2：引入入度，有向图广度优先搜索"><a href="#理解2：引入入度，有向图广度优先搜索" class="headerlink" title="理解2：引入入度，有向图广度优先搜索"></a>理解2：引入入度，有向图广度优先搜索</h3><p>为了减少编码的复杂度，我们可以将拓扑排序抽成一个函数进行复用，定义 <code>topSort(deg, graph, items)</code> 表示当前待拓扑排序的点集为<code>items</code>，点的入度数组为 <code>deg</code>，点的连边关系为 <code>graph</code>，<code>graph[i]</code>表示点 i 连出点组成的集合，如果不存在冲突，返回拓扑排序后的数组，否则返回一个空数组。</p>
+<p>我们对一个图遍历其每个节点，并用队列进行广度优先搜索，如果某个节点入度为0，说明它已经失去所有“羁绊”了，可以“安全”地加入到队列之中，我们将入度为0的点作为切入点。对一个节点我们遍历其邻边并对其入度减一，如果入度为0，就可以加入到队列中。</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">topo_sort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; &amp;degree, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp;graph, <span class="hljs-keyword">int</span> p)</span></span>
+<span class="hljs-function"></span>&#123;<span class="hljs-comment">//degree是节点入度，graph是单向图，p是节点数</span>
+    <span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt; Q;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> it = <span class="hljs-number">0</span>;it &lt; p; it++)
+    &#123;
+        <span class="hljs-keyword">if</span>(degree[it] == <span class="hljs-number">0</span>)
+            Q.push(it);
+    &#125;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; res;
+    <span class="hljs-keyword">while</span>(!Q.empty())
+    &#123;
+        <span class="hljs-keyword">int</span> v = Q.front();Q.pop();
+        res.emplace_back(v);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;neig: graph[v])
+        &#123;
+            <span class="hljs-keyword">if</span>((--degree[neig])==<span class="hljs-number">0</span>)
+                Q.push(neig);
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> (res.size()==p) ? res:<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;();
+
+&#125;</code></pre>
+<p>复杂度同上</p>
+<hr>
+<h3 id="301-题最小高度树"><a href="#301-题最小高度树" class="headerlink" title="301.题最小高度树"></a>301.题最小高度树</h3><p>该题的思路和拓扑排序基本一致，只不过因为依赖关系而产生的有向图变为了无环无向图，不过有一点是共通的：</p>
+<ul>
+<li>在有向图中，入度为0的节点是<strong>边缘节点</strong>；</li>
+<li>在无环无向图中，度为1的节点是<strong>叶子节点</strong>。</li>
+</ul>
+<p>因而用bfs就显得很方便，我们定义一个队列，它的作用是保存当前图的最外圈节点，这里的当前图我们等会会解释。当我们遍历叶子节点，那么它们的邻近节点在下一次迭代就会变为叶子节点，也就是说我们的搜索是一圈一圈向内进行的，最后的节点一定是我们要找的最中间的节点，它们的度最小。</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">findMinHeightTrees</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; edges)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> len = edges.size();
+        <span class="hljs-comment">// if(!len) return &#123;&#125;;</span>
+        <span class="hljs-comment">//第一步建图</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">graph</span><span class="hljs-params">(n)</span></span>;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">deg</span><span class="hljs-params">(n)</span></span>; <span class="hljs-comment">//统计节点的度</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+            graph[i] = &#123;&#125;;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; len;i++)
+        &#123;
+            graph[edges[i][<span class="hljs-number">0</span>]].push_back(edges[i][<span class="hljs-number">1</span>]);
+            graph[edges[i][<span class="hljs-number">1</span>]].push_back(edges[i][<span class="hljs-number">0</span>]);
+            deg[edges[i][<span class="hljs-number">0</span>]] ++;
+            deg[edges[i][<span class="hljs-number">1</span>]] ++;
+        &#125;
+        <span class="hljs-comment">//我们从边缘开始，也就是度为1的节点,由于不存在环，所以一定有度为1的节点</span>
+        <span class="hljs-built_in">queue</span>&lt;<span class="hljs-keyword">int</span>&gt; q;
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; res;
+        
+        <span class="hljs-keyword">bool</span> flag0 = <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
+        &#123;
+            <span class="hljs-keyword">if</span>(deg[i] == <span class="hljs-number">1</span>)
+            &#123;
+                q.push(i);<span class="hljs-comment">//将度为1的节点入队列</span>
+            &#125;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(deg[i] == <span class="hljs-number">0</span>)
+            &#123;
+                flag0 = <span class="hljs-literal">true</span>;
+                res.push_back(i);
+            &#125;
+        &#125;
+        <span class="hljs-keyword">if</span>(flag0) <span class="hljs-keyword">return</span> res;
+        <span class="hljs-comment">//求节点的最小高度</span>
+        <span class="hljs-keyword">while</span>(!q.empty())
+        &#123;<span class="hljs-comment">//从叶子节点开始一圈一圈向内层靠近</span>
+            res.clear();
+            <span class="hljs-keyword">int</span> q_size = q.size();
+            <span class="hljs-comment">// cout&lt;&lt;&quot;size:&quot;&lt;&lt;q_size&lt;&lt;endl;</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; q_size;i++)
+            &#123;    
+                <span class="hljs-keyword">int</span> cur = q.front(); q.pop();
+                <span class="hljs-comment">// cout&lt;&lt;&quot;cur:&quot;&lt;&lt;cur&lt;&lt;endl;</span>
+                res.push_back(cur);
+                
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> &amp;neig: graph[cur])
+                &#123;
+                    <span class="hljs-keyword">if</span>((--deg[neig]) == <span class="hljs-number">1</span>)
+                    &#123;
+                        q.push(neig);
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+<p><strong>算法时间复杂度</strong>：$O(N)$，如果有孤立节点，这个N就是孤立节点的数目，否则为$O(V+E)$，V，E代表顶点和边的数目。</p>
+<p><strong>空间复杂度</strong>：$O(V+E)$，主要是建图的空间消耗。</p>
 
             </div>
             <hr>
@@ -906,9 +1002,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-7-30-pointers/">
+                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">神奇的多指针 【cover 脑筋急转弯💡】</span>
+                        <span class="hidden-mobile">动态规划</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -916,8 +1012,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
-                        <span class="hidden-mobile">动态规划</span>
+                      <a href="/2020/07/19/2020-07-19-damn_blog/">
+                        <span class="hidden-mobile">Durant终于有个家写写东西了</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

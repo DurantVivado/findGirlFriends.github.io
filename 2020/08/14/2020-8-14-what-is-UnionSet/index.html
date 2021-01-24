@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.6k 字
+      4.8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      59
+      62
        分钟
     </span>
   
@@ -270,10 +270,15 @@
 </li>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/couples-holding-hands/">情侣牵手</a>（Hard）</p>
 </li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/accounts-merge/">账户合并</a></li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/accounts-merge/">账户合并</a></p>
+</li>
+<li><h4 id="移除最多的同行或同列石头（这题一定要把连通图找完全）"><a href="#移除最多的同行或同列石头（这题一定要把连通图找完全）" class="headerlink" title=" 移除最多的同行或同列石头（这题一定要把连通图找完全）"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/most-stones-removed-with-same-row-or-column/"> 移除最多的同行或同列石头</a>（这题一定要把连通图找完全）</h4></li>
+<li><h4 id="打砖块-困难-（并查集-逆向思维-细节）"><a href="#打砖块-困难-（并查集-逆向思维-细节）" class="headerlink" title=" 打砖块(困难)（并查集+逆向思维+细节）"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/bricks-falling-when-hit/"> 打砖块</a>(困难)（并查集+逆向思维+细节）</h4></li>
 </ol>
 <blockquote>
 <p>参考资料：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93647900">知乎传送门</a></p>
+<p>* <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13t411v7Fs/">B站讲解1</a></p>
+<p>* <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1BJ41137qp/">B站讲解2</a></p>
 </blockquote>
 <p>并查集被许多$OIers$认为是简洁而高雅的数据结构之一，主要用于解决一些<strong>元素分组</strong>的问题，它管理一系列<strong>不相交</strong>的集合，并支持两种操作。</p>
 <ul>
@@ -288,37 +293,29 @@
 <li><code>isConnected(int m, int n)</code>：判断$m,n$两个点是否在同一个连通区域。</li>
 <li><code>Union(int m, int n)</code>:合并$m,n$两个点所在的连通区域。</li>
 </ul>
-<p><strong>初始化</strong></p>
-<pre><code class="hljs C++"><span class="hljs-keyword">int</span> fa[MAXN];
-<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> n )</span></span>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a><strong>初始化</strong></h3><pre><code class="hljs C++"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fa;
+<span class="hljs-comment">//vector&lt;int&gt; rank;//使用秩优化请去掉注释</span>
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n;i++)
+    fa.resize(n,<span class="hljs-number">0</span>);
+    <span class="hljs-comment">//rank.resize(n,1);</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++) 
+    &#123;
         fa[i] = i;
+    &#125; 
 &#125;</code></pre>
-<p><strong>查询</strong></p>
-<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<blockquote>
+<p>关于rank，你可以把它理解为该节点所在的子树的节点数目！默认为1.</p>
+</blockquote>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a><strong>查询</strong></h3><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">if</span>(fa[x]==x)
-        <span class="hljs-keyword">return</span> x;
-    <span class="hljs-keyword">else</span> 
-        <span class="hljs-keyword">return</span> find(fa[x]);
-&#125;
-</code></pre>
-<p>一层一层访问父节点，直至根节点（根节点的标志就是父节点是本身）。要判断两个元素是否属于同一个集合，只需要看它们的根节点是否相同即可。</p>
-<p><strong>合并</strong></p>
-<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span>
-<span class="hljs-function"></span>&#123;
-	fa[find(i)] = find(j);
+    <span class="hljs-keyword">if</span>(x!=fa[x])
+    &#123;
+        fa[x] = find(fa[x]);
+    &#125;
+
+    <span class="hljs-keyword">return</span> fa[x];
 &#125;</code></pre>
-<p>合并操作也是很简单的，先找到两个集合的代表元素，然后将前者的父节点设为后者即可。当然也可以将后者的父节点设为前者.</p>
-<p><strong>更新</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
-<span class="hljs-function"></span>&#123;
-	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)
-	<span class="hljs-keyword">if</span>(fa[i] != i) fa[i] = find(fa[i]);
-&#125;</code></pre>
-<p>一般在对所有节点merge之后需要整体更新，避免漏掉连通分支。</p>
-<hr>
 <p>初级并查集效率较低，我们需要进行<strong>路径压缩</strong>。</p>
 <p>我们添加元素可能会形成长链，想要从底部寻找根节点会越来越难。路径压缩是这样一种算法，每个元素到根节点的路径尽可能短。</p>
 <p>我们可以在查找的过程中，<u>把沿途每个节点的父节点都设为根节点</u>。</p>
@@ -327,25 +324,26 @@
 <span class="hljs-function"></span>&#123;
     <span class="hljs-keyword">return</span> x==find(x)? x : (fa[x] = find(fa[x]));
 &#125;</code></pre>
-<p>我们得到的并查集是这样的，很像一棵二叉树。</p>
-<p><strong>按秩合并</strong></p>
-<p>按路径压缩后的并查集结构仍是毕竟复杂的，比如现在我们有一棵较复杂的树，与一个单元素进行合并：</p>
-<p><img src="/img/dsu_1.jpg" srcset="/img/loading.gif" alt=""></p>
-<p>那么是把7作为8的父节点好呢，还是8作为7父节点好呢：</p>
-<p>当然是前者，因为后者会使树的深度加深。所以要<strong>把简单树往复杂树上合并。</strong></p>
-<p>我们用于一个数组<code>rank[]</code>记录每个根节点对应树的深度。一开始，所有节点的秩设为1.合并时比较两个根节点，把秩小的往秩的根节点合并。</p>
-<p><strong>初始化（按秩合并）</strong></p>
-<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<hr>
+<p><strong>合并</strong>（三个版本）</p>
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function"></span>&#123;<span class="hljs-comment">//最简单的合并</span>
+	fa[find(i)] = find(j);
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j)</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt;= n;i++) 
-    &#123;
-        fa[i] = i;
-        rank[i] = <span class="hljs-number">1</span>;
-    &#125; 
-&#125;</code></pre>
-<p><strong>合并（按秩合并）</strong></p>
-<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
+    <span class="hljs-comment">//带秩优化的合并</span>
+    <span class="hljs-keyword">int</span> x = find(i), y = find(j);
+    <span class="hljs-keyword">if</span>(x == y)
+        <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span>(rank[x] &lt; rank[y])
+        swap(x,y);
+    rank[x] += rank[y];
+    fa[y] = x;<span class="hljs-comment">//x设为y的根</span>
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">merge2</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
 <span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">//带秩优化的合并，考虑秩相同的情况</span>
     <span class="hljs-keyword">int</span> x = find(i),y = find(j);
     <span class="hljs-keyword">if</span>(rank[x] &lt;= rank[y]) 
         fa[x] = y;
@@ -354,8 +352,40 @@
     <span class="hljs-keyword">if</span>(rank[x]==rank[y]&amp;&amp;x!=y)
     &#123;<span class="hljs-comment">//如果秩相同，则新节点深度++</span>
         rank[y]++;
-    &#125;   
+    &#125;
 &#125;</code></pre>
+<p>合并操作也是很简单的，先找到两个集合的代表元素，然后将前者的父节点设为后者即可。当然也可以将后者的父节点设为前者.</p>
+<blockquote>
+<p><strong>奇思妙想</strong>：</p>
+<p>我们可以指定merge函数的输出来实现不同的功能。</p>
+<p>1.比如下面代码可以判断两个节点是否属于同一个子树，如果否，返回true：</p>
+<pre><code class="hljs cpp">&gt;<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function">&gt;</span>&#123;
+<span class="hljs-keyword">int</span> x = find(i),y = find(j);
+<span class="hljs-keyword">if</span>(x == y) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+fa[y] = x;
+<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&gt;&#125;</code></pre>
+<p>2.还有判断图的连通子树个数：</p>
+<pre><code class="hljs cpp">&gt;<span class="hljs-keyword">int</span> setCount;<span class="hljs-comment">//连通子树数，初始为n</span>
+&gt;<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function">&gt;</span>&#123;
+<span class="hljs-keyword">int</span> x = find(i),y = find(j);
+<span class="hljs-keyword">if</span>(x == y) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+fa[y] = x;
+setCount --;
+<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&gt;&#125;</code></pre>
+<p>如果<code>setCount==1</code>说明图中只有一棵连通树了。</p>
+</blockquote>
+<p><strong>按秩合并</strong></p>
+<p>我们得到的并查集是这样的，很像一棵二叉树。</p>
+<p>按路径压缩后的并查集结构仍是毕竟复杂的，比如现在我们有一棵较复杂的树，与一个单元素进行合并：</p>
+<p><img src="/img/dsu_1.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>那么是把7作为8的父节点好呢，还是8作为7父节点好呢：</p>
+<p>当然是前者，因为后者会使树的深度加深。所以要<strong>把简单树往复杂树上合并。</strong></p>
+<p>我们用于一个数组<code>rank[]</code>记录每个根节点对应树的深度。一开始，所有节点的秩设为1.合并时比较两个根节点，把秩小的往秩的根节点合并。</p>
+<p>见上述代码。</p>
 <p>为什么根秩相同，深度要加1呢，如下图，我们有两个秩均为2 的树，现在要合并。</p>
 <p><img src="/img/dsu_2.png" srcset="/img/loading.gif" alt="img" style="zoom:67%;" /></p>
 <p>我们把2的父节点设为5，这里深度加1，同样另一种合并方式也会使深度加1.</p>

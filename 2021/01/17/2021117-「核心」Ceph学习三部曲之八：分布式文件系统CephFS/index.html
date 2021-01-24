@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>「核心」Ceph学习三部曲之八：分布式文件系统CephFS - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Durant Thorvalds 的米奇妙妙屋" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-17 00:00" pubdate>
+        2021年1月17日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      63
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">「核心」Ceph学习三部曲之八：分布式文件系统CephFS</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Ceph分布式文件系统：CephFS"><a href="#Ceph分布式文件系统：CephFS" class="headerlink" title="Ceph分布式文件系统：CephFS"></a>Ceph分布式文件系统：<em>CephFS</em></h1><p>​    Ceph文件系统或<strong>CephFS</strong>是在Ceph的分布式对象存储<strong>RADOS</strong>之上构建的POSIX兼容文件系统。CephFS致力于为各种应用程序提供最新，多用途，高可用性和高性能的文件存储，包括传统用例（如共享主目录，HPC暂存空间和分布式工作流共享存储）。</p>
+<p>​    CephFS通过使用一些新颖的架构选择来实现这些目标。值得注意的是，文件元数据与文件数据存储在单独的RADOS池中，并通过可调整大小的<em>元数据服务器</em>或<strong>MDS</strong>集群提供服务，该集群可扩展以支持更高吞吐量的元数据工作负载。文件系统的客户端可以直接访问RADOS来读写文件数据块。</p>
+<p>通过MDS集群协调对数据的访问，该集群充当客户端和MDS共同维护的分布式元数据缓存状态的授权机构。每个MDS都会将对元数据的改变写入到日志中。MDS不会在本地存储任何元数据状态。此模型允许在POSIX文件系统的上下文中客户端之间进行连贯且快速的协作。</p>
+<p>CephFS基于MDS对元数据进行管理。它有如下特点:</p>
+<ul>
+<li><p>采用多实例消除性能瓶颈和提高可靠性；</p>
+</li>
+<li><p>采用大型日志文件和延迟删除日志机制来提升元数据的读写性能；</p>
+</li>
+<li><p>将Inode内嵌至Dentry中来提升文件索引效率；</p>
+</li>
+<li><p>采用目录分片来重新定义命名空间的层次结构，并且目录分片可以在MDS实例之间动态迁移，从而实现细粒度的流控和负载均衡机制</p>
+</li>
+</ul>
+<p>  <img src="../img/cephfs-architecture.svg" srcset="/img/loading.gif" alt="../_images/cephfs-architecture.svg"></p>
+<p>在正式介绍MDS前，我们先了解以下文件系统基础知识。</p>
+<h2 id="0-了解文件系统"><a href="#0-了解文件系统" class="headerlink" title="0 了解文件系统"></a>0 了解文件系统</h2><p>常见的本地文件系统有：Ext2/3/4，XFS，BTRFS，FAT，NTFS；常见的网络文件系统有NFS，CIFS。随着互联网快速发展，数据规模越来越大，传统的文件系统已经不能满足要求。分布式文件系统应运而生，比如CephFS、Lustre、HDFS、GFS、GlusterFS。</p>
+<p>为了适配不同的文件系统，Linux采用VFS（虚拟文件系统）。</p>
+<p>例如用户写入一个文件，使用POSIX标准的write接口，会被操作系统接管，转调sys_write这个系统调用（属于SCI层）。然后VFS层接受到这个调用，通过自身抽象的模型，转换为对给定文件系统、给定设备的操作，这一关键性的步骤是VFS的核心，需要有统一的模型，使得对任意支持的文件系统都能实现系统的功能。这就是VFS提供的统一的文件模型（common file model），底层具体的文件系统负责具体实现这种文件模型，负责完成POSIX API的功能，并最终实现对物理存储设备的操作。</p>
+<p><img src="../img/70.png" srcset="/img/loading.gif" alt="img"></p>
+<p>VFS在系统中的位置如下图。</p>
+<p><img src="../img/image-20210119182434745.png" srcset="/img/loading.gif" alt="image-20210119182434745"></p>
+<h2 id="1-文件系统中的元数据"><a href="#1-文件系统中的元数据" class="headerlink" title="1 文件系统中的元数据"></a>1 文件系统中的元数据</h2><p>VFS为了适配不同类型的元数据，定义了4种基本类型：</p>
+<ul>
+<li>$Superblock$：用于管理某一类文件的系统信息；</li>
+<li>$Inode$：索引节点。类Unix文件系统中的一种数据结构，每个Inode保存文件系统中的一个文件系统对象的概要信息，<strong>但不包括文件名和文件内容本身</strong>。<u>Inode和文件名是一对多的关系</u>。</li>
+<li>$Dentry$：目录项。是一个内存结构，由文件系统在内存中直接创立，它是类Unix系统的某个Inode的链接，包含了文件名、文件的Inode号等信息；</li>
+<li>$File$：文件操作句柄，和进程相关，表示一个打开的文件，<u>File和Inode之间是一对多的关系</u>，因为多个进程可以打开一个文件。</li>
+</ul>
+<p>由于Inode和Dentry需要后端文件系统提供服务功能，需要重点介绍：</p>
+<p>具体而言：</p>
+<p>$a$. Inode只记录数据块在存储介质上的位置和分布，以及文件对象属性（包括权限、数据块信息、时间戳等），不包括文件名和内容等变长数据。Inode结构大小固定，但我们发现要找到具体的存储位置，还缺少文件在目录树中的位置信息，因此需要引入Dentry。</p>
+<p>$b$. Dentry在文件系统中起到链接不同Inode的作用。Dentry包含文件名、文件名Inode等信息。它们最终组成文件目录树的结构。它的原理是：本级的Dentry记录了本级目录或者文件名以及下一级目录或者文件的Dentry位置，此外，Dentry本身也需要在具体的Inode对象中，所以它也有自己的Inode号。<strong>Dentry本身像一张表，记录了Inode和文件名的对应关系</strong>。下面这张图很好的表示了inode和dentry的关系。</p>
+<p><img src="../img/1055408-20161104001642736-837882075.png" srcset="/img/loading.gif" alt="img"></p>
+<blockquote>
+<p>图片来源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/mister-lv/p/6028836.html">https://www.cnblogs.com/mister-lv/p/6028836.html</a></p>
+</blockquote>
+<h2 id="2-硬链接和软链接"><a href="#2-硬链接和软链接" class="headerlink" title="2 硬链接和软链接"></a>2 硬链接和软链接</h2><blockquote>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/fqnb001/p/8778790.html">什么是软链接，硬链接</a></p>
+</blockquote>
+<p>为了实现文件共享，隐藏文件路径、文件安全和节省存储空间等功能或特性，需要引入链接这个概念。</p>
+<h3 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h3><p>硬链接指多个文件名指向同一个Inode号(在MDS就是多个Dentry指向一个Inode)，可以用不同的文件名访问同样的内容；对文件内容进行修改，会影响到所有文件名；但是，删除一个文件名，不影响另一个文件名的访问（只有一个Inode的所有文件都被删除时，文件才会真正被删除），注意目录不能用于创建硬链接（防止形成环）。目录中的隐藏的.和..就是典型的硬链接。</p>
+<pre><code class="hljs awk">ln 源文件 目标文件 <span class="hljs-regexp">//</span>创建硬链接
+ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
+<h3 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h3><p>软链接是创建一个新的Inode，Inode的存储内容是另外一个文件路径名的指向，可以理解为<strong>windows的快捷方式</strong>。它的特点是可以灵活地实现诸多不做限制的要求：既可以对存在或者不存在的文件和目录创建软链接，也可以链接到不同的文件系统，还可以在删除链接时不影响指向的文件等。</p>
+<pre><code class="hljs awk">ln -s 源文件 目标文件 <span class="hljs-regexp">//</span>查看软链接</code></pre>
+<pre><code class="hljs awk">ll &#123;文件名&#125; <span class="hljs-regexp">//</span> 查看所有链接</code></pre>
+<blockquote>
+<p>题外话：讲个笑话，各位小朋友千万不要模仿（除非你想删库跑路）！</p>
+<p><img src="../img/image-20210119192857642.png" srcset="/img/loading.gif" alt="image-20210119192857642"></p>
+</blockquote>
+<p>扩展：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37806908/article/details/97686753">linux .so .o .a文件区别</a></p>
+<h2 id="3-日志"><a href="#3-日志" class="headerlink" title="3 日志"></a>3 日志</h2><p>日志是一种特殊的文件，用于循环记录文件系统的修改，并定期提交到文件系统进行保存。一旦系统发生崩溃，日志可以起到<strong>存档点</strong>的作用。</p>
+<p>常见的日志设计模式无外乎以下三种：</p>
+<p>（1）writeback</p>
+<p>writeback模式只有元数据被写入到数据中，这样虽然可以保证日志一致性，但是可能引起日志崩溃。</p>
+<p>（2）ordered</p>
+<p>ordered模式也是只将元数据写入到日志，但是前提是数据已经写入数据盘。但是在数据写入硬盘后而元数据写入前系统崩溃的情景，就会发生数据丢失。</p>
+<p>（3）data</p>
+<p>data模式将元数据和数据都写入日志，这样可以最大限度的防止文件系统崩溃所导致的数据丢失，但是因为数据写入两次，性能会下降。</p>
+<p>日志提交有两种方式：超时提交和满时提交。超时提交，顾名思义指在规定时间之后，日志会自动同步；满时提交指日志存储空间到达上限才会触发同步。一般文件系统会同时采用这两种模式。</p>
+<hr>
+<h2 id="正式部分"><a href="#正式部分" class="headerlink" title="正式部分"></a>正式部分</h2><h2 id="S1-CephFS"><a href="#S1-CephFS" class="headerlink" title="$\S1$ CephFS"></a>$\S1$ CephFS</h2><p>分布式系统通过多服务器实现负载均衡，为了快速索引元数据，必须将元数据和用户数据进行分离，这是Ceph最杰出的贡献之一。</p>
+<p>为了实现负载均衡，有如下几种方式：</p>
+<p>（1）静态子树分区</p>
+<p>即通过手工的方式进行数据分配，典型的有Sprite、StorageTnak和PanFS。</p>
+<p>（2）Hash计算分区法</p>
+<p>​    通过hash计算来分配数据存储位置。这种方式适合数据分布均衡且需要应对各种异常的场景，但不太适合数据分布固定的场景。</p>
+<p>（3）动态子树分区</p>
+<p>​    通过实时监控集群节点的负载，动态调整子树分布于不同节点，这是Ceph默认的方式。对于有大量数据迁移的场景不合适。</p>
+<p>虽然元数据不适合通过Hash计算的方式，但是为什么CephFS的元数据仍然基于Hash方式？</p>
+<p>答案是Ceph元数据访问并不是之间从RADOS获取，而是存在一个元数据缓存区，其中元数据基于动态子树分区的方式进行分配，元数据的存在哪里就不是那么重要。</p>
+<p>在此基础，我们得到CephFS的架构图。</p>
+<p><img src="../img/image-20210120231307670.png" srcset="/img/loading.gif" alt="image-20210120231307670"></p>
+<p>为了加快数据访问效率，MDS将热点数据缓存在内存中。</p>
+<p>CephFS存在以下三种形式的客户端接口：</p>
+<p>（1）CephFS Kernel Object</p>
+<p>为内核态接口，它使用mount -t ceph命令将CephFS挂载在操作系统指定目录下。</p>
+<p>（2）Ceph FUSE</p>
+<p>FUSE的全称是Filesystem in Userspace，即用户空间文件系统。它完全是在内核态实现的。</p>
+<p>（3）User Space Client</p>
+<p>为直接通过客户端应用程序调用CephFS提供的文件系统接口，比如Hadoop调用CephFS提供的Java文件系统接口实现文件转储。</p>
+<h2 id="S2-Ceph-MDS服务器特质"><a href="#S2-Ceph-MDS服务器特质" class="headerlink" title="$\S2 $  Ceph MDS服务器特质"></a>$\S2 $  Ceph MDS服务器特质</h2><p>​    当进程打开文件时，客户端将请求发送到MDS群集。  MDS遍历文件系统层次结构以将文件名转换为文件inode，其中包括唯一的inode编号，文件所有者，模式，大小以及其他每个文件元数据。 如果文件存在并且已授予访问权限，则MDS返回索引节点的数目，文件大小以及有关用于将文件数据映射到对象的分条策略的信息。  </p>
+<p>​    MDS还可以向客户端发出一项功能，以指定允许哪些操作。 功能包括控制客户端读取，缓存读取，写入和缓冲区写入的能力和安全密钥。 随后的MDS参与文件I / O的工作仅限于管理功能，以保持文件一致性并获得适当的语义。</p>
+<p>​    Ceph概括了一系列条带化策略，可将文件数据映射到一系列对象上。 为了避免文件分配元数据的任何需要，对象名称只需组合文件索引节点号和条带号即可。 然后使用CRUSH（见三部曲其一blog）将对象副本分配给OSD。 例如，如果一个或多个客户端打开文件进行读取访问，则MDS会授予他们读取和缓存文件内容的功能。 有了索引节点的数目，布局和文件大小，客户端可以命名和定位包含文件数据的所有对象，并直接从OSD集群读取。</p>
+<h3 id="2-1客户端同步"><a href="#2-1客户端同步" class="headerlink" title="2.1客户端同步"></a>2.1客户端同步</h3><p>​    POSIX语义明智地要求读取反映先前写入的任何数据，并且写入是原子的（即，重叠的并发写入的结果将反映特定的发生顺序）。 当多个客户端同时使用多个写入器或混合使用读取器和写入器打开文件时，MDS将撤消以前发布的任何读取缓存和写入缓冲功能，从而强制该文件的客户端I / O同步。 也就是说，每个应用程序的读取或写入操作将一直阻塞，直到OSD确认为止，从而有效地将更新序列化和同步的负担与存储每个对象的OSD放在了一起。 当写入跨越对象边界时，客户端会在受影响的对象上获得排他锁（由其各自的OSD授予），并立即提交写入和解锁操作以实现所需的序列化。 对象锁类似地用于通过获取锁并异步刷新数据来掩盖大写操作的延迟。</p>
+<h3 id="2-2-元数据动态性"><a href="#2-2-元数据动态性" class="headerlink" title="2.2 元数据动态性"></a>2.2 元数据动态性</h3><p>​    Ceph中的文件和目录元数据很小，几乎完全由目录条目（文件名）和索引节点（80字节）组成。 与常规文件系统不同，不需要文件分配元数据-使用索引节点号构造对象名称，并使用CRUSH将其分配给OSD。 这简化了元数据的工作量，并使我们的MDS可以有效地管理非常大的文件集，而与文件大小无关。<br>   我们的设计进一步寻求通过使用两层存储策略来最小化与元数据相关的磁盘I / O，并通过动态子树分区[30]来最大化本地性和缓存效率。</p>
+<h3 id="2-3-元数据存储"><a href="#2-3-元数据存储" class="headerlink" title="2.3 元数据存储"></a><strong>2.3 元数据存储</strong></h3><p>   日志的设计使得在MDS发生故障的情况下，另一个节点可以快速重新扫描日志以恢复故障节点的内存高速缓存中的关键内容（用于快速启动） 并以此重新覆盖文件系统状态。</p>
+<p>​    该策略提供了两全其美的优势：<strong>以高效（顺序）的方式将更新流式传输到磁盘，并大大减少了重写工作量，从而可以针对未来的读取优化磁盘上的长期存储布局访问</strong>。</p>
+<p><img src="../img/image-20210120232711333.png" srcset="/img/loading.gif" alt="image-20210120232711333"></p>
+<blockquote>
+<p>图1：Ceph根据当前工作负载将目录层次结构的子树动态映射到元数据服务器。 仅当多个目录成为热点时，它们才会在多个节点间以散列形式出现。</p>
+</blockquote>
+<h3 id="2-4-动态子树分区"><a href="#2-4-动态子树分区" class="headerlink" title="2.4 动态子树分区"></a>2.4 动态子树分区</h3><p>​    我们的主副本缓存策略使单个权威MDS负责管理缓存一致性并为任何给定的元数据片段序列化更新。 </p>
+<p>​     目前有动态子树分区和静态子树分区两种方式。静态子树分区无法应对动态的工作负载和数据集，而散列则破坏了元数据的局部性和有效的元数据预取和存储的关键机会。</p>
+<p>   Ceph的MDS集群基于动态子树分区策略，该策略可在一组节点上自适应地分层分配缓存的元数据，如图1所示。每个MDS使用计数器来度量目录层次结构中元数据的统计分布， 它随指数时间衰减。 <strong>任何操作都会将受影响的索引节点及其所有祖先上的计数器递增到根目录，为每个MDS提供一个加权树，描述最近的负载分布。 定期比较MDS负载值，并迁移目录层次结构的适当大小的子树以保持工作负载均匀分布。</strong></p>
+<p>总结 MDS优势在于</p>
+<ol>
+<li>以较大块对象形式存储减少了元数据的数量；</li>
+<li>每个MDS独立更新自己的日志；</li>
+<li>动态子树分区实现了文件系统的动态负载均衡；</li>
+<li>元数据复制保证了MDS节点之间缓存一致性和MDS失败和超载下，相应元数据被迁移到正常MDS上；</li>
+<li>锁机制保证了元数据复制；</li>
+<li>流量控制解决了大量不可预测的用户的请求。</li>
+</ol>
+<h2 id="S3-MDS实现原理"><a href="#S3-MDS实现原理" class="headerlink" title="$\S3$  MDS实现原理"></a>$\S3$  MDS实现原理</h2><h3 id="3-1-元数据与Object的关系"><a href="#3-1-元数据与Object的关系" class="headerlink" title="3.1 元数据与Object的关系"></a>3.1 元数据与Object的关系</h3><p>CephFS中将Inode编号设置为Object名称。而实际Object通常被设置为固定大小，如果Dentry大小大于这个大小，就需要多个object来保存。一个标准的Object集合是以相同Inode开头加上所有Stripe的Objects，它包括一个完整Dentry信息。</p>
+<p>根目录默认Inode编号1，它存储目录下所有文件和目录的Dentry。查询文件的过程也是根据Inode编号从根目录搜索到叶子节点的过程。</p>
+<p>需要注意的是，元数据不是直接写入到Object，而是先顺序写入到条带化、固定大小的日志中，再根据落盘政策写入到后端object。</p>
+<pre><code class="hljs stata">rados -p <span class="hljs-keyword">meta</span> <span class="hljs-keyword">ls</span><span class="hljs-comment">//标准元数据集合</span></code></pre>
+<h3 id="3-2-嵌入式Inode和Primary-Dentry"><a href="#3-2-嵌入式Inode和Primary-Dentry" class="headerlink" title="3.2 嵌入式Inode和Primary Dentry"></a>3.2 嵌入式Inode和Primary Dentry</h3><p>为了提升性能，文件系统通常将Inode放置再Dentry附近，这样读取Dentry时可以同时将Inode获取，这便是嵌入式Inode。</p>
+<p>在没有硬链接时，Dentry就是Primary Dentry。一般情况下存储Dentry对应Inode只占用一个Object；超过一个Object大小的，其扩展的Object也是存储在一起，依次读就可以获得Dentry和Inode信息，将此信息缓存并使用LRU算法进行淘汰。</p>
+<h3 id="3-3-Remote-Dentry和Anchor"><a href="#3-3-Remote-Dentry和Anchor" class="headerlink" title="3.3 Remote Dentry和Anchor"></a>3.3 Remote Dentry和Anchor</h3><p>当存在硬链接时，第一个指向Inode的Dentry被称为Primary Dentry，后续的被称为Remote Dentry。</p>
+<p>为了访问Remote Dentry， 人们提出了Anchor，它包括Path，Inode，Parent，Ref.前三者显而易见，Ref是被Inode引用的次数（即2.4节提到的计数器）。当进行目录重命名时，可能会影响整个链上的Inode，此时就需要一个事务来保证整个链上相关的Inode同时进行更新，将旧的Ref计数减少，新的Ref计数删除。如果Ref为0，说明Inode已经没有硬链接，可以从Anchor表删除，对Dentry的增加修改同理。</p>
+<h3 id="3-4-日志"><a href="#3-4-日志" class="headerlink" title="3.4 日志"></a>3.4 日志</h3><p>MDS日志使用的是混合模式：</p>
+<p>1）更新首先会写入到MDS的日志中；</p>
+<p>2）将有改变的元数据标记为“dirty”，并在MDS缓存中置为“pinned”。</p>
+<p>3）最终修改会更新到具体元数据对象中，但同时也会做延时处理直到从日志中剪掉，这使得日志可以变得非常大（数百兆）。</p>
+<p>引入日志是CephFS的巨大创新，它不但能获取延迟回写和分组提交等提升性能的方法。</p>
+<p>而且还能减少Dentry的更新：1. 大多数负载，比如多次修改同一个地方，或者临时文件创建和删除，其实在日志并未创建；2. 在日志的生命周期内，对给定Dentry的所有更新都被有效提交，所有这些更新被一次性提交。</p>
+<p>日志除了故障恢复还支持在恢复MDS时启用其缓存保存大量热元数据，热数据来自日志，避免从冷缓存（即从后端RADOS中随机读取到缓存中）开始的效率加载而导致的大量等待获取元数据的I/O，从而加快MDS恢复。</p>
+<p>每一个MDS会维护一个日志系统，其日志保存了最近创建和修改，但还未提交到Object文件中的内容，日志被切分为固定大小且有序的Object。</p>
+<p>日志条目，MDS用它来跟踪元数据的变化信息。日志条目使用Metablob来描述单个元数据更新，每一个Metablob包含一个或多个目录的Fragment ID、Dentry和Inode。</p>
+<h3 id="3-5-MDS负载均衡的实现"><a href="#3-5-MDS负载均衡的实现" class="headerlink" title="3.5 MDS负载均衡的实现"></a>3.5 MDS负载均衡的实现</h3><p>许多分布式文件系统使用静态子树分区(Static Subtree Partition) 的方式来实现，即固定地将不同层目录树分配到不同的服务器上，这种方法需要人工调整，十分不灵活。</p>
+<p>Ceph使用动态子树分区来实现横向扩展，动态子树能够根据负载状况来自动迁移目录树，同时为了实现多个MDS管理目录的负载而支持细粒度分区。Sage Weil重点研究了在MDS缓存中存储元数，并且具备伸缩性和容忍任意MDS节点异常。</p>
+<h3 id="3-5-1-目录分区"><a href="#3-5-1-目录分区" class="headerlink" title="3.5.1 目录分区"></a>3.5.1 目录分区</h3><p>Ceph扩展了目录层次结构以允许单目录内容被分解为多个片段，称为Fragments。因为Inode和Fragments是一对多的关系，它存储在目录Inode的FragTree结构中，它基于一个内部顶点开始进行2的N次幂分割。如下图，目录树被分割为一个或者多个Fragments，其中树叶是单独的Fragments。</p>
+<p><img src="../img/image-20210123211806521.png" srcset="/img/loading.gif" alt="image-20210123211806521" style="zoom:67%;" /></p>
+<p>​    每一个Fragments都通过bitmask值来进行描述，类似ip和掩码。通过哈希文件和在FragTree中查找结果值，来实现目录Inode到Fragments 的映射。由于子树元数据被定义在一组目录Fragment中，所以可以通过在MDS之间迁移Fragment来实现负载均衡，任何Fragments在变大或者繁忙时都能分裂为2^n个子fragment。</p>
+<h3 id="3-5-2-子树分区"><a href="#3-5-2-子树分区" class="headerlink" title="3.5.2 子树分区"></a>3.5.2 子树分区</h3><p>​    Ceph支持在MDS集群中，任意和自适应的对子树进行分区。在某些情况下，诸如在同一个目录下有多个文件是热点对象，目录定义子树的方式无法进行负载分离，但Fragment的分割功能允许将这些热点文件进行动态分离。</p>
+<p>​    根目录所在的MDS被标记为MDS-0，其它的MDS则根据当前整个集群元数据的负载进行子树分区。下图展现了MDS的缓存结构：</p>
+<h3 id="3-5-3-元数据复制"><a href="#3-5-3-元数据复制" class="headerlink" title="3.5.3 元数据复制"></a>3.5.3 元数据复制</h3><p>元数据复制的目的在于1. 保证各MDS节点缓存之间的一致性；MDS之间进行元数据复制操作，从而当MDS失败或者负载过重时能将元数据复制到其它正常的MDS上。</p>
+<h3 id="3-5-4-锁机制"><a href="#3-5-4-锁机制" class="headerlink" title="3.5.4 锁机制"></a>3.5.4 锁机制</h3><p>每个Inode有5种锁状态，每一个控制不同的相关字段，例如：link计数和anchor状态字段，文件所有者模式字段、文件size、文件mtime和fragment字段。</p>
+<p>总结一下，MDS负载均衡的实现原理。每个MDS会监视统计Inode和Fragment在缓存中的热度。每个Inode会从读和写来统计热度，而fragment会另外统计readdir操作情况、元数据获取频率、写入到对象存储的频率来统计热度。</p>
+<p>在客户端请求时，受影响的元数据计数器会增加，元数据祖先也会受到影响，反过来又影响到复制和迁移的策略。MDS节点之间会定时分析它们的负载水平。如果某个节点负载过高，它将根据热度统计计数器来选择合适的子树进行迁移。</p>
+<p>关于<strong>迁移</strong>，首先，目的MDS将所有需要迁移的子树元数据副本导入进来，然后源MDS通过日志导出事件提交迁移。在源MDS迁移之前，任何其他MDS会接收到要复制子树的元数据的信息，以此来获取被迁移子树的元数据信息。</p>
+<h3 id="3-5-5-流量控制"><a href="#3-5-5-流量控制" class="headerlink" title="3.5.5 流量控制"></a>3.5.5 流量控制</h3><p>设想有成千上万的客户端想访问任何集群中存储的元数据，如果它们集中在一个MDS，那么很难有效的处理请求。理想的情形是 <strong>对非频繁访问的元数据之间到权威MDS获取，而频繁访问的条目分发到多个MDS中。</strong></p>
+<p>这样做的关键在于客户端缓存了访问MDS的记录。首先利用客户端开始查询位置元数据的分布情况，然后再客户端访问后会收到MDS回复，即未来获取元数据的MDS编号。对非频繁访问的元数据之间到权威MDS获取，而频繁访问的条目则MDS集群会告知客户端随机到所有MDS中去获取，这样就实现了客户端访问MDS的流量控制。</p>
+<h2 id="S4-MDS故障恢复"><a href="#S4-MDS故障恢复" class="headerlink" title="$\S4$ MDS故障恢复"></a>$\S4$ MDS故障恢复</h2><hr>
+<h1 id="部署和操作CephFS"><a href="#部署和操作CephFS" class="headerlink" title="部署和操作CephFS"></a>部署和操作CephFS</h1><pre><code class="hljs dockerfile">ceph fs <span class="hljs-keyword">volume</span><span class="bash"> create &lt;fs name&gt;</span></code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/">ceph</a>
+                    
+                      <a class="hover-with-bg" href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ceph/">ceph</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/23/PAXOS-Made-Simple%20%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%AD%A6%E4%B9%A0Paxos/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">PAXOS-Made-Simple</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/16/%E9%80%86%E5%90%91%E6%80%9D%E7%BB%B4/">
+                        <span class="hidden-mobile">逆向思维</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "「核心」Ceph学习三部曲之八：分布式文件系统CephFS&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      490 字
+      582 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      6
+      7
        分钟
     </span>
   
@@ -249,6 +249,10 @@
 <h1 id="代码优化系列（奇巧淫技）"><a href="#代码优化系列（奇巧淫技）" class="headerlink" title="代码优化系列（奇巧淫技）"></a>代码优化系列（奇巧淫技）</h1><h1 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h1><h3 id="lower-bound"><a href="#lower-bound" class="headerlink" title="lower_bound"></a>lower_bound</h3><p>C++ 尽量使用<code>a.lower_bound(index)</code>而不是<code>auto it = lower_bound(a.begin(),a.end(),index)</code>否则很容易超时。</p>
 <p><code>lower_bound</code>: 进行的比较次数与 <code>first</code> 和 <code>last</code> 间的距离成对数（至多 <em>log<br>2(last - first) + O(1)</em> 次比较）。然而，对于非<a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/named_req/RandomAccessIterator"><em>遗留随机访问迭代器</em> <em>(LegacyRandomAccessIterator)</em> </a>，迭代次自增次数为线性。</p>
 <p><code>set.lower_bound</code>与容器大小成对数。</p>
+<h3 id="数组赋值"><a href="#数组赋值" class="headerlink" title="数组赋值"></a>数组赋值</h3><p>例如我们想将一个数组部分或全部地赋给另外一个数组</p>
+<pre><code class="hljs arduino"><span class="hljs-comment">//比如我们把old_arr的前k项赋给长度为k的arr。</span>
+<span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">arr</span><span class="hljs-params">(k)</span></span>;
+arr.assign(old_arr.<span class="hljs-built_in">begin</span>(),old_arr.<span class="hljs-built_in">end</span>());</code></pre>
 <h3 id="宏优化"><a href="#宏优化" class="headerlink" title="宏优化"></a>宏优化</h3><p>O3 优化<code>#progma GCC optimize(3)</code></p>
 <h3 id="cout优化"><a href="#cout优化" class="headerlink" title="cout优化"></a>cout优化</h3><pre><code class="hljs angelscript">ios::sync_with_stdio(<span class="hljs-number">0</span>);</code></pre>
 <h3 id="自定义比较，以sort为例"><a href="#自定义比较，以sort为例" class="headerlink" title="自定义比较，以sort为例"></a>自定义比较，以sort为例</h3><pre><code class="hljs lisp">sort(<span class="hljs-name">a</span>.begin(),a.end(),[](<span class="hljs-name">auto</span> <span class="hljs-symbol">&amp;left</span>, auto <span class="hljs-symbol">&amp;right</span>)
@@ -275,6 +279,12 @@
 mymap[<span class="hljs-built_in">make_pair</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>)]=<span class="hljs-number">3</span>;</code></pre>
 <h3 id="vector直接初始化大小按下标赋值而不是push-back更快"><a href="#vector直接初始化大小按下标赋值而不是push-back更快" class="headerlink" title="vector直接初始化大小按下标赋值而不是push_back更快"></a>vector<int>直接初始化大小按下标赋值而不是push_back更快</h3><p>stoi有大小限制，若超过INT_MAX会报 out_of_range错误</p>
 <p>如果出现非<code>0-9</code>字符也会报这个错。</p>
+<h3 id="使用iota进行范围赋值"><a href="#使用iota进行范围赋值" class="headerlink" title="使用iota进行范围赋值"></a>使用iota进行范围赋值</h3><p>比如</p>
+<pre><code class="hljs lisp">vector&lt;int&gt; a(<span class="hljs-name">n</span>)<span class="hljs-comment">;</span>
+iota(<span class="hljs-name">a</span>.begin(),a.end(),<span class="hljs-number">0</span>)<span class="hljs-comment">;</span></code></pre>
+<p>相当于</p>
+<pre><code class="hljs matlab"><span class="hljs-keyword">for</span>(int <span class="hljs-built_in">i</span> = <span class="hljs-number">0</span>;<span class="hljs-built_in">i</span> &lt; n;<span class="hljs-built_in">i</span>++) 
+	a[<span class="hljs-built_in">i</span>] = <span class="hljs-built_in">i</span>;</code></pre>
 <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><p>当你准备设计一个新链表，那么千万不要将头节点设为原链表头节点的引用，而应该新建一个节点。</p>
 <pre><code class="hljs awk"><span class="hljs-regexp">//</span>设原链表为head
 <span class="hljs-regexp">//</span>错误的写法

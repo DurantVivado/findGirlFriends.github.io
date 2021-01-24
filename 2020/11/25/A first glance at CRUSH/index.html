@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>「核心」Ceph学习三部曲之一:A First Glance At Crush - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>「核心」Ceph学习三部曲之一:A First Glance At CRUSH - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.9k 字
+      10.9k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      122
+      133
        分钟
     </span>
   
@@ -240,10 +240,11 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">「核心」Ceph学习三部曲之一:A First Glance At Crush</h1>
+            <h1 style="display: none">「核心」Ceph学习三部曲之一:A First Glance At CRUSH</h1>
             
             <div class="markdown-body" id="post-body">
-              <div class="note note-primary">
+              <p>TODO: last update: 2020/12/28</p>
+<div class="note note-primary">
             <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第一章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/?s">官方CRUSH教程</a>。</p>
           </div>
 <h1 id="浅析CRUSH算法"><a href="#浅析CRUSH算法" class="headerlink" title="浅析CRUSH算法"></a>浅析CRUSH算法</h1><blockquote>
@@ -257,6 +258,21 @@
 </ul>
 <p>CRUSH: Controlled Replication Under Scalable Hashing<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="WEIL, S. A., BRANDT, S. A., MILLER, E. L., AND MALTZAHN,C. Crush: Controlled, scalable, decentralized placement of replicateddata. In SC’06: Proceedings of the 2006 ACM/IEEE Conference onSupercomputing (2006), IEEE, pp. 31–31.
 ">[1]</span></a></sup> 基于可扩展哈希的受控副本分布策略。<br>它基于伪随机数哈希算法，以数据唯一标识符、当前存储集群拓扑以及数据备份策略作为输入，可以随时随地通过计算获取数据所在的底层存储设备的位置并之间与其通信，从而避免查表，失效去中心化和高度并发。</p>
+<p>按照Sage Weil系统讲解Ceph论文的说法，CRUSH其实解决了两个问题：一个是我应该把数据存在哪？另一个是我把数据存在哪了？[5.1节]</p>
+<h2 id="1-1-故障恢复"><a href="#1-1-故障恢复" class="headerlink" title="1.1 故障恢复"></a>1.1 故障恢复</h2><p>OSD群集映射将因OSD故障，恢复和显式群集更改（例如，部署新存储）而更改。 为了促进快速恢复，OSD主要为每个对象保留一个版本号和每个PG的最近更改日志（已更新或删除的对象的名称和版本）。</p>
+<p>   当活动的OSD收到更新的群集映射时，它将遍历所有本地存储的放置组，并计算CRUSH映射以确定它负责哪个映射（作为主副本或副本副本）。 如果PG的成员资格已更改，或者OSD刚刚启动，则OSD必须与PG的其他OSD进行$peer$。</p>
+<p>   对于复制的PG，OSD向主数据库提供其当前PG版本号。 如果OSD是PG的主要版本，则OSD会收集当前（和以前）副本的PG版本。 如果主数据库缺少最新的PG状态，它将从PG中的当前OSD或先前的OSD检索最近PG更改的日志（或完整的内容摘要），以确定正确的（最新）PG内容。 然后主数据库向每个副本发送一次重要的日志更新（或完整的内容摘要），以便所有各方都知道PG的内容，即便本地存储的对象并不匹配。只有在主服务器确定正确的PG状态并与任何副本共享它之后，才允许对PG中的对象进行I / O。 然后，OSD将独立负责从其对等方检索丢失或过时的对象。 如果OSD收到对陈旧或丢失对象的请求，它将延迟处理并将该对象移到恢复队列的最前面。</p>
+<p>   例如，假设osd1崩溃并被标记为down，而osd2接替pgA作为主要对象。 如果osd1恢复，它将在启动时请求最新的映射，并且监视器将其标记为已启动。 当osd2收到结果映射更新时，它将意识到它不再是pgA的主要版本，并将pgA版本号发送给osd1。</p>
+<p>   osd1将从osd2检索最近的pgA日志条目，告诉osd2其内容是最新的，然后开始处理请求，同时在后台恢复任何更新的对象。<br>   由于故障恢复完全由单独的OSD驱动，因此受故障OSD影响的每个PG将与不同的替换OSD并行恢复。</p>
+<h2 id="1-2-EBOFS"><a href="#1-2-EBOFS" class="headerlink" title="1.2 EBOFS"></a>1.2 EBOFS</h2><pre><code> POSIX接口不能支持原子数据和元数据（例如，属性）更新事务，这对于保持RADOS的一致性很重要。
+</code></pre><p>​    每个Ceph OSD都使用<strong>EBOFS</strong>（基于范围和B树的对象文件系统）来管理其本地对象存储。 完全在用户空间中实现EBOFS并直接与原始块设备进行交互，使我们能够定义自己的低级对象存储接口和更新语义，从而将更新序列化（用于同步）与磁盘提交（出于安全性）分开。</p>
+<p>   EBOFS支持原子事务（例如，在多个对象上进行写和属性更新），并且当提供内存中的提交的异步通知时，更新功能在存储器中的高速缓存被更新时返回。</p>
+<ul>
+<li>避免了与Linux VFS和页面缓存的繁琐交互，这两者都是针对不同的界面和工作负载而设计的。</li>
+<li>更容易地最终确定工作负载的优先级（例如，客户端I / O与恢复）或提供服务质量保证。</li>
+<li>EBOFS可以在磁盘上的写入位置或相关数据附近快速定位可用空间，同时还可以限制长期碎片。</li>
+<li>EBOFS积极地执行写时复制：除超级块(superblock)更新外，数据始终写入磁盘的未分配区域。</li>
+</ul>
 <h1 id="2-Straw选择算法"><a href="#2-Straw选择算法" class="headerlink" title="2. Straw选择算法"></a>2. Straw选择算法</h1><p>网络中不同层级具有不同容忍灾难的能力，称之为容灾域。</p>
 <p><img src="/img/image-20201128210418154.png" srcset="/img/loading.gif" alt="image-20201128210418154"></p>
 <p>Sage weil一共设计了四种选择算法，并按照添加删除数据的性能进行比较。结论是：考虑到存储空间需求爆炸式增长，在大型分布式存储系统中某些部件故障是常态，以及数据性可靠性要求，Straw将是不错的选择。我们重点分析。</p>
@@ -340,7 +356,7 @@ max_item = <span class="hljs-number">-1</span>
 <p>因为在容灾域模式下会产生递归调用，所以还需要限制产生递归调用时作为下一级输入的全局尝试次数（<code>choose_total_tries</code>），因为这个限制会导致递归调用时全局尝试次数成倍增长，按照递归的概念，多次递归后这个全局尝试次数应该成指数增长，但是实际上至多调用一次，所以这里是将原始尝试次数放大N倍后作为下一级输入的全局尝试数，实现上采用一个布尔变量（<code>chooseleaf_descent_once</code>,i.e. “first n”）进行控制，如果为真，则在产生递归调用至多重试一次，否则则不进行重试，由调用者自身进行重试。N由<code>chooseleaf_vary_r</code>进行决定。</p>
 <p><img src="/img/crush5.png" srcset="/img/loading.gif" alt="image-20201129195221719" style="zoom:67%;" /></p>
 <p>这儿的$b.c(r’,x)$即为第二节谈到的 Bucket Choose ， 我们采用Straw2算法。<br>如果得到的结果不是目标类型，则继续向下递归。并设置重试标记$retry_bucket$为true.</p>
-<p><img src="../img/crush6.png" srcset="/img/loading.gif" alt="image-20201129195537731" style="zoom:67%;" /></p>
+<p><img src="/img/crush6.png" srcset="/img/loading.gif" alt="image-20201129195537731" style="zoom:67%;" /></p>
 <p>当输出已经在输出条目中或者发生冲突或过载时，如果$f_r\ge 3$会执行29行。冲突（Collision）： 选中的条目已经存在于输出条目列表之中。<br>OSD过载或失效：</p>
 <ol>
 <li>由于集群规模较小，导致集群PG总数有限，CRUSH输入不够。</li>
@@ -782,11 +798,11 @@ pgid =Hash(name) \text{ mod INIT_PG_NUM[j]} + \sum\limits_{i=0}^{j-1}\text{INIT_
 </blockquote>
 <p>我们使用Ceph所有参数的默认值，但<code>OSD_max_backfills</code>除外。 如第1节所述，Ceph通过实现级优化减轻了CRUSH的迁移问题。 它使用参数<code>OSD_max_back_fill≥1</code>在数据迁移导致的性能下降的严重性和持续时间之间进行权衡。默认情况下，Ceph将参数<code>OSD_max_backfills</code>设置为1，这使迁移具有最低优先级，因此PG中的对象可能以极低的速度迁移。 尽管部分缓解了降级问题，但将<code>OSD_max_backfills</code>设置为1会大大延长迁移时间，并在迁移完成之前大大增加写入负载：等待迁移的PG写入将首先对原始OSD执行，然后异步进行 迁移到目标OSD。<br>   显然，这使Ceph遭受的性能下降的幅度较小，但时间较长。 我们设置<code>OSD_max_backfills=10</code>，在此实验中更合理，因此可以优先考虑迁移，以证明MAPX和CRUSH在算法级别上的差异。 </p>
 <p>​    图4显示了第99个百分位尾延迟的评估结果。 请注意，云存储方案通常关心的是（第99、99.9或99.99个百分位）尾部延迟，而不是平均延迟或中值延迟，以确保SLA（服务等级保障协议）。  MAPX的性能比CRUSH高出4.25倍，这主要是因为CRUSH中的迁移与正常的I / O请求严重竞争。 在此实验中，MAPX始终使用初始群集的六个OSD来满足I / O请求，因为它不会将现有RBD迁移到新OSD。 相比之下，CRUSH分别使用六个，九个和十二个OSD，但是CRUSH引起的数据迁移会严重降低性能，这对于延迟敏感的应用程序是不可接受的。<br>   图5分别显示了MAPX和CRUSH中IOPS的评估结果。 每个结果均为20次运行的平均值，我们省略了误差线，因为与平均值的方差相对较小（小于5％）。 与延迟测试类似，在IOPS测试中，MAPX的性能明显优于CRUSH，最高可达到74.3％，这是因为CRUSH的数据迁移可以应付正常的I / O请求。</p>
-<p><img src="A first glance at CRUSH/image-20201224200625534.png" srcset="/img/loading.gif" alt="image-20201224200625534" style="zoom:80%;" /></p>
+<p><img src="/img/mapx7.png" srcset="/img/loading.gif" alt="image-20201224200625534" style="zoom:80%;" /></p>
 <blockquote>
 <p>图7：MAPX和CRUSH的第99个百分点的I / O延迟（在群集收缩期间）。</p>
 </blockquote>
-<p><img src="A first glance at CRUSH/image-20201224200711635.png" srcset="/img/loading.gif" alt="image-20201224200711635" style="zoom:80%;" /></p>
+<p><img src="/img/mapx8.png" srcset="/img/loading.gif" alt="image-20201224200711635" style="zoom:80%;" /></p>
 <blockquote>
 <p>图8：在MAPX中合并的层中受影响的PG的数量（四个扩展之后）。 由于CRUSH不支持合并，因此我们在每次CRUSH扩展后测量受影响的PG的数量以供参考。</p>
 </blockquote>
@@ -1042,7 +1058,7 @@ pgid =Hash(name) \text{ mod INIT_PG_NUM[j]} + \sum\limits_{i=0}^{j-1}\text{INIT_
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "「核心」Ceph学习三部曲之一:A First Glance At Crush&nbsp;",
+        "「核心」Ceph学习三部曲之一:A First Glance At CRUSH&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
