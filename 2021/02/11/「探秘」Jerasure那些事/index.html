@@ -243,7 +243,9 @@
             <h1 style="display: none">「探秘」Jerasure那些事</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="libJerasure"><a href="#libJerasure" class="headerlink" title="libJerasure"></a>libJerasure</h1><p>2007 James给出了RS-RAID一个开源实现。<a target="_blank" rel="noopener" href="http://jerasure.org/jerasure/jerasure">official</a> ，<a target="_blank" rel="noopener" href="https://github.com/ceph/Jerasure">github</a>，目前的版本是2014年发行的2.0版本，是各种纠删码库的开山之作。</p>
+              <h1 id="libJerasure"><a href="#libJerasure" class="headerlink" title="libJerasure"></a>libJerasure</h1><div class="note note-warning">
+            <p>2007 James给出了RS-RAID一个开源实现。<u><a target="_blank" rel="noopener" href="http://jerasure.org/jerasure/jerasure">official</a> ，<a target="_blank" rel="noopener" href="https://github.com/ceph/Jerasure">github</a></u>，目前的版本是2014年发行的2.0版本，是各种纠删码库的开山之作。</p>
+          </div>
 <p>Jerasure库包括以下5个模块：</p>
 <ul>
 <li><code>galois.h/.c</code>提供伽罗华域的算术运算。</li>
@@ -251,7 +253,7 @@
 <li><code>reedsol.h/.c</code>支持RS编解码和优化和的RS码。</li>
 <li><code>cauchy.h/.c</code> 支持cauchy RS编解码和最优cauchy编码。</li>
 <li><code>cauchy_best_r6.h/.c</code> 基于cauchy矩阵的RAID-6优化。</li>
-<li><code>liberation.h/.c</code> 支持Liberartion RAID-6编码, Blaum-Roth 编码，和Liber8tion RAID-6编码。 Liberation是一种低密度MDS。这三种编码采用位矩阵来实现，其性能**远优于**现有的RS和EVENNODD，在某种情况下也优于目前已知的最好的RDP编码。</li>
+<li><code>liberation.h/.c</code> 支持Liberartion RAID-6编码, Blaum-Roth 编码，和Liber8tion RAID-6编码。 Liberation是一种低密度MDS。这三种编码采用位矩阵来实现，其性能<strong>远优于</strong>现有的RS和EVENNODD，在某种情况下也优于目前已知的最好的RDP编码。</li>
 </ul>
 <p>下标汇总了Jerasure-2.0库常见的参数和其含义：</p>
 <div class="table-container">
@@ -287,17 +289,17 @@
 <tr>
 <td style="text-align:center">size</td>
 <td style="text-align:center">int</td>
-<td style="text-align:left">每个设备要编码/解码的字节总数。 这必须是<code>sizeof(long)</code>的倍数。 如果使用位矩阵，则它必须是<code>packetssize \* w</code>的倍数。 如果希望对不符合这些限制的数据块进行编码，则必须用零填充数据块，以便满足这些限制。</td>
+<td style="text-align:left">每个设备要编码/解码的字节总数。 这必须是<code>sizeof(long)</code>的倍数。 如果使用位矩阵，则它必须是<code>packetssize * w</code>的倍数。 如果希望对不符合这些限制的数据块进行编码，则必须用零填充数据块，以便满足这些限制。</td>
 </tr>
 <tr>
 <td style="text-align:center">matrix</td>
 <td style="text-align:center">int  *</td>
-<td style="text-align:left">这是一个具有k * m个元素的数组，表示编码矩阵-即分布矩阵的最后m行。 它的元素必须在0到$2^w -1$之间。第i行和第j列中的元素在`matrix [i \* k + j]中。</td>
+<td style="text-align:left">这是一个具有k * m个元素的数组，表示编码矩阵-即分布矩阵的最后m行。 它的元素必须在0到$2^w -1$之间。第i行和第j列中的元素在`matrix [i * k + j]中。</td>
 </tr>
 <tr>
 <td style="text-align:center">bitmatrix</td>
 <td style="text-align:center">int *</td>
-<td style="text-align:left">这是$w \cdot m \cdot w \cdot k$元素的数组，组成二进制分配矩阵BDM的最后$wm$行。 第i行和第j列中的元素位于<code>bitmatrix [i \* k \* w + j]</code>中</td>
+<td style="text-align:left">这是$w \cdot m \cdot w \cdot k$元素的数组，组成二进制分配矩阵BDM的最后$wm$行。 第i行和第j列中的元素位于<code>bitmatrix [i * k * w + j]</code>中</td>
 </tr>
 <tr>
 <td style="text-align:center">dataptrs</td>
@@ -326,7 +328,7 @@
 </tr>
 <tr>
 <td style="text-align:center">cache</td>
-<td style="text-align:center">int ***</td>
+<td style="text-align:center">int <em>*</em></td>
 <td style="text-align:left">三维数组，用于保存一系列缓存地址，用于对RAID6解码进行优化。</td>
 </tr>
 <tr>
@@ -379,12 +381,12 @@
 </li>
 </ul>
 <ul>
-<li><p><code>galois_region_xor(char \*r1, char \*r2, char \*r3, int nbytes)</code></p>
+<li><p><code>galois_region_xor(char *r1, char *r2, char *r3, int nbytes)</code></p>
 <p>此XOR对字节的两个区域<code>r1</code>和<code>r2</code>进行求和，并将总和放入<code>r3</code>。 请注意，如果我们用总和替换区域之一，则r3可能等于r1或r2。<br> <code>Nbytes</code>必须是机器长字大小的倍数。</p>
 </li>
 </ul>
 <ul>
-<li><p><code>galois_w08_region_multiply(char \*region, int multby, int nbytes, char \*r2, int add)</code>: </p>
+<li><p><code>galois_w08_region_multiply(char *region, int multby, int nbytes, char *r2, int add)</code>: </p>
 <p>这将整个字节区域乘以$GF(2^8)$中的常数<code>multby</code>。 如果<code>r2</code>为NULL，则区域将被覆盖。 否则，如果<code>add</code>为零，则将乘积放在<code>r2</code>中。 如果<code>add</code>不为零，则将乘积与<code>r2</code>中的字节进行异或。</p>
 </li>
 </ul>
@@ -392,7 +394,7 @@
 <li><code>galois_w16_region_multiply()</code>和<code>galois_w32_region_multiply()</code>与上述函数类似，分别对应$GF(2^{16})$和$GF(2^{32})$.</li>
 </ul>
 <ul>
-<li><p><code>galois_change_technique(gf_t \*gf, int w)</code></p>
+<li><p><code>galois_change_technique(gf_t *gf, int w)</code></p>
 <p>这使您可以从GF-Complete创建自己的Galois Field算术的自定义实现。 为此，请参阅GF-Complete手册中的<code>create_gf_from_argv()</code>和<code>gf_init_hard()</code>。 这些过程允许您创建<code>gf_t</code>，然后调用<code>galois_change _technique()</code>实现。</p>
 </li>
 </ul>
@@ -408,7 +410,7 @@
 </ul>
 <h3 id="1-1-1-内核操作"><a href="#1-1-1-内核操作" class="headerlink" title="1.1.1 内核操作"></a>1.1.1 内核操作</h3><p>库：<code>jerasure.c\jerasure.h</code></p>
 <ul>
-<li><p><code>void jerasure_do_parity(k,data_ptrs, char \*parity_ptr, size)</code></p>
+<li><p><code>void jerasure_do_parity(k,data_ptrs, char *parity_ptr, size)</code></p>
 <p>这将从数据ptrs访问的k个内存区域中的每个区域计算数据大小字节的奇偶校验。 它将结果放入奇偶校验ptr指向的大小字节中。 像每个数据ptrs一样，奇偶校验ptr必须是长字对齐的，并且大小必须是sizeof（long）的倍数。</p>
 </li>
 <li><p><code>void jerasure_matrix_encode(k,m,w,bitmatrix,data_ptrs,coding_ptrs,size,packetsize)</code></p>
@@ -420,64 +422,64 @@
 </ul>
 <h3 id="1-1-2-解码操作"><a href="#1-1-2-解码操作" class="headerlink" title="1.1.2 解码操作"></a>1.1.2 解码操作</h3><p>这些函数中的每一个都返回一个整数，如果成功则返回0，否则返回-1。 如果擦除太多，则解码可能会失败。</p>
 <ul>
-<li>**int jerasure_matrix_decode(k, m, w matrix, row_k_ones, erasures, data ptrs, coding ptrs, size)**</li>
+<li><strong>int jerasure_matrix_decode(k, m, w matrix, row_k_ones, erasures, data ptrs, coding ptrs, size)</strong></li>
 </ul>
-<p>此函数使用$GF(2^w)$中的矩阵进行解码。 通过创建解码矩阵并执行矩阵/矢量乘积，然后对所有已擦除的编码设备进行重新编码，可以完成此工作。 完成后，将丢弃解码矩阵。 如果要访问解码矩阵，则应使用下面的**jerasure make decoding matrix()**。</p>
+<p>此函数使用$GF(2^w)$中的矩阵进行解码。 通过创建解码矩阵并执行矩阵/矢量乘积，然后对所有已擦除的编码设备进行重新编码，可以完成此工作。 完成后，将丢弃解码矩阵。 如果要访问解码矩阵，则应使用下面的<strong>jerasure make decoding matrix()</strong>。</p>
 <ul>
-<li>**int jerasure_bitmatrix_decode(k, m, w bitmatrix, row k ones, erasures, data ptrs, coding ptrs, size, pack)**</li>
+<li><strong>int jerasure_bitmatrix_decode(k, m, w bitmatrix, row k ones, erasures, data ptrs, coding ptrs, size, pack)</strong></li>
 </ul>
-<p>**etsize)**</p>
+<p><strong>etsize)</strong></p>
 <p>​    注意，它不做任何调度-它只是创建解码位矩阵，并直接使用它来进行解码。 同样，完成后它会丢弃解码位矩阵。</p>
 <ul>
-<li><p>**int jerasure_schedule_decode_lazy(k, m, w bitmatrix, erasures, data ptrs, coding ptrs, size, packetsize, int**</p>
-<p>**smart)**</p>
+<li><p><strong>int jerasure_schedule_decode_lazy(k, m, w bitmatrix, erasures, data ptrs, coding ptrs, size, packetsize, int</strong></p>
+<p><strong>smart)</strong></p>
 <p>这是通过根据解码矩阵创建一个schedule并将其解码来进行解码的。 如果smart是1，则使用 bitmatrix来创建计划。 否则，将使用dumb bitmatrix。 请注意，没有使用变量row_k_ones，因为如果smart为1，则创建的schedule无论如何都会找到该优化。  此过程完成后，将释放计划和分配给解码的所有数据结构。</p>
 </li>
 </ul>
 <ul>
-<li><p>**int jerasure_schedule_decode_cache(k, m, w cache, erasures, data ptrs, coding ptrs, size, packetsize)**</p>
+<li><p><strong>int jerasure_schedule_decode_cache(k, m, w cache, erasures, data ptrs, coding ptrs, size, packetsize)</strong></p>
 <p>当m = 2时，使用schedule缓存进行解码。</p>
 </li>
-<li><p>**int jerasure_make_decoding_matrix(k, m, w matrix, erased, decoding_matrix, dm_ids)**:</p>
+<li><p><strong>int jerasure_make_decoding_matrix(k, m, w matrix, erased, decoding_matrix, dm_ids)</strong>:</p>
 <p>创建解码矩阵。 请注意，解码矩阵和dm id均应分配并传递给此过程，以填充它们。解码矩阵应具有$k^2$个整数，而$dm_ids$应具有$k$整数。</p>
 </li>
-<li><p>**int jerasure_make_decoding_bitmatrix(k, m, w matrix, erased, decoding_matrix, dm_ids)**</p>
+<li><p><strong>int jerasure_make_decoding_bitmatrix(k, m, w matrix, erased, decoding_matrix, dm_ids)</strong></p>
 </li>
 </ul>
 <p>​    创建解码位矩阵。 同样，应同时定位解码矩阵和dm_id，并将其传递给此过程，以填充它们。此时间解码矩阵应具有$k^2w^2$整数，而$dm_id$仍具有$k$个整数。</p>
 <ul>
-<li><p>**int jerasure_erasures_to_erased(k, m, erasures)**</p>
+<li><p><strong>int jerasure_erasures_to_erased(k, m, erasures)</strong></p>
 <p>将上面定义的<code>erasure</code>规范转换为上面定义的<code>erased</code>规范。</p>
 </li>
 </ul>
 <h3 id="1-1-3-点积操作"><a href="#1-1-3-点积操作" class="headerlink" title="1.1.3 点积操作"></a>1.1.3 点积操作</h3><ul>
-<li>**void jerasure_matrix_dotprod(k, w, int* matrix_row, int* src_ids, int dest_id, data_ptrs, coding_ptrs, size)**</li>
+<li><strong>void jerasure_matrix_dotprod(k, w, int<em> matrix_row, int</em> src_ids, int dest_id, data_ptrs, coding_ptrs, size)</strong></li>
 </ul>
 <p>这将一行编码/解码矩阵乘以数据/幸存者。 源设备的ID（与矢量元素的ID相对应）位于<code>src_id</code>中。 目标设备的ID在目标ID中。  当矩阵中遇到一个1时，将执行正确的XOR /复制操作。 </p>
 <ul>
-<li>**void jerasure bitmatrix dotprod(k, w, int  bitmatrix row, int *src ids, int dest id, data ptrs, coding ptrs,size, packetsize)**</li>
+<li><strong>void jerasure bitmatrix dotprod(k, w, int  bitmatrix row, int *src ids, int dest id, data ptrs, coding ptrs,size, packetsize)</strong></li>
 </ul>
 <p>这是位矩阵的类似过程。 它根据由bitmatrix行指定的矩阵的w行执行w点乘积。</p>
 <ul>
-<li>**void jerasure_do_scheduled_operations(char \**ptrs, schedule, packetsize)**:</li>
+<li><strong>void jerasure_do_scheduled_operations(char \</strong>ptrs, schedule, packetsize)**:</li>
 </ul>
 <p>这将对ptrs指定的指针执行计划。 尽管未指定w，但它以w（packetsize）个字节执行调度。 假定ptrs是与计划匹配的正确大小。 通常，这是k + m。</p>
 <h3 id="1-1-4-基础矩阵操作"><a href="#1-1-4-基础矩阵操作" class="headerlink" title="1.1.4 基础矩阵操作"></a>1.1.4 基础矩阵操作</h3><ul>
-<li>**int jerasure_invert_matrix(int\** mat, int* inv, int rows, int w)**</li>
+<li><strong>int jerasure_invert_matrix(int\</strong> mat, int<em> inv, int rows, int w)*</em></li>
 </ul>
 <p>这求一个$rows\times rows$矩阵的逆，结果保存在inv中。如果矩阵不可逆，返回-1，否则返回0.</p>
 <ul>
-<li>**int jerasure_invert_bitmatrix(int* mat, int* inv, int rows)**:</li>
+<li><strong>int jerasure_invert_bitmatrix(int<em> mat, int</em> inv, int rows)</strong>:</li>
 </ul>
 <p>这是求位矩阵的逆，对应$w=1$，也可以用上面那个函数，不过这个函数明显要快些。它会回收mat。</p>
-<p>​    • **int jerasure_invertible_matrix(int *mat, int rows, int w)**:</p>
+<p>​    • <strong>int jerasure_invertible_matrix(int *mat, int rows, int w)</strong>:</p>
 <p>判断矩阵是否可逆，可逆返回1，否则返回0.</p>
 <ul>
-<li>**void jerasure print matrix(int* matrix, int rows, int cols, int w)**:</li>
+<li><strong>void jerasure print matrix(int* matrix, int rows, int cols, int w)</strong>:</li>
 </ul>
 <p>这个函数会打印矩阵。$w$是用来确定间距的。</p>
 <ul>
-<li>**int*  jerasure matrix multiply(int** **m1, int** **m2, int r1, int c1, int r2, int c2, int w)**:</li>
+<li><strong>int*  jerasure matrix multiply(int</strong> <strong>m1, int</strong> <strong>m2, int r1, int c1, int r2, int c2, int w)</strong>:</li>
 </ul>
 <p>此函数执行矩阵乘法，矩阵m1大小为$r1\times c1$，m2为$r2\times c2$。</p>
 <h3 id="1-1-5-统计"><a href="#1-1-5-统计" class="headerlink" title="1.1.5 统计"></a>1.1.5 统计</h3><ul>
@@ -488,7 +490,7 @@
 <li>在$GF(2^w)$域中乘上常数的字节数，使用<code>galois_w08_region_multiply</code>,<code>galois_w16_region_multiply</code>和<code>galois_w32_region_multiply</code>。</li>
 <li>使用<code>memcpy</code>的字节数量。</li>
 </ol>
-<p>我们使用函数**void jerasure_get_stats(double* fill_in)**就可以读到这些数据。在调用这个函数后，用于记录的计数器会被置零。比如 fill_in[0]表示异或的数目。</p>
+<p>我们使用函数<strong>void jerasure_get_stats(double* fill_in)</strong>就可以读到这些数据。在调用这个函数后，用于记录的计数器会被置零。比如 fill_in[0]表示异或的数目。</p>
 <hr>
 <h2 id="S1-2-基础应用教程"><a href="#S1-2-基础应用教程" class="headerlink" title="$\S1.2$ 基础应用教程"></a>$\S1.2$ 基础应用教程</h2><h3 id="例1：构造编码矩阵"><a href="#例1：构造编码矩阵" class="headerlink" title="例1：构造编码矩阵"></a>例1：构造编码矩阵</h3><p><code>\Example\jerasure_01.c</code></p>
 <p>这里输入参数是r,c,w，分别代表矩阵的行数，列数，以及有限域大小。对于$(i,j)$的元素对应于$GF(2^w)$中的$2^{ci+j}$。</p>
@@ -659,13 +661,13 @@ C_0p_0 = D_0p_0 ⊕ D_0p_1 ⊕ D_0p_2 ⊕ D_1p_2 ⊕ D_2p_0 ⊕ D_2p_2</script><
 <hr>
 <h2 id="S1-3-经典RS码"><a href="#S1-3-经典RS码" class="headerlink" title="$\S1.3$ 经典RS码"></a>$\S1.3$ 经典RS码</h2><p>依赖：<code>reed_sol.h</code>, <code>reed_sol.c</code></p>
 <h3 id="1-3-1-Vandermonde分布矩阵"><a href="#1-3-1-Vandermonde分布矩阵" class="headerlink" title="1.3.1 Vandermonde分布矩阵"></a>1.3.1 Vandermonde分布矩阵</h3><ul>
-<li><p><code>int \*reed_sol_vandermonde_coding_matrix(k,m,w)</code></p>
+<li><p><code>int *reed_sol_vandermonde_coding_matrix(k,m,w)</code></p>
 <p>这将基于扩展的范德蒙德矩阵返回$GF(2^w)$中分布矩阵的最后$m$行。 这是一个$m×k$矩阵，可以与jerasure.c中的矩阵例程一起使用。 此矩阵的第一行保证全为1。 第一列也保证全为1。 </p>
 </li>
-<li><p><code>int \*reed sol_extended_vandermonde_matrix(int rows, int cols, w)</code></p>
+<li><p><code>int *reed sol_extended_vandermonde_matrix(int rows, int cols, w)</code></p>
 <p>这会创建一个扩展的范德蒙德矩阵。</p>
 </li>
-<li><p><code>int \*reed_sol_big_vandermonde_distribution_matrix(int rows, int cols, w)</code></p>
+<li><p><code>int *reed_sol_big_vandermonde_distribution_matrix(int rows, int cols, w)</code></p>
 <p>这将扩展矩阵转化为分布矩阵。</p>
 </li>
 </ul>
@@ -674,12 +676,12 @@ C_0p_0 = D_0p_0 ⊕ D_0p_1 ⊕ D_0p_2 ⊕ D_1p_2 ⊕ D_2p_0 ⊕ D_2p_2</script><
 Q=\sum\limits_{i=0}^{k-1}2^iD_i</script><ul>
 <li><p><code>int reed_sol_r6_encode(k,w,data_ptr,coding_ptr,size)</code> 编码函数。</p>
 </li>
-<li><p><code>int \*reed_sol_r6_coding_matrix(k,w)</code>:为了进行解码，该函数返回分布矩阵的最后两行。第一行全为1，第二行为$2^j$，$j$为列数。</p>
+<li><p><code>int *reed_sol_r6_coding_matrix(k,w)</code>:为了进行解码，该函数返回分布矩阵的最后两行。第一行全为1，第二行为$2^j$，$j$为列数。</p>
 </li>
-<li><code>reed_sol_galois_w08_region_multby_2(char \*region, int nbytes)</code>:这会使用Anvin的优化[Anv07]在GF（2^8）中执行快速乘以2。 区域必须是长字对齐的，并且nbytes必须是字长的倍数。</li>
-<li><p><code>reed_sol_galois_w16_region_multby_2(char \*region, int nbytes)</code>:</p>
+<li><code>reed_sol_galois_w08_region_multby_2(char *region, int nbytes)</code>:这会使用Anvin的优化[Anv07]在GF（2^8）中执行快速乘以2。 区域必须是长字对齐的，并且nbytes必须是字长的倍数。</li>
+<li><p><code>reed_sol_galois_w16_region_multby_2(char *region, int nbytes)</code>:</p>
 </li>
-<li><p><code>reed_sol_galois_w32_region_multby_2(char \*region, int nbytes)</code></p>
+<li><p><code>reed_sol_galois_w32_region_multby_2(char *region, int nbytes)</code></p>
 </li>
 </ul>
 <h3 id="1-3-3-实例"><a href="#1-3-3-实例" class="headerlink" title="1.3.3 实例"></a>1.3.3 实例</h3><h3 id="例8：传统RS编码"><a href="#例8：传统RS编码" class="headerlink" title="例8：传统RS编码"></a>例8：传统RS编码</h3><p><code>\Example\reed_sol_01.c</code></p>
@@ -777,26 +779,26 @@ Q=\sum\limits_{i=0}^{k-1}2^iD_i</script><ul>
 <span class="hljs-attribute">D1</span> : <span class="hljs-number">7</span>d <span class="hljs-number">58</span> <span class="hljs-number">3</span>a <span class="hljs-number">05</span> ea b<span class="hljs-number">1</span> a<span class="hljs-number">7</span> <span class="hljs-number">77</span>    C<span class="hljs-number">1</span> : cc c<span class="hljs-number">1</span> fc de b<span class="hljs-number">5</span> <span class="hljs-number">61</span> <span class="hljs-number">80</span> <span class="hljs-number">7</span>a
 <span class="hljs-attribute">D2</span> : <span class="hljs-number">44</span> <span class="hljs-number">24</span> <span class="hljs-number">26</span> <span class="hljs-number">69</span> c<span class="hljs-number">3</span> <span class="hljs-number">47</span> b<span class="hljs-number">9</span> <span class="hljs-number">49</span>    
 <span class="hljs-attribute">D3</span> : <span class="hljs-number">16</span> <span class="hljs-number">5</span>b <span class="hljs-number">8</span>e <span class="hljs-number">56</span> <span class="hljs-number">5</span>d b<span class="hljs-number">3</span> <span class="hljs-number">6</span>d <span class="hljs-number">0</span>d</code></pre>
-<p>它主要使用的是**reed sol r6 encode()**, **reed sol r6 coding matrix()**, 两个函数。</p>
+<p>它主要使用的是<strong>reed sol r6 encode()</strong>, <strong>reed sol r6 coding matrix()</strong>, 两个函数。</p>
 <h3 id="例11：快速乘法"><a href="#例11：快速乘法" class="headerlink" title="例11：快速乘法"></a>例11：快速乘法</h3><p><code>\Example\reed_sol_04.c</code></p>
 <p>输入参数：w seed</p>
 <pre><code class="hljs angelscript">./reed_sol_04 <span class="hljs-number">8</span> <span class="hljs-number">100</span></code></pre>
-<pre><code class="hljs angelscript">Char  <span class="hljs-number">0</span>: <span class="hljs-number">139</span> \*<span class="hljs-number">2</span> =  <span class="hljs-number">11</span>
-Char  <span class="hljs-number">1</span>:   <span class="hljs-number">3</span> \*<span class="hljs-number">2</span> =   <span class="hljs-number">6</span>
-Char  <span class="hljs-number">2</span>:  <span class="hljs-number">20</span> \*<span class="hljs-number">2</span> =  <span class="hljs-number">40</span>
-Char  <span class="hljs-number">3</span>: <span class="hljs-number">231</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">211</span>
-Char  <span class="hljs-number">4</span>: <span class="hljs-number">133</span> \*<span class="hljs-number">2</span> =  <span class="hljs-number">23</span>
-Char  <span class="hljs-number">5</span>: <span class="hljs-number">238</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">193</span>
-Char  <span class="hljs-number">6</span>:  <span class="hljs-number">66</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">132</span>
-Char  <span class="hljs-number">7</span>: <span class="hljs-number">197</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">151</span>
-Char  <span class="hljs-number">8</span>: <span class="hljs-number">125</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">250</span>
-Char  <span class="hljs-number">9</span>:  <span class="hljs-number">88</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">176</span>
-Char <span class="hljs-number">10</span>:  <span class="hljs-number">58</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">116</span>
-Char <span class="hljs-number">11</span>:   <span class="hljs-number">5</span> \*<span class="hljs-number">2</span> =  <span class="hljs-number">10</span>
-Char <span class="hljs-number">12</span>: <span class="hljs-number">234</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">201</span>
-Char <span class="hljs-number">13</span>: <span class="hljs-number">177</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">127</span>
-Char <span class="hljs-number">14</span>: <span class="hljs-number">167</span> \*<span class="hljs-number">2</span> =  <span class="hljs-number">83</span>
-Char <span class="hljs-number">15</span>: <span class="hljs-number">119</span> \*<span class="hljs-number">2</span> = <span class="hljs-number">238</span>
+<pre><code class="hljs angelscript">Char  <span class="hljs-number">0</span>: <span class="hljs-number">139</span> *<span class="hljs-number">2</span> =  <span class="hljs-number">11</span>
+Char  <span class="hljs-number">1</span>:   <span class="hljs-number">3</span> *<span class="hljs-number">2</span> =   <span class="hljs-number">6</span>
+Char  <span class="hljs-number">2</span>:  <span class="hljs-number">20</span> *<span class="hljs-number">2</span> =  <span class="hljs-number">40</span>
+Char  <span class="hljs-number">3</span>: <span class="hljs-number">231</span> *<span class="hljs-number">2</span> = <span class="hljs-number">211</span>
+Char  <span class="hljs-number">4</span>: <span class="hljs-number">133</span> *<span class="hljs-number">2</span> =  <span class="hljs-number">23</span>
+Char  <span class="hljs-number">5</span>: <span class="hljs-number">238</span> *<span class="hljs-number">2</span> = <span class="hljs-number">193</span>
+Char  <span class="hljs-number">6</span>:  <span class="hljs-number">66</span> *<span class="hljs-number">2</span> = <span class="hljs-number">132</span>
+Char  <span class="hljs-number">7</span>: <span class="hljs-number">197</span> *<span class="hljs-number">2</span> = <span class="hljs-number">151</span>
+Char  <span class="hljs-number">8</span>: <span class="hljs-number">125</span> *<span class="hljs-number">2</span> = <span class="hljs-number">250</span>
+Char  <span class="hljs-number">9</span>:  <span class="hljs-number">88</span> *<span class="hljs-number">2</span> = <span class="hljs-number">176</span>
+Char <span class="hljs-number">10</span>:  <span class="hljs-number">58</span> *<span class="hljs-number">2</span> = <span class="hljs-number">116</span>
+Char <span class="hljs-number">11</span>:   <span class="hljs-number">5</span> *<span class="hljs-number">2</span> =  <span class="hljs-number">10</span>
+Char <span class="hljs-number">12</span>: <span class="hljs-number">234</span> *<span class="hljs-number">2</span> = <span class="hljs-number">201</span>
+Char <span class="hljs-number">13</span>: <span class="hljs-number">177</span> *<span class="hljs-number">2</span> = <span class="hljs-number">127</span>
+Char <span class="hljs-number">14</span>: <span class="hljs-number">167</span> *<span class="hljs-number">2</span> =  <span class="hljs-number">83</span>
+Char <span class="hljs-number">15</span>: <span class="hljs-number">119</span> *<span class="hljs-number">2</span> = <span class="hljs-number">238</span>
 </code></pre>
 <h2 id="1-4-柯西编码矩阵"><a href="#1-4-柯西编码矩阵" class="headerlink" title="1.4 柯西编码矩阵"></a>1.4 柯西编码矩阵</h2><p><code>cauchy.h/cauchy.c</code></p>
 <ul>
@@ -852,16 +854,16 @@ Char <span class="hljs-number">15</span>: <span class="hljs-number">119</span> \
 <span class="hljs-string">&gt;原始矩阵有46个1，而[PX06]给出</span> <span class="hljs-string">的矩阵有39个1，我们的矩阵明显更优秀一些。</span></code></pre>
 </blockquote>
 <ul>
-<li><p><code>int \*cauchy_original_coding_matrix(k,m,w)</code></p>
+<li><p><code>int *cauchy_original_coding_matrix(k,m,w)</code></p>
 <p>返回柯西编码矩阵的原始形式。</p>
 </li>
-<li><p><code>int \*cauchy_xy_coding_matrix(k,m,w,int\*X, int \*Y)</code></p>
+<li><p><code>int *cauchy_xy_coding_matrix(k,m,w,int*X, int *Y)</code></p>
 <p>指定集合X，Y创建柯西矩阵。集合X拥有m个元素，集合Y有k个元素。集合没有重复元素，并且两个集合没有交集。</p>
 </li>
 <li><p><code>void cauchy_improve_coding_matrix(k,m,w,matrix)</code></p>
 <p>这个提升在于，先将每一列除上0行元素。</p>
 </li>
-<li><p><code>int \*cauchy_good_general_coding_matrix()</code></p>
+<li><p><code>int *cauchy_good_general_coding_matrix()</code></p>
 <p>这会返回一个好矩阵，当$m=2，w\le 11, k\le 1023$，它会返回最优的RAID-6 矩阵。它会引用最前面两个函数。</p>
 </li>
 <li><p><code>int cauchy_n_ones(int n, int w)</code>:</p>
@@ -901,15 +903,15 @@ Char <span class="hljs-number">15</span>: <span class="hljs-number">119</span> \
 <p>​    •对于Liberation编码，w必须是质数。<br>   •对于Blaum-Roth编码，w +1必须是质数。<br>   •对于Liber8tion编码，w必须等于8。</p>
 <p><code>liberation.c\liberation.h</code>实现了如下步骤：</p>
 <ul>
-<li><code>int \*liberation_coding_bitmatrix(k,w)</code></li>
+<li><code>int *liberation_coding_bitmatrix(k,w)</code></li>
 </ul>
 <p>这分配并返回用于自由编码的位矩阵。 尽管w必须是大于2的质数，但此过程未强制执行。 如果给它一个非素数w，则将获得一个非MDS编码矩阵。</p>
 <ul>
-<li><code>int \*liber8tion_coding_bitmatrix(int k)</code></li>
+<li><code>int *liber8tion_coding_bitmatrix(int k)</code></li>
 </ul>
 <p>这会分配并且返回针对libera8tion编码的矩阵。liber8tion中的8表示$w=8$。</p>
 <ul>
-<li><code>int \*blaum_roth_coding_matrix(int k, int w)</code></li>
+<li><code>int *blaum_roth_coding_matrix(int k, int w)</code></li>
 </ul>
 <p>这会分配并且返回针对Blaum Roth的编码矩阵。</p>
 <h3 id="-3"><a href="#-3" class="headerlink" title=" "></a> </h3><h3 id="例16：liberation编码矩阵"><a href="#例16：liberation编码矩阵" class="headerlink" title="例16：liberation编码矩阵"></a>例16：liberation编码矩阵</h3><p><code>\Example\liberation_01.c</code></p>
@@ -919,41 +921,41 @@ Char <span class="hljs-number">15</span>: <span class="hljs-number">119</span> \
 <p><img src="/img/image-20210201151829328.png" srcset="/img/loading.gif" alt="image-20210201151829328"></p>
 <p>可以看到同样的参数下，liberation码得到的矩阵明显更稀疏。编码产生的异或数更少，所以计算开销更少。</p>
 <p>矩阵大小为$2w\times kw$，该码的特点为，前k+1个块都是单位矩阵，最后k-1个矩阵有些规律。下面结合代码简单讲解：</p>
-<pre><code class="hljs c"><span class="hljs-keyword">int</span> \*liberation_coding_bitmatrix(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> w)
-&#123;
-  <span class="hljs-keyword">int</span> \*matrix, i, j, index;
+<pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> *<span class="hljs-title">liberation_coding_bitmatrix</span><span class="hljs-params">(<span class="hljs-keyword">int</span> k, <span class="hljs-keyword">int</span> w)</span></span>
+<span class="hljs-function"></span>&#123;
+  <span class="hljs-keyword">int</span> *matrix, i, j, index;
 
   <span class="hljs-keyword">if</span> (k &gt; w) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
-  matrix = talloc(<span class="hljs-keyword">int</span>, <span class="hljs-number">2</span>\*k\*w\*w);
+  matrix = talloc(<span class="hljs-keyword">int</span>, <span class="hljs-number">2</span>*k*w*w);
   <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
-  bzero(matrix, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">int</span>)\*<span class="hljs-number">2</span>\*k\*w\*w);
+  bzero(matrix, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">int</span>)*<span class="hljs-number">2</span>*k*w*w);
   
-  /\* Set up identity matrices \*/
+  <span class="hljs-comment">/* Set up identity matrices */</span>
 
   <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; w; i++) &#123;
-    index = i\*k\*w+i;
+    index = i*k*w+i;
     <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; k; j++) &#123;
       matrix[index] = <span class="hljs-number">1</span>;
       index += w;
     &#125;
   &#125;
 
-  /\* Set up liberation matrices \*/
+  <span class="hljs-comment">/* Set up liberation matrices */</span>
 
   <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; k; j++) &#123;<span class="hljs-comment">//第（i，j）个块</span>
-    index = k\*w\*w+j\*w;<span class="hljs-comment">//第w行的第jw列。</span>
+    index = k*w*w+j*w;<span class="hljs-comment">//第w行的第jw列。</span>
     <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; w; i++) &#123;
       matrix[index+(j+i)%w] = <span class="hljs-number">1</span>; <span class="hljs-comment">//每第w个块设置为1.</span>
-      index += (k\*w);
+      index += (k*w);
     &#125;
     <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span>) &#123;
-      i = (j\*((w<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>))%w;
-      matrix[k\*w\*w+j\*w+i\*k\*w+(i+j<span class="hljs-number">-1</span>)%w] = <span class="hljs-number">1</span>;
+      i = (j*((w<span class="hljs-number">-1</span>)/<span class="hljs-number">2</span>))%w;
+      matrix[k*w*w+j*w+i*k*w+(i+j<span class="hljs-number">-1</span>)%w] = <span class="hljs-number">1</span>;
     &#125;
   &#125;
   <span class="hljs-keyword">return</span> matrix;
 &#125;</code></pre>
-<h3 id="例-17-文件编码解码"><a href="#例-17-文件编码解码" class="headerlink" title="**例 17** 文件编码解码"></a>**例 17** 文件编码解码</h3><p><code>./Example/encode.c</code></p>
+<h3 id="例-17-文件编码解码"><a href="#例-17-文件编码解码" class="headerlink" title="例 17 文件编码解码"></a><strong>例 17</strong> 文件编码解码</h3><p><code>./Example/encode.c</code></p>
 <ul>
 <li>encoder.c编码文件：</li>
 </ul>
