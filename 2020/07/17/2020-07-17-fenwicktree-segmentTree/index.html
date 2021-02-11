@@ -261,9 +261,9 @@
 </ul>
 </li>
 </ul>
-<h1 id="I-树状数组"><a href="#I-树状数组" class="headerlink" title="I. 树状数组"></a>I. 树状数组</h1><h2 id="Fenwick-Tree"><a href="#Fenwick-Tree" class="headerlink" title="Fenwick Tree"></a>Fenwick Tree</h2><p>地中海的程序猿们研究数组，时候遇到这样一个问题: 有一个数组$S$从$0 - n-1$，现在要在$O(logn)$ 的时间复杂度内，搜索一个确定的值（或修改）$w$并且对区间 $[a,b]$ 求和。空间复杂度必须严格限制在$O(n)$.</p>
+<h1 id="I-树状数组"><a href="#I-树状数组" class="headerlink" title="I. 树状数组"></a>I. 树状数组</h1><h2 id="Fenwick-Tree"><a href="#Fenwick-Tree" class="headerlink" title="Fenwick Tree"></a>Fenwick Tree</h2><p>地中海的程序猿们研究数组，时候遇到这样一个问题: 有一个数组$S$,其元素为$0 - n-1$，现在要在$O(logn)$ 的时间复杂度内，搜索一个确定的值（或修改）$w$并且对区间 $[a,b]$ 求和。空间复杂度必须严格限制在$O(n)$.</p>
 <p>他们想到了二叉搜索树(BST)，对于平衡二叉树其插入和删除的时间复杂度都是$O(logn)$，因为树是类似于嵌套列表的思想，进而可以想到二叉堆，这是一种非嵌套列表，也可以实现$O(logn)$。于是有了下面这张图：</p>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9pbWFnZXMuY25ibG9ncy5jb20vY25ibG9nc19jb20vQUtNZXIvMTIyODU5OS9vX1RyZWVBcnJheS5qcGc?x-oss-process=image/format,png" srcset="/img/loading.gif" alt="FenwickTree"></p>
+<p><img src="/img/aHR0cHM6Ly9pbWFnZXMuY25ibG9ncy5jb20vY25ibG9nc19jb20vQUtNZXIvMTIyODU5OS9vX1RyZWVBcnJheS5qcGc" srcset="/img/loading.gif" alt="img"></p>
 <blockquote>
 <p>解释一下，编号为$x$的节点上统计着$[x-lowbit(x)+1,x]$这一段区间的信息，$x$的父亲就是$x+lowbit(x)$,我们要维护数组$C$上的信息，存储在数组$A$中。</p>
 </blockquote>
@@ -313,7 +313,7 @@ BIT_i = \sum\limits_{j=i-lowbit(i)+1}^{i} A_{j}</script><pre><code class="hljs c
 <h1 id="II-线段树"><a href="#II-线段树" class="headerlink" title="II. 线段树"></a>II. 线段树</h1><h2 id="Segment-Tree"><a href="#Segment-Tree" class="headerlink" title="Segment Tree"></a>Segment Tree</h2><blockquote>
 <p>使用线段树可以快速查找某一个节点在若干线段中出现的次数，时间复杂度为$O(logN)$，而未优化的空间复杂度为$2N$，一般要开$4N$的数组防止越界。</p>
 </blockquote>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvYmQzZWIxMzUzM2ZhODI4YmNiNWZlODVmZmUxZjQxMzQ5NzBhNWEwOQ?x-oss-process=image/format,png" srcset="/img/loading.gif" alt="线段树"></p>
+<p><img src="/img/aHR0cHM6Ly9ia2ltZy5jZG4uYmNlYm9zLmNvbS9waWMvYmQzZWIxMzUzM2ZhODI4YmNiNWZlODVmZmUxZjQxMzQ5NzBhNWEwOQ" srcset="/img/loading.gif" alt="img"></p>
 <p>除了叶子节点外，对于$[a,b]$线段节点，其有两个子节点, 左子节点$[a,(a+b)/2]$和右子节点$[(a+b)/2+1,b]$。由于线段树在程序竞赛中被广泛应用，这种结构被$ACMer$和$OIer$戏谑为必须掌握的数据结构。一般地，我们先定义一个线段树节点结构体:</p>
 <pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">SegmentNode</span></span>
 <span class="hljs-class">&#123;</span>

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.9k 字
+      7.3k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      63
+      77
        分钟
     </span>
   
@@ -257,14 +257,14 @@
 <li><p>采用目录分片来重新定义命名空间的层次结构，并且目录分片可以在MDS实例之间动态迁移，从而实现细粒度的流控和负载均衡机制</p>
 </li>
 </ul>
-<p>  <img src="../img/cephfs-architecture.svg" srcset="/img/loading.gif" alt="../_images/cephfs-architecture.svg"></p>
+<p>  <img src="/img/cephfs-architecture.svg" srcset="/img/loading.gif" alt=""></p>
 <p>在正式介绍MDS前，我们先了解以下文件系统基础知识。</p>
 <h2 id="0-了解文件系统"><a href="#0-了解文件系统" class="headerlink" title="0 了解文件系统"></a>0 了解文件系统</h2><p>常见的本地文件系统有：Ext2/3/4，XFS，BTRFS，FAT，NTFS；常见的网络文件系统有NFS，CIFS。随着互联网快速发展，数据规模越来越大，传统的文件系统已经不能满足要求。分布式文件系统应运而生，比如CephFS、Lustre、HDFS、GFS、GlusterFS。</p>
 <p>为了适配不同的文件系统，Linux采用VFS（虚拟文件系统）。</p>
 <p>例如用户写入一个文件，使用POSIX标准的write接口，会被操作系统接管，转调sys_write这个系统调用（属于SCI层）。然后VFS层接受到这个调用，通过自身抽象的模型，转换为对给定文件系统、给定设备的操作，这一关键性的步骤是VFS的核心，需要有统一的模型，使得对任意支持的文件系统都能实现系统的功能。这就是VFS提供的统一的文件模型（common file model），底层具体的文件系统负责具体实现这种文件模型，负责完成POSIX API的功能，并最终实现对物理存储设备的操作。</p>
-<p><img src="../img/70.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/70.png" srcset="/img/loading.gif" alt="img"></p>
 <p>VFS在系统中的位置如下图。</p>
-<p><img src="../img/image-20210119182434745.png" srcset="/img/loading.gif" alt="image-20210119182434745"></p>
+<p><img src="/img/image-20210119182434745.png" srcset="/img/loading.gif" alt=""></p>
 <h2 id="1-文件系统中的元数据"><a href="#1-文件系统中的元数据" class="headerlink" title="1 文件系统中的元数据"></a>1 文件系统中的元数据</h2><p>VFS为了适配不同类型的元数据，定义了4种基本类型：</p>
 <ul>
 <li>$Superblock$：用于管理某一类文件的系统信息；</li>
@@ -276,7 +276,7 @@
 <p>具体而言：</p>
 <p>$a$. Inode只记录数据块在存储介质上的位置和分布，以及文件对象属性（包括权限、数据块信息、时间戳等），不包括文件名和内容等变长数据。Inode结构大小固定，但我们发现要找到具体的存储位置，还缺少文件在目录树中的位置信息，因此需要引入Dentry。</p>
 <p>$b$. Dentry在文件系统中起到链接不同Inode的作用。Dentry包含文件名、文件名Inode等信息。它们最终组成文件目录树的结构。它的原理是：本级的Dentry记录了本级目录或者文件名以及下一级目录或者文件的Dentry位置，此外，Dentry本身也需要在具体的Inode对象中，所以它也有自己的Inode号。<strong>Dentry本身像一张表，记录了Inode和文件名的对应关系</strong>。下面这张图很好的表示了inode和dentry的关系。</p>
-<p><img src="../img/1055408-20161104001642736-837882075.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="/img/1055408-20161104001642736-837882075.png" srcset="/img/loading.gif" alt="img"></p>
 <blockquote>
 <p>图片来源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/mister-lv/p/6028836.html">https://www.cnblogs.com/mister-lv/p/6028836.html</a></p>
 </blockquote>
@@ -292,7 +292,7 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
 <pre><code class="hljs awk">ll &#123;文件名&#125; <span class="hljs-regexp">//</span> 查看所有链接</code></pre>
 <blockquote>
 <p>题外话：讲个笑话，各位小朋友千万不要模仿（除非你想删库跑路）！</p>
-<p><img src="../img/image-20210119192857642.png" srcset="/img/loading.gif" alt="image-20210119192857642"></p>
+<p><img src="/img/image-20210119192857642.png" srcset="/img/loading.gif" alt=""></p>
 </blockquote>
 <p>扩展：</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37806908/article/details/97686753">linux .so .o .a文件区别</a></p>
@@ -317,7 +317,7 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
 <p>虽然元数据不适合通过Hash计算的方式，但是为什么CephFS的元数据仍然基于Hash方式？</p>
 <p>答案是Ceph元数据访问并不是之间从RADOS获取，而是存在一个元数据缓存区，其中元数据基于动态子树分区的方式进行分配，元数据的存在哪里就不是那么重要。</p>
 <p>在此基础，我们得到CephFS的架构图。</p>
-<p><img src="../img/image-20210120231307670.png" srcset="/img/loading.gif" alt="image-20210120231307670"></p>
+<p><img src="/img/image-20210120231307670.png" srcset="/img/loading.gif" alt=""></p>
 <p>为了加快数据访问效率，MDS将热点数据缓存在内存中。</p>
 <p>CephFS存在以下三种形式的客户端接口：</p>
 <p>（1）CephFS Kernel Object</p>
@@ -333,7 +333,7 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
 <h3 id="2-2-元数据动态性"><a href="#2-2-元数据动态性" class="headerlink" title="2.2 元数据动态性"></a>2.2 元数据动态性</h3><p>​    Ceph中的文件和目录元数据很小，几乎完全由目录条目（文件名）和索引节点（80字节）组成。 与常规文件系统不同，不需要文件分配元数据-使用索引节点号构造对象名称，并使用CRUSH将其分配给OSD。 这简化了元数据的工作量，并使我们的MDS可以有效地管理非常大的文件集，而与文件大小无关。<br>   我们的设计进一步寻求通过使用两层存储策略来最小化与元数据相关的磁盘I / O，并通过动态子树分区[30]来最大化本地性和缓存效率。</p>
 <h3 id="2-3-元数据存储"><a href="#2-3-元数据存储" class="headerlink" title="2.3 元数据存储"></a><strong>2.3 元数据存储</strong></h3><p>   日志的设计使得在MDS发生故障的情况下，另一个节点可以快速重新扫描日志以恢复故障节点的内存高速缓存中的关键内容（用于快速启动） 并以此重新覆盖文件系统状态。</p>
 <p>​    该策略提供了两全其美的优势：<strong>以高效（顺序）的方式将更新流式传输到磁盘，并大大减少了重写工作量，从而可以针对未来的读取优化磁盘上的长期存储布局访问</strong>。</p>
-<p><img src="../img/image-20210120232711333.png" srcset="/img/loading.gif" alt="image-20210120232711333"></p>
+<p><img src="/img/image-20210120232711333.png" srcset="/img/loading.gif" alt=""></p>
 <blockquote>
 <p>图1：Ceph根据当前工作负载将目录层次结构的子树动态映射到元数据服务器。 仅当多个目录成为热点时，它们才会在多个节点间以散列形式出现。</p>
 </blockquote>
@@ -369,10 +369,11 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
 <h3 id="3-5-MDS负载均衡的实现"><a href="#3-5-MDS负载均衡的实现" class="headerlink" title="3.5 MDS负载均衡的实现"></a>3.5 MDS负载均衡的实现</h3><p>许多分布式文件系统使用静态子树分区(Static Subtree Partition) 的方式来实现，即固定地将不同层目录树分配到不同的服务器上，这种方法需要人工调整，十分不灵活。</p>
 <p>Ceph使用动态子树分区来实现横向扩展，动态子树能够根据负载状况来自动迁移目录树，同时为了实现多个MDS管理目录的负载而支持细粒度分区。Sage Weil重点研究了在MDS缓存中存储元数，并且具备伸缩性和容忍任意MDS节点异常。</p>
 <h3 id="3-5-1-目录分区"><a href="#3-5-1-目录分区" class="headerlink" title="3.5.1 目录分区"></a>3.5.1 目录分区</h3><p>Ceph扩展了目录层次结构以允许单目录内容被分解为多个片段，称为Fragments。因为Inode和Fragments是一对多的关系，它存储在目录Inode的FragTree结构中，它基于一个内部顶点开始进行2的N次幂分割。如下图，目录树被分割为一个或者多个Fragments，其中树叶是单独的Fragments。</p>
-<p><img src="../img/image-20210123211806521.png" srcset="/img/loading.gif" alt="image-20210123211806521" style="zoom:67%;" /></p>
+<p><img src="/img/image-20210123211806521.png" srcset="/img/loading.gif" alt="image-20210123211806521" style="zoom:67%;" /></p>
 <p>​    每一个Fragments都通过bitmask值来进行描述，类似ip和掩码。通过哈希文件和在FragTree中查找结果值，来实现目录Inode到Fragments 的映射。由于子树元数据被定义在一组目录Fragment中，所以可以通过在MDS之间迁移Fragment来实现负载均衡，任何Fragments在变大或者繁忙时都能分裂为2^n个子fragment。</p>
 <h3 id="3-5-2-子树分区"><a href="#3-5-2-子树分区" class="headerlink" title="3.5.2 子树分区"></a>3.5.2 子树分区</h3><p>​    Ceph支持在MDS集群中，任意和自适应的对子树进行分区。在某些情况下，诸如在同一个目录下有多个文件是热点对象，目录定义子树的方式无法进行负载分离，但Fragment的分割功能允许将这些热点文件进行动态分离。</p>
 <p>​    根目录所在的MDS被标记为MDS-0，其它的MDS则根据当前整个集群元数据的负载进行子树分区。下图展现了MDS的缓存结构：</p>
+<p><img src="../img/image-20210124193737077.png" srcset="/img/loading.gif" alt="image-20210124193737077" style="zoom:67%;" /></p>
 <h3 id="3-5-3-元数据复制"><a href="#3-5-3-元数据复制" class="headerlink" title="3.5.3 元数据复制"></a>3.5.3 元数据复制</h3><p>元数据复制的目的在于1. 保证各MDS节点缓存之间的一致性；MDS之间进行元数据复制操作，从而当MDS失败或者负载过重时能将元数据复制到其它正常的MDS上。</p>
 <h3 id="3-5-4-锁机制"><a href="#3-5-4-锁机制" class="headerlink" title="3.5.4 锁机制"></a>3.5.4 锁机制</h3><p>每个Inode有5种锁状态，每一个控制不同的相关字段，例如：link计数和anchor状态字段，文件所有者模式字段、文件size、文件mtime和fragment字段。</p>
 <p>总结一下，MDS负载均衡的实现原理。每个MDS会监视统计Inode和Fragment在缓存中的热度。每个Inode会从读和写来统计热度，而fragment会另外统计readdir操作情况、元数据获取频率、写入到对象存储的频率来统计热度。</p>
@@ -380,8 +381,54 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
 <p>关于<strong>迁移</strong>，首先，目的MDS将所有需要迁移的子树元数据副本导入进来，然后源MDS通过日志导出事件提交迁移。在源MDS迁移之前，任何其他MDS会接收到要复制子树的元数据的信息，以此来获取被迁移子树的元数据信息。</p>
 <h3 id="3-5-5-流量控制"><a href="#3-5-5-流量控制" class="headerlink" title="3.5.5 流量控制"></a>3.5.5 流量控制</h3><p>设想有成千上万的客户端想访问任何集群中存储的元数据，如果它们集中在一个MDS，那么很难有效的处理请求。理想的情形是 <strong>对非频繁访问的元数据之间到权威MDS获取，而频繁访问的条目分发到多个MDS中。</strong></p>
 <p>这样做的关键在于客户端缓存了访问MDS的记录。首先利用客户端开始查询位置元数据的分布情况，然后再客户端访问后会收到MDS回复，即未来获取元数据的MDS编号。对非频繁访问的元数据之间到权威MDS获取，而频繁访问的条目则MDS集群会告知客户端随机到所有MDS中去获取，这样就实现了客户端访问MDS的流量控制。</p>
-<h2 id="S4-MDS故障恢复"><a href="#S4-MDS故障恢复" class="headerlink" title="$\S4$ MDS故障恢复"></a>$\S4$ MDS故障恢复</h2><hr>
-<h1 id="部署和操作CephFS"><a href="#部署和操作CephFS" class="headerlink" title="部署和操作CephFS"></a>部署和操作CephFS</h1><pre><code class="hljs dockerfile">ceph fs <span class="hljs-keyword">volume</span><span class="bash"> create &lt;fs name&gt;</span></code></pre>
+<h2 id="S4-MDS故障恢复"><a href="#S4-MDS故障恢复" class="headerlink" title="$\S4$ MDS故障恢复"></a>$\S4$ MDS故障恢复</h2><p>Ceph MDS元数据基于日志进行故障恢复。日志以segments的方式划分记录，并以子树事件作为segments开始部分，子树事件用于描述MDS在这个时间点对哪些权威子树进行了更改、新增操作。</p>
+<p>在日志需要一个新的存储对象来保存新的修改时，Segment会被立即创建，新创建的Segment同样也会被链接到列表管理。当日志空间不够，需要修剪Segment时，则删除整个关联元数据对象Segment，以回收磁盘空间。由于Segment通过链接列表管理，因此MDS通过简单的遍历就可以找到所有相关的Segment，以最小的开销来修剪它的日志。</p>
+<h3 id="4-1-故障检测"><a href="#4-1-故障检测" class="headerlink" title="4.1 故障检测"></a>4.1 故障检测</h3><p>每一个MDS会定期将心跳信息发送给集群的主Monitor。如果一个MDS超过规定时间未被检测到，会被声明为Down。如果MDS与Monitor交互中没有受到反馈，则会将自己置为无效状态。</p>
+<h3 id="4-2-MDS恢复流程"><a href="#4-2-MDS恢复流程" class="headerlink" title="4.2 MDS恢复流程"></a>4.2 MDS恢复流程</h3><p>MDS利用RADOS作为共享存储后端，如果一个MDS被标记为Down，那么只需要在另外一个节点上启用新的MDS就可以恢复，包括四个节点，Replay、Resolve、Reconnect、Rejoin。</p>
+<p>（1）Replay</p>
+<p>这是日志回放阶段，它开始于日志最后一个截断点，每一个日志事件都会进行有序读取，并通过调用replay()方法恢复其状态。下一步进入Resolve状态。</p>
+<p>（2）Resolve</p>
+<p>这个阶段主要工作是解决跨多个MDS出现权威元数据分歧的场景。每个恢复MDS向其它的MDS广播Resolve信息，包括权威子树信息、失败是导入未知位置子树信息、从属节点向目标节点发起 更新请求等。</p>
+<p>（3）Reconnected</p>
+<p>恢复中MDS与之前的客户端重新建立链接，并且需要查询之前客户端发布的文件句柄、重新在MDS缓存中创建一致性功能和锁状态。</p>
+<p>（4）Rejoin</p>
+<p>最后阶段是恢复分布式缓存和锁状态。恢复中的MDS会发送弱Rejoin信息到所有MDS节点上，告诉其它节点本MDS恢复了哪些MDS信息；而正常MDS会发送强Rejoin信息到恢复节点，即自己拥有哪些元数据副本信息以及正确的锁状态信息。</p>
+<hr>
+<h1 id="部署和操作CephFS"><a href="#部署和操作CephFS" class="headerlink" title="部署和操作CephFS"></a>部署和操作CephFS</h1><p>一个Ceph文件系统至少需要两个RADOS池，一个用于数据，另一个用于元数据。配置这些池时，您可以考虑：</p>
+<ul>
+<li>对元数据池使用更高的<strong>复制级别</strong>，因为此池中的任何数据丢失都可能导致整个文件系统无法访问。</li>
+<li>对元数据池使用较低延迟的存储（例如SSD），因为这将直接影响在客户端上观察到的文件系统操作的延迟。</li>
+<li>用于创建文件系统的数据池是“默认”数据池，并且是用于存储所有inode追溯信息的位置，用于硬链接管理和灾难恢复。因此，在CephFS中创建的所有inode在默认数据池中至少具有一个对象。如果为文件系统计划了擦除编码的池，通常最好对默认数据池使用复制池，以提高小对象的读写性能以更新回溯。另外，可以添加另一个可擦除编码的数据池（另请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/erasure-code/#ecpool">擦除代码</a>），该数据池可用于目录和文件的整个层次结构（另请参见<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephfs/file-layouts/#file-layouts">文件布局</a>）。</li>
+</ul>
+<p>请参阅<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/pools/">池</a>以了解有关管理池的更多信息。例如，要使用文件系统使用默认设置创建两个池，可以运行以下命令：</p>
+<pre><code class="hljs routeros">$ ceph osd<span class="hljs-built_in"> pool </span>create cephfs_data
+$ ceph osd<span class="hljs-built_in"> pool </span>create cephfs_metadata</code></pre>
+<p>通常，元数据池最多具有几GB的数据。因此，通常建议使用较小的PG数量。实际上，大型群集通常使用64或128。</p>
+<div class="note note-warning">
+            <p>注意:</p><p>文件系统，元数据池和数据池的名称在集合[a-zA-Z0-9_-。]中只能包含字符。</p>
+          </div>
+<h2 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h2><p>创建池后，可以使用以下命令启用文件系统：<code>fs new</code></p>
+<pre><code class="hljs vim">$ ceph fs <span class="hljs-keyword">new</span> <span class="hljs-symbol">&lt;fs_name&gt;</span> <span class="hljs-symbol">&lt;metadata&gt;</span> <span class="hljs-symbol">&lt;data&gt;</span></code></pre>
+<p>例如：</p>
+<pre><code class="hljs groovy">$ ceph fs <span class="hljs-keyword">new</span> cephfs cephfs_metadata cephfs_data
+$ ceph fs ls
+<span class="hljs-attr">name:</span> cephfs, metadata <span class="hljs-attr">pool:</span> cephfs_metadata, data <span class="hljs-attr">pools:</span> [cephfs_data ]</code></pre>
+<p>创建文件系统后，您的MDS将能够进入<em>活动</em>状态。例如，在单个MDS系统中：</p>
+<pre><code class="hljs angelscript">$ ceph mds stat
+cephfs<span class="hljs-number">-1</span>/<span class="hljs-number">1</span>/<span class="hljs-number">1</span> up &#123;<span class="hljs-number">0</span>=a=up:active&#125;</code></pre>
+<p>创建文件系统并且MDS处于活动状态之后，就可以挂载文件系统了。如果创建了多个文件系统，则将选择安装时使用的文件系统。</p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephfs/mount-using-kernel-driver">装载CephFS</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephfs/mount-using-fuse">将CephFS挂载为FUSE</a></li>
+</ul>
+</blockquote>
+<p>如果创建了多个文件系统，并且客户端在挂载时未指定文件系统，则可以使用ceph fs set-default命令控制它们将看到的文件系统。</p>
+<h3 id="向文件系统添加数据池"><a href="#向文件系统添加数据池" class="headerlink" title="向文件系统添加数据池"></a>向文件系统添加数据池</h3><p>请参阅<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/cephfs/file-layouts/#adding-data-pool-to-file-system">将数据池添加到文件系统</a>。</p>
+<h2 id="在CEPHFS中使用擦除编码池"><a href="#在CEPHFS中使用擦除编码池" class="headerlink" title="在CEPHFS中使用擦除编码池"></a>在CEPHFS中使用擦除编码池</h2><p>您可以将擦除编码池用作CephFS数据池，只要它们启用了覆盖即可，操作如下：</p>
+<pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span><span class="hljs-builtin-name">set</span> my_ec_pool allow_ec_overwrites <span class="hljs-literal">true</span></code></pre>
+<p>请注意，仅当OSDS与BlueStore后端一起使用时才支持EC覆盖。</p>
+<p>您不得将擦除编码池用作CephFS元数据池，因为CephFS元数据是使用EC池无法存储的RADOS <em>OMAP</em>数据结构存储的。</p>
 
             </div>
             <hr>
@@ -416,9 +463,9 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/01/23/PAXOS-Made-Simple%20%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%AD%A6%E4%B9%A0Paxos/">
+                      <a href="/2021/01/17/%E3%80%8C%E5%BA%94%E7%94%A8%E3%80%8DCeph%E5%BA%94%E7%94%A8%E5%AE%9E%E6%88%98/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">PAXOS-Made-Simple</span>
+                        <span class="hidden-mobile">「应用」Ceph应用实战</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -426,8 +473,8 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/01/16/%E9%80%86%E5%90%91%E6%80%9D%E7%BB%B4/">
-                        <span class="hidden-mobile">逆向思维</span>
+                      <a href="/2021/01/17/%E9%80%9A%E7%94%A8%E5%9E%8B%E4%BB%BF%E7%9C%9F%E5%B7%A5%E5%85%B7Csim/">
+                        <span class="hidden-mobile">Csim 通用型仿真工具</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

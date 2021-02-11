@@ -189,6 +189,231 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">「参考」Ceph配置参数conf</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
+          
+          
+            
+          
+          Ceph 配置参数
+涉及pool, PG, CRUSH的配置参数。
+参考官方文档
+
+一个典型的Ceph配置文件如下：
+[global]
+
+	# By default, Ceph makes 3 replicas of objects. If you want to make four
+	# copies of an object the default value--a primary copy 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-15 16:00" pubdate>
+              2020-12-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/PG/">PG</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Ceph%E5%AD%97%E5%85%B8/">Ceph字典</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">距离向量路由选择算法——DV</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">
+          
+          
+            
+          
+          DV获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！
+这儿的自我终止指：即没有计算应该停止的信号，它就停止了。
+我们首先讨论最低路径开销之间的一种重要关系。令$d_x(y)$是从节点x到y的最低开销，由著名的Bellman-Ford方程：
+
+d_x(y)=min_v\{c
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-15 00:00" pubdate>
+              2020-12-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+            
+              <a href="/tags/%E5%9B%BE%E7%AE%97%E6%B3%95/">图算法</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">小白投资入门（煎炸卤炖）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">
+          
+          
+            
+          
+          小白投资入门（煎炸卤炖）写这个博客表明笔者准备开始炒股了，当然任何事情都是万事开头难，希望与君共勉，踩坑。
+假如小Q有1W元，如何投资才能获得最大收益：
+
+存银行
+炒股
+购买保险
+购买基金
+购买黄金
+购买房地产
+购买期货
+全部换成美元
+全部换成日元
+研究“如何让钱无性生殖”
+
+上面问题便是笔者写博客的初衷，弄清楚这些问题不是简单是事，除了问题10以外。
+1基本概念所谓股票，就是股份制公司发行的所有
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-14 00:00" pubdate>
+              2020-12-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%8A%95%E8%B5%84/">投资</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%82%A1%E7%A5%A8/">股票</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/14/ceph%20pool/">「参考」Ceph Pool</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/14/ceph%20pool/">
+          
+          
+            
+          
+          
+            本期主要介绍Ceph pool的操作，需要您事先部署成功Ceph集群！主要参考官方pool教程。
+          
+Ceph pool池是用于存储对象的逻辑分区。
+当首次部署群集而不创建池时，Ceph使用默认池来存储数据。pool具有以下特性：
+
+弹性：可以设置允许多少OSD发生故障而不丢失数据。对于复制池，它是对象的所需副本数/副本数。典型的配置存储一个对象和一个附
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-14 00:00" pubdate>
+              2020-12-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Ceph%E5%AE%9E%E8%B7%B5/">Ceph实践</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">「研究向」Redis中跳表实现原理</a>
       </h1>
 
@@ -348,11 +573,8 @@
           
             
           
-          「综述」纠删码理论
-2017年更新
-
-1 摘要随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本文介绍了最重要的一些纠删码。
-目前冗余备份机制主要有两种，一种是数据完全备份机制，也就是通常所说的镜像方法，（mirrorred-method），又称为多副本技术，这类方法的优点是不需要专门的编码解码算法，缺点是磁盘利
+          「综述」纠删码理论1 摘要随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本文介绍了最重要的一些纠删码。
+目前冗余备份机制主要有两种，一种是数据完全备份机制，也就是通常所说的镜像方法，（mirrorred-method），又称为多副本技术，这类方法的优点是不需要专门的编码解码算法，缺点是磁盘利用率很低，适合于存储
         </a>
       </p>
 
@@ -488,229 +710,6 @@
               <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
             
               <a href="/tags/ceph/">ceph</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/26/Shell/">Shell 从入门到放弃</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/26/Shell/">
-          
-          
-            
-          
-          Shell 从入门到放弃
-Shell 是一个用 C 语言编写的程序，它是用户使用 Linux 的桥梁。Shell 既是一种命令语言，又是一种程序设计语言。
-Shell 是指一种应用程序，这个应用程序提供了一个界面，用户通过这个界面访问操作系统内核的服务。
-Ken Thompson 的 sh 是第一种 Unix Shell，Windows Explorer 是一个典型的图形界面 Shell。
-
-Sh
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-26 00:00" pubdate>
-              2020-10-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/shell/">shell</a>
-            
-              <a href="/categories/shell/CLI/">CLI</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/shell/">shell</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/24/CMake%20%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">Cmake学习</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/24/CMake%20%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">
-          
-          
-            
-          
-          CMake 蹦迪指南CMake方式编译生成库文件以简单的例子来来看看CMake的语法,创建一个  test项目，项目结构如下 ├── test目录 │   ├── CMakeLists.txt │   ├── include目录 │   │   ├── myprint.h │   ├── src 目录 │   │   ├── myprint.cpp │   ├── lib目录 │   ├── bi
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-24 00:00" pubdate>
-              2020-10-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/cmake/">cmake</a>
-            
-              <a href="/categories/cmake/%E7%BC%96%E8%AF%91/">编译</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Cmake/">Cmake</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/18/VIMdict/">VIM命令查询</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/18/VIMdict/">
-          
-          
-            
-          
-          VIM命令查询本1.1 Vim的几种模式
-正常模式：可以使用快捷键命令，或按:输入命令行。
-插入模式：可以输入文本，在正常模式下，按i、a、o等都可以进入插入模式。
-可视模式：正常模式下按v可以进入可视模式， 在可视模式下，移动光标可以选择文本。按V进入可视行模式， 总是整行整行的选中。ctrl+v进入可视块模式。
-替换模式：正常模式下，按R进入。
-
-2. 启动Vim
-vim -c cmd fil
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-18 00:00" pubdate>
-              2020-10-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">linux实用技巧</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vim/">vim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/16/2020-10-16-prefix_sum/">数组和字符串的🆒skr操作——前缀和&amp;差分数组</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/16/2020-10-16-prefix_sum/">
-          
-          
-            
-          
-          
-前缀和，很容易让人想到高等数学中的积分操作；对称的，差分数组对应着微分操作，表示作差。让人不禁感叹大自然和计算机之间的神奇联系。
-
-I 前缀和
-
-和为k的子数组(Medium)
-
-
-
-每个元音包含最长的子字符串(Medium)
-
-
-1248. 统计「优美子数组」
-LCP 19：秋叶收藏集
-
-
-什么是前缀和？前缀和是一个数组的某项下标之前(包括此项元素)的所有数组元素的和。 
-设$p[]$为前缀和
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-16 00:00" pubdate>
-              2020-10-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
-            
-              <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
             
           </div>
         

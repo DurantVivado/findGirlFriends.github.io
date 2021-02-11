@@ -1,0 +1,1068 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&quot;auto&quot;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
+  <meta name="author" content="Durant">
+  <meta name="keywords" content="">
+  <title>Csim 通用型仿真工具 - Durant Thorvalds 的米奇妙妙屋</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Durant Thorvalds 的米奇妙妙屋" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fluid</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                联系我
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-17 00:00" pubdate>
+        2021年1月17日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      44
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Csim 通用型仿真工具</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Csim-通用型仿真工具"><a href="#Csim-通用型仿真工具" class="headerlink" title="Csim 通用型仿真工具"></a>Csim 通用型仿真工具</h1><blockquote>
+<p>导师不久前给笔者安排了一个很不同寻常的任务，在一个拥有大量磁盘的主机中，仿真其I/O使用情况。</p>
+<p>因此笔者开始学习Csim。将学习历程记录在此。</p>
+</blockquote>
+<h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><p>什么是CSIM？</p>
+<p>CSIM是通用目的的系统仿真环境：</p>
+<ul>
+<li>离散事件仿真——包括时间和序列</li>
+<li>层次化框图仿真</li>
+<li>模型函数均用C语言表示。</li>
+<li>模型集成，包括并发（concurrency）和时间协调。</li>
+</ul>
+<p>它拥有大量模型库，可以快速建模以及测试。支持多种抽象层次结构。</p>
+<h2 id="1-1-模型的描述"><a href="#1-1-模型的描述" class="headerlink" title="1.1 模型的描述"></a>1.1 模型的描述</h2><p>有三个维度的信息可以描述功能，结构和时间。</p>
+<p><strong>结构</strong>：实例化模型，展示细节。</p>
+<p><strong>功能</strong>：展示模型的功能，通过公式或者代码表述。</p>
+<p><strong>时间</strong>：时延，速率，关系，序列…</p>
+<h2 id="1-2-一般的仿真流程"><a href="#1-2-一般的仿真流程" class="headerlink" title="1.2 一般的仿真流程"></a>1.2 一般的仿真流程</h2><p><img src="../img/csim1.png" srcset="/img/loading.gif" style="zoom:67%;" /></p>
+<p>我们首先要配置模型需要使用的资源，包括两个部分：设备（单服务器，多服务器），存储单元。</p>
+<p>它们通常倍声明为全局变量，在使用之前声明。</p>
+<p>之后我们就要设计仿真的进程了：</p>
+<ul>
+<li>第一个进程一般是<code>sim</code>，如果它没有完成，我们就需要提供<code>main</code>进程。<code>sim</code>一般被两个参数调用<code>argc</code>和<code>argv</code>。</li>
+<li>一个CSIM20进程是一个执行<code>create</code>的C进程。进程之间没有预定义的关系，一个进程随时可以打断另一个进程，除了<code>sim</code>只能被打断一次</li>
+<li>CSIM20进程不是UNIX进程，它更像是一个线程或者轻量级进程，并且不能返回值。</li>
+<li>一个CSIM20进程可以通过事件、邮箱、存储块来与其它进程同步。</li>
+</ul>
+<h2 id="1-3-安装和使用CSIM"><a href="#1-3-安装和使用CSIM" class="headerlink" title="1.3 安装和使用CSIM"></a>1.3 安装和使用CSIM</h2><p>笔者下载的是Mesquite公司的CSIM20。一般下载完成后就一个文件夹<code>csim20_linux</code>，里面有<code>Documentation</code>和<code>Linux</code>，里面有32位和64位的分别对应gcc，g++的库。比如我们进入<code>/csim20_linux/Linux/64-bit/gcc</code>.</p>
+<pre><code class="hljs crystal">csim.<span class="hljs-keyword">out</span>  ex2.c  gensys.c
+csim.gcc  ex1.c     ex3.c  <span class="hljs-class"><span class="hljs-keyword">lib</span></span></code></pre>
+<p>然后在lib下面有</p>
+<pre><code class="hljs css"><span class="hljs-selector-tag">csim</span><span class="hljs-selector-class">.gcc</span><span class="hljs-selector-class">.a</span>  <span class="hljs-selector-tag">csim</span><span class="hljs-selector-class">.h</span></code></pre>
+<p>我们一般先运行<code>ex1.c</code>进行测试：</p>
+<pre><code class="hljs jboss-cli"><span class="hljs-string">./csim.gcc</span> ex1.c</code></pre>
+<p>如果你没有遇到错误说明一切正常。但如果像笔者一样遇到错误：</p>
+<pre><code class="hljs crystal">/usr/bin/<span class="hljs-symbol">ld:</span> <span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">csim</span>.<span class="hljs-title">gcc</span>.<span class="hljs-title">a</span>(<span class="hljs-title">event</span>.<span class="hljs-title">o</span>): <span class="hljs-title">relocation</span> <span class="hljs-title">R_X86_64_32</span> <span class="hljs-title">against</span> `.<span class="hljs-title">rodata</span>&#x27; <span class="hljs-title">can</span> <span class="hljs-title">not</span> <span class="hljs-title">be</span> <span class="hljs-title">used</span> <span class="hljs-title">when</span> <span class="hljs-title">making</span> <span class="hljs-title">a</span> <span class="hljs-title">PIE</span> <span class="hljs-title">object</span>;</span> recompile <span class="hljs-keyword">with</span> -fPIE</code></pre>
+<p>那么需要把编译命令需要改为：</p>
+<pre><code class="hljs stylus">./csim<span class="hljs-selector-class">.gcc</span> ex1<span class="hljs-selector-class">.c</span> -no-pie
+./<span class="hljs-selector-tag">a</span>.out</code></pre>
+<p>即可编译成功，<code>-no-pie</code>这里的意思是不生成fPIE可执行文件,详见<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html。">https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html。</a></p>
+<pre><code class="hljs yaml">             <span class="hljs-string">CSIM</span> <span class="hljs-string">Simulation</span> <span class="hljs-string">Report</span> <span class="hljs-string">(Version</span> <span class="hljs-number">20.0</span> <span class="hljs-string">for</span> <span class="hljs-string">Linux</span> <span class="hljs-string">x86-64)</span>
+
+                                  <span class="hljs-string">M/M/1</span> <span class="hljs-string">Queue</span>
+
+                           <span class="hljs-string">Wed</span> <span class="hljs-string">Feb</span>  <span class="hljs-number">3</span> <span class="hljs-number">20</span><span class="hljs-string">:43:52</span> <span class="hljs-number">2021</span>
+
+
+                     <span class="hljs-attr">Ending simulation time:</span>     <span class="hljs-number">10041.661</span>
+                     <span class="hljs-attr">Elapsed simulation time:</span>    <span class="hljs-number">10041.661</span>
+                     <span class="hljs-string">CPU</span> <span class="hljs-string">time</span> <span class="hljs-string">used</span> <span class="hljs-string">(seconds):</span>        <span class="hljs-number">0.003</span>
+
+
+<span class="hljs-string">FACILITY</span> <span class="hljs-string">SUMMARY</span> 
+
+<span class="hljs-string">facility</span>     <span class="hljs-string">service</span>    <span class="hljs-string">service</span>          <span class="hljs-string">through-</span>    <span class="hljs-string">queue</span>     <span class="hljs-string">response</span>   <span class="hljs-string">compl</span>
+<span class="hljs-string">name</span>           <span class="hljs-string">disc</span>      <span class="hljs-string">time</span>    <span class="hljs-string">util.</span>     <span class="hljs-string">put</span>       <span class="hljs-string">length</span>      <span class="hljs-string">time</span>     <span class="hljs-string">count</span>
+<span class="hljs-string">--------------------------------------------------------------------------------</span>
+<span class="hljs-string">facility</span>     <span class="hljs-string">fcfs</span>       <span class="hljs-number">0.99206</span>  <span class="hljs-number">0.494</span>    <span class="hljs-number">0.49793</span>    <span class="hljs-number">0.99059</span>    <span class="hljs-number">1.98943</span>     <span class="hljs-number">5000</span>
+
+
+
+<span class="hljs-attr">TABLE 1:</span>  <span class="hljs-string">resp</span> <span class="hljs-string">tms</span>
+
+      <span class="hljs-string">minimum</span>         <span class="hljs-number">0.000145</span>          <span class="hljs-string">mean</span>                    <span class="hljs-number">1.989433</span>
+      <span class="hljs-string">maximum</span>        <span class="hljs-number">14.273079</span>          <span class="hljs-string">variance</span>                <span class="hljs-number">3.813342</span>
+      <span class="hljs-string">range</span>          <span class="hljs-number">14.272934</span>          <span class="hljs-string">standard</span> <span class="hljs-string">deviation</span>      <span class="hljs-number">1.952778</span>
+      <span class="hljs-string">observations</span>        <span class="hljs-number">5000          </span><span class="hljs-string">coefficient</span> <span class="hljs-string">of</span> <span class="hljs-string">var</span>      <span class="hljs-number">0.981575</span>
+
+<span class="hljs-attr">QTABLE 1:</span>  <span class="hljs-string">num</span> <span class="hljs-string">in</span> <span class="hljs-string">sys</span>
+
+      <span class="hljs-string">initial</span>       <span class="hljs-number">0</span>      <span class="hljs-string">minimum</span>       <span class="hljs-number">0</span>      <span class="hljs-string">mean</span>                    <span class="hljs-number">0.990590</span>
+      <span class="hljs-string">final</span>         <span class="hljs-number">0</span>      <span class="hljs-string">maximum</span>      <span class="hljs-number">13</span>      <span class="hljs-string">variance</span>                <span class="hljs-number">1.937727</span>
+      <span class="hljs-string">entries</span>    <span class="hljs-number">5000      </span><span class="hljs-string">range</span>        <span class="hljs-number">13</span>      <span class="hljs-string">standard</span> <span class="hljs-string">deviation</span>      <span class="hljs-number">1.392022</span>
+      <span class="hljs-string">exits</span>      <span class="hljs-number">5000                           </span><span class="hljs-string">coeff</span> <span class="hljs-string">of</span> <span class="hljs-string">variation</span>      <span class="hljs-number">1.405246</span>
+
+                                             <span class="hljs-string">cumulative</span>
+        <span class="hljs-string">number</span>    <span class="hljs-string">total</span> <span class="hljs-string">time</span>    <span class="hljs-string">proportion</span>   <span class="hljs-string">proportion</span>
+
+             <span class="hljs-number">0</span>    <span class="hljs-number">5081.38161     </span><span class="hljs-number">0.506030</span>     <span class="hljs-number">0.506030</span>   <span class="hljs-string">********************</span>
+             <span class="hljs-number">1</span>    <span class="hljs-number">2426.95194     </span><span class="hljs-number">0.241688</span>     <span class="hljs-number">0.747718</span>   <span class="hljs-string">**********</span>          
+             <span class="hljs-number">2</span>    <span class="hljs-number">1238.22169     </span><span class="hljs-number">0.123308</span>     <span class="hljs-number">0.871027</span>   <span class="hljs-string">*****</span>               
+             <span class="hljs-number">3</span>     <span class="hljs-number">667.95025</span>     <span class="hljs-number">0.066518</span>     <span class="hljs-number">0.937545</span>   <span class="hljs-string">***</span>                 
+             <span class="hljs-number">4</span>     <span class="hljs-number">350.00001</span>     <span class="hljs-number">0.034855</span>     <span class="hljs-number">0.972399</span>   <span class="hljs-string">*</span>                   
+             <span class="hljs-number">5</span>     <span class="hljs-number">152.62571</span>     <span class="hljs-number">0.015199</span>     <span class="hljs-number">0.987599</span>   <span class="hljs-string">*</span>                   
+             <span class="hljs-number">6</span>      <span class="hljs-number">69.33696</span>     <span class="hljs-number">0.006905</span>     <span class="hljs-number">0.994504</span>   <span class="hljs-string">.</span>
+             <span class="hljs-number">7</span>      <span class="hljs-number">25.09331</span>     <span class="hljs-number">0.002499</span>     <span class="hljs-number">0.997003</span>   <span class="hljs-string">.</span>
+             <span class="hljs-number">8</span>       <span class="hljs-number">9.84005</span>     <span class="hljs-number">0.000980</span>     <span class="hljs-number">0.997982</span>   <span class="hljs-string">.</span>
+             <span class="hljs-number">9</span>      <span class="hljs-number">10.69388</span>     <span class="hljs-number">0.001065</span>     <span class="hljs-number">0.999047</span>   <span class="hljs-string">.</span>
+ <span class="hljs-string">&gt;=</span>         <span class="hljs-number">10</span>       <span class="hljs-number">9.56521</span>     <span class="hljs-number">0.000953</span>     <span class="hljs-number">1.000000</span>   <span class="hljs-string">.</span>
+
+
+
+
+			<span class="hljs-string">M/M/1</span> <span class="hljs-string">Theoretical</span> <span class="hljs-string">Results</span>
+
+
+		<span class="hljs-string">Inter-arrival</span> <span class="hljs-string">time</span> <span class="hljs-string">=</span>      <span class="hljs-number">2.000</span>
+		<span class="hljs-string">Service</span> <span class="hljs-string">time</span>       <span class="hljs-string">=</span>      <span class="hljs-number">1.000</span>
+		<span class="hljs-string">Utilization</span>        <span class="hljs-string">=</span>      <span class="hljs-number">0.500</span>
+		<span class="hljs-string">Throughput</span> <span class="hljs-string">rate</span>    <span class="hljs-string">=</span>      <span class="hljs-number">0.500</span>
+		<span class="hljs-string">Mn</span> <span class="hljs-string">nbr</span> <span class="hljs-string">at</span> <span class="hljs-string">queue</span>    <span class="hljs-string">=</span>      <span class="hljs-number">1.000</span>
+		<span class="hljs-string">Mn</span> <span class="hljs-string">queue</span> <span class="hljs-string">length</span>    <span class="hljs-string">=</span>      <span class="hljs-number">0.500</span>
+		<span class="hljs-string">Response</span> <span class="hljs-string">time</span>      <span class="hljs-string">=</span>      <span class="hljs-number">2.000</span>
+		<span class="hljs-string">Time</span> <span class="hljs-string">in</span> <span class="hljs-string">queue</span>      <span class="hljs-string">=</span>      <span class="hljs-number">1.000</span>
+<span class="hljs-string">CSIM</span> <span class="hljs-string">MODEL</span> <span class="hljs-string">STATISTICS</span>
+
+<span class="hljs-string">CPU</span> <span class="hljs-string">time</span> <span class="hljs-string">used</span> <span class="hljs-string">(sec):</span>         <span class="hljs-number">0.003</span> 
+<span class="hljs-attr">Events processed:</span>            <span class="hljs-number">17485</span> 
+<span class="hljs-attr">Memory allocated:</span>            <span class="hljs-number">23026</span> <span class="hljs-string">bytes</span> 
+<span class="hljs-attr">Calls to malloc:</span>                <span class="hljs-number">43</span> 
+<span class="hljs-string">Processes</span> 
+     <span class="hljs-attr">Started:</span>                 <span class="hljs-number">5001</span> 
+     <span class="hljs-attr">Saved:</span>                   <span class="hljs-number">9105</span> 
+     <span class="hljs-attr">Terminated:</span>              <span class="hljs-number">5000</span> 
+     <span class="hljs-attr">High water mark:</span>           <span class="hljs-number">14</span> 
+<span class="hljs-string">Stacks</span> 
+     <span class="hljs-attr">Allocated:</span>               <span class="hljs-number">5001</span> 
+     <span class="hljs-attr">High water mark:</span>          <span class="hljs-number">318</span> <span class="hljs-string">words</span> 
+     <span class="hljs-attr">Average:</span>                   <span class="hljs-number">22</span> <span class="hljs-string">words</span> 
+     <span class="hljs-attr">Maximum:</span>                   <span class="hljs-number">23</span> <span class="hljs-string">words</span> 
+     <span class="hljs-attr">Current:</span>                   <span class="hljs-number">19</span> <span class="hljs-string">words</span></code></pre>
+<p>这是一个仿真报告，里面的参数我们之后详细讲解。</p>
+<h2 id="1-4-测试程序的方法"><a href="#1-4-测试程序的方法" class="headerlink" title="1.4 测试程序的方法"></a>1.4 测试程序的方法</h2><p>有三种方式可以完成调试：</p>
+<ul>
+<li>我们可以用<code>printf</code>打印我们感兴趣的变量。</li>
+<li>事件追踪（event trace）可以对各个进程的行为进行描述。通过在CLI添加<code>-T</code>指令，或者在程序内部添加<code>trace-on</code></li>
+</ul>
+<p>或<code>traceoff</code>指令来开启或关闭。</p>
+<ul>
+<li>通过<code>dump_status</code>打印资源和进程的状态。</li>
+</ul>
+<p>CSIM20库的例子将输出打印到三个文件：1. <code>set_output_file</code>: 报告和状态信息，2. <code>set_trace_file</code>: 事件追踪，3. <code>set_error_file</code>: 错误信息。</p>
+<hr>
+<h1 id="C-编程案例"><a href="#C-编程案例" class="headerlink" title="C++编程案例"></a>C++编程案例</h1><ol>
+<li>单服务队列模型</li>
+</ol>
+<p>最基本的仿真模型是单个服务器，并与到达的客户排队。 在某些限制下，这是众所周知的M / M / 1队列。 在此模型的CSIM 20版本中，存在由单个服务器和单个队列组成的功能。 此外，还有客户来源。 当客户到达时，如果服务器闲置（未使用），它将抓住（使用）服务器；如果服务器已经繁忙（正在使用），它将加入等待客户的队列。 当一个客户离开服务器时，队列中的下一个客户开始使用该服务器。<br>   此模型中的关键参数是：</p>
+<ul>
+<li>客户到达之间的时间间隔</li>
+<li>服务器使用间隔</li>
+</ul>
+<p>该模型输出的结果是：</p>
+<ul>
+<li>客户的平均应答时间；</li>
+<li>客户吞吐量（单位时间服务的客户数）；</li>
+<li><p>服务器使用率（服务器忙的时间的占比）；</p>
+</li>
+<li><p>平均队列的长度。</p>
+<p><img src="../img/csim2.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-comment">//singleCS.cpp</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&quot;lib/cpp.h&quot;</span></span>
+facility *f;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">customer</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+	create(<span class="hljs-string">&quot;custumer&quot;</span>);
+	f-&gt;use(exponential(<span class="hljs-number">0.5</span>));
+&#125;
+
+<span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sim</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+	create(<span class="hljs-string">&quot;sim&quot;</span>);
+	f = <span class="hljs-keyword">new</span> facility(<span class="hljs-string">&quot;f&quot;</span>);
+	<span class="hljs-keyword">while</span>(simtime() &lt; <span class="hljs-number">5000.0</span>)
+	&#123;
+		hold(exponential(<span class="hljs-number">1.0</span>));
+		customer();
+	&#125;
+	report();
+&#125;
+
+</code></pre>
+<pre><code class="hljs jboss-cli"><span class="hljs-string">./csim.gpp</span> singleCS.cpp -no-pie -o singleCS
+<span class="hljs-string">./singleCS.out</span></code></pre>
+<p>输出结果如下</p>
+<pre><code class="hljs routeros">           C++/CSIM Simulation Report (Version 20.0 <span class="hljs-keyword">for</span> Linux x86-64)
+
+                           Wed Feb  3 21:00:35 2021
+
+
+                     Ending simulation time:      5000.234
+                     Elapsed simulation time:     5000.234
+                     CPU time used (seconds):        0.004
+
+
+FACILITY SUMMARY 
+
+facility    <span class="hljs-built_in"> service </span>  <span class="hljs-built_in"> service </span>         through-   <span class="hljs-built_in"> queue </span>    response   compl
+name           disc      time    util.     put       length      time     count
+--------------------------------------------------------------------------------
+f            fcfs       0.49398  0.488    0.98815    0.99145    1.00334     4941</code></pre>
+<p>我们可以在报告中看到，设备名称，服务描述，服务时间，使用率，吞吐量，队列长度，响应时间，完成计数等表项。</p>
+<p>在这个例子中，我们有两个主要的进程：</p>
+<ul>
+<li>主要的<code>sim</code>进程，初始化模型并且保证客户来自于不同的间隔；</li>
+<li><code>customer</code>进程，也就是f。</li>
+</ul>
+<p><code>create</code>的作用在于，建立将语句作为独立的，准备运行的过程执行的过程，以及将控制权返回给调用过程。</p>
+<ul>
+<li>一个设备由”new facility()” 创建；</li>
+<li>CSIM变量<code>clock</code>包含当前的仿真时间。时间是double精度的。</li>
+<li>“ hold”语句将执行给定的时间。<code>hold(exponential(1.0))</code> 报表对客户到达之间的时间间隔进行建模。</li>
+<li>在许多仿真模型中，指定具有概率分布的时间间隔序列是适当的。 在M / M / 1队列中，从负指数分布“采样”到达间隔和服务间隔。 在CSIM中，<code>exponential()</code>函数提供了此类示例。</li>
+<li>通过<code>f-&gt;use(exponential(0.0))</code>语句对设施的使用进行建模（在这种情况下，所使用的设备为f）</li>
+<li>此外我们可以列一个时间表，看看每个进程在每个时间点到底在做什么：</li>
+</ul>
+<p><img src="../img/image-20210203231334076.png" srcset="/img/loading.gif" alt="image-20210203231334076"></p>
+<h2 id="CSIM的目标"><a href="#CSIM的目标" class="headerlink" title="CSIM的目标"></a>CSIM的目标</h2><ul>
+<li><p>进程-用于对工作负载，客户端和服务器或系统的任何其他活动组件的元素进行建模</p>
+</li>
+<li><p>设备-用于对由流程占用（使用）的资源进行建模</p>
+</li>
+<li>存储-用于对部分分配给流程的资源进行建模 </li>
+<li>缓冲区-用于对有限容量的缓冲区进行建模</li>
+<li>事件-用于同步和控制进程之间的交互</li>
+<li>邮箱-用于在进程之间交换信息</li>
+<li>表，Qtables，计量器和框-用于收集显式统计信息（注意： 设施和存储块的使用情况会自动收集）</li>
+<li>流程类-用于隔离设施使用情况统计信息</li>
+<li>随机数流-用于根据指定的概率分布生成多个样本流</li>
+</ul>
+<h2 id="CSIM流程控制"><a href="#CSIM流程控制" class="headerlink" title="CSIM流程控制"></a>CSIM流程控制</h2><p>理解CSIM流程控制非常的重要，当程序调用<code>create()</code>指令，下列事件会发生：</p>
+<ul>
+<li>一个对应于程序的进程控制块被创建并且被放置于“下一个事件表”</li>
+<li>控制权随即被返回给进程</li>
+<li>只有父进程声明<code>hold</code>，新进程才会执行。</li>
+</ul>
+<p>关于设备（Facility）</p>
+<h2 id="1-设施"><a href="#1-设施" class="headerlink" title="1 设施"></a>1 设施</h2><p>Facility可以被定义为：</p>
+<ul>
+<li>单服务器设备（同一时间只能服务一个进程）</li>
+<li>多服务器设备（同一时间能服务n个进程）</li>
+<li>一个但服务器设备数组</li>
+</ul>
+<p>（a）声明一个单服务器</p>
+<pre><code class="hljs lisp">facility *single_server<span class="hljs-comment">;</span>
+single_server = new facility(<span class="hljs-string">&quot;nf&quot;</span>)<span class="hljs-comment">;</span>
+single_server-&gt;use(<span class="hljs-name">service_time</span>)<span class="hljs-comment">;//记录服务时间</span>
+single_server-&gt;reserve()<span class="hljs-comment">;</span>
+hold(<span class="hljs-name">service_time</span>)<span class="hljs-comment">;</span>
+single_server-&gt;release()<span class="hljs-comment">;</span></code></pre>
+<p>  进程按其进程优先级的顺序排列在等待进程的队列中，其中头部优先级最高。优先级相同时采用FIFO。</p>
+<p>（b）再比如定义多服务器：</p>
+  <pre><code class="hljs zephir"><span class="hljs-keyword">const</span> <span class="hljs-keyword">long</span> NUM_SERVER = <span class="hljs-number">10</span>
+facility_ms* multi_server = <span class="hljs-keyword">new</span> facility_ms(<span class="hljs-string">&quot;ms&quot;</span>,NUM_SERVER);
+multi_server-&gt;use(service_time);</code></pre>
+<p>（c）单服务器数组</p>
+<pre><code class="hljs zephir"><span class="hljs-keyword">const</span> <span class="hljs-keyword">long</span> NUM_SERVER = <span class="hljs-number">10</span>
+facility_set* facs = <span class="hljs-keyword">new</span> facility_set(<span class="hljs-string">&quot;facs&quot;</span>,NUM_SERVER);
+(*facs)[i]-&gt;use(service_time);<span class="hljs-comment">//指定使用下标i的服务器</span></code></pre>
+<p>（d）给定的时间预留</p>
+<pre><code class="hljs php"><span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> TIME_OUT = <span class="hljs-number">5.0</span>;
+st = single_server-&gt;time_reserve(TIME_OUT);
+<span class="hljs-keyword">if</span>(st!=TIME_OUT)
+&#123;<span class="hljs-comment">//如果设备被预留，就仿真客户service-time时间</span>
+	hold(service_time);
+	single_server-&gt;release();
+&#125;
+<span class="hljs-keyword">else</span>
+&#123;
+	...
+&#125;</code></pre>
+<p>（e）使用同步的facility</p>
+<pre><code class="hljs cpp"><span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> PHASE = <span class="hljs-number">0.5</span> <span class="hljs-comment">//时钟相位</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">double</span> PERIOD = <span class="hljs-number">1.0</span> <span class="hljs-comment">//时钟的周期</span>
+facility *bus = <span class="hljs-keyword">new</span> facility(<span class="hljs-string">&quot;bus&quot;</span>);
+bus-&gt;synchronize(PHASE,PERIIOD);
+bus-&gt;reserve();
+bus-&gt;release();</code></pre>
+<p>（f）定义设施的抢占式恢复服务规则</p>
+<pre><code class="hljs abnf">facility* cpu<span class="hljs-comment">;</span>
+<span class="hljs-attribute">cpu</span> = new facility(<span class="hljs-string">&quot;cpu&quot;</span>)<span class="hljs-comment">;</span>
+cpu-&gt;set_servicefunc(pre_res)<span class="hljs-comment">;</span>
+<span class="hljs-attribute">priprity</span> = <span class="hljs-number">100</span><span class="hljs-comment">;//设置高优先级以抢占低优先级</span>
+cpu-&gt;use(service_time)<span class="hljs-comment">;</span></code></pre>
+<p>重要的是要注意，当在设施中使用调度顺序而不是FIFO时，则“ use（）”方法是使用设施的唯一方法。 这意味着进程无法保留此类设施，然后执行其他操作而不使用该设施。</p>
+<h2 id="2-存储"><a href="#2-存储" class="headerlink" title="2 存储"></a>2 存储</h2><p>存储包括一个计数器，用于统计可用资源，以及一个队列，存储需要资源的请求。</p>
+<pre><code class="hljs zephir"><span class="hljs-keyword">const</span> <span class="hljs-keyword">long</span> STORE_AMT = <span class="hljs-number">100</span>;	 
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> NUM_STORES = <span class="hljs-number">5</span>;
+storage *mem;
+mem = <span class="hljs-keyword">new</span> storage(<span class="hljs-string">&quot;mem&quot;</span>, STORE_AMT);
+<span class="hljs-comment">//amt is to be allocated</span>
+mem-&gt;alloc(amt);
+<span class="hljs-comment">//unallocated</span>
+mem-&gt;alloc(amt);
+
+storage_set* mems;
+mems = <span class="hljs-keyword">new</span> storage_set(<span class="hljs-string">&quot;mems&quot;</span>,STORE_AMT,NUM_STORES);
+(*mems)[<span class="hljs-number">0</span>].alloc(amt);
+
+<span class="hljs-comment">//在指定时间分配资源</span>
+st = mem-&gt;timed_alloc(amt,<span class="hljs-number">1.0</span>);
+<span class="hljs-keyword">if</span>(st != TIMED_OUT)
+&#123;
+	<span class="hljs-comment">//normal process</span>
+&#125;</code></pre>
+<h2 id="3-缓冲器"><a href="#3-缓冲器" class="headerlink" title="3 缓冲器"></a>3 缓冲器</h2><p>缓冲器由一个计数器（指示缓冲区中的请求数量）和两个队列组成，一个队列用于等待从缓冲区中获取令牌的进程，另一个队列用于等待空间放入（或返回）到缓冲区。</p>
+<pre><code class="hljs arduino"><span class="hljs-keyword">const</span> <span class="hljs-keyword">long</span> BUFFER_AMT = <span class="hljs-number">100</span>;
+<span class="hljs-built_in">buffer</span>* buf = <span class="hljs-keyword">new</span> <span class="hljs-built_in">buffer</span>(<span class="hljs-string">&quot;buffer&quot;</span>, BUFFER_AMT);
+buff-&gt;<span class="hljs-built_in">get</span>(amt);
+buff-&gt;<span class="hljs-built_in">put</span>(amt);</code></pre>
+<h2 id="4-事件"><a href="#4-事件" class="headerlink" title="4 事件"></a>4 事件</h2><p>事件被用于同步和控制不同的进程。事件（event）有两种状态：发生（OCC）和不发生（NOT_OCC），一个进程可以等待事件发生。</p>
+<pre><code class="hljs xl">event *ev;
+ev = new event(<span class="hljs-string">&quot;ev&quot;</span>);
+<span class="hljs-function"><span class="hljs-title">ev</span>-&gt;</span>wait();
+<span class="hljs-function"><span class="hljs-title">ev</span>-&gt;</span>queue();
+<span class="hljs-function"><span class="hljs-title">ev</span>-&gt;</span>set();
+<span class="hljs-comment">//to monitor an event</span>
+<span class="hljs-function"><span class="hljs-title">ev</span>-&gt;</span>monitor();
+
+event_set *evs;
+
+<span class="hljs-function"><span class="hljs-title">i</span> = ev_arr-&gt;</span>queue_any();</code></pre>
+<h2 id="5-信箱"><a href="#5-信箱" class="headerlink" title="5 信箱"></a>5 信箱</h2><p>信箱运行CSIM进程之间同步交换数据。信箱包括两个队列，分别放置未接收的信息和等待的进程。在任意时间至少有一个队列是空的。</p>
+<p>消息可以是单个整数，也可以是指向其他数据对象的指针。 如果某个进程发送了一个指针，则该进程负责维护被引用数据的完整性，直到接收和处理该数据为止。</p>
+<pre><code class="hljs xl"><span class="hljs-comment">//声明创建一个信箱</span>
+mailbox * mb;
+long msg_r, msg_s;
+mb = new mailbox(<span class="hljs-string">&quot;mb&quot;</span>);
+<span class="hljs-function"><span class="hljs-title">mb</span>-&gt;</span>receive(&amp;msg_r);<span class="hljs-comment">//从信箱mb接收信息，这里是右值引用？</span>
+<span class="hljs-function"><span class="hljs-title">mb</span>-&gt;</span>send(mb,msg_s);
+
+<span class="hljs-function"><span class="hljs-title">mb</span>-&gt;</span>monitor();
+<span class="hljs-comment">//声明信箱组</span>
+const long NUM_MBOXES = <span class="hljs-number">25</span>;
+mailbox_set *mbox_arr = new mailbox_set(<span class="hljs-string">&quot;mbox set&quot;</span>, NUM_MBOXES);
+<span class="hljs-function"><span class="hljs-title">i</span> = mbox_arr-&gt;</span>receieve_any(&amp;msg_r);
+
+(*mbox_arr)[<span class="hljs-number">3</span>].send(msg);
+<span class="hljs-function"><span class="hljs-title">st</span> = mbox_arr-&gt;</span>time_receieve_any(&amp;msg_r, <span class="hljs-number">1.0</span>);
+<span class="hljs-keyword">if</span>(st != TIME_OUT)
+
+<span class="hljs-comment">//发送消息，并且在对方接收之前一直等待</span>
+<span class="hljs-function"><span class="hljs-title">mb</span>-&gt;</span>synchronize_send(msg);</code></pre>
+<h2 id="6-Tables-amp-QTables"><a href="#6-Tables-amp-QTables" class="headerlink" title="6 Tables &amp; QTables"></a>6 Tables &amp; QTables</h2><p>Table，可以轻松的对不同数据进行统计。并且可以打印直方图，以及指定置信区间。</p>
+<p>Qtable，记录状态变化（比如队列中的进程数），并且可以打印直方图，以及指定置信区间。</p>
+<p>可以将表定义为永久性或非永久性。 永久表不受重置统计信息或重新运行模型的请求的影响，因此可以用于跨模型的多次运行收集数据。</p>
+<pre><code class="hljs xl">table *tbl;
+tbl = new table(<span class="hljs-string">&quot;tbl&quot;</span>);
+<span class="hljs-function"><span class="hljs-title">tbl</span>-&gt;</span>add_histogram(<span class="hljs-number">10</span>,<span class="hljs-number">0.0</span>,<span class="hljs-number">20.0</span>);<span class="hljs-comment">//0-20,步长为2</span>
+t = clock;<span class="hljs-comment">//获取当前时间</span>
+<span class="hljs-function"><span class="hljs-title">single_server</span>-&gt;</span>reserve();
+x = clock - t;
+<span class="hljs-function"><span class="hljs-title">tbl</span>-&gt;</span>calculate(x);
+
+qtable *qtbl;
+qtbl = new qtable(<span class="hljs-string">&quot;qtbl&quot;</span>);
+<span class="hljs-function"><span class="hljs-title">qtbl</span>-&gt;</span>add_histogram(<span class="hljs-number">20</span>,<span class="hljs-number">0</span>,<span class="hljs-number">20</span>);
+<span class="hljs-function"><span class="hljs-title">qtbl</span>-&gt;</span>note_entry();
+<span class="hljs-function"><span class="hljs-title">single_server</span>-&gt;</span>reserve();
+<span class="hljs-function"><span class="hljs-title">qtbl</span>-&gt;</span>note_exit();
+hold(exponential(<span class="hljs-number">2.5</span>));
+<span class="hljs-comment">//添加置信区间</span>
+table_confidence(tbl);
+qtable_confidence(qtbl);</code></pre>
+<pre><code class="hljs arduino"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> NTERM 5500</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ND 92</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> P_EXIT (1.0/11.0)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> S_CPU 0.0005</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> S_DISK 0.030</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> Z 30.0</span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> RUNTIME 200.0</span>
+
+FACILITY disk[ND],cpu;
+TABLE rt;
+EVENT done;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">sim</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+create(<span class="hljs-string">&quot;sim&quot;</span>);
+init();
+<span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;NTERM; i++)&#123;
+trans(i);
+&#125;
+wait(done);
+report();
+md1stat();
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+max_processes(NTERM+<span class="hljs-number">1</span>);
+facility_set(disk,<span class="hljs-string">&quot;d&quot;</span>,ND);
+cpu = facility(<span class="hljs-string">&quot;cpu&quot;</span>);
+rt = TABLE(<span class="hljs-string">&quot;resp_tm&quot;</span>);
+done = EVENT(<span class="hljs-string">&quot;done&quot;</span>);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">trans</span><span class="hljs-params">(<span class="hljs-keyword">int</span> nt)</span></span>
+<span class="hljs-function"></span>&#123;
+<span class="hljs-keyword">float</span> t,x;
+<span class="hljs-keyword">int</span> i;
+
+create(<span class="hljs-string">&quot;trans&quot;</span>);
+<span class="hljs-keyword">while</span>(clock&lt;RUNTIME)&#123;
+hold(expnt1(Z));
+t = clock;
+<span class="hljs-keyword">do</span> &#123;
+reserve(cpu);
+     hold(expnt1(S_CPU));
+    <span class="hljs-built_in">release</span>(cpu);
+x=prob();
+<span class="hljs-keyword">if</span>(x&gt;P_EXIT)&#123;
+i = <span class="hljs-built_in">random</span>(<span class="hljs-number">0</span>,ND<span class="hljs-number">-1</span>);
+reserve(disk[i]);
+    hold(expnt1(S_DISK));
+    <span class="hljs-built_in">release</span>(disk[i]);
+&#125;
+&#125;<span class="hljs-keyword">while</span>(x&gt;P_EXIT);
+record(clock-t,rt);
+&#125;
+<span class="hljs-built_in">set</span>(done);
+&#125;</code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%BF%E7%9C%9F/">仿真</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/17/2021117-%E3%80%8C%E6%A0%B8%E5%BF%83%E3%80%8DCeph%E5%AD%A6%E4%B9%A0%E4%B8%89%E9%83%A8%E6%9B%B2%E4%B9%8B%E5%85%AB%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FCephFS/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">「核心」Ceph学习三部曲之八：分布式文件系统CephFS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/16/%E9%80%86%E5%90%91%E6%80%9D%E7%BB%B4/">
+                        <span class="hidden-mobile">逆向思维</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.staticfile.org/valine/1.4.14/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "8oX7VCxy9tyFQIvF8qwLorP0-gzGzoHsz",
+          app_key: "F0939INl4cKXpCw2HgTIUb6B",
+          placeholder: "说点什么,（支持Markdown）",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: false,
+          recordIP: false,
+          serverURLs: "https://8ox7vcxy.lc-cn-n1-shared.com",
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Csim 通用型仿真工具&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>

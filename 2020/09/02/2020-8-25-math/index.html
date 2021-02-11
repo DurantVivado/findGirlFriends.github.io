@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>数学和线性代数应用于解题 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>数学 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.9k 字
+      4k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      38
+      51
        分钟
     </span>
   
@@ -240,13 +240,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">数学和线性代数应用于解题</h1>
+            <h1 style="display: none">数学</h1>
             
             <div class="markdown-body" id="post-body">
               <blockquote>
-<p>hi这里数学仅仅指数论和几何以及离散数学，没有谁用高等数学出题的，不过你也可以试试，让面试官刮目相看。我们重点研究一些很经典的数学问题。</p>
+<p>hi~这里数学仅仅指数论和几何以及离散数学，没有谁用高等数学出题的，不过你也可以试试，让面试官刮目相看。我们重点研究一些很经典的数学问题。</p>
 </blockquote>
-<h1 id="利用数学、线性代数解题"><a href="#利用数学、线性代数解题" class="headerlink" title="利用数学、线性代数解题"></a>利用数学、线性代数解题</h1><blockquote>
+<h1 id="利用数学解题"><a href="#利用数学解题" class="headerlink" title="利用数学解题"></a>利用数学解题</h1><blockquote>
 <p>包括但不限于数论，几何，排列组合等。。。</p>
 <p>LC上有很多题目是和数学相关的，如果我们有一定的数学基础，那么解起题来事半功倍！下面是一些例题和典型方法。</p>
 <p>数学包括数论，几何，离散数学等，线性代数就是矩阵那一块，应试者需要具备基本的本科线性代数知识。</p>
@@ -265,23 +265,18 @@
 </ol>
 </li>
 <li><h4 id="1632-矩阵转换后的秩-Hard"><a href="#1632-矩阵转换后的秩-Hard" class="headerlink" title="1632. 矩阵转换后的秩(Hard)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/rank-transform-of-a-matrix/">1632. 矩阵转换后的秩</a>(Hard)</h4></li>
+<li><h4 id="1739-放置盒子-找规律系列"><a href="#1739-放置盒子-找规律系列" class="headerlink" title="1739. 放置盒子(找规律系列)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/building-boxes/">1739. 放置盒子</a>(找规律系列)</h4></li>
 </ul>
 <hr>
 <ul>
-<li><p>求质因数</p>
-</li>
-<li><p>最大公因数（GCD）</p>
-</li>
-<li><p>最小公倍数（LCM）</p>
-</li>
-<li><p>快速幂算法</p>
-</li>
-<li><p>Gauss消元法</p>
-</li>
-<li><p>几何</p>
-</li>
-<li><p>矩阵论</p>
-</li>
+<li>求质因数</li>
+<li>最大公因数（GCD）</li>
+<li>最小公倍数（LCM）</li>
+<li>快速幂算法</li>
+<li>Gauss消元法</li>
+<li>几何</li>
+<li>矩阵论</li>
+<li>统计与概率</li>
 </ul>
 <h2 id="质因数求解"><a href="#质因数求解" class="headerlink" title="质因数求解"></a>质因数求解</h2><p>设$ R = \sqrt{A}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+1$个不同的质因数。质因数为本身的只有一个，非本身的质因数一定比$R$小，最多$R$个。</p>
 <p><strong>策略</strong></p>
@@ -463,8 +458,66 @@
 <p><code>double atan2(double y, double x)</code>：返回的是方位角。范围$[-\pi,\pi]$</p>
 <p><img src="\img\atan2.jpg" srcset="/img/loading.gif" alt="atan2的公式"></p>
 <hr>
-<h2 id="排列组合"><a href="#排列组合" class="headerlink" title="排列组合"></a>排列组合</h2><h4 id="1621-大小为-K-的不重叠线段的数目"><a href="#1621-大小为-K-的不重叠线段的数目" class="headerlink" title="1621. 大小为 K 的不重叠线段的数目"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-sets-of-k-non-overlapping-line-segments/">1621. 大小为 K 的不重叠线段的数目</a></h4><p>python内置<code>math.comb</code>以计算组合数</p>
+<h2 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h2><p>下面是某库摘出的随机数生成算法。<a target="_blank" rel="noopener" href="http://www.agner.org/random/">http://www.agner.org/random/</a></p>
+<pre><code class="hljs angelscript"><span class="hljs-built_in">uint</span>32_t MOA_Random_32() &#123;
+  <span class="hljs-built_in">uint</span>64_t sum;
+  sum = (<span class="hljs-built_in">uint</span>64_t)<span class="hljs-number">2111111111</span>UL * (<span class="hljs-built_in">uint</span>64_t)MOA_X[<span class="hljs-number">3</span>] +
+     (<span class="hljs-built_in">uint</span>64_t)<span class="hljs-number">1492</span> * (<span class="hljs-built_in">uint</span>64_t)(MOA_X[<span class="hljs-number">2</span>]) +
+     (<span class="hljs-built_in">uint</span>64_t)<span class="hljs-number">1776</span> * (<span class="hljs-built_in">uint</span>64_t)(MOA_X[<span class="hljs-number">1</span>]) +
+     (<span class="hljs-built_in">uint</span>64_t)<span class="hljs-number">5115</span> * (<span class="hljs-built_in">uint</span>64_t)(MOA_X[<span class="hljs-number">0</span>]) +
+     (<span class="hljs-built_in">uint</span>64_t)MOA_X[<span class="hljs-number">4</span>];
+  MOA_X[<span class="hljs-number">3</span>] = MOA_X[<span class="hljs-number">2</span>];  MOA_X[<span class="hljs-number">2</span>] = MOA_X[<span class="hljs-number">1</span>];  MOA_X[<span class="hljs-number">1</span>] = MOA_X[<span class="hljs-number">0</span>];
+  MOA_X[<span class="hljs-number">4</span>] = (<span class="hljs-built_in">uint</span>32_t)(sum &gt;&gt; <span class="hljs-number">32</span>);
+  MOA_X[<span class="hljs-number">0</span>] = (<span class="hljs-built_in">uint</span>32_t)sum;
+  <span class="hljs-keyword">return</span> MOA_X[<span class="hljs-number">0</span>];
+&#125;</code></pre>
+<hr>
+<h2 id="排列组合"><a href="#排列组合" class="headerlink" title="排列组合"></a>排列组合</h2><h4 id="1621-大小为-K-的不重叠线段的数目"><a href="#1621-大小为-K-的不重叠线段的数目" class="headerlink" title="1621. 大小为 K 的不重叠线段的数目"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-sets-of-k-non-overlapping-line-segments/">1621. 大小为 K 的不重叠线段的数目</a></h4><blockquote>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30245867/article/details/95196502">https://blog.csdn.net/weixin_30245867/article/details/95196502</a></p>
+</blockquote>
+<p>python内置<code>math.comb</code>以计算组合数</p>
 <p>C++需要自己编写</p>
+<script type="math/tex; mode=display">
+A_n^m = \frac{n!}{(n-m)!}
+
+\\
+C_m^n=\frac{m!}{n!(m-n)!}</script><p>因为是阶乘，如果用普通的递归就很容易爆栈。因此可以尝试寻找更好的方法。</p>
+<p>数学上有杨辉三角</p>
+<pre><code class="hljs basic"><span class="hljs-number">1</span>
+<span class="hljs-symbol">1 </span><span class="hljs-number">1</span>
+<span class="hljs-symbol">1 </span><span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-symbol">1 </span><span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>
+<span class="hljs-symbol">1 </span><span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span></code></pre>
+<p>很容易找到规律$C(n,k) = C(n-1,k) + C(n-1,k-1)$</p>
+<p>一些特殊的组合，比如$C_m^2$可以巧妙的计数</p>
+<p>$C_m^2 = C_m^{m-2}= 1 + 2 + \cdots+m-1$. </p>
+<h2 id="绝对值"><a href="#绝对值" class="headerlink" title="绝对值"></a>绝对值</h2><h4 id="5658-任意子数组和的绝对值的最大值"><a href="#5658-任意子数组和的绝对值的最大值" class="headerlink" title="5658. 任意子数组和的绝对值的最大值"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-absolute-sum-of-any-subarray/">5658. 任意子数组和的绝对值的最大值</a></h4><p>绝对值问题可以分解为正负两个子问题。比如上面这个问题因为正负元素的存在，可以分解为求最大的正子序列和和最小的子序列和，然后取其中绝对值最大的值作为结果。</p>
+<p>采用动态规划：$dpl[i]=max(dpl[i-1]+nums[i],nums[i])\\$$,dph[i]=min(dph[i-1]+nums[i],nums[i])$</p>
+<h2 id="统计与概率"><a href="#统计与概率" class="headerlink" title="统计与概率"></a>统计与概率</h2><h3 id="中位数"><a href="#中位数" class="headerlink" title="中位数"></a>中位数</h3><p> <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/find-median-from-data-stream/">295. 数据流的中位数</a>(Hard)</p>
+<h4 id="480-滑动窗口中位数-Hard"><a href="#480-滑动窗口中位数-Hard" class="headerlink" title="480. 滑动窗口中位数(Hard)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sliding-window-median/">480. 滑动窗口中位数</a>(Hard)</h4><p>如果数列长度为奇数，中位数是一个排序数列最中间的元素；否则中位数是最中间两个数的平均值，所以求中位数 的函数必定为double型。</p>
+<p>一种常见的做法是采用排序的方法，但这样做最优的时间复杂度为$O(NlogN)$，我们需要更好的方法。</p>
+<p>这儿有两种做法：1. 堆， 2. 二叉平衡搜索树(BST)</p>
+<p> 先来看看堆的做法，我们试着维护两个有序数组，存储较大一半数字的大顶堆和存储较小一半数字的小顶堆。</p>
+<ul>
+<li><p>前有序数组由于只关注最大值，可以 动态地 放置在一个最大堆中；</p>
+</li>
+<li><p>后有序数组由于只关注最小值，可以 动态地 放置在一个最小堆中。</p>
+</li>
+<li><p>当从数据流中读出的数的个数为偶数的时候，我们想办法让两个堆中的元素个数相等，两个堆顶元素的平均值就是所求的中位数（如下左图）；</p>
+</li>
+<li><p>当从数据流中读出的数的个数为奇数的时候，我们想办法让最大堆的元素个数永远比最小堆的元素个数多 1 个，那么最大堆的堆顶元素就是所求的中位数（如下右图）。</p>
+</li>
+</ul>
+<p><img src="/img/1612277950-DNJcTI-image.png" srcset="/img/loading.gif" alt="image.png"></p>
+<p>具体可以进行如下操作：</p>
+<p>情况 1： 当两个堆的元素个数之和为偶数（例如一开始的时候），为了让最大堆中多 1 个元素，采用这样的流程：「最大堆 → 最小堆 → 最大堆」；</p>
+<p>情况 2： 当两个堆的元素个数之和为奇数，此时最小堆必须多 1 个元素，这样最大堆和最小堆的元素个数才相等，采用这样的流程：「最大堆 → 最小堆」 即可。</p>
+<p>因此无论两个堆的元素个数之和是奇数或者是偶数，都得先「最大堆」 再「最小堆」 ，而当加入一个元素之后，元素个数为奇数的时候，再把最小堆的堆顶元素拿给最大堆就可以了。</p>
+<p>将元素放入优先队列以后，优先队列会自行调整（以对数时间复杂度），把最优值放入堆顶，是这道问题思路的关键。</p>
+<p>技巧：对偶数和奇数长度的数列，我们可以用<code>(nums[mid]+nums[mid-(1-k%2)])/2</code>表示中位数。</p>
+<p>另外480题要求优先队列的「延迟删除」技巧，笔者也专门学习了一下：</p>
+<p>当我们需要移出优先队列中的某个元素时，我们只将这个删除操作「记录」下来，而不去真的删除这个元素。当这个元素出现在小顶堆或者大顶堆的堆顶时，我们再去将其移出对应的优先队列。</p>
+<p>为此我们需要一个辅助的数据结构——哈希表，保存的键值对$(num,freq)$表示元素num需要被删除freq次。</p>
 <hr>
 <p>题目赏析</p>
 <h4 id="279-完全平方数"><a href="#279-完全平方数" class="headerlink" title="279. 完全平方数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/perfect-squares/">279. 完全平方数</a></h4><p>给定正整数 <em>n</em>，找到若干个完全平方数（比如 <code>1, 4, 9, 16, ...</code>）使得它们的和等于 <em>n</em>。你需要让组成和的完全平方数的个数最少。</p>
@@ -599,9 +652,9 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/02/2020-8-25-greedy/">
+                      <a href="/2020/09/02/2020-9-2-fsm/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">贪婪却巧妙的贪心算法</span>
+                        <span class="hidden-mobile">貌似很难懂的DSA是什么？</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -609,8 +662,8 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/02/2020-9-2-fsm/">
-                        <span class="hidden-mobile">貌似很难懂的DSA是什么？</span>
+                      <a href="/2020/08/28/2020-8-28-memorized-search/">
+                        <span class="hidden-mobile">记忆化搜索vs动态规划</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -811,7 +864,7 @@ n\ne 4^k(8m+7) \Leftrightarrow p=a_0^2+a_1^2+a_2^2</script><p>在我们分解为
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "数学和线性代数应用于解题&nbsp;",
+        "数学&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      582 字
+      712 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      9
        分钟
     </span>
   
@@ -294,6 +294,17 @@ ListNode *root1 = head;</code></pre>
 ListNode *root1 = new ListNode(<span class="hljs-number">0</span>);
 ...
 return root1-&gt;<span class="hljs-keyword">next</span>;</code></pre>
+<h2 id="高效的数据结构"><a href="#高效的数据结构" class="headerlink" title="高效的数据结构"></a>高效的数据结构</h2><p>C++的set/multiset是有序集合，它们是基于红黑树实现的。其中set会对元素去重，而multiset不会。</p>
+<ul>
+<li>Java中TreeSet是有序的集合，它是基于红黑树实现的。</li>
+</ul>
+<p>那么我们怎么获得集合的指定元素呢。</p>
+<pre><code class="hljs arduino"><span class="hljs-built_in">multiset</span>&lt;<span class="hljs-keyword">int</span>&gt; st;
+<span class="hljs-keyword">auto</span> at = st.<span class="hljs-built_in">begin</span>();
+<span class="hljs-built_in">std</span>::advance(at,k/<span class="hljs-number">2</span>);<span class="hljs-comment">//获取at后第k/2元素</span>
+*at 表示st[st.<span class="hljs-built_in">begin</span>()+k/<span class="hljs-number">2</span>]元素 
+<span class="hljs-built_in">std</span>::prev(at,k/<span class="hljs-number">2</span>)<span class="hljs-comment">//获取at前第k/2元素</span></code></pre>
+<h3 id="强制类型转换"><a href="#强制类型转换" class="headerlink" title="强制类型转换"></a>强制类型转换</h3><pre><code class="hljs cpp"><span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">double</span>&gt;(n);</code></pre>
 
             </div>
             <hr>

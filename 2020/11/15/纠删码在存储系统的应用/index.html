@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.8k 字
+      4.6k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      49
+      65
        分钟
     </span>
   
@@ -243,12 +243,9 @@
             <h1 style="display: none">「综述」纠删码综述</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="「综述」纠删码理论"><a href="#「综述」纠删码理论" class="headerlink" title="「综述」纠删码理论"></a>「综述」纠删码理论</h1><blockquote>
-<p>2017年更新</p>
-</blockquote>
-<h1 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1 摘要"></a>1 摘要</h1><p>随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本文介绍了最重要的一些纠删码。</p>
+              <h1 id="「综述」纠删码理论"><a href="#「综述」纠删码理论" class="headerlink" title="「综述」纠删码理论"></a>「综述」纠删码理论</h1><h1 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1 摘要"></a>1 摘要</h1><p>随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本文介绍了最重要的一些纠删码。</p>
 <p>目前冗余备份机制主要有两种，一种是数据完全备份机制，也就是通常所说的镜像方法，（mirrorred-method），又称为多副本技术，这类方法的优点是不需要专门的编码解码算法，缺点是磁盘利用率很低，适合于存储规模比较小的应用场景。另外一种就是纠删码方法（erasure code）。</p>
-<h1 id="2-术语"><a href="#2-术语" class="headerlink" title="2 术语"></a>2 术语</h1><h2 id="2-1-存储效率和存储冗余度"><a href="#2-1-存储效率和存储冗余度" class="headerlink" title="2.1 存储效率和存储冗余度"></a>2.1 存储效率和存储冗余度</h2><p>​    <strong>存储效率 = 数据空间 /（数据空间 + 校验空间）</strong></p>
+<h1 id="2-术语"><a href="#2-术语" class="headerlink" title="2 术语"></a>2 术语</h1><h2 id="2-1-存储效率和存储冗余度"><a href="#2-1-存储效率和存储冗余度" class="headerlink" title="2.1 存储效率和存储冗余度"></a>2.1 存储效率和存储冗余度</h2><p>​    ^存储效率 = 数据空间 /（数据空间 + 校验空间）^</p>
 <p>​    对于三副本存储，其效率为1/3。除了存储效率指标，冗余存储系统还要存储冗余度和存储开销。</p>
 <p>​    存储冗余度 = 1/存储效率</p>
 <p>​    存储开销 = 校验空间/数据空间</p>
@@ -261,7 +258,7 @@ P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆
 <p>对于容错能力为r的存储系统的平均数据丢失时间(mean time to data loss, $MTTDL$) 与失效数据恢复时间的r次方成反比，即失效数据恢复时间越长，系统节点再次失效的概率就越大，系统的有效性越差。 </p>
 <h2 id="2-4-条带"><a href="#2-4-条带" class="headerlink" title="2.4 条带"></a>2.4 条带</h2><p>条带(stripe) 指 相同纠删码的所有信息的集合，它相当于一个算法的实例。一个存储系统可以看成是很多条带的集合，可以通过条带之间的轮转来实现负载的均衡。另一个类似的概念，是条块(strip)，它是同一条带内包含的元素的个数。</p>
 <p>目前企业中，已经有利用大条带降低校验码比例以实现降低存储开销的先例，但是如何高效的生成大条带并不是容易的，尤其是降低生成大条带的带宽。</p>
-<pre><code>                                                                 表 1 几种纠删码存储集群系统的特征分析
+<pre><code>         表 1 几种纠删码存储集群系统的特征分析
 </code></pre><div class="table-container">
 <table>
 <thead>
@@ -274,7 +271,7 @@ P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">Microsoft Aure Storage</td>
+<td style="text-align:center">Microsoft Azure Storage</td>
 <td style="text-align:center">可扩展云存储</td>
 <td style="text-align:center">RS码（k=12，r=4）</td>
 <td style="text-align:center">TCP/IP over VL2 Ethernet</td>
@@ -300,13 +297,13 @@ P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆
 <tr>
 <td style="text-align:center">Hydrastor</td>
 <td style="text-align:center">内容寻址存储</td>
-<td style="text-align:center">Caucy RS码（k=9，r=3）</td>
+<td style="text-align:center">cauchy RS码（k=9，r=3）</td>
 <td style="text-align:center">TCP/IP</td>
 </tr>
 <tr>
 <td style="text-align:center">Cleversafe</td>
 <td style="text-align:center">归档存储</td>
-<td style="text-align:center">Caucy RS码</td>
+<td style="text-align:center">cauchy RS码</td>
 <td style="text-align:center">TCP/IP</td>
 </tr>
 <tr>
@@ -319,7 +316,7 @@ P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆
 </table>
 </div>
 <h1 id="3-纠删码理论基础"><a href="#3-纠删码理论基础" class="headerlink" title="3 纠删码理论基础"></a>3 纠删码理论基础</h1><p>纠删码是一种前向纠错码，一般由四元组表示$(k,n,b,k’)$，通常$(k+r,k)$纠删码存储开销为$r/k$, 纠错能力上限为$r \le d_{min}-1$,其中$d_{min}$为纠删码最小列距。</p>
-<p>符合条件的$d_{min}=r+1$编码称为MDS码（Minimal Distance Seperable Code），其能获得Singleton下界而具有最优存储效率$k/(k+r)$.目前业界普遍采用的纠删编码有，RS码，低密度奇偶校验码（LDPC）和阵列编码RAID码。</p>
+<p>符合条件的$d_{min}=r+1$编码称为MDS码（Minimal Distance Seperable Code），其能获得Singleton下界而具有最优存储效率$k/(k+r)$。目前业界普遍采用的纠删编码有，RS码，低密度奇偶校验码（LDPC）和阵列编码RAID码。</p>
 <h2 id="3-1-Reed-Solomon编码"><a href="#3-1-Reed-Solomon编码" class="headerlink" title="3.1 Reed Solomon编码"></a>3.1 Reed Solomon编码</h2><p>RS码最多允许r个数据块丢失, 属于横式编码。</p>
 <script type="math/tex; mode=display">
 \begin{equation}       %开始数学环境
@@ -341,7 +338,7 @@ P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆
   \begin{array}{ccc}   %该矩阵一共3列，每一列都居中放置
   P_1\\P_2\\\vdots\\P_r
   \end{array}
-\right]</script><p>其中$[a_{ij}]$为转置冗余矩阵，有$Vandermonde$矩阵以及$Caucy$矩阵。</p>
+\right]</script><p>其中$[a_{ij}]$为转置冗余矩阵，有$Vandermonde$矩阵以及$cauchy$矩阵。</p>
 <blockquote>
 <p>RS码重构过程有一个至关重要条件，就是未出错信息对应的残余生成矩阵必须满足$GF(2^w)$上可逆条件。</p>
 </blockquote>
@@ -377,13 +374,13 @@ P_{new} = D1_{old}\oplus P_{old}\oplus D1_{new}</script><p>此外还有COW，覆
 where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script><p>上述即为编码原理，如果需要解码的话，利用存活数据所对应的剩余生成矩阵与存活数据对应的列向量在Galois域$GF(2^w)$进行乘法运算得到失效数据。数据解码算法成立的必要条件是生成矩阵任意k个行向量在域$GF(2^w)$上是线性无关的。</p>
 <p>$vandermonde$矩阵编码收到时间复杂度为$O(kr)$，解码的时间复杂度为$O(r^3)$。</p>
 <p>然而这种编码有很大的缺陷，及分布矩阵A并不具有删除任意m行仍科比的特性，在<sup><a href="#fn_5" id="reffn_5">5</a></sup> 中进行了修正。这里不再赘述。</p>
-<h3 id="Caucy编码"><a href="#Caucy编码" class="headerlink" title="Caucy编码"></a>Caucy编码</h3><blockquote>
-<p>参考文献：<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="Roth RM, LempelA. On MDS code via Caucy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.
+<h3 id="cauchy编码"><a href="#cauchy编码" class="headerlink" title="cauchy编码"></a>cauchy编码</h3><blockquote>
+<p>参考文献：<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span class="hint--top hint--rounded" aria-label="Roth RM, LempelA. On MDS code via cauchy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.
 ">[2]</span></a></sup>,<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Luo J, Schuman C, et al. A performance evaluation and examination of open-source erasure codign library for storage[C]. Proc of the 7th USENIC Conf on File and Storage Technologies. Berkeley, CA: USENIX Association. 2009:253-266.
-">[3]</span></a></sup>,<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1 5:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
+">[3]</span></a></sup>,<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Xu L. Optimizing cauchy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1 5:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
 ">[4]</span></a></sup></p>
 </blockquote>
-<p>Vandermonde矩阵求逆的复杂度为$O(n^3)$，而柯西矩阵为了改善vandermonde的时间复杂度（最后可以优化到$O(n^2)$），①冗余矩阵采用了柯西矩阵，解码时间复杂度优化为$O(r^2)$；②将有限域中的每个数表示为比特位矩阵。注意柯西矩阵并不是唯一的。好的柯西矩阵一般性算法可以在<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1 5:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
+<p>Vandermonde矩阵求逆的复杂度为$O(n^3)$，而柯西矩阵为了改善vandermonde的时间复杂度（最后可以优化到$O(n^2)$），①冗余矩阵采用了柯西矩阵，解码时间复杂度优化为$O(r^2)$；②将有限域中的每个数表示为比特位矩阵。注意柯西矩阵并不是唯一的。好的柯西矩阵一般性算法可以在<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span class="hint--top hint--rounded" aria-label="Plank J, Xu L. Optimizing cauchy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1 5:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
 ">[4]</span></a></sup>中找到。</p>
 <script type="math/tex; mode=display">
 \begin{equation}       %开始数学环境
@@ -415,7 +412,8 @@ where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script>
 <blockquote>
 <p>补充 Galois域上的四则运算：</p>
 <blockquote>
-<p>推荐阅读：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/hitgxz/p/12130983.html">https://www.cnblogs.com/hitgxz/p/12130983.html</a></p>
+<p>推荐阅读：(理论)：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/hitgxz/p/12130983.html">https://www.cnblogs.com/hitgxz/p/12130983.html</a></p>
+<p>（计算）<a target="_blank" rel="noopener" href="https://blog.csdn.net/shelldon/article/details/54729687">https://blog.csdn.net/shelldon/article/details/54729687</a></p>
 </blockquote>
 <p>1、域</p>
 <p>一组元素的集合，以及在集合上的四则运算，构成一个域。其中加法和乘法必须满足交换、结合和分配的规律。加法和乘法具有封闭性，即加法和乘法结果仍然是域中的元素。  </p>
@@ -425,19 +423,19 @@ where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script>
 <p>所以当我们说伽罗华域的时候，就是指有限域。</p>
 <p>$GF（2^w）$表示含有$2^w$个元素的有限域。因为计算机一个字节由8位，所以最常用的是$GF(2^8)$。</p>
 <p>定义：对于GF(q)中任意非0元素a，使得$a^n=1$的最小整数n称为a的阶。</p>
-<p><strong>定理</strong>：对于GF(q)，设非零元素a的阶是n，则${1,a,…,a^{n−1}}$是GF(q)的一个子域。</p>
-<p><strong>定理</strong>：对于GF(q)，a是任意一个非零元素，则$a^{q−1}=1$ 。</p>
-<p><strong>定理</strong>：对于GF(q)，设非零元素a的阶是n，则$n∣q−1$。</p>
-<p><strong>定义</strong>：对于GF(q)，设非零元素a的阶是n，若$n=q−1$，则称a是GF(q)的本原元（primitive element）。</p>
+<p>^定理^：对于GF(q)，设非零元素a的阶是n，则${1,a,…,a^{n−1}}$是GF(q)的一个子域。</p>
+<p>^定理^：对于GF(q)，a是任意一个非零元素，则$a^{q−1}=1$ 。</p>
+<p>^定理^：对于GF(q)，设非零元素a的阶是n，则$n∣q−1$。</p>
+<p>^定义^：对于GF(q)，设非零元素a的阶是n，若$n=q−1$，则称a是GF(q)的本原元（primitive element）。</p>
 <p>3、单位元</p>
 <p>Identity Element，也叫幺元，通常使用e来表示单位元。单位元和其他元素结合时，并不会改变那些元素。</p>
-<p>对于二元运算，若$a<em>e=a$，e称为右单位元；若$e</em>a=a$，e称为左单位元，若$a<em>e=e</em>a=a$，则e称为单位元。</p>
+<p>对于二元运算，若$a\cdot e=a$，e称为右单位元；若$e\cdot a=a$，e称为左单位元，若$a\cdot e=e\cdot a=a$，则e称为单位元。</p>
 <p>4、逆元</p>
-<p>对于二元运算，若$a<em>b=e$，则a称为b的左逆元素，反之b称为a的右逆元素。若$a</em>b=b*a=e$，则称a为b的逆元，b为a的逆元。</p>
+<p>对于二元运算，若$a\cdot b=e$，则a称为b的左逆元素，反之b称为a的右逆元素。若$a\cdot b=b\cdot a=e$，则称a为b的逆元，b为a的逆元。</p>
 <p>5、本原多项式</p>
 <p>域中不可约多项式是不能够进行因子分解的多项式， 本原多项式 （primitive polynomial）是一种特殊的不可约多项式。当一个域上的本原多项式确定了，这个域上的运算也就确定了。本原多项式一般通过查表可得，同一个域往往有多个本原多项式。</p>
 <p>通过将域中的元素化为多项式形式，可以将域上的乘法运算转化为普通的多项式乘法再模本原多项式。</p>
-<p><strong>本源多项式</strong></p>
+<p>^本源多项式^</p>
 <p>伽罗华域的元素可以通过该域上的本原多项式生成。通过本原多项式得到的域，其加法单位元都是 0 ，乘法单位元是1。且满足：</p>
 <ul>
 <li>多项式系数全部来自$GF(2)$</li>
@@ -445,17 +443,152 @@ where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script>
 </ul>
 <p>以$GF(2^3)$为例，指数小于3的多项式共8个：$ 0 ， 1， x， x+1， x^2， x^2+1， x^2 + x， x^2+x+1$。其系数刚好就是000,001, 010, 011, 100, 101, 110, 111，是 0 到7这8个数的二进制形式。</p>
 <p>$GF(2^3)$上有不只一个本原多项式，选一个本原多项式$x^3+x+1$，这8个多项式进行四则运算后 $mod (x^3+x+1)$的结果都是8个之中的某一个。因此这8个多项式构成一个有限域。</p>
-<p>对于$GF(2^3)$，取素多项式为$x^3 + x+1$，那么多项式$x^2+x$的乘法逆元就是x+1。系数对应的二进制分别为110和011。此时，我们就认为对应的十进制数6和3互为逆元。</p>
-<p><img src="/img/poly.png" srcset="/img/loading.gif" alt="img"></p>
+<p>对于$GF(2^3)$，取素多项式为$x^3 + x+1$，那么多项式$x^2+x$的乘法逆元就是$x+1$。系数对应的二进制分别为110和011。此时，我们就认为对应的十进制数6和3互为逆元。</p>
+<p><img src="../img/poly.png" srcset="/img/loading.gif" alt="img"></p>
 <blockquote>
-<p>​                                                                        常用的本原多项式</p>
+<p>更多的常用的本原多项式</p>
+<p>Value of m    Default Primitive Polynomial    Integer Representation<br>1    D + 1    3<br>2    D2 + D + 1    7<br>3    D3 + D + 1    11<br>4    D4 + D + 1    19<br>5    D5 + D2 + 1    37<br>6    D6 + D + 1    67<br>7    D7 + D3 + 1    137<br>8    D8 + D4 + D3 + D2 + 1    285<br>9    D9 + D4 + 1    529<br>10    D10 + D3 + 1    1033<br>11    D11 + D2 + 1    2053<br>12    D12 + D6 + D4 + D + 1    4179<br>13    D13 + D4 + D3 + D + 1    8219<br>14    D14 + D10 + D6 + D + 1    17475<br>15    D15 + D + 1    32771<br>16    D16 + D12 + D3 + D + 1    69643</p>
 </blockquote>
-<p><strong>通过本原多项式生成元素</strong></p>
-<p>设$P(x)$是$GF（2^w）$上的某一个本原多项式，$GF（2^w）$的元素产生步骤是：<br><strong>1、给定一个初始集合，{$ { 0,1,x }$}；</strong><br><strong>2、将这个集合中的最后一个元素，即$x$，乘以$x$，如果结果的度大于等于$w$，则将结果$mod   P(x)$后加入集合；</strong><br><strong>3、直到集合有$2^w$个元素，此时最后一个元素乘以$x$再$mod   P(x)$的值等于1。</strong></p>
+<p>^通过本原多项式生成元素^</p>
+<p>设$P(x)$是$GF（2^w）$上的某一个本原多项式，$GF（2^w）$的元素产生步骤是：<br>^1、给定一个初始集合，{$ { 0,1,x }$}；^<br>^2、将这个集合中的最后一个元素，即$x$，乘以$x$，如果结果的度大于等于$w$，则将结果$mod   P(x)$后加入集合；^<br>^3、直到集合有$2^w$个元素，此时最后一个元素乘以$x$再$mod   P(x)$的值等于1。^</p>
 <p>例如，$GF(2^4)$含有16个元素，本原多项式为$P(x)=x^4+x+1$，除了 0 、1外，另外14个符号均由本原多项式生成。</p>
-<p>注意到$x^{14}=x^3+1$，此时计算$x^{15}=x^{14}<em>x=(x^3+1)</em>x=x^4+x=1$，生成结束。</p>
-<p><strong>多项式计算</strong></p>
-<p>Galois域上四则运算是基于多项式运算的，对于$GF(2^w)$多项式系数只能取0或1. 合并多项式时，进行的是<strong>异或</strong>运算 比如 $x^4+x^4=x^4$, 多项式减法等于加法运算$x^4-x^4=x^4$。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>生成元素</th>
+<th>多项式表示</th>
+<th>二进制表示</th>
+<th>数值表示</th>
+<th>推导过程</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0000</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td>x^0</td>
+<td>x^0</td>
+<td>0001</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>x^1</td>
+<td>x^1</td>
+<td>0010</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>x^2</td>
+<td>x^2</td>
+<td>0100</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>x^3</td>
+<td>x^3</td>
+<td>1000</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>x^4</td>
+<td>x+1</td>
+<td>0011</td>
+<td>3</td>
+<td>x^3*x = x^4 mod P(x) = x+1(本来结果是-x-1，但是GF(2^4)没有负数，所以为x+1)</td>
+</tr>
+<tr>
+<td>x^5</td>
+<td>x^2+x</td>
+<td>0110</td>
+<td>6</td>
+<td>x^4*x = (x+1)*x = x^2+x</td>
+</tr>
+<tr>
+<td>x^6</td>
+<td>x\^3+x^2</td>
+<td>1100</td>
+<td>12</td>
+<td></td>
+</tr>
+<tr>
+<td>x^7</td>
+<td>x^3+x+1</td>
+<td>1011</td>
+<td>11</td>
+<td>x^6*x = (x\^3+x^2)*x = x^4 +x^3 mod P(x) = x^3+x+1</td>
+</tr>
+<tr>
+<td>x^8</td>
+<td>x^2+1</td>
+<td>0101</td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>x^9</td>
+<td>x^3+x</td>
+<td>1010</td>
+<td>10</td>
+<td></td>
+</tr>
+<tr>
+<td>x^10</td>
+<td>x^2+x+1</td>
+<td>0111</td>
+<td>7</td>
+<td>x^9<em>x=(x^3+x)</em>x = x^4+x^2 mod P(x) = x^2+x+1</td>
+</tr>
+<tr>
+<td>x^11</td>
+<td>x^3+x^2+x</td>
+<td>1110</td>
+<td>14</td>
+<td></td>
+</tr>
+<tr>
+<td>x^12</td>
+<td>x^3+x^2+x+1</td>
+<td>1111</td>
+<td>15</td>
+<td>x^11<em>x=(x^3+x^2+x)</em>x = x^4+x^3+x^2 mod P(x) = x^3+x^2+x+1</td>
+</tr>
+<tr>
+<td>x^13</td>
+<td>x^3+x^2+1</td>
+<td>1101</td>
+<td>13</td>
+<td>x^12<em>x=(x^3+x^2+1 )</em>x = x^4+x^3+x mod P(x)= x^3+1</td>
+</tr>
+<tr>
+<td>x^14</td>
+<td>x^3+1</td>
+<td>1001</td>
+<td>9</td>
+<td>x^13<em>x=(x^3+x^2+1)</em>x = x^4+x^3+x mod P(x) = x^3+1</td>
+</tr>
+<tr>
+<td>x^15</td>
+<td>1</td>
+<td>0001</td>
+<td>1</td>
+<td>x^14<em>x = (x^3+1)</em>x = x^4+x mod P(x) = 1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注意到$x^{14}=x^3+1$，此时计算$x^{15}=x^{14}\cdot x=(x^3+1)\cdot x=x^4+x=1$，生成结束。</p>
+<p>^多项式计算^</p>
+<p>Galois域上四则运算是基于多项式运算的，对于$GF(2^w)$多项式系数只能取0或1. 合并多项式时，进行的是^异或^运算 比如 $x^4+x^4=x^4$, 多项式减法等于加法运算$x^4-x^4=x^4$。</p>
 <p>乘法和除法：</p>
 <ul>
 <li><ol>
@@ -471,28 +604,94 @@ where, \ P_i = \sum \limits_{j=1}^{k}j^{i-1}D_j, \ for \ \ 1\le i \le m</script>
 </ol>
 </li>
 </ul>
-<p>例如 </p>
+<p>例如 在$GF(2^4)$上</p>
 <script type="math/tex; mode=display">
-3×7 = (x+1)(x^2+x+1)=x^3+x^2+x+x^2+x+1=x^3+1=9\\</script><p>或者直接利用本原多项式：</p>
+3×7 = (x+1)(x^2+x+1)=x^3+x^2+x+x^2+x+1=x^3+1=9\\
+3/7 = (x+1)/(x^2+x+1)=(x+1)(x^4+x+1)/(x^2+x+1)=(x^5+x^4+x^2+1)/(x^2+x+1)=x^3+x=10</script><p>或者直接利用本原多项式：</p>
 <script type="math/tex; mode=display">
-3×7=x^4.x^{10}=x^{14}=9</script><p><strong>查表法</strong></p>
+3×7=x^4.x^{10}=x^{14}=9</script><p>^查表法^</p>
 <p>如果以$gflog$和$gfilog$分别表示$GF(2^w)$中对数运算及其逆运算，由对数运算的性质：</p>
 <script type="math/tex; mode=display">
 MN = gfilog(gflog(MN)) = gfilog(gflog(M)+gflog(N)) mod (2^w-1)\\
 M/N = gfilog(gflog(M/N)) = gfilog(gflog(M)-gflog(N)) mod (2^w-1)\\</script><p>注意：多项式 0 ，是无法用生成元生成的。g^0等于多项式1，而不是 0 。</p>
 <p>  根据上文的$GF(2^4)$的元素表示，生成gflog表和gfilog表如下：</p>
-<p><img src="/img/gflog.png" srcset="/img/loading.gif" alt="img"></p>
+<p><img src="../img/gflog.png" srcset="/img/loading.gif" alt="img"></p>
 <p>例如：</p>
 <script type="math/tex; mode=display">
 3×7 = gfilog(gflog(3)+gflog(7)) = gfilog(4+10)= 9 \\
 3/7 = gfilog(gflog(3)-gflog(7)) = gfilog(4-10+15)= gfilog(9)=10 \\</script></blockquote>
+<pre><code class="hljs matlab"><span class="hljs-comment">%matlab relevant codes</span>
+gf(x,w) <span class="hljs-comment">% x是整数，w是GF(2^w)，该函数将x映射到伽罗华域</span>
+<span class="hljs-comment">%计算乘法</span>
+gf(x,w)*gf(y,w)
+<span class="hljs-comment">%计算除法</span>
+gf(x,w)/gf(y,w)
+</code></pre>
+<p>生成多项式的python代码</p>
+<pre><code class="hljs python"><span class="hljs-comment"># -*- coding: utf-8 -*-</span>
+
+<span class="hljs-comment"># coding=UTF-8</span>
+ 
+<span class="hljs-comment"># key : value =&gt; w : primitive_polynomial</span>
+
+primitive_polynomial_dict = &#123;
+                             <span class="hljs-number">1</span>:<span class="hljs-number">0b11</span>,							 <span class="hljs-comment">#x+1</span>
+                             <span class="hljs-number">2</span>:<span class="hljs-number">0b111</span>,							 <span class="hljs-comment">#x^2+x+1</span>
+                             <span class="hljs-number">3</span>:<span class="hljs-number">0b1011</span>,							  <span class="hljs-comment">#x^3+x+1</span>
+                             <span class="hljs-number">4</span>: <span class="hljs-number">0b10011</span>,                            <span class="hljs-comment"># x^4  + x     + 1</span>
+                             <span class="hljs-number">5</span>: <span class="hljs-number">0b100101</span>,                           <span class="hljs-comment">#x^5+x^2+1</span>
+                             <span class="hljs-number">6</span>: <span class="hljs-number">0b1000011</span>,                          <span class="hljs-comment">#x^6+x+1</span>
+                             <span class="hljs-number">7</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">7</span>)+<span class="hljs-number">0b1001</span>,
+                             <span class="hljs-number">8</span>: (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">8</span>) + <span class="hljs-number">0b11101</span>,                 <span class="hljs-comment"># x^8  + x^4  + x^3 + x^2 +1</span>
+                             <span class="hljs-number">9</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">9</span>) + (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>) + <span class="hljs-number">0b1</span>,
+                             <span class="hljs-number">10</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">10</span>) + (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">3</span>) +<span class="hljs-number">0b1</span>,
+                             <span class="hljs-number">11</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">11</span>) + (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">2</span>) +<span class="hljs-number">0b1</span>,
+                             <span class="hljs-number">12</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">12</span>) + (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">6</span>) +<span class="hljs-number">0b10011</span>,
+                             <span class="hljs-number">13</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">13</span>) + (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">4</span>) +<span class="hljs-number">0b1011</span>,
+                             <span class="hljs-number">14</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">14</span>) + (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">10</span>) +<span class="hljs-number">0b1000011</span>,
+                             <span class="hljs-number">15</span>: (<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">15</span>) + <span class="hljs-number">0b11</span>,
+                             <span class="hljs-number">16</span>: (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">16</span>) + (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">12</span>) + <span class="hljs-number">0b1011</span>,    <span class="hljs-comment"># x^16 + x^12 + x^3 + x    + 1</span>
+                             <span class="hljs-number">32</span>: (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">32</span>) + (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">22</span>) + <span class="hljs-number">0b111</span>,     <span class="hljs-comment"># x^32 + x^22 + x^2 + x    + 1</span>
+                             <span class="hljs-number">64</span>: (<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">64</span>) + <span class="hljs-number">0b11011</span>                <span class="hljs-comment"># x^64 + x^4  + x^3 + x    + 1</span>
+                             &#125;
+ 
+ 
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_gf_dict</span>(<span class="hljs-params">w</span>):</span>
+    gf_element_total_number = <span class="hljs-number">1</span> &lt;&lt; w
+    primitive_polynomial = primitive_polynomial_dict[w]
+ 
+    gfilog = [<span class="hljs-number">1</span>]  <span class="hljs-comment"># g(0) = 1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, gf_element_total_number - <span class="hljs-number">1</span>):
+        temp = gfilog[i - <span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-number">1</span>  <span class="hljs-comment"># g(i) = g(i-1) * g</span>
+        <span class="hljs-keyword">if</span> temp &amp; gf_element_total_number:  <span class="hljs-comment"># if overflow, then mod primitive polynomial</span>
+            temp ^= primitive_polynomial  <span class="hljs-comment"># mod primitive_polynomial in GF(2^w) == XOR</span>
+        gfilog.append(temp)
+ 
+    <span class="hljs-keyword">assert</span> (gfilog[gf_element_total_number - <span class="hljs-number">2</span>] &lt;&lt; <span class="hljs-number">1</span>) ^ primitive_polynomial
+    gfilog.append(<span class="hljs-string">&#x27;-&#x27;</span>)
+ 
+    gflog = [<span class="hljs-string">&#x27;-&#x27;</span>] * gf_element_total_number
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, gf_element_total_number - <span class="hljs-number">1</span>):
+        gflog[gfilog[i]] = i
+        
+    
+    <span class="hljs-keyword">print</span> (<span class="hljs-string">&quot;|&#123;:^8&#125;|&#123;:&gt;10&#125;|&#123;:&gt;10&#125;|&quot;</span>.format(<span class="hljs-string">&quot;i&quot;</span>, <span class="hljs-string">&quot;gfilog[i]&quot;</span>, <span class="hljs-string">&quot;gflog[i]&quot;</span>))
+    <span class="hljs-keyword">print</span> (<span class="hljs-string">&#x27;┠&#x27;</span>+ <span class="hljs-string">&quot;─&quot;</span>*<span class="hljs-number">8</span> +<span class="hljs-string">&#x27;╋&#x27;</span>+ <span class="hljs-string">&quot;─&quot;</span>*<span class="hljs-number">10</span> + <span class="hljs-string">&#x27;╋&#x27;</span> + <span class="hljs-string">&quot;─&quot;</span>* <span class="hljs-number">10</span>+<span class="hljs-string">&#x27;┨&#x27;</span>)
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, gf_element_total_number):
+        <span class="hljs-keyword">print</span> (<span class="hljs-string">&quot;|&#123;:^8&#125;|&#123;:^10&#125;|&#123;:^10&#125;|&quot;</span>.format(i, gfilog[i], gflog[i]))
+    print(<span class="hljs-string">&#x27;EOF&#x27;</span>)
+ 
+ 
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    make_gf_dict(<span class="hljs-number">3</span>)
+</code></pre>
 <h2 id="3-2-LRC码和Pyramid码"><a href="#3-2-LRC码和Pyramid码" class="headerlink" title="3.2 LRC码和Pyramid码"></a>3.2 LRC码和Pyramid码</h2><h1 id=""><a href="#" class="headerlink" title=" "></a> </h1><hr>
-<p><strong><em>\</em>主要文献参考列表**</strong></p>
+<p>^<em>\</em>主要文献参考列表\^^</p>
 <p>[1] 罗象宏，舒继武. 存储系统中的纠删码研究综述[J].计算机研究与发展, 49(1),2012:1-11.</p>
 <p>[2] ReedIS, Solomon G. Polynomial code sover certain infinite fields[J]. Journal of the Society for Industrial and Applied Mathmetics, 1960, 8(2):300. </p>
-<p>[3] Roth RM, LempelA. On MDS code via Caucy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.</p>
+<p>[3] Roth RM, LempelA. On MDS code via cauchy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.</p>
 <p>[4] Plank J, Luo J, Schuman C, et al. A performance evaluation and examination of open-source erasure codign library for storage[C]. Proc of the 7th USENIC Conf on File and Storage Technologies. Berkeley, CA: USENIX Association. 2009:253-266.</p>
-<p>[5] Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1.</p>
+<p>[5] Plank J, Xu L. Optimizing cauchy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1.</p>
 <p>[6] Blaum M, Farrell P, Tilborg H. Array Codes[M]. Amsterdam, Netherlands: Elsevier Science BV,1998.</p>
 <p>[7] Blaum M, Brady J, Bruck J, et al. EVENODD: An efficient scheme for toleranting double disk failures in RAID architectures[J]. IEEE Transon Computer, 1995, 44(2):192-202.</p>
 <p>[8] Corbett P, English B, Goel A, et al. Row - diagnoal refundant for doubled disk failure correction [C]. Proc of the 3rd USENIC Conf on File and Storage Technologies. Berkeley, CA: USENIX Association. 2004:2-15.</p>
@@ -501,10 +700,11 @@ M/N = gfilog(gflog(M/N)) = gfilog(gflog(M)-gflog(N)) mod (2^w-1)\\</script><p>�
 <p>[11]Huang C , Chen M , Li J . Pyramid Codes: Flexible Schemes to Trade Space for Access Efficiency in Reliable Data Storage Systems[C]// IEEE International Symposium on Network Computing &amp; Applications. IEEE, 2007.</p>
 <p>[12]Sathiamoorthy M , Asteris M , Papailiopoulos D , et al. XORing Elephants: Novel Erasure Codes for Big Data[J]. 2013.</p>
 <p>[13]王意洁, 许方亮, 裴晓强. 分布式存储中的纠删码容错技术研究[J]. 计算机学报, 2017(01):236-255.</p>
+<hr>
 <section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span>ReedIS, Solomon G. Polynomial code sover certain infinite fields[J]. Journal of the Society for Industrial and Applied Mathmetics, 1960, 8(2):300.
-<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>Roth RM, LempelA. On MDS code via Caucy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span>Roth RM, LempelA. On MDS code via cauchy matrices[J]. IEEE Transformation Theory, 1989, 35(6):1314-1319.
 <a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span>Plank J, Luo J, Schuman C, et al. A performance evaluation and examination of open-source erasure codign library for storage[C]. Proc of the 7th USENIC Conf on File and Storage Technologies. Berkeley, CA: USENIX Association. 2009:253-266.
-<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span>Plank J, Xu L. Optimizing Caucy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1<br><sup><a href="#fn_ 5" id="reffn_ 5"> 5</a></sup>:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span>Plank J, Xu L. Optimizing cauchy Reed-Solomon codes for fault-tolerance network storage applications. Piscataway, NJ: IEEE, 2006:1<br><sup><a href="#fn_ 5" id="reffn_ 5"> 5</a></sup>:Plank J S , Ding Y . Note: Correction to the 1997 tutorial on Reed–Solomon coding[J]. Software Practice &amp; Experience, 2005, 35(2):189-194.
 <a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
             </div>
             <hr>

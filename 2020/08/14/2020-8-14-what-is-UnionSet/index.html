@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.8k 字
+      4.9k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      62
+      63
        分钟
     </span>
   
@@ -404,6 +404,35 @@ setCount --;
 <p>秩也有两种含义：</p>
 <p>秩表示以当前结点为根结点的子树结点总数，即这里的「秩」表示 size 含义；<br>秩表示以当前结点为根结点的子树的高度，即这里的「秩」表示 rank 含义（更合理，因为查询时候的时间性能主要决定于树的高度）。<br>4、如果同时使用「路径压缩」与「按秩合并」，这里的「秩」就失去了它的定义，但即使秩表示的含义不准确，也能够作为合并时候很好的「参考」。在这种情况下，并查集的查询与合并的时间复杂度可以达到接近 $O(1)$。</p>
 <p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/35090745">为什么并查集在路径压缩之后的时间复杂度是阿克曼函数?</a></p>
+<pre><code class="hljs cpp">\\简易的并查集板子
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DSU</span></span>
+<span class="hljs-class">&#123;</span>
+    <span class="hljs-keyword">public</span>:
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; fa;
+    <span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function">    </span>&#123;
+        fa.resize(n,<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++) fa[i] = i; 
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(x!=fa[x])
+        &#123;
+            fa[x] = find(fa[x]);
+        &#125;
+
+        <span class="hljs-keyword">return</span> fa[x];
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i,<span class="hljs-keyword">int</span> j)</span></span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">int</span> x = find(i), y = find(j);
+        <span class="hljs-keyword">if</span>(x == y) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        fa[find(i)] = find(j);
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+&#125;;</code></pre>
+<p>更复杂的板子希望大家自己实现，留作练习！</p>
 <hr>
 <h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><h4 id="1559-二维网格图中探测环"><a href="#1559-二维网格图中探测环" class="headerlink" title="1559. 二维网格图中探测环"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/detect-cycles-in-2d-grid/">1559. 二维网格图中探测环</a></h4><p>给你一个二维字符网格数组 <code>grid</code> ，大小为 <code>m x n</code> ，你需要检查 <code>grid</code> 中是否存在 <strong>相同值</strong> 形成的环。</p>
 <p>一个环是一条开始和结束于同一个格子的长度 <strong>大于等于 4</strong> 的路径。对于一个给定的格子，你可以移动到它上、下、左、右四个方向相邻的格子之一，可以移动的前提是这两个格子有 <strong>相同的值</strong> 。</p>

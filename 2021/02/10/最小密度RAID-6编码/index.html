@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>Durant Thorvalds 的米奇妙妙屋</title>
+  <title>「理论」最小密度RAID-6编码 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -180,8 +180,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-03 18:23" pubdate>
-        2021年1月3日 晚上
+      <time datetime="2021-02-10 00:00" pubdate>
+        2021年2月10日 凌晨
       </time>
     </span>
   
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      52 字
+      1.8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      21
        分钟
     </span>
   
@@ -240,20 +240,147 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">「理论」最小密度RAID-6编码</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="探秘FUSE，讲讲故事"><a href="#探秘FUSE，讲讲故事" class="headerlink" title="探秘FUSE，讲讲故事"></a>探秘FUSE，讲讲故事</h1><blockquote>
-<p>Github Release<a target="_blank" rel="noopener" href="https://github.com/libfuse/libfuse/releases">下载</a></p>
-<p>SourceForge </p>
-</blockquote>
-<p>FUSE,($Filesystem In Userspace$)，用户空间文件系统（Filesystem in Userspace），是Linux 中用于挂载某些<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/网络空间/7650101">网络空间</a>，如<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/SSH/10407">SSH</a>，到本地文件系统的模块。</p>
+              <h1 id="最小密度RAID-6编码"><a href="#最小密度RAID-6编码" class="headerlink" title="最小密度RAID-6编码"></a>最小密度RAID-6编码</h1><p>我们的存储系统由n个磁盘阵列组成，每个磁盘大小相同。 在这n个磁盘中，其中k个保存数据，其余m = n-k个保存编码信息，通常称为奇偶校验。 在RAID-6系统中，m = 2，我们标记数据磁盘D0，…，Dk-1和奇偶校验磁盘P和Q。示例系统如图1所示。</p>
+<p><img src="/img/image-20210204103652749.png" srcset="/img/loading.gif" alt="image-20210204103652749"></p>
+<p>编码性能的比较：</p>
+<ul>
+<li><strong>编码性能</strong>是根据D0 … Dk-1计算P和Q的速度。 最佳编码性能由每个编码元素k − 1个异或运算的下限定义。</li>
+<li><strong>修改性能</strong>是当其中一个数据磁盘上的元素被修改时重新计算P和Q的相关部分的速度。 修改的计算开销通常很小，每个修改的数据字涉及三到四个XOR操作。 修改的真正代价来自对P和Qdisk的读写操作。 最佳修改开销是对两个编码盘中的每个进行一次读取和一次写入操作：必须读取对应于已更改数据的旧值，以便可以减去旧值并添加新值。 因此，我们将修改性能衡量为修改数据元素时必须修改的编码元素的数量。</li>
+<li><strong>解码性能</strong>是在一两次失败之后重新计算丢失的数据或编码信息的速度。 与编码一样，最佳解码性能是每个解码元素k-1个异或运算。</li>
+<li><strong>灵活性</strong>是从系统添加或减去数据驱动器的简便性。 如果需要灵活性，则必须选择一个固定值w，该值可以处理任意数量的数据磁盘，直到k的某个最大值。 然后，只要磁盘数量少于最大数量，就会假定系统包含前面所述的phantom磁盘。 因此，增加或减少磁盘只需要对P和Q驱动器进行一个磁盘的修改。 更改w的值需要重新编码整个系统。</li>
+</ul>
+<p><strong>位矩阵编码</strong></p>
+<p><img src="/img/image-20210204104922659.png" srcset="/img/loading.gif" alt="image-20210204104922659"></p>
+<p><img src="/img/image-20210204105638403.png" srcset="/img/loading.gif" alt="image-20210204105638403"></p>
+<h2 id="Blaum-Roth编码"><a href="#Blaum-Roth编码" class="headerlink" title="Blaum-Roth编码"></a>Blaum-Roth编码</h2><p>作者在1999年的论文证明，对于$k\le w$，任何RAID-6 SCM矩阵至少有$2kw+k-1$个1。直觉上，P超级行包含k个单位矩阵，而Q超级行包括一个单位矩阵和k-1个含w+1个1的矩阵。所以$kw+w+(k-1)(w+1)=2kw+k-1$。</p>
+<p>我们下面讨论$w$:</p>
+<p>当$w+1$为质数时，下面是$w=4$和$w=16$的例子：</p>
+<p><img src="/img/image-20210204114335107.png" srcset="/img/loading.gif" alt="image-20210204114335107"></p>
+<p>​    对于所有的w，$X_0^{BR}=I$，对于$i&gt;0$，我们对$X_0^{BR}[r,c]$：</p>
+<ul>
+<li>所有元素不是0就是1；</li>
+<li>当$r\ne w - i$，$X_i^{BR}[r,(\overline{r+i})_{w+1}]=1$;上划线是取模符号。</li>
+<li>当$r=w-i$且$i$为奇数，$X_i^{BR}[r,i-1]=1,X_i^{BR}[r,\frac{w+i-1}{2}]=1$;</li>
+<li>当$r=w-i$并且$i$为偶数，$X_i^{BR}[r,i-1]=1,X_i^{BR}[r,\frac{i-2}{2}]=1$</li>
+</ul>
+<p>从直觉上，$X_i^{BR}$矩阵被分为三个部分，在$w-i$行之上的矩阵是一个向右平移$i$个单位的单位矩阵；在其之下的矩阵则是偏移$i-1$的单位矩阵;在$w-i$行的包括两个1。比较重要的两种Blaum-Roth矩阵是$w=4,w=16$。</p>
+<p>例如k=4，w=4，在该函数下生成的矩阵为：</p>
+<pre><code class="hljs basic"><span class="hljs-symbol">1000 </span><span class="hljs-number">1000</span> <span class="hljs-number">1000</span> <span class="hljs-number">1000</span>
+<span class="hljs-symbol">0100 </span><span class="hljs-number">0100</span> <span class="hljs-number">0100</span> <span class="hljs-number">0100</span>
+<span class="hljs-symbol">0010 </span><span class="hljs-number">0010</span> <span class="hljs-number">0010</span> <span class="hljs-number">0010</span>
+<span class="hljs-symbol">0001 </span><span class="hljs-number">0001</span> <span class="hljs-number">0001</span> <span class="hljs-number">0001</span>
+
+<span class="hljs-symbol">1000 </span><span class="hljs-number">0100</span> <span class="hljs-number">0010</span> <span class="hljs-number">0001</span>
+<span class="hljs-symbol">0100 </span><span class="hljs-number">0010</span> <span class="hljs-number">0001</span> <span class="hljs-number">0011</span>
+<span class="hljs-symbol">0010 </span><span class="hljs-number">0001</span> <span class="hljs-number">1100</span> <span class="hljs-number">1000</span>
+<span class="hljs-symbol">0001 </span><span class="hljs-number">1010</span> <span class="hljs-number">1000</span> <span class="hljs-number">0100</span></code></pre>
+<p>前面的k个wxw矩阵块均为单位矩阵，下面的矩阵才是Blaum-Roth矩阵。</p>
+<hr>
+<h2 id="Liberation编码"><a href="#Liberation编码" class="headerlink" title="Liberation编码"></a>Liberation编码</h2><p>当w为质数时：</p>
+<p>当$i=0$，$X_0^L=I_w$，对于$i&gt;0$：</p>
+<ul>
+<li>每个矩阵的元素不是0就是1；</li>
+<li>对于所有$0\le r&lt;w$，$X_i^L[r,(\overline{r+i})_w]=1$;</li>
+<li>令$y=\frac{i(w-1)}{2}$，我们有$X_i^L[(\overline y)_w,(\overline {y+i-1})_w]=1$.</li>
+</ul>
+<p><img src="/img/image-20210205154429483.png" srcset="/img/loading.gif" alt="image-20210205154429483"></p>
+<h2 id="Liber8tion编码"><a href="#Liber8tion编码" class="headerlink" title="Liber8tion编码"></a>Liber8tion编码</h2><p>该编码非常局限的地方是只能$w=8$。事实上，该编码是为了弥补Blaum-Roth编码没有$w=8$情况而设计的。</p>
+<p>尽管我们没有为w = 8构造最小密度MDS代码的理论，但我们能够从所有可能的最小密度MDS代码的集合中进行合格代码的枚举，并将得到的代码分为48个不同的集合。 枚举的详细信息在其他地方提供[Plank 2008a]。<br>  这48个代码的解码性能有所不同，其中最好的如图6所示。</p>
+<h2 id="各项性能"><a href="#各项性能" class="headerlink" title="各项性能"></a>各项性能</h2><h3 id="1-编码性能"><a href="#1-编码性能" class="headerlink" title="1 编码性能"></a>1 编码性能</h3><p>SCM的一行如果有$o$个1，那么对应的异或操作数是$o-1$。因此对于SCM一共$O$个1而言，每个字的异或操作数是$\frac{O-2w}{2w}$。对于最小密度RAID-6码，$O=2kw+k-1$，所以编码性能为：</p>
+<script type="math/tex; mode=display">
+encoding\_performance=\frac{2kw+k-1-2w}{2w}=\frac{(k-1)(2w+1)}{2w} XOR's \ per\ encoded\ word</script><p>因为最优的编码对每个字需要$k-1$次异或，所以相对最优的编码惩罚因子为：</p>
+<script type="math/tex; mode=display">
+Encoding\_penalty\_factor\_over\_optimal = 1+\frac{1}{2w}</script><p><img src="/img/image-20210206143455495.png" srcset="/img/loading.gif" alt="image-20210206143455495" style="zoom:67%;" /></p>
+<p>最小密度码的表现与k无关，而RDP和EVENODD对于小的k表现很差。理想状况下，w趋于无限时的惩罚因子最小，但是这会导致占用更多的内存，所以这之间存在一个tradeoff。</p>
+<p>RDP码最优的时候是w+1为质数且$k\in\{w-1,w\}$。</p>
+<h3 id="2-修复性能"><a href="#2-修复性能" class="headerlink" title="2 修复性能"></a>2 修复性能</h3><p>因为最低密度SCM有$2kw+k-1$个1和$kw$列，因此平均每行的1的数目就是修复性能：</p>
+<script type="math/tex; mode=display">
+Modified\_performance=2+\frac{k-1}{kw}</script><p><img src="/img/image-20210206144732725.png" srcset="/img/loading.gif" alt="image-20210206144732725" style="zoom:67%;" /></p>
+<p>很显然，最低密度RAID-6编码要优秀。</p>
+<h3 id="3-解码性能"><a href="#3-解码性能" class="headerlink" title="3 解码性能"></a>3 解码性能</h3><p><img src="/img/image-20210206144759014.png" srcset="/img/loading.gif" alt="image-20210206144759014" style="zoom:67%;" /></p>
+<p>通常，最小密度代码在最优值上会导致惩罚因子在1.13和1.18之间，并且表现不如EVENODD或RDP编码好。 因此，当评估最小密度码时，必须权衡良好的编码和修改性能与较差的解码性能。<br>  如果没有代码专用的混合重建算法，解码性能会很差（大约0.35w），并且会使最小密度的代码无法用于实际应用。</p>
+<h2 id="证明Liberation码是MDS"><a href="#证明Liberation码是MDS" class="headerlink" title="证明Liberation码是MDS"></a>证明Liberation码是MDS</h2><p>RAID-6码仅需要满足以下两个条件就是MDS：</p>
+<ul>
+<li>每个$X_i$是可逆的；</li>
+<li>$X_i$和$X_j$之和矩阵也是可逆的($i\ne j$)；</li>
+</ul>
+<p>$M^w$表示GF(2)上一个$w\times w$矩阵</p>
+<p><img src="/img/image-20210207153241111.png" srcset="/img/loading.gif" alt="image-20210207153241111"></p>
+<p>首先介绍几类基本矩阵</p>
+<ul>
+<li>矩阵$T_d^w$</li>
+</ul>
+<p>其中$w&gt;1, 0&lt;d,s&lt;w$</p>
+<p>她是由两个对角形加上一个额外的翻转位构成的矩阵，一个对角是主对角线（↘），另一个是从下标d列的对角线（↘）。可以表示为：</p>
+<script type="math/tex; mode=display">
+T^w_d(x)=I_w+(I_w)_{\rightarrow d}+E^w_{x,x-1}\\
+T_d^w=\{T_d^w(x)|0\le x < w\}</script><p>如上图10的（a），（b）是这样两个例子，翻转的位分别是(1,0)和(10,9)【红色的部分】.</p>
+<p><strong>引理1</strong>：所有$T_d^w$内的矩阵都是等价的。</p>
+<p>通过简单地沿着对角线平移就可以证明。</p>
+<ul>
+<li>矩阵$S_{d,s}^w$</li>
+</ul>
+<p>她在$T_d^w$基础上又添加了一个1.这里的S是“same”的意思。</p>
+<script type="math/tex; mode=display">
+S_{d,s}^w(x)=T^w_d+E^w_{x+s,x+s-1}\\
+S_{d,s}^w=\{S_{d,s}^w(x)|0\le x <w\}</script><p>如图10的（c）和（d）。</p>
+<p><strong>引理2</strong>：所有$S_{d,s}^w$内的矩阵都是等价的。</p>
+<ul>
+<li>矩阵$D_{d,s}^w$</li>
+</ul>
+<p>她在$T_d^w$基础上又添加了一个1.这里的D是“different”的意思。</p>
+<script type="math/tex; mode=display">
+D_{d,s}^w(x)=T^w_d+E^w_{x+s,x+d+s-1}\\
+D_{d,s}^w=\{D_{d,s}^w(x)|0\le x <w\}</script><p>如图10的（e）。</p>
+<p><strong>引理3</strong>：所有$D_{d,s}^w$内的矩阵都是等价的。</p>
+<p>下面我们罗列一些重要性质。</p>
+<p><strong>性质1</strong>（平移性）：$T_d^w \equiv T_{w-d}^w$。</p>
+<p><strong>性质2</strong>（放缩性）：若$d&lt;w/2,T_d^w\equiv T_d^{w-d}$。</p>
+<p><img src="/img/image-20210207160345516.png" srcset="/img/loading.gif" alt="image-20210207160345516"></p>
+<p><strong>性质3</strong>（平移性）：$S_{d,s}^w=S^w_{d,w-s}$</p>
+<p><strong>性质4</strong>（对角翻转性）：若$1&lt;s&lt;w-1,S_{d,s}^w\equiv S_{w-d,s}^w$。</p>
+<p><img src="/img/image-20210207161201491.png" srcset="/img/loading.gif" alt="image-20210207161201491"></p>
+<p>比如上面这个例子，（b）表示1行加上0行，注意是异或；（c）表示6行加上5行；（d）表示整体左移3个单位。</p>
+<p><strong>性质5</strong>（放缩性I）：若$d&lt;w/2$且$s&lt;w/2$，$S_{d,s}^w = S^{w-d}_{d,s}$.</p>
+<p>证明类比性质2.</p>
+<p><img src="/img/image-20210207163019001.png" srcset="/img/loading.gif" alt="image-20210207163019001"></p>
+<p><strong>性质6</strong>（放缩性II）：若$d&gt;w/2,s&lt;d$,$S^w_{d,s}=S^d_{2d-w,s}$.</p>
+<p><img src="/img/image-20210208150619459.png" srcset="/img/loading.gif" alt="image-20210208150619459"></p>
+<p><strong>性质7</strong>（平移性）：$D^w_{d,s}\equiv D^w_{w-d,w-s}$</p>
+<p><img src="/img/image-20210207163447752.png" srcset="/img/loading.gif" alt="image-20210207163447752"></p>
+<p><strong>性质8</strong>（转化性）：$s&gt;1,D_{d,s}^w\equiv S^w_{d,s}$</p>
+<p>正式证明</p>
+<p>步骤1：$X_i^L$是可逆的。</p>
+<p>因为$(X_i^L)^T_{\leftarrow i}$是三角矩阵，所以一定是可逆的。</p>
+<p>步骤2：$X_i$和$X_j$之和矩阵也是可逆的($i\ne j$)；</p>
+<p>$X_0^L$是单位矩阵，因此$X_0^L+X_i^L=T_i^w$。我们定义$\mathcal A$为所有满足$GCD(w,d)=1$(w,d最大公因子为1)的$T^w_d$的集合。因此$X_0^L+X_i^L\in \mathcal A$。</p>
+<p><strong>定理1</strong>：$\mathcal A$中所有的矩阵都是可逆的。</p>
+<hr>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Jerasure/">Jerasure</a>
+                    
+                  </div>
                 
               </div>
               
@@ -264,9 +391,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/01/13/%E3%80%8C%E9%98%85%E8%AF%BB%E3%80%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%9C%89%E8%B6%A3%E9%A2%98%E7%9B%AE%F0%9F%8E%A8/">
+                      <a href="/2021/02/11/%E3%80%8C%E6%8E%A2%E7%A7%98%E3%80%8DJerasure%E9%82%A3%E4%BA%9B%E4%BA%8B/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">「探秘」Jerasure那些事</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -274,8 +401,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/01/03/%E3%80%8C%E6%A0%B8%E5%BF%83%E3%80%8DCeph%E5%AD%A6%E4%B9%A0%E4%B8%89%E9%83%A8%E6%9B%B2%E4%B9%8B%E4%B8%83%EF%BC%9A%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%BD%91%E5%85%B3RGW/">
-                        <span class="hidden-mobile">「核心」Ceph学习三部曲之七：对象存储网关RGW</span>
+                      <a href="/2021/01/23/PAXOS-Made-Simple%20%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%AD%A6%E4%B9%A0Paxos/">
+                        <span class="hidden-mobile">PAXOS-Made-Simple</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -476,7 +603,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "&nbsp;",
+        "「理论」最小密度RAID-6编码&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

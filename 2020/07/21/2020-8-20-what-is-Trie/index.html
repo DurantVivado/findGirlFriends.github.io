@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.3k 字
+      2.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      31
+      39
        分钟
     </span>
   
@@ -257,7 +257,9 @@
 </ol>
 <p><img src="\img\trie1.jpg" srcset="/img/loading.gif" alt="Trie"></p>
 <p><strong>应用场景</strong>：</p>
-<p>1.自动补全</p>
+<ol>
+<li>自动补全</li>
+</ol>
 <p><img src="\img\trie2.jpg" srcset="/img/loading.gif" alt="自动补全"></p>
 <p align="center" style="font:italic;color:gray"><i>图1. 谷歌的搜索建议</i></p>
 
@@ -267,7 +269,9 @@
 <p><img src="\img\trie3.jpg" srcset="/img/loading.gif" alt="image.png"></p>
 <p align="center" style="font:italic;color:gray"><i>图2. 拼写检查</i></p>
 
-<p>3.IP路由（最长前缀匹配）</p>
+<ol>
+<li>IP路由（最长前缀匹配）</li>
+</ol>
 <p><img src="\img\trie4.jpg" srcset="/img/loading.gif" alt="无效的图片地址"></p>
 <p align="center"><i>图 3. 使用Trie树的最长前缀匹配算法，Internet 协议（IP）路由中利用转发表选择路径。</i></p>
 
@@ -298,6 +302,7 @@
 		isEnd = <span class="hljs-literal">false</span>;
         <span class="hljs-built_in">memset</span>(next,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(next));
     &#125;
+
 &#125;;</code></pre>
 <p><strong>插入键值</strong></p>
 <p>我们从字符串头开始，如果字符<code>s[i]</code>存在于当前节点的子树数组中，那么我们直接递归进入该节点，否则我们创造新节点，再进入。</p>
@@ -307,9 +312,10 @@
     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
     &#123;
         <span class="hljs-keyword">if</span>(node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>]==<span class="hljs-literal">NULL</span>)
-        node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-keyword">new</span> Trie(c);
+        node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-keyword">new</span> Trie();
         node = node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>];
     &#125;
+    node-&gt;isEnd = <span class="hljs-literal">true</span>;
 &#125;</code></pre>
 <p>注意这里我们把this作为根节点。所以每次new一个node都会产生一个根节点。  </p>
 <ul>
@@ -338,7 +344,7 @@
 <li>空间复杂度 : $O(1)$。</li>
 </ul>
 <p><strong>查找 Trie 树中的键前缀</strong><br>该方法与在 Trie 树中搜索键时使用的方法非常相似。我们从根遍历 Trie 树，直到键前缀中没有字符，或者无法用当前的键字符继续 Trie 中的路径。与上面提到的“搜索键”算法唯一的区别是，到达键前缀的末尾时，总是返回 true。我们不需要考虑当前 Trie 节点是否用 “End” 标记，因为我们搜索的是键的前缀，而不是整个键。</p>
-<pre><code class="hljs C++"><span class="hljs-keyword">bool</span> startWith&#123;
+<pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">startWith</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word)</span></span>&#123;
    <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">this</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
    Trie* node = <span class="hljs-keyword">this</span>;
    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
@@ -353,6 +359,100 @@
 <li>时间复杂度 : $O(m)$。算法的每一步均搜索下一个键字符。最坏的情况下需要 $m$ 次操作。</li>
 <li>空间复杂度 : $O(1)$。</li>
 </ul>
+<p>完整的前缀树<strong>板子</strong>如下：</p>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TrieNode</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    TrieNode* next[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">int</span> childcnt;
+    <span class="hljs-keyword">bool</span> isEnd;
+    TrieNode()
+    &#123;
+        childcnt = <span class="hljs-number">0</span>;
+        isEnd = <span class="hljs-literal">false</span>;
+        <span class="hljs-built_in">memset</span>(next,<span class="hljs-number">0</span>,<span class="hljs-keyword">sizeof</span>(next));
+    &#125;
+&#125;;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Trie</span> &#123;</span>
+    TrieNode *root;
+    
+<span class="hljs-keyword">public</span>:
+    Trie()
+    &#123;
+        root = <span class="hljs-keyword">new</span> TrieNode();
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-built_in">string</span> &amp;word)</span></span>
+<span class="hljs-function">    </span>&#123;<span class="hljs-comment">//插入一个单词</span>
+        TrieNode *node = root;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
+        &#123;
+            <span class="hljs-keyword">if</span>(node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>]==<span class="hljs-literal">NULL</span>)
+            &#123;
+                    node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-keyword">new</span> TrieNode();
+                    node-&gt;childcnt ++;
+            &#125;node = node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>];
+        &#125;
+        node-&gt;isEnd = <span class="hljs-literal">true</span>;
+    &#125;
+   <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">print_tree</span><span class="hljs-params">()</span></span>
+<span class="hljs-function">   </span>&#123;
+       <span class="hljs-comment">//打印一棵树</span>
+       <span class="hljs-built_in">string</span> word = <span class="hljs-string">&quot;&quot;</span>;
+       <span class="hljs-built_in">cout</span>&lt;&lt;<span class="hljs-string">&quot;Trie :&quot;</span>&lt;&lt;<span class="hljs-built_in">endl</span>;
+       __print_node(root,word);
+   &#125;
+   <span class="hljs-keyword">void</span> __print_node( TrieNode * node ,<span class="hljs-built_in">string</span> &amp;word)
+   &#123;
+       <span class="hljs-comment">//打印一棵树子节点</span>
+        <span class="hljs-keyword">if</span>(!node) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">26</span>;i++)
+            <span class="hljs-keyword">if</span>(node-&gt;next[i])
+            &#123;
+                word.push_back((<span class="hljs-keyword">char</span>)(i+<span class="hljs-string">&#x27;a&#x27;</span>));
+                <span class="hljs-keyword">if</span>(node-&gt;next[i]-&gt;isEnd)
+                    <span class="hljs-built_in">cout</span>&lt;&lt;word&lt;&lt;<span class="hljs-built_in">endl</span>;    
+                __print_node(node-&gt;next[i],word);
+                word.pop_back();
+            &#125;
+       
+   &#125;
+   <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-built_in">string</span> &amp;word)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(!root) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    	TrieNode* node = root;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">char</span> &amp;c:word)
+        &#123;
+            node = node-&gt;next[c-<span class="hljs-string">&#x27;a&#x27;</span>];
+            <span class="hljs-keyword">if</span>(node==<span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> node-&gt;isEnd;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">deleteWord</span><span class="hljs-params">(<span class="hljs-built_in">string</span> word)</span> </span>&#123;
+        <span class="hljs-comment">//从树中删除某个单词</span>
+        <span class="hljs-keyword">if</span> (!search(word)) &#123;
+            <span class="hljs-built_in">cerr</span>&lt;&lt;<span class="hljs-string">&quot;No such word:&quot;</span>&lt;&lt;word&lt;&lt;<span class="hljs-built_in">endl</span>;
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        __deleteWord(root, word, <span class="hljs-number">0</span>);
+    &#125;
+
+    <span class="hljs-keyword">void</span> __deleteWord(TrieNode*&amp; node, <span class="hljs-built_in">string</span>&amp; word, <span class="hljs-keyword">int</span> d) &#123;
+        <span class="hljs-keyword">if</span> (d == word.length()) &#123;
+            node-&gt;isEnd = <span class="hljs-literal">false</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            __deleteWord(node-&gt;next[word[d]-<span class="hljs-string">&#x27;a&#x27;</span>], word, d+<span class="hljs-number">1</span>);
+        &#125;
+        <span class="hljs-keyword">if</span> (node-&gt;isEnd) &#123;
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> item : node-&gt;next) &#123;
+            <span class="hljs-keyword">if</span> (item != <span class="hljs-literal">NULL</span>) &#123;
+                <span class="hljs-keyword">return</span>;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">delete</span> node;
+        node = <span class="hljs-literal">NULL</span>;
+    &#125;
+&#125;;
+</code></pre>
 <hr>
 <h2 id="336-回文对"><a href="#336-回文对" class="headerlink" title="336. 回文对"></a>336. 回文对</h2><p>给定一组 互不相同 的单词， 找出所有不同 的索引对(i, j)，使得列表中的两个单词， words[i] + words[j] ，可拼接成回文串。</p>
 <p>示例 1：</p>
@@ -504,7 +604,8 @@
 <p>时间复杂度: $O(N*M^2)$, $N$为字符数组总长度，$M$为字符串平均长度。</p>
 <p>空间复杂度: $O(N*M)$。实际上由于字符前缀重合，用不到这么多空间。</p>
 <hr>
-<h2 id="扩展：删除元素"><a href="#扩展：删除元素" class="headerlink" title="扩展：删除元素"></a>扩展：删除元素</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA">https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA</a></p>
+<h2 id="扩展：删除元素"><a href="#扩展：删除元素" class="headerlink" title="扩展：删除元素"></a>扩展：删除元素</h2><p>实现：我们首先要一直递归匹配到 word 的最后一个字符，并将最后一个字符对应结点的<code>isEnd</code>置为<code>false</code>，然后逐步删除并返回上一个结点。注意只有在当前结点的子结点都为空或者当前结点不是其它单词的结束结点时，才能将它删除。</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA">https://mp.weixin.qq.com/s/uDar0F7x9w5F3sHOB5tIDA</a></p>
 
             </div>
             <hr>
@@ -537,9 +638,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/21/2020-8-17-recognition-monostack/">
+                      <a href="/2020/07/21/2020-8-1-sliding-windows/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">红尘客栈之单调栈</span>
+                        <span class="hidden-mobile">滑动窗口，滑动的艺术</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

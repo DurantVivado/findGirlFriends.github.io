@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.7k 字
+      5.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      62
+      67
        分钟
     </span>
   
@@ -244,17 +244,26 @@
             
             <div class="markdown-body" id="post-body">
               <h1 id="多指针问题-amp-脑筋急转弯"><a href="#多指针问题-amp-脑筋急转弯" class="headerlink" title="多指针问题&amp;脑筋急转弯"></a>多指针问题&amp;脑筋急转弯</h1><hr>
-<blockquote>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum/">四数之和</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-compression/">压缩字符串</a>(Medium)</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/linked-list-cycle-ii/">环形链表II（快慢指针）（Medium）</a></p>
+<h4 id="长度最小的子数组-Medium"><a href="#长度最小的子数组-Medium" class="headerlink" title="长度最小的子数组(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-size-subarray-sum/">长度最小的子数组</a>(Medium)</h4><h4 id="替换后的最长重复字符-Medium"><a href="#替换后的最长重复字符-Medium" class="headerlink" title="替换后的最长重复字符(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-repeating-character-replacement/">替换后的最长重复字符</a>(Medium)</h4><h4 id="最小覆盖子串-Hard"><a href="#最小覆盖子串-Hard" class="headerlink" title=" 最小覆盖子串(Hard)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-window-substring/"> 最小覆盖子串</a>(Hard)</h4><blockquote>
+<p>一般的多指针题目中经常有“最大”“最小”“最长”“最短”这样的字眼！</p>
+<p>练习<br>提示：在做这些问题的时候，一定要思考清楚为什么可以采用双指针（滑动窗口）算法解决如上的问题，为什么 左、右指针向右移动的时候可以不回头。如果不太熟悉这一类问题思路的朋友，一定要想清楚算法为什么有效，比知道这些问题可以用双指针（滑动窗口）算法解决重要得多。</p>
+<p>思路一般是这样：固定左边界的前提下，如果较短的区间性质是什么样的，较长的区间的性质其实我们也可以推测出来。在右边界固定的前提下，我们须要将左边界右移，如此反复。这样的算法只遍历了数组两次，不用枚举所有可能的区间，把 $O(N^2)$ 的时间复杂度降到了 $O(N)$。</p>
+<h4 id="992-K-个不同整数的子数组（Hard）"><a href="#992-K-个不同整数的子数组（Hard）" class="headerlink" title="992. K 个不同整数的子数组（Hard）:"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/subarrays-with-k-different-integers/">992. K 个不同整数的子数组</a>（Hard）:</h4><p>​    把「恰好」改成「最多」就可以使用双指针一前一后交替向右的方法完成，这是因为 对于每一个确定的左边界，最多包含 KK 种不同整数的右边界是唯一确定的，并且在左边界向右移动的过程中，右边界或者在原来的地方，或者在原来地方的右边。</p>
+<p>​    而「最多存在 K个不同整数的子区间的个数」与「恰好存在 K 个不同整数的子区间的个数」的差恰好等于「最多存在 K - 1 个不同整数的子区间的个数」。 统计固定右边界的所有子区间$right-left$。</p>
 <ol>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/4sum/">四数之和</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sort-colors/">颜色分类</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/">删除最短的子数组使剩余数组有序</a></p>
-</li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/string-compression/">压缩字符串</a></li>
-<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/linked-list-cycle-ii/">环形链表II（快慢指针）（Medium）</a></li>
+<li>乘积小于 K 的子数组；</li>
+<li>水果成篮 ；</li>
+<li>区间子数组个数；</li>
+<li>包含所有三种字符的子字符串数目；</li>
+<li>环绕字符串中唯一的子字符串；</li>
+<li>至多包含 K 个不同字符的最长子串。</li>
 </ol>
+</blockquote>
 <h3 id="脑筋急转弯系列"><a href="#脑筋急转弯系列" class="headerlink" title="脑筋急转弯系列"></a>脑筋急转弯系列</h3><ol>
 <li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/next-permutation/">下一个排列（即C++内置next_permutation）(Medium)</a></p>
 </li>
@@ -264,7 +273,6 @@
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/create-maximum-number/">拼接最大数（hard）</a></li>
 <li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/smallest-subsequence-of-distinct-characters/">不同字符的最小子序列（Medium）</a></li>
 </ol>
-</blockquote>
 <h1 id="多指针问题"><a href="#多指针问题" class="headerlink" title="多指针问题"></a>多指针问题</h1><p>很多时候多指针（双指针，三指针，快慢指针）能极大的帮助我们降低时间复杂度。</p>
 <p>比如求链表到数第N个节点，以及判断链表中是否有环。</p>
 <p>首先我们介绍Floyd判圈法</p>
@@ -718,8 +726,8 @@ k = <span class="hljs-number">3</span>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/07/21/2020-07-21-dynamic-planning/">
-                        <span class="hidden-mobile">动态规划</span>
+                      <a href="/2020/07/21/2020-8-17-recognition-monostack/">
+                        <span class="hidden-mobile">红尘客栈之单调栈</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -189,6 +189,177 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">「核心」Ceph学习三部曲之二:CEPH 纠删码操作&amp;API</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/26/ceph%E7%BA%A0%E5%88%A0%E7%A0%81%E9%83%A8%E7%BD%B2/">
+          
+          
+            
+          
+          
+            本blog包括理论和实践两个部分，力求深入浅出，实践部分需要您事先部署成功Ceph集群！参考《Ceph设计与实现》谢型果等，第三章。以及官方纠删码教程。
+          
+Part ICeph 纠删码操作
+术语K ——数据块数。
+M——编码块数。
+N——条带中块的个数，$N=K+M$。
+块（chunk）——将对象基于纠删码进行编码时，每次编码将产生若干大小的块（要求是
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-26 00:00" pubdate>
+              2020-11-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/25/A%20first%20glance%20at%20CRUSH/">「核心」Ceph学习三部曲之一:A First Glance At CRUSH</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/25/A%20first%20glance%20at%20CRUSH/">
+          
+          
+            
+          
+          TODO: last update: 2020/12/28
+
+            本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！参考《Ceph设计与实现》谢型果等，第一章。以及官方CRUSH教程。
+          
+浅析CRUSH算法
+CRUSH论文地址：https://ceph.com/wp-content/uploads/2016/08/weil-crush
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-25 18:00" pubdate>
+              2020-11-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+              <a href="/tags/%E7%90%86%E8%AE%BA/">理论</a>
+            
+              <a href="/tags/crush/">crush</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/24/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">「入门部署」Ceph-ansible部署集群</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/24/Ceph-ansible%E9%83%A8%E7%BD%B2%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/">
+          
+          
+            
+          
+          Ceph-ansible部署踩坑日记
+官方文档：https://docs.ceph.com/projects/ceph-ansible/en/latest/
+
+Quick Deployment:快速部署
+            Important:ceph-deploy 不再经常性维护， 并且在高于Nautilus的版本没有进行过测试。不推荐使用! 
+          
+Cephadm：Ceph
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-24 18:00" pubdate>
+              2020-11-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/11/22/CEPH%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">「基础理论」CEPH 基础介绍</a>
       </h1>
 
@@ -304,6 +475,108 @@ API文档
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2021/02/11/%E3%80%8C%E9%98%85%E8%AF%BB%E3%80%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%9C%89%E8%B6%A3%E9%A2%98%E7%9B%AE%F0%9F%8E%A8/">「阅读」程序员的有趣题目🎨</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/02/11/%E3%80%8C%E9%98%85%E8%AF%BB%E3%80%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%9C%89%E8%B6%A3%E9%A2%98%E7%9B%AE%F0%9F%8E%A8/">
+          
+          
+            
+          
+          「阅读」程序员的有趣题目🎨
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-02-11 00:00" pubdate>
+              2021-02-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+            
+              <a href="/tags/%E5%8A%9B%E6%89%A3%E6%8E%A8%E8%8D%90%E4%B9%A6%E7%9B%AE/">力扣推荐书目</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2021/02/10/%E6%9C%80%E5%B0%8F%E5%AF%86%E5%BA%A6RAID-6%E7%BC%96%E7%A0%81/">「理论」最小密度RAID-6编码</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/02/10/%E6%9C%80%E5%B0%8F%E5%AF%86%E5%BA%A6RAID-6%E7%BC%96%E7%A0%81/">
+          
+          
+            
+          
+          最小密度RAID-6编码我们的存储系统由n个磁盘阵列组成，每个磁盘大小相同。 在这n个磁盘中，其中k个保存数据，其余m = n-k个保存编码信息，通常称为奇偶校验。 在RAID-6系统中，m = 2，我们标记数据磁盘D0，…，Dk-1和奇偶校验磁盘P和Q。示例系统如图1所示。
+
+编码性能的比较：
+
+编码性能是根据D0 … Dk-1计算P和Q的速度。 最佳编码性能由每个编码元素k − 1个异或运算的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-02-10 00:00" pubdate>
+              2021-02-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+            
+              <a href="/tags/Jerasure/">Jerasure</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2021/01/23/PAXOS-Made-Simple%20%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%AD%A6%E4%B9%A0Paxos/">PAXOS-Made-Simple</a>
       </h1>
 
@@ -355,6 +628,60 @@ API文档
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2021/01/17/2021-1-3%E6%8E%A2%E7%A7%98FUSE%EF%BC%8C%E8%AE%B2%E8%AE%B2%E6%95%85%E4%BA%8B/">「应用」探秘FUSE，讲讲故事</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/01/17/2021-1-3%E6%8E%A2%E7%A7%98FUSE%EF%BC%8C%E8%AE%B2%E8%AE%B2%E6%95%85%E4%BA%8B/">
+          
+          
+            
+          
+          探秘FUSE，讲讲故事
+Github Release下载
+SourceForge 
+
+FUSE,($Filesystem In Userspace$)，用户空间文件系统（Filesystem in Userspace），是Linux 中用于挂载某些网络空间，如SSH，到本地文件系统的模块。简单来说，FUSE在用户空间自定义来定制实现自己的文件系统。
+完整的fuse包括三个层级：1. 用户custo
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-01-17 00:00" pubdate>
+              2021-01-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/fuse/">fuse</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/linux/">linux</a>
+            
+              <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">文件系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2021/01/16/%E9%80%86%E5%90%91%E6%80%9D%E7%BB%B4/">逆向思维</a>
       </h1>
 
@@ -392,302 +719,6 @@ API文档
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E5%9B%B0%E9%9A%BE/">困难</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2021/01/13/%E3%80%8C%E9%98%85%E8%AF%BB%E3%80%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%9C%89%E8%B6%A3%E9%A2%98%E7%9B%AE%F0%9F%8E%A8/"></a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/01/13/%E3%80%8C%E9%98%85%E8%AF%BB%E3%80%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%9C%89%E8%B6%A3%E9%A2%98%E7%9B%AE%F0%9F%8E%A8/">
-          
-          
-            
-          
-          「阅读」程序员的有趣题目🎨
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-01-13 15:35" pubdate>
-              2021-01-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2021/01/03/2021-1-3%E6%8E%A2%E7%A7%98FUSE%EF%BC%8C%E8%AE%B2%E8%AE%B2%E6%95%85%E4%BA%8B/"></a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/01/03/2021-1-3%E6%8E%A2%E7%A7%98FUSE%EF%BC%8C%E8%AE%B2%E8%AE%B2%E6%95%85%E4%BA%8B/">
-          
-          
-            
-          
-          探秘FUSE，讲讲故事
-Github Release下载
-SourceForge 
-
-FUSE,($Filesystem In Userspace$)，用户空间文件系统（Filesystem in Userspace），是Linux 中用于挂载某些网络空间，如SSH，到本地文件系统的模块。
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-01-03 18:23" pubdate>
-              2021-01-03
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">「参考」Ceph配置参数conf</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/15/Ceph%20%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0/">
-          
-          
-            
-          
-          Ceph 配置参数
-涉及pool, PG, CRUSH的配置参数。
-参考官方文档
-
-一个典型的Ceph配置文件如下：
-[global]
-
-	# By default, Ceph makes 3 replicas of objects. If you want to make four
-	# copies of an object the default value--a primary copy 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-15 16:00" pubdate>
-              2020-12-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ceph/">ceph</a>
-            
-              <a href="/categories/ceph/PG/">PG</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Ceph%E5%AD%97%E5%85%B8/">Ceph字典</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">距离向量路由选择算法——DV</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">
-          
-          
-            
-          
-          DV获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！
-这儿的自我终止指：即没有计算应该停止的信号，它就停止了。
-我们首先讨论最低路径开销之间的一种重要关系。令$d_x(y)$是从节点x到y的最低开销，由著名的Bellman-Ford方程：
-
-d_x(y)=min_v\{c
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-15 00:00" pubdate>
-              2020-12-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
-            
-              <a href="/tags/%E5%9B%BE%E7%AE%97%E6%B3%95/">图算法</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">小白投资入门（煎炸卤炖）</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">
-          
-          
-            
-          
-          小白投资入门（煎炸卤炖）写这个博客表明笔者准备开始炒股了，当然任何事情都是万事开头难，希望与君共勉，踩坑。
-假如小Q有1W元，如何投资才能获得最大收益：
-
-存银行
-炒股
-购买保险
-购买基金
-购买黄金
-购买房地产
-购买期货
-全部换成美元
-全部换成日元
-研究“如何让钱无性生殖”
-
-上面问题便是笔者写博客的初衷，弄清楚这些问题不是简单是事，除了问题10以外。
-1基本概念所谓股票，就是股份制公司发行的所有
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-14 00:00" pubdate>
-              2020-12-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%8A%95%E8%B5%84/">投资</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%82%A1%E7%A5%A8/">股票</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/14/ceph%20pool/">「参考」Ceph Pool</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/14/ceph%20pool/">
-          
-          
-            
-          
-          
-            本期主要介绍Ceph pool的操作，需要您事先部署成功Ceph集群！主要参考官方pool教程。
-          
-Ceph pool池是用于存储对象的逻辑分区。
-当首次部署群集而不创建池时，Ceph使用默认池来存储数据。pool具有以下特性：
-
-弹性：可以设置允许多少OSD发生故障而不丢失数据。对于复制池，它是对象的所需副本数/副本数。典型的配置存储一个对象和一个附
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-14 00:00" pubdate>
-              2020-12-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/ceph/">ceph</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Ceph%E5%AE%9E%E8%B7%B5/">Ceph实践</a>
             
           </div>
         

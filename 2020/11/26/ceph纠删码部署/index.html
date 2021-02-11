@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4k 字
+      3.7k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      49
+      45
        分钟
     </span>
   
@@ -471,7 +471,7 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
 <h2 id="覆盖写思考"><a href="#覆盖写思考" class="headerlink" title="覆盖写思考"></a>覆盖写思考</h2><p>因为数据更新必须以条带为单位进行，如果覆盖写的起始或者结束位置没有进行条带对齐，那么不足一个完整条带的部分，其写入只能通过“读取完整条带→修改数据→基于条带重新计算校验数据→写入（被修改部分和校验和）”。这个过程被称为RMW。</p>
 <p>整个RMW过程补齐读阶段最耗时，由两种解决思路：1. 减少RMW次数，2.如果RMW不可避免，那么尽量减少补齐读的数据量。一种常见的做法是引入写缓存。将驻留于缓存的写操作进行合并。 另外是尽可能减少读的次数，基于被修改写的数据范围预先计算出需要执行补齐读的块，而不是每次都执行满条带写。</p>
 <h2 id="Scrub的问题"><a href="#Scrub的问题" class="headerlink" title="Scrub的问题"></a>Scrub的问题</h2><p>Scrub指数据扫描，通过读取对象数据并重新计算校验和，再与之前存储在对象属性的校验和进行比对，以判断有无静默错误（磁盘自身无法感知的错误）。目前Ceph纠删码没有自动修复功能。其中Scrub只扫描元数据，而Deep Scrub对对象整体进行扫描。</p>
-<p>例如对象大小为4MB，那么每4KB原始数据采用CRC32生成固定四个字节的校验和，则整个对象的校验和最大只能是4KB，这显然无法直接使用对象扩展属性存储，而只能使用对象的omap存储(kv pairs)，但是纠删码目前不支持omap! </p>
+<h2 id="总结与展望"><a href="#总结与展望" class="headerlink" title="总结与展望"></a>总结与展望</h2><p>例如对象大小为4MB，那么每4KB原始数据采用CRC32生成固定四个字节的校验和，则整个对象的校验和最大只能是4KB，这显然无法直接使用对象扩展属性存储，而只能使用对象的omap存储(kv pairs)，但是纠删码目前不支持omap! </p>
 <p>Ceph中纠删码一直未达到商业水平，无外乎以下几个原因：</p>
 <ul>
 <li>相较于多副本，纠删码实现更复杂</li>
@@ -479,94 +479,6 @@ rados -p ecpool get <span class="hljs-keyword">test</span> <span class="hljs-key
 </ul>
 <p>这也是笔者的研究方向，路漫漫其修远兮，吾将上下而求索。</p>
 <hr>
-<h1 id="Part-II"><a href="#Part-II" class="headerlink" title="Part II"></a>Part II</h1><h2 id="纠删码库介绍"><a href="#纠删码库介绍" class="headerlink" title="纠删码库介绍"></a>纠删码库介绍</h2><h2 id="1-Jerasure"><a href="#1-Jerasure" class="headerlink" title="1 Jerasure"></a>1 Jerasure</h2><p>Jerasure支持水平的纠删码模式，我</p>
-<p>2007 James给出了RS-RAID一个开源实现。<a target="_blank" rel="noopener" href="http://jerasure.org/jerasure/jerasure">official</a> ，<a target="_blank" rel="noopener" href="https://github.com/tsuraan/Jerasure">github</a></p>
-<p>Jerasure库包括以下5个模块：</p>
-<ul>
-<li><code>galois.h/.c</code>提供伽罗华域的算术运算。</li>
-<li><code>jerasure.h/.c</code>提供了绝大部分的核心函数。包括矩阵的编解码，位矩阵变换，矩阵转置和位矩阵转置。</li>
-<li><code>reedsol.h/.c</code>支持RS编解码和优化和的RS码。</li>
-<li><code>caucy.h/.c</code> 支持Caucy RS编解码和最优Caucy编码。</li>
-<li><code>caucy_best_r6.h/.c</code> 基于Caucy矩阵的RAID-6优化。</li>
-<li><code>liberation.h/.c</code> 支持Liberartion RAID-6编码, Blaum-Roth 编码，和Liber8tion RAID-6编码。 Liberation是一种低密度MDS。这三种编码采用位矩阵来实现，其性能远优于现有的RS和EVENNODD，在某种情况下也优于RDP编码。</li>
-</ul>
-<p>下标汇总了Jerasure-2.0库常见的参数和其含义：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">k</td>
-<td style="text-align:center">数据盘个数</td>
-</tr>
-<tr>
-<td style="text-align:center">m</td>
-<td style="text-align:center">校验盘个数</td>
-</tr>
-<tr>
-<td style="text-align:center">w</td>
-<td style="text-align:center">字长</td>
-</tr>
-<tr>
-<td style="text-align:center">packetsize</td>
-<td style="text-align:center">包大小</td>
-</tr>
-<tr>
-<td style="text-align:center">size</td>
-<td style="text-align:center">每个盘待编码或者解码的字节数</td>
-</tr>
-<tr>
-<td style="text-align:center">matrix</td>
-<td style="text-align:center">编码矩阵</td>
-</tr>
-<tr>
-<td style="text-align:center">bitmatrix</td>
-<td style="text-align:center">位矩阵</td>
-</tr>
-<tr>
-<td style="text-align:center">dataptrs</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">erasures</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">erased</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">schdule</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">row k ones</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">dm ids</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>针对RAID-6，Jerasure作了两类优化：</p>
-<ul>
-<li><p>对乘2运算进行优化</p>
-</li>
-<li><p>直接对编码矩阵进行改造，得到最小密度RAID6. 这类矩阵很稀疏，计算量较少。目前有三种</p>
-<ul>
-<li>Liberation: 要求W必须是素数</li>
-<li>Blaum-Roth: 要求W+1必须是素数</li>
-<li>Lber8tion: 要求W必须等于8</li>
-</ul>
-<p>这三种编码效率相当。</p>
-</li>
-</ul>
 
             </div>
             <hr>
