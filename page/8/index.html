@@ -189,22 +189,79 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/21/2020-7-30-sorting-magic/">【面试向】十种排序算法</a>
+        <a href="/2020/07/21/2020-7-28-HuaRongDao/">启发式搜索——探索华容道</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/21/2020-7-30-sorting-magic/">
+        <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+          
+          
+            
+          
+          启发式搜索——探索华容道1 引入华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.
+
+我们稍后再考虑如何具体解决。
+我们不禁感叹老祖宗的智慧，华容道问题的推广——便是著名的N数码问题。下面是8数码问题，我们可以很容易得到它的状态空间为$O(9!)=O(1)$。
+
+更难的是15数码问题，或者31
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B8%B8%E6%88%8F/">游戏</a>
+            
+              <a href="/tags/%E5%90%AF%E5%8F%91%E5%BC%8F%E6%90%9C%E7%B4%A2/">启发式搜索</a>
+            
+              <a href="/tags/A/">A*</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-8-1-sliding-windows/">滑动窗口，滑动的艺术</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-8-1-sliding-windows/">
           
           
             
           
           
-            排序算法及例题
-          
-面试基础之十种排序算法
-包括冒泡排序，选择排序，插入排序，希尔排序，归并排序，快速排序，堆排序，计数排序，桶排序，基数排序。研究它们算法，以及最好最坏平均时间复杂度和空间复杂度，是否为就地替换以及稳定性。
-排序不能只是为了解决排序而已，有时候利用排序的思想可以解决意想不到的的问题哦！
-推荐阅读：https://github.com/h
+滑动窗口是笔试中一大难点，幸运的是我们有模板
+
+滑动窗口
+Sliding Windows，是一类很看重细节的问题，题目通常为Medium或者hard。在滑动窗口中有两个指针，一个指针静止，而另一个指针保持移动。我们在s上滑动窗口，如果能够包含整个T（注意，T可能有重复字符），如果能收缩，我们就收缩窗口直到得到最小窗口。
+滑动窗口一个有趣的应用是，计算机网络中的GBN协议，又称回退N步协议，它允许
         </a>
       </p>
 
@@ -229,7 +286,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%8E%92%E5%BA%8F/">排序</a>
+              <a href="/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">滑动窗口</a>
+            
+              <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/">多指针</a>
             
           </div>
         
@@ -242,30 +301,25 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/19/2020-07-19-damn_blog/">Durant终于有个家写写东西了</a>
+        <a href="/2020/07/21/2020-8-20-what-is-Trie/">Google划词搜索的秘密</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/19/2020-07-19-damn_blog/">
+        <a href="/2020/07/21/2020-8-20-what-is-Trie/">
           
           
             
           
-          
-上周，非常有幸接触到Hux大佬的博客，深感震撼，而且他也在Github上分享了Jekyll源码,star&gt;5000。我决定DIY一番，不然对不起程序员的身份。
+          什么是前缀树Trie和前缀和？如何实现？
+前缀树又名Tries树、字典树、单词查找树等，常用于快速检索，大量字符串的排序和统计等。
+LC208.实现前缀树 - 制作板子
+LC336.回文对 - 结合回文
+LC212.单词搜索 II - 类似 Boggle 的游戏。
 
-Bug好不容易搭建好了，结果写好的markdown样子和Hux完全不同。
+三个基本性质
 
-标签前面有#，而且是有标签的那种
-图片不显示
-公式不显示
-语法没高亮，没行号 
-目录没显示
-评论区没显示
-
-这叫我如何能忍。是可忍，孰不可忍。
-
-Solu
+根节点不包含字符，除根节点外每个节点只包含一个字符
+从根节点到某个节点，路径上所有的字符连在一起，就是这个节点所对应
         </a>
       </p>
 
@@ -273,75 +327,8 @@ Solu
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-19 00:00" pubdate>
-              2020-07-19
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9D%82%E8%AE%B0/">杂记</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a>
-            
-              <a href="/tags/%E6%9C%9D%E8%8A%B1%E5%A4%95%E6%8B%BE/">朝花夕拾</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/17/2020-07-17-fenwicktree-segmentTree/">麻麻终于不用担心我分不清楚线段树和树状数组了！</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/17/2020-07-17-fenwicktree-segmentTree/">
-          
-          
-            
-          
-          线段树和树状数组
-“树状数组和线段树都是用于维护数列信息的数据结构，支持单点/区间修改，单点/区间询问信息。以增加权值与询问区间权值和为例，其余的信息需要维护也都类似。时间复杂度均为$O(logn)$。 ”
-详细的数学证明
-
-
-练习题目
-
-计算右侧小于当前元素的个数
-
-
-
-最大子序和
-
-
-327.区间和的个数
-
-
-
-I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到这样一个问
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-17 00:00" pubdate>
-              2020-07-17
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
             </time>
           </div>
         
@@ -357,66 +344,9 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">树状数组</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
             
-              <a href="/tags/%E7%BA%BF%E6%AE%B5%E6%A0%91/">线段树</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/06/25/2020-06-25-C++memory_management/">内存管理</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/06/25/2020-06-25-C++memory_management/">
-          
-          
-            
-          
-          C++内存管理
-内存管理是非常让人头疼的事情，因为一不小心就可能导致内存泄漏，为此很多C++程序员跑路到java或python，？？？但是反过来说，优秀的程序员知道如何管理内存，并显式获得速度的飞跃。
-
-内存分类：
-
-静态内存：用来保存局部static对象，类的static数据成员以及定义在任何函数之外的变量。
-
-栈内存：用来保存定义在函数内的非static对象。
-分配在静态或栈内存中的对象由编译
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-06-25 00:00" pubdate>
-              2020-06-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/C/">C++</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">内存管理</a>
-            
-              <a href="/tags/C/">C++</a>
+              <a href="/tags/%E7%B1%BB%E6%A0%91%E7%BB%93%E6%9E%84/">类树结构</a>
             
           </div>
         
@@ -429,20 +359,23 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/05/10/2020-04-30-avl-tree/">全手写实现AVL树</a>
+        <a href="/2020/07/21/2020-8-29-KMP/">臭名昭著的KMP算法</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/05/10/2020-04-30-avl-tree/">
+        <a href="/2020/07/21/2020-8-29-KMP/">
           
           
             
           
-          全手写实现AVL树
-本文阅读大概需要45分钟，独立编程需要两天，建议预留充足的时间和咖啡。
+          KMP算法精讲
+为什么说它臭名昭著呢？因为KMP 是最短小精悍,最强大,最不易理解,最容易健忘的算法之一.
 
-（友情提示，笔者基本未参考网络资料，边思考边写代码，100%干货，学AVL看这一篇就够了）
-学树的顺序，一般来说是：二叉树-&gt;二叉查找树-&gt;AVL树-&gt;2-3-4树-&gt;红黑树。它们的难度依次递增。不得不说的是，树是计算机科学最重要研究课题之一。在算法类面试当中，树的考察也是不可或缺
+术语约定：s为目标串，t为模式匹配串，KMP作用和strStr()相同
+
+KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组，它是从$0$到$j$字串的前缀集合和后缀集合的最长公共字串长度
+
+​    为了编程方便，我们将第0位令为0，将PMT依次后
         </a>
       </p>
 
@@ -450,8 +383,8 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-05-10 00:00" pubdate>
-              2020-05-10
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
             </time>
           </div>
         
@@ -459,7 +392,7 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">经典数据结构</a>
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
             
           </div>
         
@@ -467,7 +400,7 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91-python/">平衡树 - python</a>
+              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">字符串匹配</a>
             
           </div>
         
@@ -480,19 +413,20 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/05/10/2020-05-10-red-black-tree/">花拳绣腿学红黑</a>
+        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">权力的游戏 之 零和博弈</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/05/10/2020-05-10-red-black-tree/">
+        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">
           
           
             
           
-          花拳绣腿学红黑一提到红黑树，你应该是这样想的。。。
+          什么是零和博弈(Zero sum )？
+在零和博弈中，让自己最优和让对手最差其实是相同的目标！原因还是那句话，两人的总得分不会变化，自己多了，对手必然减少。
 
-上一期我们详细分析了AVL树，相信你已经对二叉平衡树有了非常棒的理解。这一期我们开始介绍红黑树，红黑树在网上有很多资源，但是讲的不严谨，也不全面。笔者初学时也浪费了许多时间，因此我将非常细致的讲解，将自己踩过的坑晒出来，保证你能看懂。
-红黑树和AVL树的区别是：AVL树是严格平衡的二叉树，红黑树是弱平衡的二叉树。和红黑树相比，AVL树是严格的平
+在零和博弈问题中，一般会存在先手优势和后手劣势：
+先手优势：因为先手可以先走，所以可决定后手将要面对的局面。因此，后手虽然也会做出最优解，但是先手可以根据先发的优势，让后手进入最优解最差的局面。后手劣势：当先手走完后，虽然后手也会成为下一回
         </a>
       </p>
 
@@ -500,8 +434,8 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-05-10 00:00" pubdate>
-              2020-05-10
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
             </time>
           </div>
         
@@ -509,7 +443,7 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">经典数据结构</a>
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
             
           </div>
         
@@ -517,9 +451,292 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/python/">python</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
             
-              <a href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a>
+              <a href="/tags/%E6%B8%B8%E6%88%8F%E7%B1%BB%E9%97%AE%E9%A2%98/">游戏类问题</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">Markdown那些不为人知的酷炫特性</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">
+          
+          
+            
+          
+          Markdown 那些不为人知的炫🆒特性
+新的甘特图功能，丰富你的文章（Mermaid语言）gantt
+        dateFormat  YYYY-MM-DD
+        title Adding GANTT diagram functionality to mermaid
+        section 现有任务
+        已完成               :done,   
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/markdown/">markdown</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/markdown/">markdown</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-08-1-representation_of_graph/">再也不想做图类题目了</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-08-1-representation_of_graph/">
+          
+          
+            
+          
+          图的表示和图算法
+DFS&amp;BFS(在相应专题讲)
+拓扑排序
+Dijkstra
+Floyd算法
+Bellman-Ford算法
+SPFA算法
+
+
+本篇介绍了四种图的表示方法，包括 邻接矩阵表示法，关联矩阵表示法，邻接表表示法，弧表示法，星形表示法。以及图的典型算法，包括Dijkstra, Floyd, Bellman-Ford以及SPFA算法。
+
+0 基本概念和定理摘自《图论导引第二版》
+图（
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
+            
+              <a href="/tags/Dijkstra/">Dijkstra</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-7-30-pointers/">神奇的多指针 【cover 脑筋急转弯💡】</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-7-30-pointers/">
+          
+          
+            
+          
+          多指针问题&amp;脑筋急转弯
+四数之和
+颜色分类
+删除最短的子数组使剩余数组有序
+压缩字符串(Medium)
+环形链表II（快慢指针）（Medium）
+长度最小的子数组(Medium)替换后的最长重复字符(Medium) 最小覆盖子串(Hard)
+一般的多指针题目中经常有“最大”“最小”“最长”“最短”这样的字眼！
+练习提示：在做这些问题的时候，一定要思考清楚为什么可以采用双指针（滑动窗口）算法
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/">多指针</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-8-17-recognition-monostack/">红尘客栈之单调栈</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-8-17-recognition-monostack/">
+          
+          
+            
+          
+          炫酷skr的单调栈
+
+柱状图中最大矩形（Hard）
+
+
+85.求最大矩形(Hard)
+
+739.每日温度(Medium)
+
+402. 移掉K位数字
+321. 拼接最大数（Hard）
+
+多重背包问题III【详见背包九讲】
+
+
+
+推荐阅读：https://blog.csdn.net/lucky52529/article/details/89155694
+
+模拟单调栈的数据push和pop
+模拟实现一个
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8D%95%E8%B0%83%E6%A0%88/">单调栈</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-07-21-dynamic-planning/">动态规划</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-07-21-dynamic-planning/">
+          
+          
+            
+          
+          
+动态规划(DP)的重要性我就不用说了，LeetCode 上DP问题数量仅次于数组。
+个人感觉，DP问题就像斐波那契数列一样，你需要找到能够递归的通式子，我们把这个式子称作状态转移方程（$transfer  eqution$）。本文采取题目加讲解的方式，中等题目强调找出状态转移方程，难题则附加代码研究细节，此篇可作为你刷DP类问题的初探。题目中可能有一些显性关键词，如最大方案数，最短距离，所有可能
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-21 00:00" pubdate>
+              2020-07-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
             
           </div>
         
@@ -531,7 +748,7 @@ I. 树状数组Fenwick Tree地中海的程序猿们研究数组，时候遇到�
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/7/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span>
+      <a class="extend prev" rel="prev" href="/page/7/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

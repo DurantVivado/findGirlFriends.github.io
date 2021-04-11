@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      49
+      50
        分钟
     </span>
   
@@ -491,10 +491,10 @@ s 只包含小写英文字母。</code></p>
 </blockquote>
 <h1 id="II-差分数组"><a href="#II-差分数组" class="headerlink" title="II 差分数组"></a>II 差分数组</h1><blockquote>
 <p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-moves-to-make-array-complementary/">1674. 使数组互补的最少操作次数</a></p>
-</blockquote>
+<h4 id="995-K-连续位的最小翻转次数-将翻转次数作为差分数组考虑"><a href="#995-K-连续位的最小翻转次数-将翻转次数作为差分数组考虑" class="headerlink" title="995. K 连续位的最小翻转次数(将翻转次数作为差分数组考虑)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-number-of-k-consecutive-bit-flips/">995. K 连续位的最小翻转次数</a>(将翻转次数作为差分数组考虑)</h4></blockquote>
 <p>设数组为$a[0…n-1]$第$i-1$项为$a[i]$</p>
 <p>那么定义差分数组$diff[i] = a[i]-a[i-1]$。</p>
-<p>它的性质是前i项和是$a[i]$。</p>
+<p>它的性质是前i项和是$a[i]$。一般这类问题都有，“操作次数”这样的字眼。</p>
 <hr>
 <h2 id="1674-使数组互补的最少操作次数"><a href="#1674-使数组互补的最少操作次数" class="headerlink" title="1674. 使数组互补的最少操作次数"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-moves-to-make-array-complementary/">1674. 使数组互补的最少操作次数</a></h2><p>给你一个长度为 <strong>偶数</strong> <code>n</code> 的整数数组 <code>nums</code> 和一个整数 <code>limit</code> 。每一次操作，你可以将 <code>nums</code> 中的任何整数替换为 <code>1</code> 到 <code>limit</code> 之间的另一个整数。</p>
 <p>如果对于所有下标 <code>i</code>（<strong>下标从</strong> <code>0</code> <strong>开始</strong>），<code>nums[i] + nums[n - 1 - i]</code> 都等于同一个数，则数组 <code>nums</code> 是 <strong>互补的</strong> 。例如，数组 <code>[1,2,3,4]</code> 是互补的，因为对于所有下标 <code>i</code> ，<code>nums[i] + nums[n - 1 - i] = 5</code> 。</p>

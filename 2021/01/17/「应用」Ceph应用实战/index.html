@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7 字
+      154 字
     </span>
   
 
@@ -243,7 +243,19 @@
             <h1 style="display: none">「应用」Ceph应用实战</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="「应用」Ceph应用实战"><a href="#「应用」Ceph应用实战" class="headerlink" title="「应用」Ceph应用实战"></a>「应用」Ceph应用实战</h1>
+              <h1 id="「应用」Ceph应用实战"><a href="#「应用」Ceph应用实战" class="headerlink" title="「应用」Ceph应用实战"></a>「应用」Ceph应用实战</h1><p>本讲介绍一些常见的ceph应用场景，比如：</p>
+<ul>
+<li>ceph集群定时scrub</li>
+<li>ceph集群对接OpenStack</li>
+<li>Ceph数据重建配置策略</li>
+<li>Ceph集群Full紧急处理</li>
+<li>Ceph快照再增量备份的应用</li>
+<li>Ceph集群异常watcher处理</li>
+</ul>
+<h2 id="1-集群定时Scrub"><a href="#1-集群定时Scrub" class="headerlink" title="1  集群定时Scrub"></a>1  集群定时Scrub</h2><p>Scrub操作是为了保证集群副本间数据的一致性，包括Scrub和DeepScrub，前者只会对元数据进行扫描，而后者会对元数据和数据进行扫描。</p>
+<p>默认的扫描时间间隔是1d-7d。</p>
+<p><strong>比如我们试着让集群在晚上22时到第二天7时进行scrub</strong></p>
+
             </div>
             <hr>
             <div>

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      2.1k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      20
+      27
        分钟
     </span>
   
@@ -245,14 +245,14 @@
             <div class="markdown-body" id="post-body">
               <h1 id="回文问题"><a href="#回文问题" class="headerlink" title="回文问题"></a>回文问题</h1><blockquote>
 <p>直觉上：回文≈难题，LC上的回文难题, 但是总不能指望面试/周赛出中等题吧?</p>
+<p>一般dp可以做，实在不行就上manacher。</p>
 </blockquote>
 <ul>
 <li><ol>
 <li>回文对</li>
 </ol>
 </li>
-<li><p>214.最短回文串</p>
-</li>
+<li>214.最短回文串</li>
 <li><ol>
 <li>分割回文串</li>
 </ol>
@@ -269,7 +269,8 @@
 <li>段式回文</li>
 </ol>
 </li>
-<li>…</li>
+<li>516.最长回文子序列</li>
+<li>1771.</li>
 </ul>
 <h2 id="1-线性时间内解决回文串问题——Manacher算法-竞赛难度"><a href="#1-线性时间内解决回文串问题——Manacher算法-竞赛难度" class="headerlink" title="1. 线性时间内解决回文串问题——Manacher算法 {竞赛难度}"></a>1. 线性时间内解决回文串问题——Manacher算法 {竞赛难度}</h2><p>Manacher 算法是在<strong>线性时间</strong>!内求解最长回文子串的算法。在本题中，我们要求解回文串的个数，为什么也能使用 Manacher 算法呢？这里我们就需要理解一下 Manacher 的基本原理。</p>
 <p>Manacher 算法的处理方式是在所有的相邻字符中间插入 $#$，比如 $abaaabaa$ 会被处理成 $#a#b#a#a#a#b#a#a#$，这样可以保证所有找到的回文串都是奇数长度的(因为$n+n+1=2n+1$)，以任意一个字符为回文中心，既可以包含原来的奇数长度的情况，也可以包含原来偶数长度的情况。假设原字符串为 $S$，经过这个处理之后的字符串为 $s$。</p>
@@ -361,7 +362,58 @@ f(i) = f(i-1)*base\% mod + s[i]\\
 <li>空间复杂度：$O(1)$。</li>
 </ul>
 <hr>
-<h2 id="336-回文对"><a href="#336-回文对" class="headerlink" title="336. 回文对"></a>336. 回文对</h2>
+<h2 id="516-最长回文子序列"><a href="#516-最长回文子序列" class="headerlink" title="516. 最长回文子序列"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-palindromic-subsequence/">516. 最长回文子序列</a></h2><p>这道题很经典，容易扩展为“稍微变一下就很难做”的困难题，比如1771就是它的一个扩展，而且还是周赛的压轴题。所以想在周赛拿个好名字，先刷个1000题把！</p>
+<p>给定一个字符串 <code>s</code> ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 <code>s</code> 的最大长度为 <code>1000</code> 。</p>
+<p><strong>示例 1:</strong><br>输入:</p>
+<pre><code class="hljs 1c"><span class="hljs-string">&quot;bbbab&quot;</span></code></pre>
+<p>输出:</p>
+<pre><code class="hljs angelscript"><span class="hljs-number">4</span></code></pre>
+<p>一个可能的最长回文子序列为 “bbbb”。</p>
+<p><strong>示例 2:</strong><br>输入:</p>
+<pre><code class="hljs 1c"><span class="hljs-string">&quot;cbbd&quot;</span></code></pre>
+<p>输出:</p>
+<pre><code class="hljs angelscript"><span class="hljs-number">2</span></code></pre>
+<p>一个可能的最长回文子序列为 “bb”。</p>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= s.length &lt;= 1000</code></li>
+<li><code>s</code> 只包含小写英文字母</li>
+</ul>
+<hr>
+<p>我们可以采用动态规划，假设$dp[i][j]$为字符串S在区间$[i,j]$的最长回文子序列长度，dp四要素如下：</p>
+<ul>
+<li><p>状态<br>$f[i][j] $表示 s 的第 i 个字符到第 j 个字符组成的子串中，最长的回文序列长度是多少。</p>
+</li>
+<li><p>转移方程<br>如果 s 的第 i 个字符和第 j 个字符相同的话</p>
+<p>$f[i][j] = f[i + 1][j - 1] + 2$</p>
+<p>如果 s 的第 i 个字符和第 j 个字符不同的话</p>
+<p>$f[i][j] = max(f[i + 1][j], f[i][j - 1])$</p>
+<p>然后注意遍历顺序，i 从最后一个字符开始往前遍历，j 从 i + 1 开始往后遍历，这样可以保证每个子问题都已经算好了。</p>
+</li>
+<li><p>初始化<br>$f[i][i] = 1 $单个字符的最长回文序列是 1</p>
+</li>
+<li><p>结果<br>$f[0][n-1]$</p>
+</li>
+</ul>
+<pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">longestPalindromeSubseq</span><span class="hljs-params">(String s)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> n = s.length();
+        <span class="hljs-keyword">int</span>[][] f = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[n][n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;
+            f[i][i] = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) &#123;
+                <span class="hljs-keyword">if</span> (s.charAt(i) == s.charAt(j)) &#123;
+                    f[i][j] = f[i + <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">2</span>;
+                &#125; <span class="hljs-keyword">else</span> &#123;
+                    f[i][j] = Math.max(f[i + <span class="hljs-number">1</span>][j], f[i][j - <span class="hljs-number">1</span>]);
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> f[<span class="hljs-number">0</span>][n - <span class="hljs-number">1</span>];
+    &#125;
+&#125;</code></pre>
+<p>1771是该题的一个变种，实际上没有那么难，推荐读者小试牛刀一下！</p>
+
             </div>
             <hr>
             <div>

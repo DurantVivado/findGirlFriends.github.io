@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      14.1k 字
+      14.6k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      157
+      163
        分钟
     </span>
   
@@ -343,9 +343,10 @@
 </ul>
 </li>
 </ol>
-<h2 id="1-2-PG快速定位对象"><a href="#1-2-PG快速定位对象" class="headerlink" title="1.2 PG快速定位对象"></a>1.2 PG快速定位对象</h2><blockquote>
+<h2 id="1-2-PG快速定位对象stable-mod"><a href="#1-2-PG快速定位对象stable-mod" class="headerlink" title="1.2 PG快速定位对象stable_mod"></a>1.2 PG快速定位对象stable_mod</h2><blockquote>
 <p>对应参考书 2.2.1 PG</p>
 </blockquote>
+<p>普通的取模无法保证“归属于某个PG的所有对象的低n位相同”这个特性，为此人们提出了stable_mod。</p>
 <p>首先由特定类型的Client根据其操作的对象名计算出一个32位的哈希值，然后根据其操作的对象名计算出一个32位的哈希值，然后根据归属的pool及此时的哈希值，通过简单的计算，比如取模，即可找到最终承载该对象的PG。</p>
 <p>我们发现如果pool内的PG数目如果能写成$2^n$形式，那么其低n比特都是相同的。我们将$2^n-1$称为PG的<strong>掩码</strong>。否则，若PG不能写成$2^n$的形式，则不能保证针对不同的输入低n比特相同这一“稳定”的性质。（比如有12个PG，那么对于属于同一个pool的PGID只有低两位相同）</p>
 <p>因此一种行之有效的方法是用掩码代替取模。取hash低n-1位，即$hash\&amp;(2^n-1)$ .但这种映射存在问题，如果PG数目不能被2整除，那么采用这种方式会导致空穴，也就是取模结果没有实际PG对应。</p>
@@ -442,9 +443,96 @@
 </div>
 <p>如果$hash\&amp;(2^{n}-1)&lt;pg_num$，那么可以直接返回$hash\&amp;(2^n-1)$.</p>
 <p>否则，我们返回$hash\&amp;(2^{n-1}-1)$.</p>
-<p>在参考书上被称为稳定哈希（stable hash）。</p>
+<p>比如：</p>
+<pre><code class="hljs angelscript"><span class="hljs-number">0x05</span> stable_mod <span class="hljs-number">12</span> = <span class="hljs-number">5</span>
+<span class="hljs-number">0x0D</span> stable_mod <span class="hljs-number">12</span> = <span class="hljs-number">5</span>
+<span class="hljs-number">0x15</span> stable_mod <span class="hljs-number">12</span> = <span class="hljs-number">5</span>
+<span class="hljs-number">0x1D</span> stable_mod <span class="hljs-number">12</span> = <span class="hljs-number">5</span></code></pre>
+<p>在参考书上被称为稳定哈希（stable_mod hash）。</p>
 </blockquote>
-<p>Ceph主要设计理念之一是高扩展性。当集群中PG增加，新的PG会被随机均匀地映射至所有OSD上。作为stable hash的输入的PG数目已经发生变化，导致某些对象从旧PG重新映射至新PG，因此需要转移这部分对象，我们称为<strong>PG分裂</strong>（这也是为什么PG数目必须是2的次幂的原因！）。</p>
+<h2 id="1-3-PG分裂"><a href="#1-3-PG分裂" class="headerlink" title="1.3 PG分裂"></a>1.3 PG分裂</h2><p>Ceph主要设计理念之一是高扩展性。当集群中PG增加，新的PG会被随机均匀地映射至所有OSD上。作为stable hash的输入的PG数目已经发生变化，导致某些对象从旧PG重新映射至新PG，因此需要转移这部分对象，我们称为<strong>PG分裂</strong>（这也是为什么PG数目必须是2的次幂的原因！），为了避免业务长时间停顿，我们必须尽可能减少对象移动的次数。</p>
+<p>下面我们通过一个简单的例子来了解PG分裂吧！</p>
+<p>某个存储池的pg_num由$2^4$增加到$2^6$，容易验证其中所有对象的哈希值都可以分成下图中的四种类型：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">MSB</th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center"></th>
+<th style="text-align:center">LSB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$X_3$</td>
+<td style="text-align:center">$X_2$</td>
+<td style="text-align:center">$X_1$</td>
+<td style="text-align:center">$X_0$</td>
+</tr>
+<tr>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$X_3$</td>
+<td style="text-align:center">$X_2$</td>
+<td style="text-align:center">$X_1$</td>
+<td style="text-align:center">$X_0$</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$X_3$</td>
+<td style="text-align:center">$X_2$</td>
+<td style="text-align:center">$X_1$</td>
+<td style="text-align:center">$X_0$</td>
+</tr>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$X_3$</td>
+<td style="text-align:center">$X_2$</td>
+<td style="text-align:center">$X_1$</td>
+<td style="text-align:center">$X_0$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>针对这四种类型的PG使用新的pg_num再stable_mod，结果如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>对象32位哈希</th>
+<th>stable_mod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0’b???? ???? ???? ???? ???? ??? ???00 $X_3X_2X_1X_0$</td>
+<td>X</td>
+</tr>
+<tr>
+<td>0’b???? ???? ???? ???? ???? ??? ???01 $X_3X_2X_1X_0$</td>
+<td>X+16</td>
+</tr>
+<tr>
+<td>0’b???? ???? ???? ???? ???? ??? ???10 $X_3X_2X_1X_0$</td>
+<td>X+2*16</td>
+</tr>
+<tr>
+<td>0’b???? ???? ???? ???? ???? ??? ???11 $X_3X_2X_1X_0$</td>
+<td>X+3*16</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>因此仅有第一种类型不用迁移，我们需要创建三个新的PG来转移余下的类型。因此原来一个PG变成了4个。这被形象的称为PG分裂。</p>
+<p>由于归属于同一个PG的所有对象总是可以保证其至少n-1位相同，移动自然的想法是使用哈希值逆序之后作为目录分层的依据。例如0xA4CEE0D2，一种可能的分层依据为<code>./2/D/0/E/E/C/4/A/0xA4CEE0D2</code>。可以看的出来Ceph的创作者是何等富有革新精神！</p>
+<p>引入PG分裂机制后，如果仍然使用PGID作为CRUSH输入，据此计算新增孩子PG在OSD之间的映射结果，由于此时每个PGID都不同，必然触发大量迁移。考虑到分裂之前PG在OSD之间的分布已经趋于平衡，更好的方法是让同一个祖先诞生的所有孩子PG分布保存相同的副本分布，整个集群的PG分布仍是均衡的。为了应对PG分裂，还需要额外记录分裂之前祖先PG数量，后者称为PGP数量(Placement Group Placement)。</p>
 <h1 id="2-详细剖析PG读写流程"><a href="#2-详细剖析PG读写流程" class="headerlink" title="2 详细剖析PG读写流程"></a>2 详细剖析PG读写流程</h1><h2 id="2-1-消息接收与分发"><a href="#2-1-消息接收与分发" class="headerlink" title="2.1 消息接收与分发"></a>2.1 消息接收与分发</h2><p>OSD绑定的Public Messenger 收到客户端发送的读写请求后，通过OSD注册的回调函数——<code>ms_fast_dispatch</code>进行快速派发：</p>
 <ul>
 <li>基于消息(Messenger)创建一个op， 用于对消息进行跟踪，并记录消息携带的Epoch。</li>

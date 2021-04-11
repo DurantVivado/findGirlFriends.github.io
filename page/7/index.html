@@ -189,21 +189,20 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/21/2020-7-28-HuaRongDao/">启发式搜索——探索华容道</a>
+        <a href="/2020/08/23/2020-08-23-ML3/">机器学习III 线性模型</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/21/2020-7-28-HuaRongDao/">
+        <a href="/2020/08/23/2020-08-23-ML3/">
           
           
             
           
-          启发式搜索——探索华容道1 引入华容道问题，如下所示，在一个8x9的棋盘内，曹操要躲过五虎上将的围剿，成功从下方撤离华容道。卒子大小1x1，赵云，马超，黄忠，张飞均为1x2，关羽为2x1.
+          三、线性模型一元线性模型用向量表示为
 
-我们稍后再考虑如何具体解决。
-我们不禁感叹老祖宗的智慧，华容道问题的推广——便是著名的N数码问题。下面是8数码问题，我们可以很容易得到它的状态空间为$O(9!)=O(1)$。
+f(x)=w^Tx+b其中$w$称为权重向量，$b$称为偏置。我们可以利用均方误差，来求得$w$与$b$.
 
-更难的是15数码问题，或者31
+(w^*,b^*)=\arg \min\sum\limits_{i=1}^{m}(f(x_i)-y_i)^2均方误差对应于几何中欧氏距离($Euclidean Distance$)。该方法被称为「最小二乘法」($least square method
         </a>
       </p>
 
@@ -211,8 +210,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
+            <time datetime="2020-08-23 00:00" pubdate>
+              2020-08-23
             </time>
           </div>
         
@@ -220,9 +219,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a>
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
             
           </div>
         
@@ -230,11 +227,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%B8%B8%E6%88%8F/">游戏</a>
-            
-              <a href="/tags/%E5%90%AF%E5%8F%91%E5%BC%8F%E6%90%9C%E7%B4%A2/">启发式搜索</a>
-            
-              <a href="/tags/A/">A*</a>
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%85%AC%E5%BC%8F/">概念与公式</a>
             
           </div>
         
@@ -247,21 +240,33 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/21/2020-8-1-sliding-windows/">滑动窗口，滑动的艺术</a>
+        <a href="/2020/08/23/2020-8-23-bitoperation/">一句能打败99.99999%的程序员的位操作代码</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/21/2020-8-1-sliding-windows/">
+        <a href="/2020/08/23/2020-8-23-bitoperation/">
           
           
             
           
-          
-滑动窗口是笔试中一大难点，幸运的是我们有模板
+          专题：位操作
+位操作是一种很神奇的操作，真的很神奇————Tiancheng Lou
 
-滑动窗口
-Sliding Windows，是一类很看重细节的问题，题目通常为Medium或者hard。在滑动窗口中有两个指针，一个指针静止，而另一个指针保持移动。我们在s上滑动窗口，如果能够包含整个T（注意，T可能有重复字符），如果能收缩，我们就收缩窗口直到得到最小窗口。
-滑动窗口一个有趣的应用是，计算机网络中的GBN协议，又称回退N步协议，它允许
+位操作包括：
+
+¬ 取反（NOT）
+
+∩ 按位或（OR）
+
+⊕ 按位异或（XOR）
+
+∪ 按位与（AND）
+
+移位
+
+移位是一个二元运算符，用来将一个二进制数中的每一位全部都向一个方向移动指定位，溢出的部分将被舍弃，而空缺的部分填入一定的值。移位又分为
+
+算术移位：在位移运算符之前的数是有符号数，编译产生的汇编
         </a>
       </p>
 
@@ -269,8 +274,8 @@ Sliding Windows，是一类很看重细节的问题，题目通常为Medium或�
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
+            <time datetime="2020-08-23 00:00" pubdate>
+              2020-08-23
             </time>
           </div>
         
@@ -286,9 +291,85 @@ Sliding Windows，是一类很看重细节的问题，题目通常为Medium或�
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">滑动窗口</a>
+              <a href="/tags/%E4%BD%8D%E8%BF%90%E7%AE%97/">位运算</a>
             
-              <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/">多指针</a>
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/08/14/2020-8-14-what-is-UnionSet/" target="_self">
+          <img src="/img/dsu_1.jpg" srcset="/img/loading.gif" alt="优雅而巧妙的并查集">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/14/2020-8-14-what-is-UnionSet/">优雅而巧妙的并查集</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/14/2020-8-14-what-is-UnionSet/">
+          
+          
+            
+          
+          什么是并查集（UnionSet）
+最长连续序列
+
+被围绕的区域
+
+岛屿的数量
+
+二维网格中探测环
+
+除法求值（带权值）            
+
+冗余连接（无向图）
+
+冗余连接II(Hard)（有向图）
+
+朋友圈(DFS,BFS,UnionSet均可以做,DFS,BFS更优)
+
+句子相似性2(VIP)
+
+等式方程可满足性
+
+连通网络操作次数
+
+按公因数计算最大组件大小（hard）
+
+情侣牵手（Ha
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-14 00:00" pubdate>
+              2020-08-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a>
             
           </div>
         
@@ -301,25 +382,430 @@ Sliding Windows，是一类很看重细节的问题，题目通常为Medium或�
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/07/21/2020-8-20-what-is-Trie/">Google划词搜索的秘密</a>
+        <a href="/2020/08/04/2020-05-10-ML1/">机器学习I 基本概念</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/07/21/2020-8-20-what-is-Trie/">
+        <a href="/2020/08/04/2020-05-10-ML1/">
           
           
             
           
-          什么是前缀树Trie和前缀和？如何实现？
-前缀树又名Tries树、字典树、单词查找树等，常用于快速检索，大量字符串的排序和统计等。
-LC208.实现前缀树 - 制作板子
-LC336.回文对 - 结合回文
-LC212.单词搜索 II - 类似 Boggle 的游戏。
+          
+学完算法，还想更深入一步，那么接触一下机器学习，是很有必要的，你需要知道当下为什么ML这么火，包括自动驾驶，人脸识别等都与之相关。有些甚至基本算法理论无法解释。
+参考周志华《机器学习》
 
-三个基本性质
+任务：
+分类（classification）: 预测离散值。
+回归（regression）:预测连续值。
+一般地，我们对训练集${(x_1,y_1),···,(x_m,y_m)}$进行学习，建立一个从输入空间$
+        </a>
+      </p>
 
-根节点不包含字符，除根节点外每个节点只包含一个字符
-从根节点到某个节点，路径上所有的字符连在一起，就是这个节点所对应
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-04 00:00" pubdate>
+              2020-08-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E5%92%8C%E5%85%AC%E5%BC%8F/">概念和公式</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/04/2020-08-4-ML2/">机器学习II 模型评估与选择</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/04/2020-08-4-ML2/">
+          
+          
+            
+          
+          1. 经验误差与过拟合学习在训练集上的误差称为“训练误差”，而在新样本上误差称为“泛化误差”。
+实际上，我们通常得不到泛化性能很好的模型，原有有两种：
+
+过拟合（overfitting）: 学习能力过于优秀，学到一些非一般的特性。
+欠拟合（underfitting）：对训练样本的一般性质尚未学好。
+
+机器学习面临的问题一般是$NP$难问题(什么是NP)，因此只要相信$NP\ne P$那么过拟合将无
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-04 00:00" pubdate>
+              2020-08-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%A6%82%E5%BF%B5%E5%92%8C%E5%85%AC%E5%BC%8F/">概念和公式</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/02/2020-8-2-trackback-demo/">抛砖引玉析回溯</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/02/2020-8-2-trackback-demo/">
+          
+          
+            
+          
+          浅析回溯法
+想必大家都玩过一些智力游戏，比如解数独，华容道，魔方，甚至围棋这些。 让我们用计算机去解决这些问题，并且使得时间尽可能短，一种可能的方法是回溯法，现在已经有用机器学习中的对抗学习(GAN)以及强化学习(RL)，著名的有AlphaGo以及OpenAI,后者甚至可以在最难的MOBA类游戏战胜人类。
+推荐阅读Liweiwei1419大佬的「回溯算法入门级讲解」
+有四大类题目：
+题型一：排列、
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-02 00:00" pubdate>
+              2020-08-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%9E%E6%BA%AF%E6%B3%95/">回溯法</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/08/01/2020-8-1-common-way-solve-big-problem/">空间极大问题通用策略</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/08/01/2020-8-1-common-way-solve-big-problem/">
+          
+          
+            
+          
+          空间极大问题通用策略通常解在$2^n$的时间或者空间复杂度下，我们称为极大解空间。
+而搜索空间通常按照组合数来算，达到$10^9$称为极大搜索空间。
+解空间极大
+
+
+子集
+
+
+
+第k个排列
+
+
+
+每个元音包含偶数次的最长子字符串
+
+
+
+全排列
+
+
+
+全排列2
+
+
+
+子集2
+
+
+
+递增子序列
+
+
+
+删除无效括号
+
+
+
+组合
+
+
+
+组合总和II
+
+
+216.组合总和III
+
+搜索空间极大
+
+
+最大网格
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-08-01 00:00" pubdate>
+              2020-08-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E6%9E%81%E5%A4%A7%E9%97%AE%E9%A2%98/">空间极大问题</a>
+            
+              <a href="/tags/%E6%95%B0%E5%AD%A6/">数学</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/">C++ 如何让Unordered_map支持pair作为键值</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/25/2020-07-25-how-Unordered_map-support-pair-as-key/">
+          
+          
+            
+          
+          
+C++
+
+如何让Unordered_map支持pair作为键值template&lt;class T1, class T2&gt; 
+struct pair_hash//没这个pair 就不能在unorder——map快乐的玩耍了
+&#123;
+    size_t operator() (const pair&lt;T1, T2&gt;&amp; p) const
+    &#123;
+   
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-25 00:00" pubdate>
+              2020-07-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/C/">C++</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/25/2020-07-27-backpack-problem/">做一只可爱的小🐖背包 Cover「背包九讲」</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/25/2020-07-27-backpack-problem/">
+          
+          
+            
+          
+          做一只可爱的小🐖背包
+  推荐观看dd大牛：背包九讲的传送门, 「背包九讲」视频教程
+  0-1 背包    
+
+ 完全背包
+
+多重背包 I II III
+
+混合背包问题
+
+二维费用的背包问题
+
+分组背包问题
+
+背包问题求解方案数
+
+求背包问题的方案
+
+有依赖的背包问题
+
+
+
+I. 0-1背包问题
+注意解空间极大问题有时可以转化0-1背包,从而避免TLE!
+
+题目：有一个容量为 V 的背包，和一
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-25 00:00" pubdate>
+              2020-07-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+            
+              <a href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/07/21/2020-08-19-manacher/">东方不败-&gt;回文问题</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/21/2020-08-19-manacher/">
+          
+          
+            
+          
+          回文问题
+直觉上：回文≈难题，LC上的回文难题, 但是总不能指望面试/周赛出中等题吧?
+一般dp可以做，实在不行就上manacher。
+
+
+
+回文对
+
+
+214.最短回文串
+
+分割回文串
+
+
+
+统计不同的回文子序列
+
+
+
+超级回文数
+
+
+
+段式回文
+
+
+516.最长回文子序列
+1771.
+
+1. 线性时间内解决回文串问题——Manacher算法 {竞赛难度}Manacher 算法是在线性时间!内求
         </a>
       </p>
 
@@ -346,398 +832,9 @@ LC212.单词搜索 II - 类似 Boggle 的游戏。
             
               <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a>
             
-              <a href="/tags/%E7%B1%BB%E6%A0%91%E7%BB%93%E6%9E%84/">类树结构</a>
+              <a href="/tags/%E5%9B%9E%E6%96%87/">回文</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-8-29-KMP/">臭名昭著的KMP算法</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-8-29-KMP/">
-          
-          
-            
-          
-          KMP算法精讲
-为什么说它臭名昭著呢？因为KMP 是最短小精悍,最强大,最不易理解,最容易健忘的算法之一.
-
-术语约定：s为目标串，t为模式匹配串，KMP作用和strStr()相同
-
-KMP算法的核心在于获取PMT数组(Partly Matched Track)部分匹配数组，它是从$0$到$j$字串的前缀集合和后缀集合的最长公共字串长度
-
-​    为了编程方便，我们将第0位令为0，将PMT依次后
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">字符串匹配</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">权力的游戏 之 零和博弈</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-9-1-what-is-zero-sum/">
-          
-          
-            
-          
-          什么是零和博弈(Zero sum )？
-在零和博弈中，让自己最优和让对手最差其实是相同的目标！原因还是那句话，两人的总得分不会变化，自己多了，对手必然减少。
-
-在零和博弈问题中，一般会存在先手优势和后手劣势：
-先手优势：因为先手可以先走，所以可决定后手将要面对的局面。因此，后手虽然也会做出最优解，但是先手可以根据先发的优势，让后手进入最优解最差的局面。后手劣势：当先手走完后，虽然后手也会成为下一回
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
-            
-              <a href="/tags/%E6%B8%B8%E6%88%8F%E7%B1%BB%E9%97%AE%E9%A2%98/">游戏类问题</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">Markdown那些不为人知的酷炫特性</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-9-3-Markdown%20-fantastic/">
-          
-          
-            
-          
-          Markdown 那些不为人知的炫🆒特性
-新的甘特图功能，丰富你的文章（Mermaid语言）gantt
-        dateFormat  YYYY-MM-DD
-        title Adding GANTT diagram functionality to mermaid
-        section 现有任务
-        已完成               :done,   
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/markdown/">markdown</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/markdown/">markdown</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-08-1-representation_of_graph/">再也不想做图类题目了</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-08-1-representation_of_graph/">
-          
-          
-            
-          
-          图的表示和图算法
-DFS&amp;BFS(在相应专题讲)
-拓扑排序
-Dijkstra
-Floyd算法
-Bellman-Ford算法
-SPFA算法
-
-
-本博客介绍了四种图的表示方法，包括 邻接矩阵表示法，关联矩阵表示法，邻接表表示法，弧表示法，星形表示法。以及图的典型算法，包括Dijkstra, Floyd, Bellman-Ford以及SPFA算法。
-
-1.邻接矩阵表示法如图：
- 
-　　也就是说，
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
-            
-              <a href="/tags/Dijkstra/">Dijkstra</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-7-30-pointers/">神奇的多指针 【cover 脑筋急转弯💡】</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-7-30-pointers/">
-          
-          
-            
-          
-          多指针问题&amp;脑筋急转弯
-四数之和
-颜色分类
-删除最短的子数组使剩余数组有序
-压缩字符串(Medium)
-环形链表II（快慢指针）（Medium）
-长度最小的子数组(Medium)替换后的最长重复字符(Medium) 最小覆盖子串(Hard)
-一般的多指针题目中经常有“最大”“最小”“最长”“最短”这样的字眼！
-练习提示：在做这些问题的时候，一定要思考清楚为什么可以采用双指针（滑动窗口）算法
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%A4%9A%E6%8C%87%E9%92%88/">多指针</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-8-17-recognition-monostack/">红尘客栈之单调栈</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-8-17-recognition-monostack/">
-          
-          
-            
-          
-          炫酷skr的单调栈
-
-柱状图中最大矩形（Hard）
-
-
-85.求最大矩形(Hard)
-
-739.每日温度(Medium)
-
-402. 移掉K位数字
-321. 拼接最大数（Hard）
-
-多重背包问题III【详见背包九讲】
-
-
-
-推荐阅读：https://blog.csdn.net/lucky52529/article/details/89155694
-
-模拟单调栈的数据push和pop
-模拟实现一个
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%8D%95%E8%B0%83%E6%A0%88/">单调栈</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/07/21/2020-07-21-dynamic-planning/">动态规划</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/07/21/2020-07-21-dynamic-planning/">
-          
-          
-            
-          
-          
-动态规划(DP)的重要性我就不用说了，LeetCode 上DP问题数量仅次于数组。
-个人感觉，DP问题就像斐波那契数列一样，你需要找到能够递归的通式子，我们把这个式子称作状态转移方程（$transfer  eqution$）。本文采取题目加讲解的方式，中等题目强调找出状态转移方程，难题则附加代码研究细节，此篇可作为你刷DP类问题的初探。题目中可能有一些显性关键词，如最大方案数，最短距离，所有可能
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-21 00:00" pubdate>
-              2020-07-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+              <a href="/tags/manacher%E7%AE%97%E6%B3%95/">manacher算法</a>
             
           </div>
         
@@ -749,7 +846,7 @@ SPFA算法
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/6/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/6/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

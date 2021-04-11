@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.4k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      19
        分钟
     </span>
   
@@ -255,7 +255,7 @@
 </blockquote>
 <h2 id="Kruskal-算法"><a href="#Kruskal-算法" class="headerlink" title="Kruskal 算法"></a>Kruskal 算法</h2><p>被称为“加边法”，初始最小生成树的边数是0，每迭代一次就寻找满足条件的最小代价边，加入到最小生成树集合中去。</p>
 <ol>
-<li>把图中所有边按照<strong>从小到大</strong>的顺序排序。</li>
+<li>把图中所有边按照权重<strong>从小到大</strong>的顺序排序。</li>
 <li>把图中$n$个顶点看成独立的$n$棵树组成的森林。</li>
 <li>按权值从小到大选择边，所选的边连接的两个顶点$u_i,v_i$应该属于两个不同的树（否则会形成环），则称为最小生成树的一条边，并将这两棵树作为一棵树。</li>
 <li>重复<code>3.</code>。直到所有的顶点都在一棵树内，或者有$n-1$条边为止。</li>
@@ -342,7 +342,7 @@
 <li>在两个集合$u,v$所构成的边中，选择一条代价最小的边。</li>
 <li>重复上述步骤，直到最小生成树有$n-1$条边，或者只有一棵树为止。</li>
 </ol>
-<p><img src="..\img\prim.jpg" srcset="/img/loading.gif" alt="这里写图片描述"></p>
+<p><img src="\img\prim.jpg" srcset="/img/loading.gif" alt="这里写图片描述"></p>
 <p>我们注意到我们每次添加的都是最小边，因此可以用小顶堆来存储。 Prim算法更像是Dijkstra算法。</p>
 <h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
     <span class="hljs-keyword">int</span> res,n;
@@ -396,6 +396,17 @@
 &#125;;</code></pre>
 <p>时间复杂度：$O(N^2)$, N为点的个数。</p>
 <p>空间复杂度：$O(N)$,需要一个优先队列来存储所有的可能边。</p>
+<hr>
+<h2 id="生成树的其它问题"><a href="#生成树的其它问题" class="headerlink" title="*生成树的其它问题"></a>*生成树的其它问题</h2><p>除了最小生成树问题，我们有时候也会听到关于生成树个数的讨论。我们先从比较特殊的完全图入手。</p>
+<p>Caley定理：完全图，具有n个节点的不同树的个数是$n^{n-2}$.</p>
+<p>那么对于任意图生成树的个数如何确定呢？</p>
+<p>实验物理界泰斗Kirchhoff解决了这个问题：</p>
+<p><strong>Kirchhoff定理</strong>：设G是顶点集为$V(G)={v_1,v2,\cdots,v_n}$的图，设$A=[a_{ij}]$为G的邻接矩阵，$C=[c_{ij}]$为$n\times n$矩阵，其中</p>
+<script type="math/tex; mode=display">
+c_{ij}=\begin{cases}
+\deg v_i, &if \ i=j\\
+-a_{ij}, & otherwise
+\end{cases}</script><p>则G的生成树个数为C的任一个余子式的值。</p>
 
             </div>
             <hr>

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      2.1k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      29
        分钟
     </span>
   
@@ -360,7 +360,73 @@
     &#125;
 &#125;;</code></pre>
 <hr>
-<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2>
+<h2 id="专题：降低dp的时间维度"><a href="#专题：降低dp的时间维度" class="headerlink" title="专题：降低dp的时间维度"></a>专题：降低dp的时间维度</h2><p>有些问题，使用dp可能需要很高的时间复杂度，容易超时，需要进行降维处理。比如三个变量i,j,k，我们可以设m=i+j，然后去找k与m之间的关系，从而简化计算。</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-score-from-performing-multiplication-operations/">1770. 执行乘法运算的最大分数</a></p>
+<p>给你两个长度分别 <code>n</code> 和 <code>m</code> 的整数数组 <code>nums</code> 和 <code>multipliers</code> ，其中 <code>n &gt;= m</code> ，数组下标 <strong>从 1 开始</strong> 计数。</p>
+<p>初始时，你的分数为 <code>0</code> 。你需要执行恰好 <code>m</code> 步操作。在第 <code>i</code> 步操作（<strong>从 1 开始</strong> 计数）中，需要：</p>
+<ul>
+<li>选择数组 <code>nums</code> <strong>开头处或者末尾处</strong> 的整数 <code>x</code> 。</li>
+<li>你获得 <code>multipliers[i] * x</code> 分，并累加到你的分数中。</li>
+<li>将 <code>x</code> 从数组 <code>nums</code> 中移除。</li>
+</ul>
+<p>在执行 <code>m</code> 步操作后，返回 <strong>最大</strong> 分数<em>。</em></p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], multipliers = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+输出：<span class="hljs-number">14</span>
+解释：一种最优解决方案如下：
+- 选择末尾处的整数 <span class="hljs-number">3</span> ，[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>] ，得 <span class="hljs-number">3</span> * <span class="hljs-number">3</span> = <span class="hljs-number">9</span> 分，累加到分数中。
+- 选择末尾处的整数 <span class="hljs-number">2</span> ，[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>] ，得 <span class="hljs-number">2</span> * <span class="hljs-number">2</span> = <span class="hljs-number">4</span> 分，累加到分数中。
+- 选择末尾处的整数 <span class="hljs-number">1</span> ，[<span class="hljs-number">1</span>] ，得 <span class="hljs-number">1</span> * <span class="hljs-number">1</span> = <span class="hljs-number">1</span> 分，累加到分数中。
+总分数为 <span class="hljs-number">9</span> + <span class="hljs-number">4</span> + <span class="hljs-number">1</span> = <span class="hljs-number">14</span> 。</code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：nums = [<span class="hljs-number">-5</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>], multipliers = [<span class="hljs-number">-10</span>,<span class="hljs-number">-5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>]
+输出：<span class="hljs-number">102</span>
+解释：一种最优解决方案如下：
+- 选择开头处的整数 <span class="hljs-number">-5</span> ，[<span class="hljs-number">-5</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>] ，得 <span class="hljs-number">-5</span> * <span class="hljs-number">-10</span> = <span class="hljs-number">50</span> 分，累加到分数中。
+- 选择开头处的整数 <span class="hljs-number">-3</span> ，[<span class="hljs-number">-3</span>,<span class="hljs-number">-3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>] ，得 <span class="hljs-number">-3</span> * <span class="hljs-number">-5</span> = <span class="hljs-number">15</span> 分，累加到分数中。
+- 选择开头处的整数 <span class="hljs-number">-3</span> ，[<span class="hljs-number">-3</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>] ，得 <span class="hljs-number">-3</span> * <span class="hljs-number">3</span> = <span class="hljs-number">-9</span> 分，累加到分数中。
+- 选择末尾处的整数 <span class="hljs-number">1</span> ，[<span class="hljs-number">-2</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>] ，得 <span class="hljs-number">1</span> * <span class="hljs-number">4</span> = <span class="hljs-number">4</span> 分，累加到分数中。
+- 选择末尾处的整数 <span class="hljs-number">7</span> ，[<span class="hljs-number">-2</span>,<span class="hljs-number">7</span>] ，得 <span class="hljs-number">7</span> * <span class="hljs-number">6</span> = <span class="hljs-number">42</span> 分，累加到分数中。
+总分数为 <span class="hljs-number">50</span> + <span class="hljs-number">15</span> - <span class="hljs-number">9</span> + <span class="hljs-number">4</span> + <span class="hljs-number">42</span> = <span class="hljs-number">102</span> 。</code></pre>
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>n == nums.length</code></li>
+<li><code>m == multipliers.length</code></li>
+<li><code>1 &lt;= m &lt;= 103</code></li>
+<li><code>m &lt;= n &lt;= 105</code></li>
+<li><code>-1000 &lt;= nums[i], multipliers[i] &lt;= 1000</code></li>
+</ul>
+<hr>
+<p>开始的时候我是从区间范围的角度出发，设范围$[i,j]$内操作m次最大价值为$dp[i][j][m]$，这样时间复杂度$O(m^3)=10^9&gt;10^6$</p>
+<p>直接超时，后来看到一篇题解，就是把维度降下来A的。</p>
+<p>重点是设左边操作次数$i,$右边操作次数$j$，且$i+j=k$，这样就可以找到k和m 的关系，将三维化为二维$O(m^2)$，就A了。详见代码。</p>
+<pre><code class="hljs angelscript"><span class="hljs-keyword">class</span> <span class="hljs-symbol">Solution</span> &#123;
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">typedef</span> long long ll;
+    <span class="hljs-built_in">int</span> maximumScore(vector&lt;<span class="hljs-built_in">int</span>&gt;&amp; nums, vector&lt;<span class="hljs-built_in">int</span>&gt;&amp; multipliers) &#123;
+        <span class="hljs-built_in">int</span> n = nums.size();
+        <span class="hljs-built_in">int</span> m = multipliers.size();
+        vector&lt;vector&lt;ll&gt;&gt; dp(m+<span class="hljs-number">1</span>,vector&lt;ll&gt;(m+<span class="hljs-number">1</span>));
+        <span class="hljs-built_in">int</span> res = INT_MIN;
+        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> k = <span class="hljs-number">1</span>;k &lt;= m;k++ )
+        <span class="hljs-keyword">for</span>(<span class="hljs-built_in">int</span> i = k;i &gt;= <span class="hljs-number">0</span>;i--)
+        &#123;
+            <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span>)
+                dp[i][k-i] = dp[i][k-i<span class="hljs-number">-1</span>] + nums[n-k+i]*multipliers[k<span class="hljs-number">-1</span>];
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(i == k)
+                dp[i][k-i] = dp[i<span class="hljs-number">-1</span>][k-i] + nums[i<span class="hljs-number">-1</span>]*multipliers[k<span class="hljs-number">-1</span>];
+            <span class="hljs-keyword">else</span>
+                dp[i][k-i] = max(dp[i][k-i<span class="hljs-number">-1</span>] + nums[n-k+i]*multipliers[k<span class="hljs-number">-1</span>],dp[i<span class="hljs-number">-1</span>][k-i] + nums[i<span class="hljs-number">-1</span>]*multipliers[k<span class="hljs-number">-1</span>]);
+            <span class="hljs-comment">// printf(&quot;k:%d,i:%d,j:%d,dp:%d\n&quot;,k,i,k-i,dp[i][k-i]);</span>
+            <span class="hljs-keyword">if</span>(k == m)
+            &#123;
+                res = max(res,(<span class="hljs-built_in">int</span>)dp[i][k-i]);
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> res;
+    &#125;
+&#125;;</code></pre>
+
             </div>
             <hr>
             <div>

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.3k 字
+      7.4k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      77
+      78
        分钟
     </span>
   
@@ -290,6 +290,16 @@ ls -li <span class="hljs-regexp">//</span>查看链接</code></pre>
 <h3 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h3><p>软链接是创建一个新的Inode，Inode的存储内容是另外一个文件路径名的指向，可以理解为<strong>windows的快捷方式</strong>。它的特点是可以灵活地实现诸多不做限制的要求：既可以对存在或者不存在的文件和目录创建软链接，也可以链接到不同的文件系统，还可以在删除链接时不影响指向的文件等。</p>
 <pre><code class="hljs awk">ln -s 源文件 目标文件 <span class="hljs-regexp">//</span>查看软链接</code></pre>
 <pre><code class="hljs awk">ll &#123;文件名&#125; <span class="hljs-regexp">//</span> 查看所有链接</code></pre>
+<pre><code class="hljs awk">软链接创建好了，我们来看看怎么删除它
+
+正确的删除方式（删除软链接，但不删除实际数据）
+
+rm -rf  ./test_chk_ln
+
+错误的删除方式
+
+rm -rf .<span class="hljs-regexp">/test_chk_ln/</span> (这样就会把原来test_chk下的内容删除)
+</code></pre>
 <blockquote>
 <p>题外话：讲个笑话，各位小朋友千万不要模仿（除非你想删库跑路）！</p>
 <p><img src="/img/image-20210119192857642.png" srcset="/img/loading.gif" alt=""></p>

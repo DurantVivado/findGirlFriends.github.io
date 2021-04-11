@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>深入浅出学MapReduce - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>深入浅出学Hadoop集群【单点分布式，伪分布式，完全分布式】 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      450 字
+      1.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      13
        分钟
     </span>
   
@@ -240,19 +240,19 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">深入浅出学MapReduce</h1>
+            <h1 style="display: none">深入浅出学Hadoop集群【单点分布式，伪分布式，完全分布式】</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="深入浅出学MapReduce"><a href="#深入浅出学MapReduce" class="headerlink" title="深入浅出学MapReduce"></a>深入浅出学MapReduce</h1><blockquote>
+              <h1 id="深入浅出学Hadoop集群【面试篇】"><a href="#深入浅出学Hadoop集群【面试篇】" class="headerlink" title="深入浅出学Hadoop集群【面试篇】"></a>深入浅出学Hadoop集群【面试篇】</h1><blockquote>
 <p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/boothsun/p/7714609.html">https://www.cnblogs.com/boothsun/p/7714609.html</a></p>
 <p>谷歌在2004年发表了可以分析大量数据的MapReduce算法. 每当你听到”大数据”这个词时，它指的是因为太大而让仅仅一台机器难以有效存储或分析的问题。MapReduce通过把计算量分配给不同的计算机群，能够解决大部分和大数据有关的分析问题。Hadoop提供了最受欢迎的利用MapReduce算法来管理大数据的开源方式。先进MapReduce是主流，题外话：Hadoop是其发明者(Prof. Doug Cutting)的孩子画的大象的名字。</p>
 <p>Hadoop的优势：PB级数据处理，经济，高效，可靠。</p>
 <p>所以通常来说，每当你听到“大数据”，那也许意味着Hadoop被用来存储数据，也通常意味着数据的抽取和检索是用的MapReduce。</p>
 </blockquote>
 <p>你想数出一摞扑克牌中有多少黑桃。直观方式是一张一张检查并且数出有多少张是黑桃。</p>
-<p><img src="../img/hadoop.png" srcset="/img/loading.gif" alt="image-20201011211938355" style="zoom:67%;" /></p>
-<p><img src="../img/mapreduce_2.jpg" srcset="/img/loading.gif" alt="image-20201011212059132" style="zoom:67%;" /><img src="2020-10-5-mapreduce/image-20201011214146689.png" srcset="/img/loading.gif" alt="image-20201011214146689"></p>
-<p><img src="../img/mapreduce_2.jpg" srcset="/img/loading.gif" alt="image-20201011212059132" style="zoom:67%;" /><img src="2020-10-5-mapreduce/image-20201011214146689.png" srcset="/img/loading.gif" alt="image-20201011214146689"></p>
+<p><img src="2020-10-5-mapreduce.assets/hadoop.png" srcset="/img/loading.gif" alt="image-20201011211938355" style="zoom:67%;" /></p>
+<p><img src="2020-10-5-mapreduce.assets/mapreduce_2.jpg" srcset="/img/loading.gif" alt="image-20201011212059132" style="zoom:67%;" /><img src="2020-10-5-mapreduce/image-20201011214146689.png" srcset="/img/loading.gif" alt="image-20201011214146689"></p>
+<p><img src="2020-10-5-mapreduce.assets/mapreduce_2-1618133285830.jpg" srcset="/img/loading.gif" alt="image-20201011212059132" style="zoom:67%;" /><img src="2020-10-5-mapreduce/image-20201011214146689.png" srcset="/img/loading.gif" alt="image-20201011214146689"></p>
 <p>MapReduce方法规则是:</p>
 <ol>
 <li>给在座的所有玩家中分配这摞牌</li>
@@ -273,14 +273,67 @@
 <p>3）计算机错误处理</p>
 <p>4）管理集群中计算机必要的通信</p>
 <hr>
-<h2 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h2><p>Hadoop Distributed File System</p>
-<p>HDFS架构：</p>
-<p>主节点namenode：只有一个。</p>
-<ul>
-<li>接受用户请求。</li>
-<li></li>
+<h2 id="MapReduce分布式编程概述"><a href="#MapReduce分布式编程概述" class="headerlink" title="MapReduce分布式编程概述"></a>MapReduce分布式编程概述</h2><ul>
+<li>迭代（iteration）。遍历输入的数据，并将之解析为key/value对。</li>
+<li>将输入的key/value映射（mapping）到另外一些key/value对。</li>
+<li>依据key对中间数据进行分组（Grouping）。</li>
+<li>以组为单位对中间数据进行归约（Reduce）。<ul>
+<li>迭代。将最终产生的key/value保存到输出文件中。</li>
 </ul>
-<p>从节点datanodes：有多个。</p>
+</li>
+</ul>
+<p><img src="2020-10-5-mapreduce.assets/image-20210330213926329.png" srcset="/img/loading.gif" alt="image-20210330213926329"></p>
+<p><img src="../img/image-20210327185454343.png" srcset="/img/loading.gif" alt="image-20210327185454343"></p>
+<p><img src="C:/Users/xiODUZI/AppData/Roaming/Typora/typora-user-images/image-20210327185849715.png" srcset="/img/loading.gif" alt="image-20210327185849715"></p>
+<p>注意：如果Namenode和ResourceManager如果不在同一台机器上，不能在NameNode上启动YARN，应该在ResourceManager所在的机器上启动YARN。</p>
+<p>SecondaryNameNode：50090</p>
+<p> 端口号：</p>
+<p><strong>HDFS</strong></p>
+<p>内部通讯端口：8020；</p>
+<p>进程之间端口：9000  是HDFS默认的端口号，提供文件系统的端口供client角色寻找namenode角色的端口号，是进程之间的调用。</p>
+<p>Namenode 端口：50070</p>
+<p>SecondaryNamenode：50090</p>
+<p><strong>YARN</strong></p>
+<p>内部通讯端口：8032</p>
+<p>MapReduce 端口：8088</p>
+<p><strong>历史服务器</strong></p>
+<p>内部通讯端口：10020</p>
+<p>WEB UI 端口：19888</p>
+<h2 id="集群写数据流程"><a href="#集群写数据流程" class="headerlink" title="集群写数据流程"></a>集群写数据流程</h2><p>节点选择原则，距离近，负载小。</p>
+<p>上传必须有一个fs对象，首先向namenode申请，namenode检查是否有这个路径和文件，如果没有，则客户端上传第一个block，namenode返回DataNode。</p>
+<p>FSDataOutputStream 依次向datanode建立block传输通道，采用字节流形式，每到达一个节点，一部分数据持久化在本地，另一部分在内存中继续传输到下一个节点，直到所有节点都存储完成返回应答。</p>
+<p><img src="2020-10-5-mapreduce.assets/image-20210409111245949.png" srcset="/img/loading.gif" alt="image-20210409111245949"></p>
+<h2 id="网络拓扑——节点距离的计算"><a href="#网络拓扑——节点距离的计算" class="headerlink" title="网络拓扑——节点距离的计算"></a>网络拓扑——节点距离的计算</h2><p>是按照树的LCA距离计算的。</p>
+<p>机架感知，副本放置的位置</p>
+<p>出于容灾域要求，第一个副本在client所处的节点上。如果客户端在集群外，随机选择一个。第二个副本与第一个副本位于相同的机架，随机节点。</p>
+<p>第三个副本为位于不同的机架，随机节点。</p>
+<h2 id="集群读数据流程"><a href="#集群读数据流程" class="headerlink" title="集群读数据流程"></a>集群读数据流程</h2><ol>
+<li><p>客户端请求下载文件A。namnode返回文件的元数据。</p>
+</li>
+<li><p>客户端在dn1请读blk_1,blk_2,…，如果某个块缺少，则去下一个dn查找。</p>
+</li>
+<li><p>直到读完。</p>
+<p><img src="2020-10-5-mapreduce.assets/image-20210409112525066.png" srcset="/img/loading.gif" alt="image-20210409112525066"></p>
+</li>
+</ol>
+<h2 id="NN和2NN工作机制"><a href="#NN和2NN工作机制" class="headerlink" title="NN和2NN工作机制"></a>NN和2NN工作机制</h2><h3 id="FsImage与Edits"><a href="#FsImage与Edits" class="headerlink" title="FsImage与Edits"></a>FsImage与Edits</h3><ol>
+<li>namenode元数据存储在哪？</li>
+</ol>
+<p>如果存储在Namenode，那么经常要随机读写，效率较低。因此存在于内存中，但是为了避免掉电，又在磁盘中备份。称为<strong>FsImage</strong>.</p>
+<p>这样又会带来新的问题，当内存中元数据更新的时候，如果同时更新FsImage，就会导致效率过低。因此引入Edits文件，每当元数据有更新，修改内存中的元数据并追加到Edits中。一旦namenode断电，可以通过FsImage与Edits合并，合成元数据。</p>
+<p>如果长期添加数据到Edits中，会导致文件数据过大，效率降低，因此需要定期进行FsImage与Edits进行合并，这个操作由SecondaryNamenode来完成。</p>
+<p>注意先后顺序：</p>
+<p><strong>1. 先写编辑日志和FsImage再加载到内存中。</strong></p>
+<p>2 .滚动写Edits</p>
+<ol>
+<li><p>之后发送到2NN（Secondary Namenode）进行合并。</p>
+<p><img src="2020-10-5-mapreduce.assets/image-20210409123256909.png" srcset="/img/loading.gif" alt="image-20210409123256909"></p>
+</li>
+</ol>
+<p><img src="2020-10-5-mapreduce.assets/image-20210409125629848.png" srcset="/img/loading.gif" alt="image-20210409125629848"></p>
+<p>Fsimage中并没有记录块所对应的DataNode，为什么？</p>
+<p>在集群启动后，要求DataNode上报数据块信息，并间隔一段时间后再次上报。</p>
+<p>Namenode如何确定下次开机时候合并哪些Edits？，利用seen_txid.</p>
 
             </div>
             <hr>
@@ -290,7 +343,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+                      <a class="hover-with-bg" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
                     
                   </div>
                 
@@ -298,9 +351,9 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/MapReduce-Hadoop/">MapReduce - Hadoop</a>
+                      <a class="hover-with-bg" href="/tags/Hadoop/">Hadoop</a>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%AD%98%E5%82%A8/">存储</a>
+                      <a class="hover-with-bg" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>
                     
                       <a class="hover-with-bg" href="/tags/Java/">Java</a>
                     
@@ -527,7 +580,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "深入浅出学MapReduce&nbsp;",
+        "深入浅出学Hadoop集群【单点分布式，伪分布式，完全分布式】&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

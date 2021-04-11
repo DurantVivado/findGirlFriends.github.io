@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10.9k 字
+      12.3k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      133
+      150
        分钟
     </span>
   
@@ -247,7 +247,7 @@
 <div class="note note-primary">
             <p>本blog包括理论和实践两个部分，实践部分需要您事先部署成功Ceph集群！</p><p>参考《Ceph设计与实现》谢型果等，第一章。以及<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map/?s">官方CRUSH教程</a>。</p>
           </div>
-<h1 id="浅析CRUSH算法"><a href="#浅析CRUSH算法" class="headerlink" title="浅析CRUSH算法"></a>浅析CRUSH算法</h1><blockquote>
+<h1 id="浅析CRUSH算法与应用"><a href="#浅析CRUSH算法与应用" class="headerlink" title="浅析CRUSH算法与应用"></a>浅析CRUSH算法与应用</h1><blockquote>
 <p>CRUSH论文地址：<a target="_blank" rel="noopener" href="https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf</a></p>
 <p>一个通过增加额外时间维度来提升性能的方案，MapX（FAST2020‘）：<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/fast20-wang_li.pdf">https://www.usenix.org/system/files/fast20-wang_li.pdf</a></p>
 </blockquote>
@@ -259,20 +259,9 @@
 <p>CRUSH: Controlled Replication Under Scalable Hashing<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span class="hint--top hint--rounded" aria-label="WEIL, S. A., BRANDT, S. A., MILLER, E. L., AND MALTZAHN,C. Crush: Controlled, scalable, decentralized placement of replicateddata. In SC’06: Proceedings of the 2006 ACM/IEEE Conference onSupercomputing (2006), IEEE, pp. 31–31.
 ">[1]</span></a></sup> 基于可扩展哈希的受控副本分布策略。<br>它基于伪随机数哈希算法，以数据唯一标识符、当前存储集群拓扑以及数据备份策略作为输入，可以随时随地通过计算获取数据所在的底层存储设备的位置并之间与其通信，从而避免查表，失效去中心化和高度并发。</p>
 <p>按照Sage Weil系统讲解Ceph论文的说法，CRUSH其实解决了两个问题：一个是我应该把数据存在哪？另一个是我把数据存在哪了？[5.1节]</p>
-<h2 id="1-1-故障恢复"><a href="#1-1-故障恢复" class="headerlink" title="1.1 故障恢复"></a>1.1 故障恢复</h2><p>OSD群集映射将因OSD故障，恢复和显式群集更改（例如，部署新存储）而更改。 为了促进快速恢复，OSD主要为每个对象保留一个版本号和每个PG的最近更改日志（已更新或删除的对象的名称和版本）。</p>
-<p>   当活动的OSD收到更新的群集映射时，它将遍历所有本地存储的放置组，并计算CRUSH映射以确定它负责哪个映射（作为主副本或副本副本）。 如果PG的成员资格已更改，或者OSD刚刚启动，则OSD必须与PG的其他OSD进行$peer$。</p>
-<p>   对于复制的PG，OSD向主数据库提供其当前PG版本号。 如果OSD是PG的主要版本，则OSD会收集当前（和以前）副本的PG版本。 如果主数据库缺少最新的PG状态，它将从PG中的当前OSD或先前的OSD检索最近PG更改的日志（或完整的内容摘要），以确定正确的（最新）PG内容。 然后主数据库向每个副本发送一次重要的日志更新（或完整的内容摘要），以便所有各方都知道PG的内容，即便本地存储的对象并不匹配。只有在主服务器确定正确的PG状态并与任何副本共享它之后，才允许对PG中的对象进行I / O。 然后，OSD将独立负责从其对等方检索丢失或过时的对象。 如果OSD收到对陈旧或丢失对象的请求，它将延迟处理并将该对象移到恢复队列的最前面。</p>
-<p>   例如，假设osd1崩溃并被标记为down，而osd2接替pgA作为主要对象。 如果osd1恢复，它将在启动时请求最新的映射，并且监视器将其标记为已启动。 当osd2收到结果映射更新时，它将意识到它不再是pgA的主要版本，并将pgA版本号发送给osd1。</p>
-<p>   osd1将从osd2检索最近的pgA日志条目，告诉osd2其内容是最新的，然后开始处理请求，同时在后台恢复任何更新的对象。<br>   由于故障恢复完全由单独的OSD驱动，因此受故障OSD影响的每个PG将与不同的替换OSD并行恢复。</p>
-<h2 id="1-2-EBOFS"><a href="#1-2-EBOFS" class="headerlink" title="1.2 EBOFS"></a>1.2 EBOFS</h2><pre><code> POSIX接口不能支持原子数据和元数据（例如，属性）更新事务，这对于保持RADOS的一致性很重要。
-</code></pre><p>​    每个Ceph OSD都使用<strong>EBOFS</strong>（基于范围和B树的对象文件系统）来管理其本地对象存储。 完全在用户空间中实现EBOFS并直接与原始块设备进行交互，使我们能够定义自己的低级对象存储接口和更新语义，从而将更新序列化（用于同步）与磁盘提交（出于安全性）分开。</p>
-<p>   EBOFS支持原子事务（例如，在多个对象上进行写和属性更新），并且当提供内存中的提交的异步通知时，更新功能在存储器中的高速缓存被更新时返回。</p>
-<ul>
-<li>避免了与Linux VFS和页面缓存的繁琐交互，这两者都是针对不同的界面和工作负载而设计的。</li>
-<li>更容易地最终确定工作负载的优先级（例如，客户端I / O与恢复）或提供服务质量保证。</li>
-<li>EBOFS可以在磁盘上的写入位置或相关数据附近快速定位可用空间，同时还可以限制长期碎片。</li>
-<li>EBOFS积极地执行写时复制：除超级块(superblock)更新外，数据始终写入磁盘的未分配区域。</li>
-</ul>
+<blockquote>
+<p>实际上，无论是ceph引以为傲的自动数据恢复还是平衡功能，还是用于守护数据一致性与正确性的Scrub机制，都依赖于“可以通过某种手段不重复地遍历所有对象”这个前提，也就是时间复杂度O(N)，这是要求PG能够对每个对象进行严格排序。一种比较直观的想法是将对象标识的所有特征值按照一定规则组合为哈希串，它在集群内是唯一的。Ceph采用的是32位哈希。</p>
+</blockquote>
 <h1 id="2-Straw选择算法"><a href="#2-Straw选择算法" class="headerlink" title="2. Straw选择算法"></a>2. Straw选择算法</h1><p>网络中不同层级具有不同容忍灾难的能力，称之为容灾域。</p>
 <p><img src="/img/image-20201128210418154.png" srcset="/img/loading.gif" alt="image-20201128210418154"></p>
 <p>Sage weil一共设计了四种选择算法，并按照添加删除数据的性能进行比较。结论是：考虑到存储空间需求爆炸式增长，在大型分布式存储系统中某些部件故障是常态，以及数据性可靠性要求，Straw将是不错的选择。我们重点分析。</p>
@@ -715,7 +704,9 @@ rule customized_ruleset&#123;
 	<span class="hljs-keyword">step</span> emit
 &#125;</code></pre>
 <h3 id="（4）注入集群"><a href="#（4）注入集群" class="headerlink" title="（4）注入集群"></a>（4）注入集群</h3><pre><code class="hljs dts">sudo ceph osd setcrushmap -<span class="hljs-class">i </span>&#123;compiledfilename&#125;</code></pre>
-<h2 id="4-11数据重平衡"><a href="#4-11数据重平衡" class="headerlink" title="4.11数据重平衡"></a>4.11数据重平衡</h2><p>找到空间利用率比较高的osd然后执行</p>
+<h2 id="4-11-数据自动平衡"><a href="#4-11-数据自动平衡" class="headerlink" title="4.11 数据自动平衡"></a>4.11 数据自动平衡</h2><p>在实际的生产环境中，Ceph集群的空间利用率并不高，均值为23%左右；另一方面，当磁盘空间利用率超过80%都会变得及其缓慢，系统整体性能受到木桶原理制约。我们希望集群所有OSD的空间利用率尽可能趋于一致。</p>
+<p>数据管理的最小单元是PG，因此我们进一步思考如何让每个OSD上的PG数量尽可能趋于均衡。一种常见方法是采用<code>reweight</code>。</p>
+<p>找到空间利用率比较高的osd然后执行</p>
 <pre><code class="hljs \">sudo ceph osd reweight &#123;osd_num_id&#125; &#123;reweight&#125;</code></pre>
 <p>当然也可以批量调整：目前有两种模式</p>
 <ul>
@@ -754,14 +745,115 @@ rule customized_ruleset&#123;
 </tbody>
 </table>
 </div>
-<p>使用以下参数进行确认</p>
-<pre><code class="hljs dust"><span class="xml">sudo ceph osd reweight-by-utilization </span><span class="hljs-template-variable">&#123;oload&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;max_change&#125;</span><span class="xml">\</span>
-<span class="hljs-template-variable">&#123;max_osds&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;--no-increasing&#125;</span></code></pre>
-<blockquote>
-<p>合理设置weights</p>
-<p>Ceph将weights表示为两倍，从而可以进行精细调整。 weight是设备容量之间的相对差。 我们建议将1.00用作1TB存储设备的相对重量。 在这种情况下，权重为0.5代表大约500GB，权重为3.00代表大约3TB。 较高级别的存储桶的权重是该存储桶聚合的所有叶子项的总和。</p>
-<p>桶项目weight是一维的，但您也可以计算项目重量以反映存储驱动器的性能。 例如，如果您有许多1TB驱动器，其中一些具有较低的数据传输速率，而另一些具有较高的数据传输速率，则即使它们具有相同的容量（例如，硬盘的权重为0.80），也可以对其进行不同的加权。 第一组总吞吐量较低的驱动器，以及1.20第二组总吞吐量较高的驱动器）。</p>
-</blockquote>
+<h3 id="weight-set"><a href="#weight-set" class="headerlink" title="weight-set"></a>weight-set</h3><p>通过CRUSH选择不同位置的副本时，对应的OSD呈现的概率应有所不同，也可以针对存储池中么一个OSD按照副本数设置一个权重组，称为weight-set。每个weight-set所包含的元素数目和对应存储的副本数相同，与CRUSH weight 和reweight直接和OSD绑定不同，weight-set是和存储池绑定的。weight-set有两种模式：兼容模式和非兼容模式。</p>
+<p>列出已有的weight-set:</p>
+<pre><code class="hljs routeros">ceph osd crush weight-<span class="hljs-builtin-name">set</span> ls</code></pre>
+<p>(1)兼容模式</p>
+<p>首先创建weight-set:</p>
+<pre><code class="hljs livecodeserver">ceph osd crush weight-<span class="hljs-built_in">set</span> <span class="hljs-built_in">create</span>-compat</code></pre>
+<p>创建成功后，weight-set中的权重会被自动初始化为当前的CRUSH weight，可以通过下面的命令修改，以调整PG在OSD之间的分布。</p>
+<pre><code class="hljs vim">ceph osd crush weight-<span class="hljs-keyword">set</span> reweight-compat <span class="hljs-symbol">&lt;item&gt;</span> <span class="hljs-symbol">&lt;weight&gt;</span></code></pre>
+<p>这里的item形式是<code>osd.0</code>，之后可以通过下面的命令查看</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph osd crush dump</span></code></pre>
+<p>如果不需要则可以删除</p>
+<pre><code class="hljs routeros">ceph osd crush weight-<span class="hljs-builtin-name">set</span> rm-compat</code></pre>
+<p>（2）逐池模式</p>
+<p>这种模式需要与具体的存储池相绑定，它还有两种模式：<code>flat</code>和<code>positional</code>。</p>
+<p>flat模式，weight-set退化为一维数组，效果与兼容模式完全相同；positional模式，需要根据副本的个数以及当前所处的位置为每个OSD指定一组权重，命令如下：</p>
+<pre><code class="hljs coq">ceph osd crush weight-<span class="hljs-built_in">set</span> create &lt;poolname&gt; flat|<span class="hljs-type">positional</span></code></pre>
+<p>调整权重，（假设test为存储池名称，假定其为三副本）</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">ceph</span> osd crush weight-set create test positional
+<span class="hljs-attribute">ceph</span> osd crush weight-set reweight test osd.<span class="hljs-number">0</span> <span class="hljs-number">0</span>.<span class="hljs-number">3</span> <span class="hljs-number">0</span>.<span class="hljs-number">2</span> <span class="hljs-number">0</span>.<span class="hljs-number">1</span></code></pre>
+<p>删除</p>
+<pre><code class="hljs gams">ceph osd crush weight-<span class="hljs-keyword">set</span> rm <span class="hljs-comment">&lt;poolname&gt;</span></code></pre>
+<p>随着副本数量的上升，每个weight-set条目数目呈指数上升，故十分影响其应用。</p>
+<h3 id="upmap"><a href="#upmap" class="headerlink" title="upmap"></a>upmap</h3><p>为了解决由于永久性故障、扩容等因素可能导致正常业务长时间中断而引入PG Temp机制。虽然PG到OSD的映射是通过CRUSH计算得到的，但是事后仍然可以通过PG Temp进行调整，将其进行推广我们可以得到随心所欲调整PG分布的方法。upmap是对PG的up集合进行部分或全部替换。视调整粒度不同：</p>
+<ol>
+<li>对CRUSH选择整体进行替换</li>
+</ol>
+<pre><code class="hljs applescript">ceph osd pg-upmap &lt;pgid&gt; &lt;osdname (<span class="hljs-built_in">id</span>|osd.<span class="hljs-built_in">id</span>)&gt; [&lt;osdname (<span class="hljs-built_in">id</span>|osd.<span class="hljs-built_in">id</span>)&gt; ...]</code></pre>
+<ol>
+<li>部分替换</li>
+</ol>
+<pre><code class="hljs applescript">ceph osd pg-upmap-items &lt;pgid&gt; &lt;osdname (<span class="hljs-built_in">id</span>|osd.<span class="hljs-built_in">id</span>)&gt; [&lt;osdname (<span class="hljs-built_in">id</span>|osd.<span class="hljs-built_in">id</span>)&gt; ...]</code></pre>
+<p>upmap可以对CRUSH结果进行精确调整，但如果客户端不支持，则无法启用upmap机制。</p>
+<h3 id="balancer"><a href="#balancer" class="headerlink" title="balancer"></a>balancer</h3><p>利用reweight、upmap、weight-set进行权重调整的共同点是都需要人工干预，当集群发生扩容或者缩减时，由于PG自动迁移的特性，又会导致权重变化。</p>
+<p>为此我们希望Ceph能自动调节权重，Ceph的mgr组件引入了一个balancer模块，其本质上也是调用reweight、upmap、weight-set三种方法，</p>
+<p>​    我们计算空间利用率的方差，以反映空间利用率分布情况，并且只考虑那些过载的OSD，据此建立评分系统，如果评分高说明集群空间分布越不均衡，评分为0表示 <em>完美均衡</em> 状态。</p>
+<p>​    如果采用reweight/compat weight-set方式，Ceph将当前所有挂载的OSD进行排序，逐个将其权重调低到一个比较合适的值，如果评分升高，说明步长太大了，需要调小。如果采用upmap，则本身可以针对PG的每个副本进行精确调整，只需要考虑每次调整的PG数量在合理的范围之内即可。</p>
+<p>​    为了更好的了解balancer工作流程，我们先介绍一些相关的术语：</p>
+<p><strong>plan</strong></p>
+<p>plan是balancer内部的一个优化方案，记录集群当前的状态，包括PG分布情况、空间使用率等。</p>
+<p><strong>eval</strong></p>
+<p>指针对集群当前的数据分布状态的评估，实际就是我们前面所说的方差，衡量指标包括PG数量、对象数量和字节数。</p>
+<p><strong>optimize</strong></p>
+<p>创建一个plan。</p>
+<p><strong>execute</strong></p>
+<p>执行一个plan</p>
+<p><strong>mode</strong></p>
+<p>指创建执行plan的方法，包括<code>crush-compat</code>、<code>upmap</code>和<code>none</code>，</p>
+<ol>
+<li>查看balance状态</li>
+</ol>
+<pre><code class="hljs awk">ceph balancer status<span class="hljs-regexp">//</span>默认balancer关闭</code></pre>
+<ol>
+<li>手动创建plan</li>
+</ol>
+<pre><code class="hljs xml">ceph balancer optimize <span class="hljs-tag">&lt;<span class="hljs-name">plan</span>&gt;</span> &#123;<span class="hljs-tag">&lt;<span class="hljs-name">pools</span>&gt;</span> [pools ... ]&#125;</code></pre>
+<p>恢复之前的操作</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph balancer reset</span></code></pre>
+<ol>
+<li>自动开启和关闭（默认60s周期数据自动平衡）</li>
+</ol>
+<pre><code class="hljs nginx"><span class="hljs-attribute">ceph</span> balancer <span class="hljs-literal">on</span>
+ceph balancer <span class="hljs-literal">off</span></code></pre>
+<ol>
+<li>设置模式</li>
+</ol>
+<pre><code class="hljs awk">ceph mode crush-compat<span class="hljs-regexp">//</span> upmap</code></pre>
+<ol>
+<li>更改数据平衡时间</li>
+</ol>
+<pre><code class="hljs gams">ceph config-key <span class="hljs-keyword">set</span> mgr/balancer/begin_time <span class="hljs-comment">0000</span>
+ceph <span class="hljs-comment">config-key set mgr</span>/balancer/<span class="hljs-comment">end_time 0600</span>
+ceph <span class="hljs-comment">config-key set mgr</span>/balancer/<span class="hljs-comment">max_misplaced .01</span>
+</code></pre>
+<p>上面表示自动优化在0：00-6：00进行，且每次优化最多影响1%的PG。</p>
+<p><strong>官方</strong></p>
+<p>要评估当前分布并为其评分：</p>
+<pre><code class="hljs autoit">ceph balancer <span class="hljs-built_in">eval</span></code></pre>
+<p>您还可以使用以下方法评估单个池的分布：</p>
+<pre><code class="hljs vim">ceph balancer <span class="hljs-built_in">eval</span> <span class="hljs-symbol">&lt;pool-name&gt;</span></code></pre>
+<p>评估的更多细节可以通过以下方式看到：</p>
+<pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">ceph</span></span> balancer eval-verbose ...</code></pre>
+<p>该平衡器可以生成一个计划，使用当前配置的模式，具有：</p>
+<pre><code class="hljs sql">ceph balancer <span class="hljs-keyword">optimize</span> &lt;plan-<span class="hljs-keyword">name</span>&gt;</code></pre>
+<p>该名称由用户提供，可以是任何有用的标识字符串。计划的内容可以通过以下方式查看：</p>
+<pre><code class="hljs mipsasm">ceph <span class="hljs-keyword">balancer </span><span class="hljs-keyword">show </span>&lt;plan-name&gt;</code></pre>
+<p>所有计划都可以显示：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph balancer ls</span></code></pre>
+<p>旧计划可以通过以下方式丢弃：</p>
+<pre><code class="hljs applescript">ceph balancer rm &lt;plan-<span class="hljs-built_in">name</span>&gt;</code></pre>
+<p>当前记录的计划显示为status命令的一部分：</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph balancer status</span></code></pre>
+<p>执行计划后将产生的分布质量可通过以下公式计算：</p>
+<pre><code class="hljs vim">ceph balancer <span class="hljs-built_in">eval</span> <span class="hljs-symbol">&lt;plan-name&gt;</span></code></pre>
+<p>假设该计划有望改善分布（即，其得分低于当前集群状态），则用户可以使用以下命令执行该计划：</p>
+<pre><code class="hljs smali">ceph balancer<span class="hljs-built_in"> execute </span>&lt;plan-name&gt;</code></pre>
+<h1 id="5-扩展知识"><a href="#5-扩展知识" class="headerlink" title="5 扩展知识"></a>5 扩展知识</h1><h2 id="1-故障恢复"><a href="#1-故障恢复" class="headerlink" title="1 故障恢复"></a>1 故障恢复</h2><p>OSD群集映射将因OSD故障，恢复和显式群集更改（例如，部署新存储）而更改。 为了促进快速恢复，OSD主要为每个对象保留一个版本号和每个PG的最近更改日志（已更新或删除的对象的名称和版本）。</p>
+<p>   当活动的OSD收到更新的群集映射时，它将遍历所有本地存储的放置组，并计算CRUSH映射以确定它负责哪个映射（作为主副本或副本副本）。 如果PG的成员资格已更改，或者OSD刚刚启动，则OSD必须与PG的其他OSD进行$peer$。</p>
+<p>   对于复制的PG，OSD向主数据库提供其当前PG版本号。 如果OSD是PG的主要版本，则OSD会收集当前（和以前）副本的PG版本。 如果主数据库缺少最新的PG状态，它将从PG中的当前OSD或先前的OSD检索最近PG更改的日志（或完整的内容摘要），以确定正确的（最新）PG内容。 然后主数据库向每个副本发送一次重要的日志更新（或完整的内容摘要），以便所有各方都知道PG的内容，即便本地存储的对象并不匹配。只有在主服务器确定正确的PG状态并与任何副本共享它之后，才允许对PG中的对象进行I / O。 然后，OSD将独立负责从其对等方检索丢失或过时的对象。 如果OSD收到对陈旧或丢失对象的请求，它将延迟处理并将该对象移到恢复队列的最前面。</p>
+<p>   例如，假设osd1崩溃并被标记为down，而osd2接替pgA作为主要对象。 如果osd1恢复，它将在启动时请求最新的映射，并且监视器将其标记为已启动。 当osd2收到结果映射更新时，它将意识到它不再是pgA的主要版本，并将pgA版本号发送给osd1。</p>
+<p>   osd1将从osd2检索最近的pgA日志条目，告诉osd2其内容是最新的，然后开始处理请求，同时在后台恢复任何更新的对象。<br>   由于故障恢复完全由单独的OSD驱动，因此受故障OSD影响的每个PG将与不同的替换OSD并行恢复。</p>
+<h2 id="2-EBOFS"><a href="#2-EBOFS" class="headerlink" title="2 EBOFS"></a>2 EBOFS</h2><pre><code> POSIX接口不能支持原子数据和元数据（例如，属性）更新事务，这对于保持RADOS的一致性很重要。
+</code></pre><p>​    每个Ceph OSD都使用<strong>EBOFS</strong>（基于范围和B树的对象文件系统）来管理其本地对象存储。 完全在用户空间中实现EBOFS并直接与原始块设备进行交互，使我们能够定义自己的低级对象存储接口和更新语义，从而将更新序列化（用于同步）与磁盘提交（出于安全性）分开。</p>
+<p>   EBOFS支持原子事务（例如，在多个对象上进行写和属性更新），并且当提供内存中的提交的异步通知时，更新功能在存储器中的高速缓存被更新时返回。</p>
+<ul>
+<li>避免了与Linux VFS和页面缓存的繁琐交互，这两者都是针对不同的界面和工作负载而设计的。</li>
+<li>更容易地最终确定工作负载的优先级（例如，客户端I / O与恢复）或提供服务质量保证。</li>
+<li>EBOFS可以在磁盘上的写入位置或相关数据附近快速定位可用空间，同时还可以限制长期碎片。</li>
+<li>EBOFS积极地执行写时复制：除超级块(superblock)更新外，数据始终写入磁盘的未分配区域。</li>
+</ul>
 <hr>
 <p>2020/12/22更新</p>
 <h2 id="MapX-lt-span-class-”hint—top-hint—rounded”-aria-label-”Wang-L-Zhang-Y-Xu-J-et-al-MAPX-Controlled-Data-Migration-in-the-Expansion-of-Decentralized-Object-Based-Storage-Systems-C-18th-USENIX-Conference-on-File-and-Storage-Technologies-FAST-20-2020-1-11"><a href="#MapX-lt-span-class-”hint—top-hint—rounded”-aria-label-”Wang-L-Zhang-Y-Xu-J-et-al-MAPX-Controlled-Data-Migration-in-the-Expansion-of-Decentralized-Object-Based-Storage-Systems-C-18th-USENIX-Conference-on-File-and-Storage-Technologies-FAST-20-2020-1-11" class="headerlink" title="MapX&lt;span class=”hint—top hint—rounded” aria-label=”Wang L, Zhang Y, Xu J, et al. {MAPX}: Controlled Data Migration in the Expansion of Decentralized Object-Based Storage Systems[C]//18th {USENIX} Conference on File and Storage Technologies ({FAST} 20). 2020: 1-11."></a>MapX<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote">&lt;span class=”hint—top hint—rounded” aria-label=”Wang L, Zhang Y, Xu J, et al. {MAPX}: Controlled Data Migration in the Expansion of Decentralized Object-Based Storage Systems[C]//18th {USENIX} Conference on File and Storage Technologies ({FAST} 20). 2020: 1-11.</h2><p>“&gt;[2]&lt;/span&gt;&lt;/a&gt;&lt;/sup&gt; (FAST20’) 中对CRUSH算法的改进</p>

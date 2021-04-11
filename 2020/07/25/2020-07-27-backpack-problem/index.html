@@ -292,8 +292,8 @@ dp[i-1][j],\ sumWeight(i-1)+w[i-1]>j
 <p><script type="math/tex">dp[0][j]=0</script>，不装物品时最大价值为0.，同理<script type="math/tex">dp[i][0]=0</script>，即背包容量为0时，最大价值也为0. </p>
 </li>
 </ol>
-<p>时间复杂度：<script type="math/tex">O(V*N)</script>，状态数量为V*N, V为背包容量，N为物品数目，状态转移复杂度为<script type="math/tex">O(1)</script>。</p>
-<p>空间复杂度：<script type="math/tex">O(V*N)</script>, 为dp数组大小。</p>
+<p>时间复杂度：<script type="math/tex">O(VN)</script>，状态数量为V*N, V为背包容量，N为物品数目，状态转移复杂度为<script type="math/tex">O(1)</script>。</p>
+<p>空间复杂度：<script type="math/tex">O(VN)</script>, 为dp数组大小。</p>
 <blockquote>
 <p>变式：要求完全装满背包。</p>
 </blockquote>

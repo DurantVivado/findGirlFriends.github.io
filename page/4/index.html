@@ -189,6 +189,482 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">距离向量路由选择算法——DV</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/15/%E8%B7%9D%E7%A6%BB%E5%90%91%E9%87%8F%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AE%97%E6%B3%95DV/">
+          
+          
+            
+          
+          DV获取全局的路由信息是代价很高的，我们需要一种分布式的、异步的、迭代的、自我终止的算法，这便是DV（$Distance  vector$），它是路由器中真正运行的算法，直到现在！
+这儿的自我终止指：即没有计算应该停止的信号，它就停止了。
+我们首先讨论最低路径开销之间的一种重要关系。令$d_x(y)$是从节点x到y的最低开销，由著名的Bellman-Ford方程：
+
+d_x(y)=min_v\{c
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-15 00:00" pubdate>
+              2020-12-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+            
+              <a href="/tags/%E5%9B%BE%E7%AE%97%E6%B3%95/">图算法</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">小白投资入门（煎炸卤炖）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/14/%E5%B0%8F%E7%99%BD%E6%8A%95%E8%B5%84%E5%85%A5%E9%97%A8/">
+          
+          
+            
+          
+          小白投资入门（煎炸卤炖）写这个博客表明笔者准备开始炒股了，当然任何事情都是万事开头难，希望与君共勉，踩坑。
+假如小Q有1W元，如何投资才能获得最大收益：
+
+存银行
+炒股
+购买保险
+购买基金
+购买黄金
+购买房地产
+购买期货
+全部换成美元
+全部换成日元
+研究“如何让钱无性生殖”
+
+上面问题便是笔者写博客的初衷，弄清楚这些问题不是简单是事，除了问题10以外。
+1基本概念所谓股票，就是股份制公司发行的所有
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-14 00:00" pubdate>
+              2020-12-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%8A%95%E8%B5%84/">投资</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%82%A1%E7%A5%A8/">股票</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/14/ceph%20pool/">「参考」Ceph Pool</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/14/ceph%20pool/">
+          
+          
+            
+          
+          
+            本期主要介绍Ceph pool的操作，需要您事先部署成功Ceph集群！主要参考官方pool教程。
+          
+Ceph pool池是用于存储对象的逻辑分区。
+当首次部署群集而不创建池时，Ceph使用默认池来存储数据。pool具有以下特性：
+
+弹性：可以设置允许多少OSD发生故障而不丢失数据。对于复制池，它是对象的所需副本数/副本数。典型的配置存储一个对象和一个附
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-14 00:00" pubdate>
+              2020-12-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Ceph%E5%AE%9E%E8%B7%B5/">Ceph实践</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">「研究向」Redis中跳表实现原理</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/01/%E3%80%90%E7%A0%94%E7%A9%B6%E5%90%91%E3%80%91Redis%E4%B8%AD%E8%B7%B3%E8%A1%A8%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+          
+          
+            
+          
+          跳表 SkipList的实现原理XII 跳跃表（Skip list）实现排序
+1206. 设计跳表  这一题可以帮助我们快速理解跳表原理。这种数据结构是由William Pugh发明的，最早出现于他在1990年发表的论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》
+
+跳跃表是一种随机化的数据结构，基于并联的链表，其效率相当于
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-01 00:00" pubdate>
+              2020-12-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">日语名谚语系列</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/19/%E6%AF%8E%E6%97%A5%E6%94%BE%E9%80%81%EF%BC%8D%E6%97%A5%E6%9C%AC%E3%81%AE%E8%AB%BA/">
+          
+          
+            
+          
+          毎日放送－日本の諺每日一句日语谚语，让你口语和写作更地道一点吧。
+1.　失敗は成功の元。　しっぱいはせいこうのもと。失败是成功之母。2.　習うより慣れよ。习惯成自然。3.　今日の後に今日なし。光阴似箭，日月如梭。4.　急がは回れ。欲速则不达。5.　人は見かけによらず。人不可貌相。6.　覆水盆に返らず。ふくすいぼんにかえらず。覆水难收。7.　石の上にも三年。功夫不负有心人。8.　努力に勝る天才なし。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-19 00:00" pubdate>
+              2020-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AF%AD/">日语</a>
+            
+              <a href="/categories/%E6%97%A5%E8%AF%AD/%E6%96%87%E5%8C%96/">文化</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%97%A5%E8%AF%AD/">日语</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">「入门部署」Ceph-deploy流程</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/19/Ceph-deploy%E6%B5%81%E7%A8%8B/">
+          
+          
+            
+          
+          Ceph-deploy流程本文介绍了借助Ceph-deploy工具安装Ceph并搭建集群的过程。按照下文的步骤，你可以快速搭建一个基础的Ceph环境，并且了解Ceph集群的组成和工作原理。文章首先会简单介绍Ceph及其安装和环境部署方法，接着给出了预备环境的搭建过程，最后详细地列出了Ceph的安装及配置过程。本文附录还给出了Ceph的编译过程示例。
+1  Ceph基础1.1 Ceph介绍Ceph 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-19 00:00" pubdate>
+              2020-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E5%AE%9E%E8%B7%B5/">实践</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">「综述」纠删码综述</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/15/%E7%BA%A0%E5%88%A0%E7%A0%81%E5%9C%A8%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%BA%94%E7%94%A8/">
+          
+          
+            
+          
+          「综述」纠删码理论1 摘要随着云存储和大数据技术的发展，存储系统面临越来越大的考验，主要体现在系统的可靠性方面。纠删码作为存储系统容错的主要方法越来越受到重视．本文介绍了最重要的一些纠删码。
+目前冗余备份机制主要有两种，一种是数据完全备份机制，也就是通常所说的镜像方法，（mirrorred-method），又称为多副本技术，这类方法的优点是不需要专门的编码解码算法，缺点是磁盘利用率很低，适合于存储
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-15 00:00" pubdate>
+              2020-11-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%BB%BC%E8%BF%B0/">综述</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BA%A0%E5%88%A0%E7%A0%81/">纠删码</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/05/2020-11-04-designing-ds/">设计类问题如何解决</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/05/2020-11-04-designing-ds/">
+          
+          
+            
+          
+          设计类题目如何解决
+设计类题目占比并不大，题目难度也不大。但是一旦碰到了，我们也要直到如何解决！
+设计类问题会使我们对部分数据结构的内在实现由更深入的了解，类似于阅读java源码。
+
+707. 设计链表622. 设计循环队列208. 实现 Trie (前缀树) （※）
+981. 基于时间的键值存储 - 力扣（LeetCode）
+460. LFU缓存 - 力扣（LeetCode）
+341. 扁平化嵌
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-05 00:00" pubdate>
+              2020-11-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AE%BE%E8%AE%A1/">设计</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/03/2020113-Ceph-Mon-%E8%AF%A6%E8%A7%A3/">「模块」Ceph-Monitor 集群的代脑</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/03/2020113-Ceph-Mon-%E8%AF%A6%E8%A7%A3/">
+          
+          
+            
+          
+          Ceph Monitor
+参考：http://docs.ceph.org.cn/rados/configuration/mon-config-ref/#data
+
+​    Monitor是基于Paxos构建的具有分布式强一致性的小型集群，主要负责维护和传播集群表的副本。Paxos要求集群中超过半数的Monitor处于活跃状态才能正常工作，同时有一个主Monitor作为leader，其它的Moni
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-03 00:00" pubdate>
+              2020-11-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ceph/">ceph</a>
+            
+              <a href="/categories/ceph/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/">分布式存储</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/">系统架构</a>
+            
+              <a href="/tags/ceph/">ceph</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2020/10/26/Shell/">Shell 从入门到放弃</a>
       </h1>
 
@@ -238,509 +714,11 @@ Sh
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/24/CMake%20%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">Cmake学习</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/24/CMake%20%E8%B8%A9%E5%9D%91%E6%8C%87%E5%8D%97/">
-          
-          
-            
-          
-          CMake 蹦迪指南CMake方式编译生成库文件以简单的例子来来看看CMake的语法,创建一个  test项目，项目结构如下 ├── test目录 │   ├── CMakeLists.txt │   ├── include目录 │   │   ├── myprint.h │   ├── src 目录 │   │   ├── myprint.cpp │   ├── lib目录 │   ├── bi
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-24 00:00" pubdate>
-              2020-10-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/cmake/">cmake</a>
-            
-              <a href="/categories/cmake/%E7%BC%96%E8%AF%91/">编译</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Cmake/">Cmake</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/18/VIMdict/">VIM命令查询</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/18/VIMdict/">
-          
-          
-            
-          
-          VIM命令查询本1.1 Vim的几种模式
-正常模式：可以使用快捷键命令，或按:输入命令行。
-插入模式：可以输入文本，在正常模式下，按i、a、o等都可以进入插入模式。
-可视模式：正常模式下按v可以进入可视模式， 在可视模式下，移动光标可以选择文本。按V进入可视行模式， 总是整行整行的选中。ctrl+v进入可视块模式。
-替换模式：正常模式下，按R进入。
-
-2. 启动Vim
-vim -c cmd fil
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-18 00:00" pubdate>
-              2020-10-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/linux%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7/">linux实用技巧</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vim/">vim</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/16/2020-10-16-prefix_sum/">数组和字符串的🆒skr操作——前缀和&amp;差分数组</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/16/2020-10-16-prefix_sum/">
-          
-          
-            
-          
-          
-前缀和，很容易让人想到高等数学中的积分操作；对称的，差分数组对应着微分操作，表示作差。让人不禁感叹大自然和计算机之间的神奇联系。
-
-I 前缀和
-
-和为k的子数组(Medium)
-
-
-
-每个元音包含最长的子字符串(Medium)
-
-
-1248. 统计「优美子数组」
-LCP 19：秋叶收藏集
-
-
-什么是前缀和？前缀和是一个数组的某项下标之前(包括此项元素)的所有数组元素的和。 
-设$p[]$为前缀和
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-16 00:00" pubdate>
-              2020-10-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E7%BB%84/">数组</a>
-            
-              <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/">前缀和</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/08/Hadoop%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Hadoop环境配置</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/08/Hadoop%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
-          
-          
-            
-          
-          Hadoop环境配置单机模式的操作方法默认情况下，Hadoop被配置成以非分布式模式运行的一个独立Java进程。这对调试非常有帮助。
-下面的实例将已解压的 conf 目录拷贝作为输入，查找并显示匹配给定正则表达式的条目。输出写入到指定的output目录。
-$ mkdir input
-$ cp conf/*.xml input
-$ bin/hadoop jar hadoop-*-examples.j
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-08 00:00" pubdate>
-              2020-10-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/hadoop/">hadoop</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E6%9E%B6%E6%9E%84/">分布式存储架构</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/02/2020-10-5-mapreduce/">深入浅出学MapReduce</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/02/2020-10-5-mapreduce/">
-          
-          
-            
-          
-          深入浅出学MapReduce
-参考：https://www.cnblogs.com/boothsun/p/7714609.html
-谷歌在2004年发表了可以分析大量数据的MapReduce算法. 每当你听到”大数据”这个词时，它指的是因为太大而让仅仅一台机器难以有效存储或分析的问题。MapReduce通过把计算量分配给不同的计算机群，能够解决大部分和大数据有关的分析问题。Hadoop提供了最受欢
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 00:00" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MapReduce-Hadoop/">MapReduce - Hadoop</a>
-            
-              <a href="/tags/%E5%AD%98%E5%82%A8/">存储</a>
-            
-              <a href="/tags/Java/">Java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/02/20201002-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95II-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">机器学习算法II 神经网络</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/02/20201002-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95II-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">
-          
-          
-            
-          
-          
-按照[Kohone,1988]的说法，神经网络是具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实物体所做出反应。
-
-我们从M-P神经元开始了解：
-
-
-用公式描述就是$y=f(\sum\limits_{i=1}^nw_ix_i-\theta)$
-其中$f$函数被称为激活函数，通常采用平滑的sigmoid函数，$1/(1+e^{-x})$。把多个这样的神经元按照一定层
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-02 00:00" pubdate>
-              2020-10-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a>
-            
-              <a href="/tags/python/">python</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/27/ML4_DecisionTree/">机器学习算法I 决策树</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/27/ML4_DecisionTree/">
-          
-          
-            
-          
-          机器学习算法I: 决策树决策树的基本算法是「分而治之」。
-设有训练集$D$以及属性集$A$. 函数TreeGenerate(D,A)算法如下：
-
-我们生成树节点node，若D中样本全部属于同一类别C.就将node标记为C类叶节点。
-
-如果A为空集或者D中样本在A上取值相同，那么将node标记为叶节点，其类别标记为D中样本数最多的类。然后返回。
-
-从A中选择最优划分属性$a^*$.
-
-对最优划分属性
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-27 00:00" pubdate>
-              2020-09-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">python</a>
-            
-              <a href="/tags/%E5%86%B3%E7%AD%96%E6%A0%91/">决策树</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/27/2020-8-12-dfs-bfs/">双胞胎DFS与BFS</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/27/2020-8-12-dfs-bfs/">
-          
-          
-            
-          
-          专题:DFS&amp;BFS
- DFS:深度优先搜索，BFS：广度优先搜索，是最频繁被考察的算法知识点之一。我们来找一些例题专门研究一下。
-
-二叉树里面的三种遍历既可以用DFS（递归写法），也可以用BFS（迭代+栈），而层序遍历对应的就是BFS。
-在图论中，DFS是万金油算法，其衍生的如Dijisktra(优先队列)，SPFA算法是最短路的主流算法。
-下面介绍一类二维矩阵中典型的「岛屿问题」，来加
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-27 00:00" pubdate>
-              2020-09-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a>
-            
-              <a href="/tags/DFS/">DFS</a>
-            
-              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/09/23/2020-9-23-binary_tree/">必须掌握数据结构-树</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/09/23/2020-9-23-binary_tree/">
-          
-          
-            
-          
-          
-            树，按照子节点最大数目分为二叉树和多叉树，按照方向分为单向树和双向树。
-          
-树相关算法
-一看到树，基本上可以确定是DFS或者BFS了，比较单调，但是也有一些很复杂的题目。二叉树，根据实际需要，演变为二叉搜索树，2-3-4树，平衡树（红黑树、AVL树），在计算机系统中占据重要地位。
-
-树是一种抽象数据类型（ADT）或是实现这种抽象数据类型的数据结构，用来模
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-23 00:00" pubdate>
-              2020-09-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%BB%8F%E5%85%B8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">经典数据结构</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a>
-            
-              <a href="/tags/%E6%A0%91/">树</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4k 字
+      4.8k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      51
+      62
        分钟
     </span>
   
@@ -250,6 +250,7 @@
 <p>包括但不限于数论，几何，排列组合等。。。</p>
 <p>LC上有很多题目是和数学相关的，如果我们有一定的数学基础，那么解起题来事半功倍！下面是一些例题和典型方法。</p>
 <p>数学包括数论，几何，离散数学等，线性代数就是矩阵那一块，应试者需要具备基本的本科线性代数知识。</p>
+<p>LC官方总结：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI4Mzc5NDk4MA==&amp;mid=2247488844&amp;idx=1&amp;sn=67e32eb25577160af19babed70f7bdb9&amp;scene=21#wechat_redirect">https://mp.weixin.qq.com/s?__biz=MzI4Mzc5NDk4MA==&amp;mid=2247488844&amp;idx=1&amp;sn=67e32eb25577160af19babed70f7bdb9&amp;scene=21#wechat_redirect</a></p>
 </blockquote>
 <ul>
 <li><ol>
@@ -266,6 +267,8 @@
 </li>
 <li><h4 id="1632-矩阵转换后的秩-Hard"><a href="#1632-矩阵转换后的秩-Hard" class="headerlink" title="1632. 矩阵转换后的秩(Hard)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/rank-transform-of-a-matrix/">1632. 矩阵转换后的秩</a>(Hard)</h4></li>
 <li><h4 id="1739-放置盒子-找规律系列"><a href="#1739-放置盒子-找规律系列" class="headerlink" title="1739. 放置盒子(找规律系列)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/building-boxes/">1739. 放置盒子</a>(找规律系列)</h4></li>
+<li><h4 id="365-水壶问题-Medium"><a href="#365-水壶问题-Medium" class="headerlink" title="365. 水壶问题(Medium)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/water-and-jug-problem/">365. 水壶问题</a>(Medium)</h4></li>
+<li><h4 id="LCP-14-切分数组-竞赛Hard"><a href="#LCP-14-切分数组-竞赛Hard" class="headerlink" title="LCP 14. 切分数组(竞赛Hard)"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/qie-fen-shu-zu/">LCP 14. 切分数组</a>(竞赛Hard)</h4></li>
 </ul>
 <hr>
 <ul>
@@ -278,15 +281,71 @@
 <li>矩阵论</li>
 <li>统计与概率</li>
 </ul>
-<h2 id="质因数求解"><a href="#质因数求解" class="headerlink" title="质因数求解"></a>质因数求解</h2><p>设$ R = \sqrt{A}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+1$个不同的质因数。质因数为本身的只有一个，非本身的质因数一定比$R$小，最多$R$个。</p>
+<h2 id="质数1：质因数求解"><a href="#质数1：质因数求解" class="headerlink" title="质数1：质因数求解"></a>质数1：质因数求解</h2><p>设$ R = \sqrt{A}$，对于数组中每个数，最多只有一个非本身的质因数$p$满足$p\ge R$。这就意味最多只有$R+1$个不同的质因数。质因数为本身的只有一个，非本身的质因数一定比$R$小，最多$R$个。</p>
 <p><strong>策略</strong></p>
-<pre><code class="hljs cpp"><span class="hljs-keyword">double</span> r = <span class="hljs-built_in">sqrt</span>(a);
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>;i &lt;= r; i++)
-<span class="hljs-keyword">if</span>(a%i==<span class="hljs-number">0</span>) 
-&#123;
-...
+<pre><code class="hljs cpp"><span class="hljs-comment">//判断是否为质数</span>
+<span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">judgePrime</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= n; i++) &#123;
+        <span class="hljs-keyword">if</span> (n % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 &#125;</code></pre>
-<h2 id="最大公因数（Greatest-Common-Divisor）"><a href="#最大公因数（Greatest-Common-Divisor）" class="headerlink" title="最大公因数（Greatest Common Divisor）"></a>最大公因数（Greatest Common Divisor）</h2><p>交替递归，可以有效减小迭代次数。$(a,b)\rightarrow ( b,a\%b)$直到有一个数为0.</p>
+<h2 id="质数2：质数筛选"><a href="#质数2：质数筛选" class="headerlink" title="质数2：质数筛选"></a>质数2：质数筛选</h2><p>对于一个正整数 N，一次性求出 1～N 之间所有的质数，即为质数筛选。</p>
+<p>显然根据上述「质数判定」的内容，我们可以通过枚举 1～N 的所有数，再依次使用「试除法」来判定其是否为质数，从而完成质数的筛选。但此种方法的时间复杂度过高，为 $O(N\sqrt N)$。</p>
+<p>我们引入了经典的[Eratosthenes]方法，也称埃氏筛。该算法基于一个基本论断：即任何质数的倍数也不是质数。</p>
+<ul>
+<li><p>我们先将2~N中的所有数标记为0；</p>
+</li>
+<li><p>从质数2开始遍历从2~N中的所有自然数；</p>
+</li>
+<li>如果遍历到一个标记为0的数，将2~N中其所有的倍数标记为1.</li>
+</ul>
+<p>其代码实现比较简单，适用于绝大部分面试题：</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">getPrimes</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">mark</span><span class="hljs-params">(n+<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)</span></span>;
+    <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; res;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>;i &lt;= n; i++)
+    <span class="hljs-keyword">if</span>(mark[i] == <span class="hljs-number">0</span>)
+    &#123;
+        res.push_back(i);
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>;j*i &lt;= n;j++) mark[i*j] = <span class="hljs-number">1</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> res;
+&#125;</code></pre>
+<p>其时间复杂度为$O(N\log(\log N))$。</p>
+<h2 id="质数3：质因数分解"><a href="#质数3：质因数分解" class="headerlink" title="质数3：质因数分解"></a>质数3：质因数分解</h2><p>根据[<strong>唯一性分解定理</strong>]，任何一个大于1的正整数都可以分解为有限个质数的乘积：</p>
+<script type="math/tex; mode=display">
+N = p_1^{c_1}\cdot p_2^{c_2}\cdots p_m^{c_m}</script><p>其中，$c_i$为正整数，$p_i$为质数，且满足$p_1&lt;p_2&lt;\cdots&lt;p_m$.</p>
+<p>我们的目标是求出所有的$c_i,p_i$。</p>
+<p>由于$p_1&lt;p_2&lt;\cdots&lt;p_m$，且为$p_1$质数，因此不难发现，$p_1$ 是 N 所有因子中除 1 以外最小的数。</p>
+<p>因此我们可以枚举$2 \to\sqrt N$中的所有数 x，如果 N 是 x 的倍数，则 x 为$p_1$。得到 $p_1$后，我们可以令 N 不断除以 $p_1$直至其不再为  $p_1$的倍数，则 $c_1$等于除以  $p_1$的总次数。</p>
+<p>因此我们继续枚举 x，如果再次出现 N 是 x 倍数的情况，则 x 为$p_2$。</p>
+<p>不断使用上述算法，直至循环结束。最后还需判断 N 是否为 1，如果 N 不为 1，则 $p_m=N,c_m=1$。</p>
+<p>该算法的时间复杂度为 $O(\sqrt N)$，具体代码如下所示，大家可以配合代码对该算法进行理解：\</p>
+<pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">primeDecomp</span><span class="hljs-params">(<span class="hljs-keyword">int</span> N)</span></span>
+<span class="hljs-function"></span>&#123;
+	<span class="hljs-keyword">if</span>(N&lt;<span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> &#123;&#125;;
+	<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; res;
+	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> x = <span class="hljs-number">2</span>;x*x &lt; N; x++)
+	<span class="hljs-keyword">if</span>(N%x == <span class="hljs-number">0</span>)
+    &#123;
+		p = x;
+		<span class="hljs-keyword">int</span>  c = <span class="hljs-number">0</span>;
+		<span class="hljs-keyword">while</span>(N % p == <span class="hljs-number">0</span>)
+		&#123;
+			c++;
+			N /= p;
+		&#125;
+		res .push_back(&#123;p,c&#125;);
+	&#125;
+    <span class="hljs-keyword">if</span>(N&gt;<span class="hljs-number">1</span>)
+    &#123;
+        res.push_back(&#123;N,<span class="hljs-number">1</span>&#125;);
+    &#125;
+	<span class="hljs-keyword">return</span> res;
+&#125;</code></pre>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="质数4：互质判定"><a href="#质数4：互质判定" class="headerlink" title="质数4：互质判定"></a>质数4：互质判定</h2><h3 id="最大公因数（Greatest-Common-Divisor）"><a href="#最大公因数（Greatest-Common-Divisor）" class="headerlink" title="最大公因数（Greatest Common Divisor）"></a>最大公因数（Greatest Common Divisor）</h3><p>交替递归，可以有效减小迭代次数。$(a,b)\rightarrow ( b,a\%b)$直到有一个数为0.</p>
 <pre><code class="hljs Java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span></span>&#123;
     <span class="hljs-keyword">if</span> (b == <span class="hljs-number">0</span>)&#123;
         <span class="hljs-keyword">return</span> a;
@@ -296,9 +355,13 @@
 <p>上述代码也可以用一行搞定：</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span></span>
 <span class="hljs-function"></span>&#123;<span class="hljs-keyword">return</span> (!b)?a:gcd(b,a%b);&#125;</code></pre>
-<h2 id="最小公倍数（LCM，Least-Common-Multiple）"><a href="#最小公倍数（LCM，Least-Common-Multiple）" class="headerlink" title="最小公倍数（LCM，Least Common Multiple）"></a>最小公倍数（LCM，Least Common Multiple）</h2><p>比如 $(2,3) - 6, (3,6) - 6, (6,15) - 30$，找到$a,b$的最大公因数$k$，结果就是$a/k*b$</p>
+<h3 id="最小公倍数（LCM，Least-Common-Multiple）"><a href="#最小公倍数（LCM，Least-Common-Multiple）" class="headerlink" title="最小公倍数（LCM，Least Common Multiple）"></a>最小公倍数（LCM，Least Common Multiple）</h3><p>比如 $(2,3) - 6, (3,6) - 6, (6,15) - 30$，找到$a,b$的最大公因数$k$，结果就是$a/k*b$</p>
 <pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">long</span> <span class="hljs-title">lcm</span><span class="hljs-params">(<span class="hljs-keyword">long</span> a, <span class="hljs-keyword">long</span> b)</span></span>
 <span class="hljs-function"></span>&#123;<span class="hljs-keyword">return</span> a/gcd(a,b)*b;&#125;</code></pre>
+<p>另外，再介绍一个常见的定理 ——「裴蜀定理」：</p>
+<p>若 a,b,x,y,m 是整数，则 ax + by = m 有解当且仅当 m 是gcd(a,b)的倍数。</p>
+<p>该定理有一个重要的推论：整数 a,b 互质的充要条件是存在整数 x,y 使$ax+by=1$。</p>
+<hr>
 <h2 id="快速幂"><a href="#快速幂" class="headerlink" title="快速幂"></a>快速幂</h2><blockquote>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19782019/article/details/85621386">https://blog.csdn.net/qq_19782019/article/details/85621386</a></p>
 </blockquote>
@@ -319,7 +382,7 @@
 <p>如果最后幂为0，表示计算完毕。</p>
 <p>我们可以适当进行优化</p>
 <ul>
-<li><code>a&amp;1==true</code>表示a为奇数，因为偶数二进制最后一位一定是0.</li>
+<li><code>(a&amp;1)==true</code>表示a为奇数，因为偶数二进制最后一位一定是0.</li>
 <li>幂减1除2，可以直接省略，因为<code>/2</code>运算会忽略小数点。同时<code>&gt;&gt;1</code>也表示除2.</li>
 </ul>
 <pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-title">fastPower</span><span class="hljs-params">(<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> base, <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> power, <span class="hljs-keyword">int</span> digits)</span> </span>&#123;
@@ -334,6 +397,9 @@
     &#125;
     <span class="hljs-keyword">return</span> result;
 &#125;</code></pre>
+<h2 id="矩阵快速幂【面试必考】"><a href="#矩阵快速幂【面试必考】" class="headerlink" title="矩阵快速幂【面试必考】"></a>矩阵快速幂【面试必考】</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/mThDMnrhkK5EBSwgSgSSEA">https://mp.weixin.qq.com/s/mThDMnrhkK5EBSwgSgSSEA</a></p>
+</blockquote>
 <h2 id="Gauss消元法"><a href="#Gauss消元法" class="headerlink" title="Gauss消元法"></a>Gauss消元法</h2><blockquote>
 <p>高斯消元法主要用于求解线性方程组，也可以求矩阵的秩、矩阵的逆等，是一个重要的数学方法。其时间复杂度主要与方程组个数、方程组未知数个数有关，一般来说，时间复杂度为 $O(n^3)$</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011815404/article/details/88890702">https://blog.csdn.net/u011815404/article/details/88890702</a></p>
@@ -489,6 +555,7 @@ C_m^n=\frac{m!}{n!(m-n)!}</script><p>因为是阶乘，如果用普通的递归�
 <span class="hljs-symbol">1 </span><span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>
 <span class="hljs-symbol">1 </span><span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span></code></pre>
 <p>很容易找到规律$C(n,k) = C(n-1,k) + C(n-1,k-1)$</p>
+<p><img src="/img/PascalTriangleAnimated2.gif" srcset="/img/loading.gif" alt="img"></p>
 <p>一些特殊的组合，比如$C_m^2$可以巧妙的计数</p>
 <p>$C_m^2 = C_m^{m-2}= 1 + 2 + \cdots+m-1$. </p>
 <h2 id="绝对值"><a href="#绝对值" class="headerlink" title="绝对值"></a>绝对值</h2><h4 id="5658-任意子数组和的绝对值的最大值"><a href="#5658-任意子数组和的绝对值的最大值" class="headerlink" title="5658. 任意子数组和的绝对值的最大值"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-absolute-sum-of-any-subarray/">5658. 任意子数组和的绝对值的最大值</a></h4><p>绝对值问题可以分解为正负两个子问题。比如上面这个问题因为正负元素的存在，可以分解为求最大的正子序列和和最小的子序列和，然后取其中绝对值最大的值作为结果。</p>

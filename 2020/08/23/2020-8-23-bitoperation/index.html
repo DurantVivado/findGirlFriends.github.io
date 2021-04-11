@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.2k 字
+      3.3k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      39
+      42
        分钟
     </span>
   
@@ -340,6 +340,25 @@ n\&(n-1)</script><p><strong>复杂度分析</strong></p>
     <span class="hljs-keyword">return</span> prev;
 &#125;</code></pre>
 <hr>
+<h2 id="位翻转"><a href="#位翻转" class="headerlink" title="位翻转"></a>位翻转</h2><p>采用分治算法，对一个32位无符号整数进行翻转，十分巧妙：</p>
+<h4 id="190-颠倒二进制位"><a href="#190-颠倒二进制位" class="headerlink" title="190. 颠倒二进制位"></a><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/reverse-bits/">190. 颠倒二进制位</a></h4><pre><code class="hljs cpp"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> M8 = <span class="hljs-number">0x00ff00ff</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> M4 = <span class="hljs-number">0x0f0f0f0f</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> M2 = <span class="hljs-number">0x33333333</span>;
+<span class="hljs-keyword">const</span> <span class="hljs-keyword">uint32_t</span> M1 = <span class="hljs-number">0x55555555</span>;
+
+
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">uint32_t</span> <span class="hljs-title">reverseBits</span><span class="hljs-params">(<span class="hljs-keyword">uint32_t</span> n)</span> </span>&#123;
+        n = (n&lt;&lt;<span class="hljs-number">16</span>)|(n&gt;&gt;<span class="hljs-number">16</span>);<span class="hljs-comment">//二分之一翻转</span>
+        n = ((n &amp; M8) &lt;&lt; <span class="hljs-number">8</span>) | ((n &gt;&gt; <span class="hljs-number">8</span>) &amp; M8);<span class="hljs-comment">//四分之一翻转</span>
+        n = ((n &amp; M4) &lt;&lt; <span class="hljs-number">4</span>) | ((n &gt;&gt; <span class="hljs-number">4</span>) &amp; M4);<span class="hljs-comment">//八分之一翻转</span>
+        n = ((n &amp; M2) &lt;&lt; <span class="hljs-number">2</span>) | ((n &gt;&gt; <span class="hljs-number">2</span>) &amp; M2);<span class="hljs-comment">//十六分之一翻转</span>
+        n = ((n &amp; M1) &lt;&lt; <span class="hljs-number">1</span>) | ((n &gt;&gt; <span class="hljs-number">1</span>) &amp; M1);<span class="hljs-comment">//三十二分之一翻转</span>
+        <span class="hljs-keyword">return</span> n;
+    &#125;
+&#125;;</code></pre>
+<hr>
 <h2 id="Hamming距离"><a href="#Hamming距离" class="headerlink" title="Hamming距离"></a><strong>Hamming距离</strong></h2><h4 id="461-汉明距离"><a href="#461-汉明距离" class="headerlink" title="461 汉明距离"></a>461 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/hamming-distance/">汉明距离</a></h4><p>汉明距离广泛应用于多个领域。在编码理论中用于错误检测，在信息论中量化字符串之间的差异。</p>
 <p>两个整数之间的汉明距离是对应位置上数字不同的位数。</p>
 <p><img src="\img\hamming.png" srcset="/img/loading.gif" alt="img"></p>
@@ -372,10 +391,8 @@ n\&(n-1)</script><p><strong>复杂度分析</strong></p>
 <p>注意：该算法发布在 1988 年 《C 语言编程第二版》的练习中（由 Brian W. Kernighan 和 Dennis M. Ritchie 编写），但是 Donald Knuth 在 2006 年 4 月 19 日指出，该方法第一次是由 Peter Wegner 在 1960 年的 CACM3 上出版。顺便说一句，可以在上述书籍中找到更多位操作的技巧。</p>
 <p><strong>复杂度分析</strong></p>
 <ul>
-<li><p>时间复杂度：$O(1)$。与移位方法相似，由于整数的位数恒定，因此具有恒定的时间复杂度。但是该方法需要的迭代操作更少。</p>
-</li>
-<li><p>空间复杂度：$O(1)$，与输入无关，使用恒定大小的空间。</p>
-</li>
+<li>时间复杂度：$O(1)$。与移位方法相似，由于整数的位数恒定，因此具有恒定的时间复杂度。但是该方法需要的迭代操作更少。</li>
+<li>空间复杂度：$O(1)$，与输入无关，使用恒定大小的空间。</li>
 </ul>
 <hr>
 <h2 id="动态规划-最高有效位"><a href="#动态规划-最高有效位" class="headerlink" title="动态规划+最高有效位"></a><strong>动态规划</strong>+<strong>最高有效位</strong></h2><p>有一些位操作题目用动态规划解也十分方便和快速。</p>

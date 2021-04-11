@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>PAXOS-Made-Simple - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>深入浅出学习Paxos - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      10 字
+      2.5k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      26
        分钟
     </span>
   
@@ -240,10 +240,118 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">PAXOS-Made-Simple</h1>
+            <h1 style="display: none">深入浅出学习Paxos</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="PAXOS-Made-Simple-深入浅出学习Paxos"><a href="#PAXOS-Made-Simple-深入浅出学习Paxos" class="headerlink" title="PAXOS-Made-Simple 深入浅出学习Paxos"></a>PAXOS-Made-Simple 深入浅出学习Paxos</h1>
+              <h1 id="🏆深入浅出学习Paxos"><a href="#🏆深入浅出学习Paxos" class="headerlink" title="🏆深入浅出学习Paxos"></a>🏆深入浅出学习Paxos</h1><blockquote>
+<p>Google Chubby的作者Mike Burrows说过这个世界上<strong>只有一种</strong>一致性算法，那就是Paxos，其它的算法都是<strong>残次品</strong>。</p>
+</blockquote>
+<h2 id="①-问题产生的背景"><a href="#①-问题产生的背景" class="headerlink" title="① 问题产生的背景"></a>① 问题产生的背景</h2><p>在常见的分布式系统中，总会发生诸如<strong>机器宕机</strong>或<strong>网络异常</strong>（包括消息的延迟、丢失、重复、乱序，还有网络分区）等情况。Paxos算法需要解决的问题就是如何在一个可能发生上述异常的分布式系统中，快速且正确地在集群内部对<strong>某个数据的值</strong>达成<strong>一致</strong>，并且保证不论发生以上任何异常，都不会破坏整个系统的一致性。</p>
+<p>注：这里<strong>某个数据的值</strong>并不只是狭义上的某个数，它可以是一条日志，也可以是一条命令（command）。。。根据应用场景不同，<strong>某个数据的值</strong>有不同的含义。</p>
+<h2 id="②概念和术语"><a href="#②概念和术语" class="headerlink" title="②概念和术语"></a>②概念和术语</h2><p>在Paxos算法中有三种角色：</p>
+<ul>
+<li>Acceptors</li>
+<li>Proposers</li>
+<li><p>Learners</p>
+</li>
+<li><p>Proposal:提案，是由proposer提出的。</p>
+</li>
+</ul>
+<p>Proposer：只要Proposer发的提案被Acceptor接受（刚开始先认为只需要一个Acceptor接受即可，在推导过程中会发现需要半数以上的Acceptor同意才行），Proposer就认为该提案里的value被选定了。</p>
+<p>Acceptor：只要Acceptor接受了某个提案，Acceptor就任务该提案里的value被选定了。</p>
+<p>Learner：Acceptor告诉Learner哪个value被选定，Learner就认为那个value被选定。</p>
+<h2 id="③-问题描述"><a href="#③-问题描述" class="headerlink" title="③ 问题描述"></a>③ 问题描述</h2><p>假设有一组可以<strong>提出（propose）value</strong>（value在提案Proposal里）的<strong>进程集合</strong>。一个一致性算法需要保证提出的这么多value中，<strong>只有一个</strong>value被选定（chosen）。如果没有value被提出，就不应该有value被选定。如果一个value被选定，那么所有进程都应该能<strong>学习（learn）</strong>到这个被选定的value。对于一致性算法，<strong>安全性（safaty）</strong>要求如下：</p>
+<ul>
+<li>只有被提出的value才能被选定。</li>
+<li>只有一个value被选定，并且</li>
+<li>如果某个进程认为某个value被选定了，那么这个value必须是真的被选定的那个。</li>
+</ul>
+<p>我们不去精确地定义其<strong>活性（liveness）</strong>要求。我们的目标是保证<strong>最终有一个提出的value被选定</strong>。当一个value被选定后，进程最终也能学习到这个value。</p>
+<blockquote>
+<p>Paxos的目标：保证最终有一个value会被选定，当value被选定后，进程最终也能获取到被选定的value。</p>
+</blockquote>
+<p>为了避免单点故障，我们需要指定多个Acceptor，并且我们指定一些约束，比如我们希望即使只有一个Proposer提出了一个value，它也能被选中。</p>
+<blockquote>
+<p> P1：<strong>一个Acceptor必须接受它受到的第一个proposal</strong>。</p>
+</blockquote>
+<p>但是，这又会引出另一个问题：如果每个Proposer分别提出不同的value，发给不同的Acceptor。根据P1，Acceptor分别接受自己收到的value，就导致不同的value被选定。我们再加一个约束：</p>
+<p>规定：<strong>一个提案被选定，必须要半数以上的Acceptor同意才行</strong>。</p>
+<p>最开始讲的『<strong>提案=value</strong>』已经不能满足需求了，于是重新设计提案，给每个提案加上一个提案编号，表示提案被提出的顺序。令『<strong>提案=提案编号+value</strong>』。于是乎</p>
+<blockquote>
+<p>P2：<strong>如果某个value为v的提案被选定了，那么每个编号更高的被选定提案的value必须也是v</strong>。</p>
+</blockquote>
+<p>一个提案只有被Acceptor接受才可能被选定，因此我们可以把P2约束改写成对Acceptor接受的提案的约束P2a。</p>
+<blockquote>
+<p>P2a：<strong>如果某个value为v的提案被选定了，那么每个编号更高的被Acceptor接受的提案的value必须也是v。</strong></p>
+</blockquote>
+<p>但是，考虑如下的情况：假设总的有5个Acceptor。Proposer2提出[M1,V1]的提案，编号2-5的Acceptor（半数以上）均接受了该提案，于是对于编号2-5的Acceptor和Proposer2来讲，它们都认为V1被选定。Acceptor1刚刚从宕机状态恢复过来（之前Acceptor1没有收到过任何提案），此时Proposer1向Acceptor1发送了[M2,V2]的提案（V2≠V1且M2&gt;M1），对于Acceptor1来讲，这是它收到的第一个提案。根据P1（一个Acceptor必须接受它收到的第一个提案。）,Acceptor1必须接受该提案！同时Acceptor1认为V2被选定。这就出现了两个问题：</p>
+<ol>
+<li>Acceptor1认为V2被选定，Acceptor2~5和Proposer2认为V1被选定。出现了不一致。</li>
+<li>V1被选定了，但是编号更高的被Acceptor1接受的提案[M2,V2]的value为V2，且V2≠V1。这就跟P2a（如果某个value为v的提案被选定了，那么每个编号更高的被Acceptor接受的提案的value必须也是v）矛盾了。</li>
+</ol>
+<p>所以我们要对P2a约束进行强化！</p>
+<p>P2a是对Acceptor接受的提案约束，但其实提案是Proposer提出来的，所有我们可以对Proposer提出的提案进行约束。得到P2b：</p>
+<blockquote>
+<p>P2b：如果某个value为v的提案被选定了，那么之后任何Proposer提出的编号更高的提案的value必须也是v。</p>
+</blockquote>
+<p>由P2b可以推出P2a进而推出P2。</p>
+<p>那么，如何确保在某个value为v的提案被选定后，Proposer提出的编号更高的提案的value都是v呢？</p>
+<p>只要满足P2c即可：</p>
+<blockquote>
+<p>P2c：对于任意的N和V，如果提案[N, V]被提出，那么存在一个半数以上的Acceptor组成的集合S，满足以下两个条件中的任意一个：</p>
+<ol>
+<li>S中每个Acceptor都没有接受过编号小于N的提案。</li>
+<li>S中Acceptor接受过的最大编号的提案的value为V。</li>
+</ol>
+</blockquote>
+<p><strong>Proposer生成提案</strong></p>
+<p>为了满足P2b，这里有个比较重要的思想：Proposer生成提案之前，应该先去<strong>『学习』</strong>已经被选定或者可能被选定的value，然后以该value作为自己提出的提案的value。如果没有value被选定，Proposer才可以自己决定value的值。这样才能达成一致。这个学习的阶段是通过一个<strong>『Prepare请求』</strong>实现的。</p>
+<p>于是我们得到了如下的<strong>提案生成算法</strong>：</p>
+<ol>
+<li><p>Proposer选择一个<strong>新的提案编号N</strong>，然后向某个Acceptor集合（半数以上）发送请求，要求该集合的每个Acceptor作出如下响应：</p>
+<ul>
+<li>向Proposer承诺不再接受任何≤N的提案。</li>
+<li>如果Acceptor已经接受过提案，就向Proposer<strong>响应已经接受过的编号小于N</strong>的最大编号提案。</li>
+</ul>
+<p>我们将该请求称为编号为N 的Prepare请求。</p>
+</li>
+</ol>
+<ol>
+<li>如果Proposer收到了<strong>半数以上</strong>的Acceptor的<strong>响应</strong>，那么它就可以生成编号为N，Value为V的<strong>提案[N,V]</strong>。这里的V是所有的响应中<strong>编号最大的提案的Value</strong>。如果所有的响应中<strong>都没有提案</strong>，那 么此时V就可以由Proposer<strong>自己选择</strong>。<br>生成提案后，Proposer将该<strong>提案</strong>发送给<strong>半数以上</strong>的Acceptor集合，并期望这些Acceptor能接受该提案。我们称该请求为<strong>Accept请求</strong>。（注意：此时接受Accept请求的Acceptor集合<strong>不一定</strong>是之前响应Prepare请求的Acceptor集合）</li>
+</ol>
+<p><strong>Acceptor接受提案</strong></p>
+<p>Acceptor<strong>可以忽略任何请求</strong>（包括Prepare请求和Accept请求）而不用担心破坏算法的<strong>安全性</strong>。因此，我们这里要讨论的是什么时候Acceptor可以响应一个请求。</p>
+<p>我们对Acceptor接受提案给出如下约束：</p>
+<blockquote>
+<p>P1a：一个Acceptor只要尚<strong>未响应过</strong>任何<strong>编号大于N</strong>的<strong>Prepare请求</strong>，那么他就可以<strong>接受</strong>这个<strong>编号为N的提案</strong>。</p>
+</blockquote>
+<p>如果Acceptor收到一个编号为N的Prepare请求，在此之前它已经响应过编号大于N的Prepare请求。根据P1a，该Acceptor不可能接受编号为N的提案。因此，该Acceptor可以忽略编号为N的Prepare请求。当然，也可以回复一个error，让Proposer尽早知道自己的提案不会被接受。</p>
+<p>因此，一个Acceptor<strong>只需记住</strong>：1. 已接受的编号最大的提案 2. 已响应的请求的最大编号。</p>
+<h2 id="④-Paxos算法流程"><a href="#④-Paxos算法流程" class="headerlink" title="④ Paxos算法流程"></a>④ Paxos算法流程</h2><p>Paxos算法分为两个阶段，术语2PC(二阶段提交)。</p>
+<p>阶段1</p>
+<ol>
+<li>proposer选择一个提案编号N，同时向超过半数的Acceptor发送编号为N的prepare请求；</li>
+<li>如果有一个Acceptor接受到一个<strong>编号为N的prepare请求</strong>，且N大于Acceptor响应过的所有Acceptor已经响应过的prepare编号，那么将它<strong>已经接受过的最大的prepare编号</strong>（如果有的话）发送给Proposer，并承诺不再接受任何<strong>编号小于N</strong>的提案。</li>
+</ol>
+<p>阶段2</p>
+<ol>
+<li>如果proposer收到<strong>半数以上</strong>的acceptor对其prepare请求的响应，那么它就会发送一个<strong>针对[N,V]提案的prepare请求</strong>给<strong>半数以上</strong>的Acceptor。注意V就是acceptor对prepare请求响应的编号最大的提案的value，如果响应中不包含任何提案，那么V就由Proposer自己决定。</li>
+<li>如果Acceptor收到一个针对<strong>编号为N的提案</strong>的Accept请求，只要该Acceptor<strong>没有</strong>对<strong>编号大于N</strong>的请求作出过响应，那么它就接受该提案。</li>
+</ol>
+<p><img src="/img/1752522-44c5a422f917bfc5.jpg" srcset="/img/loading.gif" alt="Paxos算法流程"></p>
+<p>Learner学习被选定的value也有三种方案</p>
+<p><img src="/img/1752522-0fab48ed2bdf358a.png" srcset="/img/loading.gif" alt="幻灯片17.png"></p>
+<p>假定有两个Proposer依次提出编号递增的提案，最终会陷入死循环，没有value被选定。</p>
+<p>例如Proposer P1提出了编号为M1的prepare请求，收到过半响应，完成了第一阶段流程。</p>
+<p>同时Proposer P2发出了编号为M2(M2&gt;M1)的prepare请求，也受到了过半响应，于是Acceptor承诺不再接受编号小于M的提案。</p>
+<p>P1进入第二阶段时，发出的Accept请求被Acceptor忽略，于是P1再次进入阶段1并发出编号为M3（M3&gt;M2）的请求。。。如此反复形成死循环。因此我们需要<strong>选取一个主Proposer</strong>。</p>
+<blockquote>
+<p>参考：</p>
+<paxos-made-simple>
+
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/linbingdong/p/6253479.html">https://www.cnblogs.com/linbingdong/p/6253479.html</a></p>
+</blockquote>
+
             </div>
             <hr>
             <div>
@@ -489,7 +597,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "PAXOS-Made-Simple&nbsp;",
+        "深入浅出学习Paxos&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

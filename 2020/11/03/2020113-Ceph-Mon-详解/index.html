@@ -17,7 +17,7 @@
   <meta name="description" content="博主：来自华中科技大学国家光电研究中心的">
   <meta name="author" content="Durant">
   <meta name="keywords" content="">
-  <title>【参考】Ceph-Mon 详解 - Durant Thorvalds 的米奇妙妙屋</title>
+  <title>「模块」Ceph-Monitor 集群的代脑 - Durant Thorvalds 的米奇妙妙屋</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -192,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      3.2k 字
     </span>
   
 
@@ -202,7 +202,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      21
+      36
        分钟
     </span>
   
@@ -240,13 +240,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">【参考】Ceph-Mon 详解</h1>
+            <h1 style="display: none">「模块」Ceph-Monitor 集群的代脑</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Ceph-Monitor剖析"><a href="#Ceph-Monitor剖析" class="headerlink" title="Ceph Monitor剖析"></a>Ceph Monitor剖析</h1><blockquote>
+              <h1 id="Ceph-Monitor"><a href="#Ceph-Monitor" class="headerlink" title="Ceph Monitor"></a>Ceph Monitor</h1><blockquote>
 <p>参考：<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/rados/configuration/mon-config-ref/#data">http://docs.ceph.org.cn/rados/configuration/mon-config-ref/#data</a></p>
 </blockquote>
-<p>监视器们维护着集群运行图的“主副本”，就是说客户端连到一个监视器并获取当前运行图就能确定所有监视器、 OSD 和元数据服务器的位置。 Ceph 客户端读写 OSD 或元数据服务器前，必须先连到一个监视器，靠当前集群运行图的副本和 CRUSH 算法，客户端能计算出任何对象的位置，故此客户端有能力直接连到 OSD ，这对 Ceph 的高伸缩性、高性能来说非常重要。更多信息见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/architecture#scalability-and-high-availability">伸缩性和高可用性</a>。</p>
+<p>​    Monitor是基于Paxos构建的具有分布式强一致性的小型集群，主要负责维护和传播集群表的副本。Paxos要求集群中超过半数的Monitor处于活跃状态才能正常工作，同时有一个主Monitor作为leader，其它的Monitor称为Peon。Leader通过投票产生，且Monitor担任Leader的时间称为租期。</p>
+<p>关于集群表OSDMap</p>
+<p>​    集群表由两部分组成：一是集群拓扑结构和用于计算寻址的CRUSH规则；二是所有OSD的身份和状态信息。</p>
+<p>​    监视器们维护着集群运行图的“主副本”，就是说客户端连到一个监视器并获取当前运行图就能确定所有监视器、 OSD 和元数据服务器的位置。 Ceph 客户端读写 OSD 或元数据服务器前，必须先连到一个监视器，靠当前集群运行图的副本和 CRUSH 算法，客户端能计算出任何对象的位置，故此客户端有能力直接连到 OSD ，这对 Ceph 的高伸缩性、高性能来说非常重要。更多信息见<a target="_blank" rel="noopener" href="http://docs.ceph.org.cn/architecture#scalability-and-high-availability">伸缩性和高可用性</a>。</p>
 <p>监视器的主要角色是<strong>维护集群运行图的主副本，它也提供认证和日志记录服务</strong>。 Ceph 监视器们把监视器服务的所有更改写入一个单独的 Paxos 例程，然后 Paxos 以键/值方式存储所有变更以实现高度一致性。同步期间， Ceph 监视器能查询集群运行图的近期版本，它们通过操作键/值存储快照和迭代器（用 leveldb ）来进行存储级同步。</p>
 <p><img src="\img\ceph-mon.jpg" srcset="/img/loading.gif" alt="img"></p>
 <h3 id="集群运行图"><a href="#集群运行图" class="headerlink" title="集群运行图"></a>集群运行图</h3><p>集群运行图是多个图的组合，包括监视器图、 OSD 图、归置组图和元数据服务器图。集群运行图追踪几个重要事件：哪些进程在集群里（ <code>in</code> ）；哪些进程在集群里（ <code>in</code> ）是 <code>up</code> 且在运行、或 <code>down</code> ；归置组状态是 <code>active</code> 或 <code>inactive</code> 、 <code>clean</code> 或其他状态；和其他反映当前集群状态的信息，像总存储容量、和使用量。</p>
@@ -337,6 +340,64 @@
 <div class="note note-priamry">
             <p>集群内的<em>大多数</em>监视器必须能互通以建立法定人数，你可以用此选项减小初始监视器数量来形成。</p>
           </div>
+<hr>
+<h1 id="实践部分"><a href="#实践部分" class="headerlink" title="实践部分"></a>实践部分</h1><h2 id="1-集群管理"><a href="#1-集群管理" class="headerlink" title="1 .集群管理"></a>1 .集群管理</h2><ol>
+<li><p>创建OSD。如果未提供UUID，则它将在OSD启动时自动设置。以下命令将输出OSD号，您将在后续步骤中使用该OSD号。</p>
+<pre><code class="hljs sql">ceph osd <span class="hljs-keyword">create</span> [&#123;<span class="hljs-keyword">uuid</span>&#125; [&#123;<span class="hljs-keyword">id</span>&#125;]]</code></pre>
+<p>如果给出了可选参数{id}，它将用作OSD ID。请注意，在这种情况下，如果该号码已被使用，则该命令可能会失败。</p>
+<p>警告</p>
+<p>通常，不建议显式指定{id}。ID作为数组分配，跳过条目会占用一些额外的内存。如果存在很大的差距和/或集群很大，这可能变得很重要。如果未指定{id}，则使用最小的可用值。</p>
+</li>
+<li><p>在新的OSD上创建默认目录。</p>
+<pre><code class="hljs crystal">ssh &#123;new-osd-host&#125;
+sudo mkdir /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-&#123;<span class="hljs-title">osd</span>-<span class="hljs-title">number</span>&#125;</span></code></pre>
+</li>
+<li><p>如果OSD用于OS驱动器以外的驱动器，请准备将其与Ceph一起使用，并将其安装到刚创建的目录中：</p>
+<pre><code class="hljs crystal">ssh &#123;new-osd-host&#125;
+sudo mkfs -t &#123;fstype&#125; /dev/&#123;drive&#125;
+sudo mount -o user_xattr /dev/&#123;hdd&#125; /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-&#123;<span class="hljs-title">osd</span>-<span class="hljs-title">number</span>&#125;</span></code></pre>
+</li>
+<li><p>初始化OSD数据目录。</p>
+<pre><code class="hljs puppet"><span class="hljs-keyword">ssh</span> &#123;new-osd-host&#125;
+<span class="hljs-keyword">ceph</span>-osd -<span class="hljs-keyword">i</span> &#123;osd-num&#125; --mkfs --mkkey</code></pre>
+<p>在运行目录之前，该目录必须为空<code>ceph-osd</code>。</p>
+</li>
+<li><p>注册OSD身份验证密钥。路径中<code>ceph</code>for 的值<code>ceph-&#123;osd-num&#125;</code>是<code>$cluster-$id</code>。如果您的集群名称不同于<code>ceph</code>，请改用您的集群名称。：</p>
+<pre><code class="hljs crystal">ceph auth add osd.&#123;osd-num&#125; osd <span class="hljs-string">&#x27;allow *&#x27;</span> mon <span class="hljs-string">&#x27;allow rwx&#x27;</span> -i /var/<span class="hljs-class"><span class="hljs-keyword">lib</span>/<span class="hljs-title">ceph</span>/<span class="hljs-title">osd</span>/<span class="hljs-title">ceph</span>-&#123;<span class="hljs-title">osd</span>-<span class="hljs-title">num</span>&#125;/<span class="hljs-title">keyring</span></span></code></pre>
+</li>
+<li><p>将OSD添加到CRUSH映射中，以便OSD可以开始接收数据。该 命令允许您将OSD添加到CRUSH层次结构中的任何位置。如果您至少指定一个存储桶，该命令会将OSD放入您指定的最特定的存储桶中，<em>并将</em>该存储桶移动到您指定的任何其他存储桶下方。<strong>重要说明：</strong>如果仅指定根存储桶，该命令会将OSD直接附加到根，但是CRUSH规则要求OSD位于主机内部。<code>ceph osd crush add</code></p>
+<p>执行以下命令：</p>
+<pre><code class="hljs dust"><span class="xml">ceph osd crush add </span><span class="hljs-template-variable">&#123;id-or-name&#125;</span><span class="xml"> </span><span class="hljs-template-variable">&#123;weight&#125;</span><span class="xml">  [</span><span class="hljs-template-variable">&#123;bucket-type&#125;</span><span class="xml">=</span><span class="hljs-template-variable">&#123;bucket-name&#125;</span><span class="xml"> ...]</span></code></pre>
+<p>您还可以反编译CRUSH映射，将OSD添加到设备列表中，将主机添加为存储桶（如果尚未在CRUSH映射中添加），将该设备添加为主机中的一项，为其分配权重，然后重新编译并设置它。有关详细信息，请参见 <a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/crush-map#addosd">添加/移动OSD</a>。</p>
+</li>
+</ol>
+<h3 id="更换OSD"><a href="#更换OSD" class="headerlink" title="更换OSD"></a>更换OSD</h3><p>当磁盘发生故障时，或者如果管理员想用新的后端重新配置OSD（例如，从FileStore切换到BlueStore），则需要更换OSD。与<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/add-or-rm-osds/#removing-the-osd">删除OSD</a>不同，在销毁OSD进行替换之后，需要保持替换后的OSD的ID和CRUSH映射条目不变。</p>
+<ol>
+<li><p>确保销毁OSD是安全的：</p>
+<pre><code class="hljs fsharp"><span class="hljs-keyword">while</span> ! ceph osd safe-<span class="hljs-keyword">to</span>-destroy osd.&#123;id&#125; ; <span class="hljs-keyword">do</span> sleep <span class="hljs-number">10</span> ; <span class="hljs-keyword">done</span></code></pre>
+</li>
+<li><p>首先销毁OSD：</p>
+<pre><code class="hljs applescript">ceph osd destroy &#123;<span class="hljs-built_in">id</span>&#125; <span class="hljs-comment">--yes-i-really-mean-it</span></code></pre>
+</li>
+<li><p>如果以前将该磁盘用于其他目的，请为该新OSD更换磁盘。不需要新磁盘：</p>
+<pre><code class="hljs awk">ceph-volume lvm zap <span class="hljs-regexp">/dev/</span>sdX</code></pre>
+</li>
+<li><p>使用以前销毁的OSD ID准备要更换的磁盘：</p>
+<pre><code class="hljs jboss-cli">ceph-volume lvm prepare <span class="hljs-params">--osd-id</span> &#123;id&#125; <span class="hljs-params">--data</span> <span class="hljs-string">/dev/sdX</span></code></pre>
+</li>
+<li><p>并激活OSD：</p>
+<pre><code class="hljs applescript">ceph-volume lvm <span class="hljs-built_in">activate</span> &#123;<span class="hljs-built_in">id</span>&#125; &#123;fsid&#125;</code></pre>
+</li>
+</ol>
+<p>或者，除了准备和激活外，还可以在一个呼叫中重新创建设备，例如：</p>
+<pre><code class="hljs jboss-cli">ceph-volume lvm create <span class="hljs-params">--osd-id</span> &#123;id&#125; <span class="hljs-params">--data</span> <span class="hljs-string">/dev/sdX</span></code></pre>
+<h3 id="启动OSD"><a href="#启动OSD" class="headerlink" title="启动OSD"></a>启动OSD</h3><p>在将OSD添加到Ceph之后，该OSD已在您的配置中。但是，它尚未运行。OSD是<code>down</code>和<code>in</code>。您必须先启动新的OSD，然后才能开始接收数据。您可以从管理主机使用，也可以 从其主机启动OSD：<code>service ceph</code></p>
+<pre><code class="hljs sql">sudo systemctl <span class="hljs-keyword">start</span> ceph-osd@&#123;osd-<span class="hljs-keyword">num</span>&#125;</code></pre>
+<p>一旦启动OSD，它就是<code>up</code>和<code>in</code>。</p>
+<h3 id="观察数据迁移"><a href="#观察数据迁移" class="headerlink" title="观察数据迁移"></a>观察数据迁移</h3><p>将新的OSD添加到CRUSH映射后，Ceph将通过将展示位置组迁移到新的OSD开始重新平衡服务器。您可以使用<a target="_blank" rel="noopener" href="https://docs.ceph.com/en/latest/rados/operations/monitoring">ceph</a>工具观察此过程。</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">ceph -w</span></code></pre>
+<p>您应该看到放置组状态从<code>active+clean</code>变为 ，最后看到迁移完成。（Ctrl-c退出。）<code>active, some degraded objects``active+clean</code></p>
+
             </div>
             <hr>
             <div>
@@ -582,7 +643,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "【参考】Ceph-Mon 详解&nbsp;",
+        "「模块」Ceph-Monitor 集群的代脑&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
